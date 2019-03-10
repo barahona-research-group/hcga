@@ -2,4 +2,25 @@
 base_dir: hcga/Operations
 log_level: INFO
 
-operations:
+BasicStats:
+  fileName: basic_stats
+  functionName: basic_stats
+
+Triangles:
+  fileName: triangles
+  functionName: triangle_stats
+
+DegreeCentrality:
+  fileName: centrality_degree
+  functionName: DegreeCentrality
+  bins: 5
+
+DegreeCentrality:
+  fileName: centrality_degree
+  functionName: DegreeCentrality
+  bins: 10
+
+DegreeCentrality:
+  fileName: centrality_degree
+  functionName: DegreeCentrality
+  bins: 50

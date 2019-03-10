@@ -21,24 +21,25 @@ def triangle_stats(G):
 
 
     """
-
-    triangles_stats = []
+    feature_names = ['num_triangles','transitivity','clustering_mean',
+                    'clustering_std','clustering_median','square_clustering_mean'
+                    'square_clustering_std','square_clustering_median']
+    feature_list = []
 
     # Calculating number of triangles
-    triangles_stats.append(np.asarray(list(nx.triangles(G).values())).mean())
-
+    feature_list.append(np.asarray(list(nx.triangles(G).values())).mean())
 
     # graph transivity
-    triangles_stats.append(nx.transitivity(G))
+    feature_list.append(nx.transitivity(G))
 
     # Average clustering coefficient
-    triangles_stats.append(nx.average_clustering(G))
-    triangles_stats.append(np.asarray(list(nx.clustering(G).values())).std())
-    triangles_stats.append(np.median(np.asarray(list(nx.clustering(G).values()))))
+    feature_list.append(nx.average_clustering(G))
+    feature_list.append(np.asarray(list(nx.clustering(G).values())).std())
+    feature_list.append(np.median(np.asarray(list(nx.clustering(G).values()))))
 
     # generalised degree
-    triangles_stats.append(np.asarray(list(nx.square_clustering(G).values())).mean())
-    triangles_stats.append(np.asarray(list(nx.square_clustering(G).values())).std())
-    triangles_stats.append(np.median(np.asarray(list(nx.square_clustering(G).values()))))
+    feature_list.append(np.asarray(list(nx.square_clustering(G).values())).mean())
+    feature_list.append(np.asarray(list(nx.square_clustering(G).values())).std())
+    feature_list.append(np.median(np.asarray(list(nx.square_clustering(G).values()))))
 
-    return triangles_stats
+    return (feature_names,feature_list)

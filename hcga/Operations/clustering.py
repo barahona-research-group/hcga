@@ -20,7 +20,7 @@ def clustering_stats(G):
 
 
     """
+    feature_names = []
+    feature_list = []
 
-    clustering_data = []
-
-    return clustering_data
+    return (feature_names,feature_list)

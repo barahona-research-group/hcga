@@ -13,7 +13,7 @@ def DegreeCentrality(G,bins):
 
 
     """
-
+    feature_names = ['mean','std','opt_model','powerlaw_a','powerlaw_SSE']
     feature_list = []
 
     degree_centrality = np.asarray(list(centrality.degree_centrality(G).values()))
@@ -21,7 +21,7 @@ def DegreeCentrality(G,bins):
     #degree_centrality_out = centrality.out_degree_centrality(G)
 
     # Basic stats regarding the degree centrality distribution
-    faeture_list.append(degree_centrality.mean())
+    feature_list.append(degree_centrality.mean())
     feature_list.append(degree_centrality.std())
 
     # Fitting the degree centrality distribution and finding the optimal
@@ -33,5 +33,10 @@ def DegreeCentrality(G,bins):
     feature_list.append(DistributionFitting.power_law_fit(degree_centrality,bins=bins)[0][0][-2]) # value 'a' in power law
     feature_list.append(DistributionFitting.power_law_fit(degree_centrality,bins=bins)[0][1]) # value sse in power law
 
+    # Fitting normal distribution and finding...
 
-    return feature_list
+
+    # Fitting exponential and finding ...
+
+
+    return (feature_names,feature_list)

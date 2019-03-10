@@ -20,8 +20,8 @@ def basic_stats(G):
 
 
     """
-
-    basic_stats = []
+    feature_names = ['num_nodes','num_edges','degree_mean','degree_median','degree_std']
+    feature_list = []
 
 
     # basic normalisation parameters
@@ -29,14 +29,14 @@ def basic_stats(G):
     E = G.number_of_edges()
 
     # Adding basic node and edge numbers
-    basic_stats.append(N)
-    basic_stats.append(E)
+    feature_list.append(N)
+    feature_list.append(E)
 
     # Degree stats
     degree_vals = np.asarray(list(dict(G.degree())))
 
-    basic_stats.append(degree_vals.mean())
-    basic_stats.append(np.median(degree_vals))
-    basic_stats.append(degree_vals.std())
+    feature_list.append(degree_vals.mean())
+    feature_list.append(np.median(degree_vals))
+    feature_list.append(degree_vals.std())
 
-    return basic_stats
+    return (feature_names,feature_list)
