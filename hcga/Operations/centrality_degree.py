@@ -30,8 +30,8 @@ def DegreeCentrality(G,bins):
     feature_list.append(opt_mod)
 
     # Fitting power law and finding 'a' and the SSE of fit.
-    feature_list.append(DistributionFitting.power_law_fit(degree_centrality,bins=bins)[0][0][-2]) # value 'a' in power law
-    feature_list.append(DistributionFitting.power_law_fit(degree_centrality,bins=bins)[0][1]) # value sse in power law
+    feature_list.append(DistributionFitting.power_law_fit(degree_centrality,bins=bins)[0][-2]) # value 'a' in power law
+    feature_list.append(DistributionFitting.power_law_fit(degree_centrality,bins=bins)[1]) # value sse in power law
 
     # Fitting normal distribution and finding...
 
