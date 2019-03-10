@@ -4,7 +4,7 @@ import statsmodels as sm
 import warnings
 # Identifying optimal model with Sum of square error (SSE)
 
-def power_law_fit(data):
+def power_law_fit(data,bins=10):
     y, x = np.histogram(data, bins=bins)
     x = (x + np.roll(x, -1))[:-1] / 2.0
     try:
@@ -29,7 +29,7 @@ def power_law_fit(data):
 
 
 
-def best_fit_distribution(data, bins=200, ax=None):
+def best_fit_distribution(data, bins=10, ax=None):
     """Model data by finding best fit distribution to data"""
     # Get histogram of original data
     y, x = np.histogram(data, bins=bins, density=True)
