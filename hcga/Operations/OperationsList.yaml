@@ -5,22 +5,32 @@ log_level: INFO
 BasicStats:
   fileName: basic_stats
   functionName: basic_stats
+  shortName: BS
+  keywords:
 
 Triangles:
   fileName: triangles
   functionName: triangle_stats
+  shortName: TS
+  keywords:
 
-DegreeCentrality:
+DegreeCentrality_bin5:
   fileName: centrality_degree
   functionName: DegreeCentrality
+  shortName: DC
+  keywords:
   bins: 5
 
-DegreeCentrality:
+DegreeCentrality_bin10:
   fileName: centrality_degree
   functionName: DegreeCentrality
+  shortName: DC
+  keywords:
   bins: 10
 
-DegreeCentrality:
+DegreeCentrality_bin50:
   fileName: centrality_degree
   functionName: DegreeCentrality
+  shortName: DC
+  keywords:
   bins: 50
