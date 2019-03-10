@@ -2,6 +2,8 @@
 import scipy.stats as st
 import statsmodels as sm
 import warnings
+import numpy as np
+
 # Identifying optimal model with Sum of square error (SSE)
 
 def power_law_fit(data,bins=10):
@@ -19,12 +21,13 @@ def power_law_fit(data,bins=10):
             scale = params[-1]
 
             # Calculate fitted PDF and error with fit in distribution
-            pdf = distribution.pdf(x, loc=loc, scale=scale, *arg)
+            pdf = st.powerlaw.pdf(x, loc=loc, scale=scale, *arg)
             sse = np.sum(np.power(y - pdf, 2.0))
     except Exception:
         pass
 
     return (params, sse)
+
 
 
 

@@ -3,7 +3,8 @@ import networkx as nx
 
 from hcga.Operations import basic_stats
 from hcga.Operations import triangles
-from hcga.Operations import heuristics
+from hcga.Operations import clustering
+from hcga.Operations import centrality_degree
 
 
 def FeatureGenerator(G):

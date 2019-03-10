@@ -1,0 +1,5 @@
+---
+base_dir: hcga/Operations
+log_level: INFO
+
+operations:
