@@ -9,6 +9,8 @@ from hcga.Operations import centrality_degree
 
 def FeatureGenerator(G):
 
+
+
     feature_dict = dict()
 
     feature_dict.update(triangles.triangle_stats(G))
