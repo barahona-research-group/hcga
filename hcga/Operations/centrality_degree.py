@@ -1,5 +1,5 @@
 from networkx.algorithms import centrality
-from hcga.Operations import utils
+import utils
 import numpy as np
 
 
@@ -10,12 +10,15 @@ class DegreeCentrality():
         self.feature_names = []
         self.features = []
 
-    def feature_extraction(self,bins=10):
+    def feature_extraction(self,args):
         """
         Input: bins - the number of bins for the calculating the SSE of fits. Default = 10 bins
 
         """
+        # Defining the input arguments
+        bins = args[0]
 
+        # Defining featurenames
         self.feature_names = ['mean','std','opt_model','powerlaw_a','powerlaw_SSE']
 
         G = self.G

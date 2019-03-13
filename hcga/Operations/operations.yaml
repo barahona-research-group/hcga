@@ -1,0 +1,34 @@
+---
+
+BasicStats:
+  filename: basic_stats
+  classname: BasicStats
+  shortname: BS
+  keywords:
+
+Triangles:
+  filename: triangles
+  classname: Triangles
+  shortname: TS
+  keywords:
+
+DegreeCentrality_bin10:
+  filename: centrality_degree
+  classname: DegreeCentrality
+  shortname: DC
+  keywords:
+  bins: 10
+
+DegreeCentrality_bin20:
+  filename: centrality_degree
+  classname: DegreeCentrality
+  shortname: DC
+  keywords:
+  bins: 20
+
+DegreeCentrality_bin50:
+  filename: centrality_degree
+  classname: DegreeCentrality
+  shortname: DC
+  keywords:
+  bins: 50
