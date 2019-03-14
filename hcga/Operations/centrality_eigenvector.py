@@ -1,10 +1,10 @@
 from networkx.algorithms import centrality
-import utils
+from hcga.Operations import utils
 import numpy as np
 
 
 
-class DegreeCentrality():
+class EigenCentrality():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
@@ -26,20 +26,20 @@ class DegreeCentrality():
         feature_list = []
 
         #Calculate the degree centrality of each node
-        degree_centrality = np.asarray(list(centrality.degree_centrality(G).values()))
+        eigenvector_centrality = np.asarray(list(centrality.eigenvector_centrality(G).values()))
 
         # Basic stats regarding the degree centrality distribution
-        feature_list.append(degree_centrality.mean())
-        feature_list.append(degree_centrality.std())
+        feature_list.append(eigenvector_centrality.mean())
+        feature_list.append(eigenvector_centrality.std())
 
         # Fitting the degree centrality distribution and finding the optimal
         # distribution according to SSE
-        opt_mod,opt_mod_sse = utils.best_fit_distribution(degree_centrality,bins=bins)
+        opt_mod,opt_mod_sse = utils.best_fit_distribution(eigenvector_centrality,bins=bins)
         feature_list.append(opt_mod)
 
         # Fitting power law and finding 'a' and the SSE of fit.
-        feature_list.append(utils.power_law_fit(degree_centrality,bins=bins)[0][-2]) # value 'a' in power law
-        feature_list.append(utils.power_law_fit(degree_centrality,bins=bins)[1]) # value sse in power law
+        feature_list.append(utils.power_law_fit(eigenvector_centrality,bins=bins)[0][-2]) # value 'a' in power law
+        feature_list.append(utils.power_law_fit(eigenvector_centrality,bins=bins)[1]) # value sse in power law
 
         # Fitting normal distribution and finding...
 

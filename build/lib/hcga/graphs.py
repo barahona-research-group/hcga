@@ -4,6 +4,9 @@ import networkx as nx
 from hcga.utils import read_graphfile
 from hcga.Operations.operations import Operations
 
+from tqdm import tqdm
+
+
 class Graphs():
 
     """
@@ -25,6 +28,7 @@ class Graphs():
 
     def load_graphs(self, graph_data_set = ''):
 
+
         directory = '/home/robert/Documents/PythonCode/hcga/hcga/TestData'
         dataname = 'ENZYMES'
 
@@ -42,9 +46,10 @@ class Graphs():
 
         graph_feature_set = []
 
-        for G in self.graphs:
+        for G in tqdm(self.graphs):
             G_operations = Operations(G)
             G_operations.feature_extraction()
             graph_feature_set.append(G_operations)
+
 
         self.calculated_graph_features = graph_feature_set

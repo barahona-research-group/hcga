@@ -97,4 +97,7 @@ def best_fit_distribution(data, bins=10, ax=None):
         except Exception:
             pass
 
-    return (best_distribution.name, best_params)
+    dist_ID = DISTRIBUTIONS.index(best_distribution)
+    # we could 1 hot encode this?
+    
+    return (dist_ID, best_params)
