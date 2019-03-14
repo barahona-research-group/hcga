@@ -48,12 +48,11 @@ class Operations():
             operation = operations_dict[key]
 
             #Extract the filename and class name
-            main_params = ['filename','classname','shortname','keywords','calculation_speed']
+            main_params = ['filename','classname','shortname','keywords']
             filename = operation[main_params[0]]
             classname = operation[main_params[1]]
             symbolic_name = operation[main_params[2]]
             keywords = operation[main_params[3]]
-            calculation_speed = operation[main_params[4]]
 
             # Extracting all additional arguments if they exist
             params = []
@@ -63,7 +62,7 @@ class Operations():
 
 
             # import the class from the file
-            feature_obj = getattr(import_module('hcga.Operations.'+filename), classname)
+            feature_obj = getattr(import_module(filename), classname)
             feature_obj = feature_obj(self.G)
 
             if not params:
@@ -79,7 +78,7 @@ class Operations():
             # appending the parameter list onto the feature name
             param_string = '_'.join(map(str, params))
             if params:
-                f_names_updated_params = [f_name + '_' + param_string for f_name in f_names_updated]
+                f_names_updated_params = [f_name + '_' + param_string for f_name in f_names]
                 f_names_updated = f_names_updated_params
 
             # Append the altered feature names and the feature list of values

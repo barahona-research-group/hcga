@@ -1,5 +1,5 @@
 from networkx.algorithms import centrality
-from hcga.Operations import utils
+import utils
 import numpy as np
 
 

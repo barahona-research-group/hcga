@@ -3,7 +3,9 @@
 
 ## Installation
 
-```python setup.py install```
+Navigate to the folder with setup.py and type:
+
+```pip install .```
 
 ## Dependencies
 
