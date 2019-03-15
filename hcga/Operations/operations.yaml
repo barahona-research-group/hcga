@@ -61,3 +61,10 @@ EigenCentrality_bin50:
   keywords:
   calculation_speed:
   bins: 50
+
+CommunitiesModularity:
+  filename: communities_modularity
+  classname: ModularityCommunities
+  shortname: MC
+  keywords:
+  calculation_speed:
