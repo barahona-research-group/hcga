@@ -17,6 +17,23 @@ class BasicStats():
 
     def feature_extraction(self):
 
+        """Compute some basic stats of the network
+
+
+        Parameters
+        ----------
+        G : graph
+          A networkx graph
+
+        Returns
+        -------
+        feature_list : list
+           List of features related to basic stats.
+
+
+        """
+
+
         self.feature_names = ['num_nodes','num_edges','degree_mean','degree_median','degree_std']
 
         G = self.G

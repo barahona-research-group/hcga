@@ -19,6 +19,37 @@ class ModularityCommunities():
 
     def feature_extraction(self):
 
+        """Find communities in graph using Clauset-Newman-Moore greedy modularity
+        maximization. This method currently supports the Graph class and does not
+        consider edge weights.
+
+        Greedy modularity maximization begins with each node in its own community
+        and joins the pair of communities that most increases modularity until no
+        such pair exists.
+
+        Parameters
+        ----------
+        G : NetworkX graph
+
+        Returns
+        -------
+        feature_list:  list
+            List of features related to modularity
+
+        Notes
+        -----
+        Greedy modularity implemented using networkx:
+            https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/community/modularity_max.html#greedy_modularity_communities
+
+        References
+        ----------
+        .. [1] M. E. J Newman 'Networks: An Introduction', page 224
+           Oxford University Press 2011.
+        .. [2] Clauset, A., Newman, M. E., & Moore, C.
+           "Finding community structure in very large networks."
+           Physical Review E 70(6), 2004.
+        """
+
         self.feature_names = ['num_comms_greedy_mod']
 
         G = self.G

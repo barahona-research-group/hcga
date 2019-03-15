@@ -11,10 +11,59 @@ class EigenCentrality():
         self.features = []
 
     def feature_extraction(self,args):
-        """
-        Input: bins - the number of bins for the calculating the SSE of fits. Default = 10 bins
+
+        r"""Compute the eigenvector centrality for the graph `G`.
+
+        Eigenvector centrality computes the centrality for a node based on the
+        centrality of its neighbors. The eigenvector centrality for node $i$ is
+        the $i$-th element of the vector $x$ defined by the equation
+
+        .. math::
+
+            Ax = \lambda x
+
+        where $A$ is the adjacency matrix of the graph `G` with eigenvalue
+        $\lambda$. By virtue of the Perron–Frobenius theorem, there is a unique
+        solution $x$, all of whose entries are positive, if $\lambda$ is the
+        largest eigenvalue of the adjacency matrix $A$ ([2]_).
+
+        Parameters
+        ----------
+        G : graph
+          A networkx graph
+
+        args: list
+            Parameters for calculating feature_list
+                arg[0]: integer
+                    number of bins
+
+
+        Returns
+        -------
+        feature_list :list
+           List of features related to eigenvector centrality.
+
+
+        Notes
+        -----
+
+        Implemented using networkx:
+            https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/centrality/eigenvector.html#eigenvector_centrality
+
+        The measure was introduced by [1]_ and is discussed in [2]_.
+
+        References
+        ----------
+        .. [1] Phillip Bonacich.
+           "Power and Centrality: A Family of Measures."
+           *American Journal of Sociology* 92(5):1170–1182, 1986
+           <http://www.leonidzhukov.net/hse/2014/socialnetworks/papers/Bonacich-Centrality.pdf>
+        .. [2] Mark E. J. Newman.
+           *Networks: An Introduction.*
+           Oxford University Press, USA, 2010, pp. 169.
 
         """
+
         # Defining the input arguments
         bins = args[0]
 
