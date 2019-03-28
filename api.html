@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API &mdash; hcga 0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'./',
+              VERSION:'0',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="How to install HCGA" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hcga
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">How to install HCGA</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-hcga.graphs">The Graph module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-hcga.Operations.basic_stats">The Basic statistic module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-hcga.Operations.centrality_degree">The centrality degree module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-hcga.Operations.centrality_eigenvector">The centrality eigenvector module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hcga</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-hcga">
+<span id="api"></span><h1>API<a class="headerlink" href="#module-hcga" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-hcga.graphs">
+<span id="the-graph-module"></span><h2>The Graph module<a class="headerlink" href="#module-hcga.graphs" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcga.graphs.Graphs">
+<em class="property">class </em><code class="descclassname">hcga.graphs.</code><code class="descname">Graphs</code><span class="sig-paren">(</span><em>graphs=[]</em>, <em>graph_meta_data=[]</em>, <em>node_meta_data=[]</em>, <em>graph_class=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a list of graphs</p>
+<dl class="method">
+<dt id="hcga.graphs.Graphs.calculate_features">
+<code class="descname">calculate_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.calculate_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.calculate_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculation the features for each graph in the set of graphs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcga.graphs.Graphs.graph_classification">
+<code class="descname">graph_classification</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.graph_classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.graph_classification" title="Permalink to this definition">¶</a></dt>
+<dd><p>Graph Classification</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcga.Operations.basic_stats">
+<span id="the-basic-statistic-module"></span><h2>The Basic statistic module<a class="headerlink" href="#module-hcga.Operations.basic_stats" title="Permalink to this headline">¶</a></h2>
+<p>Created on Sun Mar  3 18:30:46 2019</p>
+<p>&#64;author: Rob</p>
+<dl class="class">
+<dt id="hcga.Operations.basic_stats.BasicStats">
+<em class="property">class </em><code class="descclassname">hcga.Operations.basic_stats.</code><code class="descname">BasicStats</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/Operations/basic_stats.html#BasicStats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.basic_stats.BasicStats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic stats class</p>
+<dl class="method">
+<dt id="hcga.Operations.basic_stats.BasicStats.feature_extraction">
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/Operations/basic_stats.html#BasicStats.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.basic_stats.BasicStats.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute some basic stats of the network</p>
+<dl class="docutils">
+<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
+<dd>A networkx graph</dd>
+</dl>
+<dl class="docutils">
+<dt>feature_list <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd>List of features related to basic stats.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcga.Operations.centrality_degree">
+<span id="the-centrality-degree-module"></span><h2>The centrality degree module<a class="headerlink" href="#module-hcga.Operations.centrality_degree" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcga.Operations.centrality_degree.DegreeCentrality">
+<em class="property">class </em><code class="descclassname">hcga.Operations.centrality_degree.</code><code class="descname">DegreeCentrality</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/Operations/centrality_degree.html#DegreeCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_degree.DegreeCentrality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Degree centrality class</p>
+<dl class="method">
+<dt id="hcga.Operations.centrality_degree.DegreeCentrality.feature_extraction">
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/Operations/centrality_degree.html#DegreeCentrality.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_degree.DegreeCentrality.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the degree centrality for nodes.</p>
+<p>The degree centrality for a node v is the fraction of nodes it
+is connected to.</p>
+<dl class="docutils">
+<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
+<dd>A networkx graph</dd>
+<dt>args :</dt>
+<dd>arg[0] Number of bins for calculating pdf of chosen distribution for SSE calculation</dd>
+</dl>
+<dl class="docutils">
+<dt>feature_list :list</dt>
+<dd>List of features related to degree centrality.</dd>
+</dl>
+<dl class="docutils">
+<dt>Degree centrality calculations using networkx:</dt>
+<dd><a class="reference external" href="https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/centrality/degree_alg.html#degree_centrality">https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/centrality/degree_alg.html#degree_centrality</a></dd>
+</dl>
+<p>The degree centrality values are normalized by dividing by the maximum
+possible degree in a simple graph n-1 where n is the number of nodes in G.</p>
+<p>For multigraphs or graphs with self loops the maximum degree might
+be higher than n-1 and values of degree centrality greater than 1
+are possible.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcga.Operations.centrality_eigenvector">
+<span id="the-centrality-eigenvector-module"></span><h2>The centrality eigenvector module<a class="headerlink" href="#module-hcga.Operations.centrality_eigenvector" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcga.Operations.centrality_eigenvector.EigenCentrality">
+<em class="property">class </em><code class="descclassname">hcga.Operations.centrality_eigenvector.</code><code class="descname">EigenCentrality</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/Operations/centrality_eigenvector.html#EigenCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_eigenvector.EigenCentrality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Centrality eigenvector</p>
+<dl class="method">
+<dt id="hcga.Operations.centrality_eigenvector.EigenCentrality.feature_extraction">
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/Operations/centrality_eigenvector.html#EigenCentrality.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_eigenvector.EigenCentrality.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the eigenvector centrality for the graph <cite>G</cite>.</p>
+<p>Eigenvector centrality computes the centrality for a node based on the
+centrality of its neighbors. The eigenvector centrality for node $i$ is
+the $i$-th element of the vector $x$ defined by the equation</p>
+<div class="math">
+\[Ax = \lambda x\]</div>
+<p>where $A$ is the adjacency matrix of the graph <cite>G</cite> with eigenvalue
+$lambda$. By virtue of the Perron–Frobenius theorem, there is a unique
+solution $x$, all of whose entries are positive, if $lambda$ is the
+largest eigenvalue of the adjacency matrix $A$ (<a class="footnote-reference" href="#id5" id="id1">[2]</a>).</p>
+<dl class="docutils">
+<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
+<dd>A networkx graph</dd>
+<dt>args: list</dt>
+<dd><dl class="first last docutils">
+<dt>Parameters for calculating feature_list</dt>
+<dd><dl class="first last docutils">
+<dt>arg[0]: integer</dt>
+<dd>number of bins</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="docutils">
+<dt>feature_list :list</dt>
+<dd>List of features related to eigenvector centrality.</dd>
+</dl>
+<dl class="docutils">
+<dt>Implemented using networkx:</dt>
+<dd><a class="reference external" href="https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/centrality/eigenvector.html#eigenvector_centrality">https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/centrality/eigenvector.html#eigenvector_centrality</a></dd>
+</dl>
+<p>The measure was introduced by <a class="footnote-reference" href="#id4" id="id2">[1]</a> and is discussed in <a class="footnote-reference" href="#id5" id="id3">[2]</a>.</p>
+<table class="docutils footnote" frame="void" id="id4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td>Phillip Bonacich.
+“Power and Centrality: A Family of Measures.”
+<em>American Journal of Sociology</em> 92(5):1170–1182, 1986
+&lt;<a class="reference external" href="http://www.leonidzhukov.net/hse/2014/socialnetworks/papers/Bonacich-Centrality.pdf">http://www.leonidzhukov.net/hse/2014/socialnetworks/papers/Bonacich-Centrality.pdf</a>&gt;</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id3">2</a>)</em> Mark E. J. Newman.
+<em>Networks: An Introduction.</em>
+Oxford University Press, USA, 2010, pp. 169.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="installation.html" class="btn btn-neutral float-left" title="How to install HCGA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, R. Peach, A. Arnaudon
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
