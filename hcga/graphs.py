@@ -6,6 +6,9 @@ from hcga.Operations.operations import Operations
 
 from tqdm import tqdm
 
+from sklearn.preprocessing import normalize
+
+import matplotlib.pyplot as plt
 
 class Graphs():
 
@@ -34,6 +37,13 @@ class Graphs():
 
         graphs,graph_labels = read_graphfile(directory,dataname)
 
+        # selected data for testing code
+        selected_data = np.arange(0,300,10)
+        graphs = [graphs[i] for i in list(selected_data)]
+        graph_labels = [graph_labels[i] for i in list(selected_data)]
+
+
+
         self.graphs = graphs
         self.graph_labels = graph_labels
 
@@ -53,3 +63,93 @@ class Graphs():
 
 
         self.calculated_graph_features = graph_feature_set
+
+    def top_features(self):
+
+        return
+
+
+
+    def organise_feature_data(self):
+
+        X = []
+        for graph in self.calculated_graph_features:
+            feature_names, features = graph._extract_data()
+            X.append(features)
+
+        X = np.asarray(X)
+        y = np.asarray(self.graph_labels)
+
+        self.X = X
+        self.y = y
+
+        return
+
+
+
+    def normalise_feature_data(self):
+
+        X = self.X
+
+        X_N = X / X.max(axis=0)
+
+        X_N = X_N[:,~np.isnan(X_N).any(axis=0)] # removing features with nan
+
+        self.X_N = X_N
+
+        return
+
+
+
+    def graph_classification(self):
+
+        """
+        Graph Classification
+
+        """
+
+        from sklearn import model_selection
+        from sklearn.linear_model import LogisticRegression
+        from sklearn.tree import DecisionTreeClassifier
+        from sklearn.neighbors import KNeighborsClassifier
+        from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+        from sklearn.naive_bayes import GaussianNB
+        from sklearn.svm import SVC
+
+        self.organise_feature_data()
+        self.normalise_feature_data()
+
+        X = self.X_N
+        y = self.y
+
+
+        # prepare configuration for cross validation test harness
+        seed = 7
+
+        # prepare models
+        models = []
+        models.append(('LDA', LinearDiscriminantAnalysis()))
+        models.append(('KNN', KNeighborsClassifier()))
+        models.append(('CART', DecisionTreeClassifier()))
+        models.append(('NB', GaussianNB()))
+        models.append(('SVM', SVC(gamma='auto')))
+
+        results = []
+        names = []
+        scoring = 'accuracy'
+        for name, model in models:
+        	kfold = model_selection.KFold(n_splits=10, random_state=seed)
+        	cv_results = model_selection.cross_val_score(model, X, y, cv=kfold, scoring=scoring)
+        	results.append(cv_results)
+        	names.append(name)
+        	msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
+        	print(msg)
+
+        fig = plt.figure()
+        fig.suptitle('Algorithm Comparison')
+        ax = fig.add_subplot(111)
+        plt.boxplot(results)
+        ax.set_xticklabels(names)
+        #plt.show()
+
+        return

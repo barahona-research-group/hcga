@@ -7,10 +7,10 @@ BasicStats:
   keywords:
   calculation_speed:
 
-Triangles:
-  filename: triangles
-  classname: Triangles
-  shortname: TS
+Clustering:
+  filename: clustering
+  classname: Clustering
+  shortname: C
   keywords:
   calculation_speed:
 

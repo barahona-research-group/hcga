@@ -88,3 +88,13 @@ class Operations():
 
         self.feature_vals = feature_vals
         self.feature_names = feature_names
+
+    def _extract_data(self):
+
+        features = self.feature_vals # features as list of lists
+        feature_names = self.feature_names # feature names as list of lists
+
+        features_flat = [item for sublist in features for item in sublist] # features as single list
+        feature_names_flat = [item for sublist in feature_names for item in sublist] # feature names as single list
+
+        return feature_names_flat, features_flat
