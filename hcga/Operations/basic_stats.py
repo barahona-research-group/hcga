@@ -10,6 +10,9 @@ import numpy as np
 
 
 class BasicStats():
+    """
+    Basic stats class
+    """
     def __init__(self, G):
         self.G = G
         self.feature_names = []

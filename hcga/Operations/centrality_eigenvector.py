@@ -5,6 +5,9 @@ import numpy as np
 
 
 class EigenCentrality():
+    """
+    Centrality eigenvector
+    """
     def __init__(self, G):
         self.G = G
         self.feature_names = []
