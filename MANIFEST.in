@@ -1,2 +1,0 @@
-include hcga/Operations/operations.yaml
-recursive-include hcga *
