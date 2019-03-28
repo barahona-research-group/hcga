@@ -1,6 +1,6 @@
 Functions of HCGA
 ===========================================
 
-.. automodule:: hcga.Operations 
+.. automodule:: hcga.Operations.basic_stats 
    :members:
 

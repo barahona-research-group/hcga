@@ -11,7 +11,7 @@ Welcome to hcga's documentation!
    :caption: Contents:
 
    installation
-   functions
+   api
 
 
 Indices and tables
