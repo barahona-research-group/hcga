@@ -1,0 +1,10 @@
+
+build/
+
+dist/
+
+docs/source/
+
+hcga\.egg-info/
+
+hcga/__pycache__/

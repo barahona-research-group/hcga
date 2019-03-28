@@ -1,4 +1,0 @@
-networkx
-numpy
-scipy
-tqdm
