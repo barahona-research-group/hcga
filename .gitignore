@@ -8,3 +8,5 @@ docs/source/
 hcga\.egg-info/
 
 hcga/__pycache__/
+
+hcga/Operations/__pycache__/
