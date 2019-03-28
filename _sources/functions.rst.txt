@@ -1,6 +1,6 @@
 Functions of HCGA
 ===========================================
 
-.. automodule:: hcga
+.. automodule:: hcga.Operations 
    :members:
 
