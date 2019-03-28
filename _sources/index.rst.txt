@@ -10,6 +10,9 @@ Welcome to hcga's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   installation
+   functions
+
 
 Indices and tables
 ==================
