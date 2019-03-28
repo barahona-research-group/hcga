@@ -8,9 +8,10 @@ Welcome to hcga's documentation!
 
 .. toctree::
    :maxdepth: 2
-   includeme
    :caption: Contents:
 
+   installation
+   functions
 
 
 Indices and tables

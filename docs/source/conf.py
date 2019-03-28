@@ -17,9 +17,9 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import sys
+sys.path.insert(0, os.path.abspath('../../'))
 
 
 # -- General configuration ------------------------------------------------
@@ -38,7 +38,8 @@ extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
-    'sphinx.ext.githubpages']
+    'sphinx.ext.githubpages',
+    'sphinx.ext.autodoc']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -54,15 +55,15 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'hcga'
-copyright = '2019, Peach, Arnaudon'
-author = 'Peach, Arnaudon'
+copyright = '2019, R. Peach, A. Arnaudon'
+author = 'Robert Peach, Alexis Arnaudon'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = '1'
+version = '1.0'
 # The full version, including alpha/beta/rc tags.
 release = '0'
 

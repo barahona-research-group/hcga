@@ -29,11 +29,8 @@ class Graphs():
 
 
 
-    def load_graphs(self, graph_data_set = ''):
+    def load_graphs(self, directory = 'TestData', dataname = 'ENZYMES'):
 
-
-        directory = '/home/robert/Documents/PythonCode/hcga/hcga/TestData'
-        dataname = 'ENZYMES'
 
         graphs,graph_labels = read_graphfile(directory,dataname)
 
