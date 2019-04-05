@@ -1,4 +1,4 @@
-# Highly comparaitve graph analysis
+# Highly comparative graph analysis
 
 
 ## Installation
