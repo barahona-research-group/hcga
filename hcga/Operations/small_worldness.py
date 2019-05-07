@@ -41,19 +41,38 @@ class SmallWorld():
 
         feature_list = []
 
-       
-        
+        N = G.number_of_nodes()
+        E = G.number_of_edges()
 
+        
+        C = nx.transitivity(G)
+        L = nx.average_shortest_path_length(G)
+        
         # sigma requires recalculating the average clustering effiient 
         # and the average shortest path length. These can be reused from
         # other features.
-        feature_list.append(0)
-        feature_list.append(0)
+
         #feature_list.append(nx.sigma(G))
         #feature_list.append(nx.omega(G))
+        # small worldness sigma
+        nrand=20
+        
+        randMetrics = {"C": [], "L": []}
+        for i in range(nrand):
+            Gr = nx.dense_gnm_random_graph(N,E)
+            if nx.is_connected(Gr):
+                randMetrics["C"].append(nx.transitivity(Gr))
+                randMetrics["L"].append(nx.average_shortest_path_length(Gr))
+            
+        Cr = np.mean(randMetrics["C"])
+        Lr = np.mean(randMetrics["L"])
+        
+        sigma = (C / Cr) / (L / Lr)
+        
+        feature_list.append(sigma)
 
 
-        
-        
+        omega = 0
+        feature_list.append(omega)
 
         self.features = feature_list

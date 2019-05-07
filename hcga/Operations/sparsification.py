@@ -7,8 +7,10 @@ Created on Sun Mar  3 18:30:46 2019
 
 import numpy as np
 import networkx as nx
+from hcga.Operations import utils
 
-class ScaleFree():
+
+class Sparsification():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
@@ -16,8 +18,8 @@ class ScaleFree():
 
     def feature_extraction(self):
 
-        """ Calculating metrics about scale-free networks
-
+        r"""
+        
         Parameters
         ----------
         G : graph
@@ -26,25 +28,28 @@ class ScaleFree():
         Returns
         -------
         feature_list :list
-           List of features related to node connectivity.
+           List of features related to sparsification.
 
 
         Notes
         -----
 
+        References
+        ----------
+        .. [1] Burt, Ronald S.
+               "Structural holes and good ideas".
+               American Journal of Sociology (110): 349–399.
+
 
         """
 
-        self.feature_names = ['s_metric']
+        self.feature_names = ['']
 
         G = self.G
 
         feature_list = []
 
-              
+        N = G.number_of_nodes()       
 
-        # 
-        feature_list.append(nx.s_metric(G,normalized=False))        
-        
-
+       
         self.features = feature_list

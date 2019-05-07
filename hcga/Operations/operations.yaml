@@ -6,13 +6,15 @@ BasicStats:
   shortname: BS
   keywords:
   calculation_speed:
+  precomputed: False
 
 Clustering:
   filename: clustering
   classname: Clustering
-  shortname: C
+  shortname: CL
   keywords:
   calculation_speed:
+  precomputed: False
 
 DegreeCentrality_bin10:
   filename: centrality_degree
@@ -20,6 +22,7 @@ DegreeCentrality_bin10:
   shortname: DC
   keywords:
   calculation_speed:
+  precomputed: False
   bins: 10
 
 DegreeCentrality_bin20:
@@ -28,6 +31,7 @@ DegreeCentrality_bin20:
   shortname: DC
   keywords:
   calculation_speed:
+  precomputed: False
   bins: 20
 
 DegreeCentrality_bin50:
@@ -36,6 +40,7 @@ DegreeCentrality_bin50:
   shortname: DC
   keywords:
   calculation_speed:
+  precomputed: False
   bins: 50
 
 EigenCentrality_bin10:
@@ -44,6 +49,7 @@ EigenCentrality_bin10:
   shortname: EC
   keywords:
   calculation_speed:
+  precomputed: True
   bins: 10
 
 EigenCentrality_bin20:
@@ -52,6 +58,7 @@ EigenCentrality_bin20:
   shortname: EC
   keywords:
   calculation_speed:
+  precomputed: True
   bins: 20
 
 EigenCentrality_bin50:
@@ -60,6 +67,7 @@ EigenCentrality_bin50:
   shortname: EC
   keywords:
   calculation_speed:
+  precomputed: True
   bins: 50
 
 CommunitiesModularity:
@@ -68,3 +76,61 @@ CommunitiesModularity:
   shortname: MC
   keywords:
   calculation_speed:
+  precomputed: False
+
+NodeConnectivity10:
+  filename: node_connectivity
+  classname: NodeConnectivity
+  shortname: NC
+  keywords:
+  calculation_speed:
+  precomputed: False
+  bins: 10
+  
+Vitality:
+  filename: vitality
+  classname: Vitality
+  shortname: VT
+  keywords:
+  calculation_speed:
+  precomputed: False
+
+StructuralHoles:
+  filename: structural_holes
+  classname: StructuralHoles
+  shortname: SH
+  keywords:
+  calculation_speed:
+  precomputed: False
+
+ScaleFree:
+  filename: scale_free
+  classname: ScaleFree
+  shortname: SF
+  keywords:
+  calculation_speed:
+  precomputed: False
+
+SmallWorldness:
+  filename: small_worldness
+  classname: SmallWorld
+  shortname: SW
+  keywords:
+  calculation_speed:
+  precomputed: False
+
+ShortestPaths:
+  filename: shortest_paths
+  classname: ShortestPaths
+  shortname: SP
+  keywords:
+  calculation_speed:
+  precomputed: False
+  
+RichClub:
+  filename: rich_club
+  classname: RichClub
+  shortname: RC
+  keywords:
+  calculation_speed:
+  precomputed: False  

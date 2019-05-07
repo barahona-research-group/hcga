@@ -1,21 +1,30 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue May  7 10:41:52 2019
+
+@author: robert
+"""
+
 from networkx.algorithms import centrality
 from hcga.Operations import utils
 import numpy as np
-
+import scipy as sp
 
 
 class EigenCentrality():
     """
     Centrality eigenvector
     """
-    def __init__(self, G):
+    def __init__(self, G, operations_obj):
         self.G = G
+        self.op_obj = operations_obj
         self.feature_names = []
         self.features = []
 
     def feature_extraction(self,args):
 
-        r"""Compute the eigenvector centrality for the graph `G`.
+        """Compute the eigenvector centrality for the graph `G`.
 
         Eigenvector centrality computes the centrality for a node based on the
         centrality of its neighbors. The eigenvector centrality for node $i$ is
@@ -73,31 +82,51 @@ class EigenCentrality():
         # Defining featurenames
         self.feature_names = ['mean','std','opt_model','powerlaw_a','powerlaw_SSE']
 
-        G = self.G
-
+        #G = self.G
+        op_obj = self.op_obj
+        
         feature_list = []
 
+        # extract the precomputed eigenvectors from the operations object
+        eigenvector = op_obj.eigenvectors[:,0]
+        largest = eigenvector.flatten().real
+        norm = sp.sign(largest.sum()) * sp.linalg.norm(largest)      
+        eigenvector_centrality = largest / norm
+
+        # Basic stats regarding the degree centrality distribution
+        feature_list.append(eigenvector_centrality.mean())
+        feature_list.append(eigenvector_centrality.std())
+        
+        # Fitting the degree centrality distribution and finding the optimal
+        # distribution according to SSE
+        opt_mod,opt_mod_sse = utils.best_fit_distribution(eigenvector_centrality,bins=bins)
+        feature_list.append(opt_mod)
+        
+        # Fitting power law and finding 'a' and the SSE of fit.
+        feature_list.append(utils.power_law_fit(eigenvector_centrality,bins=bins)[0][-2]) # value 'a' in power law
+        feature_list.append(utils.power_law_fit(eigenvector_centrality,bins=bins)[1]) # value sse in power law
+
         #Calculate the degree centrality of each node
-        try:
-            eigenvector_centrality = np.asarray(list(centrality.eigenvector_centrality(G).values()))
-
-            # Basic stats regarding the degree centrality distribution
-            feature_list.append(eigenvector_centrality.mean())
-            feature_list.append(eigenvector_centrality.std())
-
-            # Fitting the degree centrality distribution and finding the optimal
-            # distribution according to SSE
-            opt_mod,opt_mod_sse = utils.best_fit_distribution(eigenvector_centrality,bins=bins)
-            feature_list.append(opt_mod)
-
-            # Fitting power law and finding 'a' and the SSE of fit.
-            feature_list.append(utils.power_law_fit(eigenvector_centrality,bins=bins)[0][-2]) # value 'a' in power law
-            feature_list.append(utils.power_law_fit(eigenvector_centrality,bins=bins)[1]) # value sse in power law
-        except:
-            feature_list = np.empty(len(self.feature_names))
-            feature_list.fill(np.nan)
-            feature_list = feature_list.tolist()
-            pass
+#        try:
+#            eigenvector_centrality = np.asarray(list(centrality.eigenvector_centrality(G).values()))
+#
+#            # Basic stats regarding the degree centrality distribution
+#            feature_list.append(eigenvector_centrality.mean())
+#            feature_list.append(eigenvector_centrality.std())
+#
+#            # Fitting the degree centrality distribution and finding the optimal
+#            # distribution according to SSE
+#            opt_mod,opt_mod_sse = utils.best_fit_distribution(eigenvector_centrality,bins=bins)
+#            feature_list.append(opt_mod)
+#
+#            # Fitting power law and finding 'a' and the SSE of fit.
+#            feature_list.append(utils.power_law_fit(eigenvector_centrality,bins=bins)[0][-2]) # value 'a' in power law
+#            feature_list.append(utils.power_law_fit(eigenvector_centrality,bins=bins)[1]) # value sse in power law
+#        except:
+#            feature_list = np.empty(len(self.feature_names))
+#            feature_list.fill(np.nan)
+#            feature_list = feature_list.tolist()
+#            pass
 
 
 

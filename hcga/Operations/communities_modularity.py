@@ -9,7 +9,7 @@ import pandas as pd
 import numpy as np
 
 from networkx.algorithms.community import greedy_modularity_communities
-
+from networkx.algorithms.community.quality import modularity
 
 class ModularityCommunities():
     def __init__(self, G):
@@ -50,7 +50,7 @@ class ModularityCommunities():
            Physical Review E 70(6), 2004.
         """
 
-        self.feature_names = ['num_comms_greedy_mod']
+        self.feature_names = ['num_comms_greedy_mod','mod_val_greedy_mod','ratio_max_min_num_nodes','ratio_max_2max_num_nodes']
 
         G = self.G
 
@@ -61,6 +61,19 @@ class ModularityCommunities():
         E = G.number_of_edges()
 
         # The optimised number of communities using greedy modularity
-        feature_list.append(len(greedy_modularity_communities(G)))
+        c = list(greedy_modularity_communities(G))
+        
+        # calculate number of communities
+        feature_list.append(len(c))
+        
+        # modularity of the clustering
+        feature_list.append(modularity(G,c))
+        
+        # calculate ratio of largest to smallest community
+        feature_list.append((len(c[0])/len(c[-1])))
+
+        # calculate ratio of largest to 2nd largest community
+        feature_list.append((len(c[0])/len(c[1])))
+        
 
         self.features = feature_list
