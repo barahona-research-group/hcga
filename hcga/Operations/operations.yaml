@@ -134,3 +134,12 @@ RichClub:
   keywords:
   calculation_speed:
   precomputed: False  
+  
+CentralityForce:
+  filename: centrality_force
+  classname: ForceCentrality
+  shortname: FC
+  keywords:
+  calculation_speed:
+  precomputed: False  
+  bins: 10

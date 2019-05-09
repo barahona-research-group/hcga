@@ -45,7 +45,9 @@ class Vitality():
 
         feature_list = []
 
-        N = G.number_of_nodes()
+        N = G.number_of_nodes() 
+
+
         
         closeness_vitality_vals = np.asarray(list(nx.closeness_vitality(G).values()))      
         

@@ -38,8 +38,14 @@ class Graphs():
         selected_data = np.arange(0,300,10)
         graphs = [graphs[i] for i in list(selected_data)]
         graph_labels = [graph_labels[i] for i in list(selected_data)]
-
-
+        
+        for i,G in enumerate(graphs): 
+            if not nx.is_connected(G):  
+                print('Graph '+str(i)+' is not connected. Taking largest subgraph and relabelling the nodes.')
+                Gc = max(nx.connected_component_subgraphs(G), key=len)
+                mapping=dict(zip(Gc.nodes,range(0,len(Gc))))
+                Gc = nx.relabel_nodes(Gc,mapping)                
+                graphs[i] = Gc
 
         self.graphs = graphs
         self.graph_labels = graph_labels

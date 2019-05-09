@@ -73,7 +73,9 @@ class ModularityCommunities():
         feature_list.append((len(c[0])/len(c[-1])))
 
         # calculate ratio of largest to 2nd largest community
-        feature_list.append((len(c[0])/len(c[1])))
-        
+        if len(c)>1:
+            feature_list.append((len(c[0])/len(c[1])))
+        else:
+            feature_list.append(np.nan)
 
         self.features = feature_list
