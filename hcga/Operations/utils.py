@@ -101,3 +101,30 @@ def best_fit_distribution(data, bins=10, ax=None):
     # we could 1 hot encode this?
     
     return (dist_ID, best_params)
+
+
+
+from networkx.algorithms.community import quality
+
+def clustering_quality(G,c):
+    """Method for calculating the quality of parition"""
+    
+    quality_names = ['mod','coverage','performance','inter_comm_edge','inter_comm_nedge','intra_comm_edge']
+    quality_values = []
+    
+    quality_values.append(quality.modularity(G,c))
+    quality_values.append(quality.coverage(G,c))
+    quality_values.append(quality.performance(G,c))    
+    quality_values.append(quality.inter_community_edges(G,c))
+    quality_values.append(quality.inter_community_non_edges(G,c))
+    quality_values.append(quality.intra_community_edges(G,c))    
+    
+    return quality_names,quality_values
+    
+
+
+
+
+
+
+

@@ -143,3 +143,32 @@ CentralityForce:
   calculation_speed:
   precomputed: False  
   bins: 10
+  
+CommunitiesBisection:
+  filename: communities_bisection
+  classname: BisectionCommunities
+  shortname: CB
+  keywords:
+  calculation_speed:
+  precomputed: False  
+
+CommunitiesAsynFluid:
+  filename: communities_asyn_fluid
+  classname: AsynfluidCommunities
+  shortname: CA
+  keywords:
+  calculation_speed:
+  precomputed: False  
+  kmax: 10
+  
+CommunitiesLabelprop:
+  filename: communities_label_propagation
+  classname: LabelpropagationCommunities
+  shortname: CL
+  keywords:
+  calculation_speed:
+  precomputed: False  
+  
+  
+  
+  

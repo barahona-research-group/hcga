@@ -8,3 +8,4 @@ import hcga.Operations.centrality_degree
 import hcga.Operations.centrality_eigenvector
 import hcga.Operations.clustering
 import hcga.Operations.communities_modularity
+import hcga.Operations.utils
