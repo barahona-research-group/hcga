@@ -95,7 +95,10 @@ class Graphs():
         X = self.X
 
         X_N = X / X.max(axis=0)
-
+        
+        """
+        We remove nan but we haven't removed the feature names that were nan
+        """
         X_N = X_N[:,~np.isnan(X_N).any(axis=0)] # removing features with nan
 
         self.X_N = X_N

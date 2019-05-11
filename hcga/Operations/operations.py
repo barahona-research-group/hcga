@@ -99,13 +99,13 @@ class Operations():
 
 
             # import the class from the file
-            feature_obj = getattr(import_module('hcga.Operations.'+filename), classname)
+            feature_class = getattr(import_module('hcga.Operations.'+filename), classname)
             
                         
             if precomputed:
-                feature_obj = feature_obj(self.G,self)
+                feature_obj = feature_class(self.G,self)
             else:
-                feature_obj = feature_obj(self.G)
+                feature_obj = feature_class(self.G)
 
             if not params:
                 feature_obj.feature_extraction()

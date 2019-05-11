@@ -37,7 +37,10 @@ class LabelpropagationCommunities():
 
         
         # calculate ratio of the two communities
-        feature_list.append((len(c[0])/len(c[1])))
+        if len(c)>1:
+            feature_list.append((len(c[0])/len(c[1])))
+        else:
+            feature_list.append(0)
         
         # clustering quality functions       
         qual_names,qual_vals = clustering_quality(G,c)           

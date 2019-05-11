@@ -33,7 +33,7 @@ class BasicStats():
         """
 
 
-        self.feature_names = ['num_nodes','num_edges','degree_mean','degree_median','degree_std']
+        feature_names = ['num_nodes','num_edges','degree_mean','degree_median','degree_std']
 
         G = self.G
 
@@ -54,6 +54,7 @@ class BasicStats():
         feature_list.append(np.median(degree_vals))
         feature_list.append(degree_vals.std())
 
+        self.feature_names = feature_names
         self.features = feature_list
 
 
