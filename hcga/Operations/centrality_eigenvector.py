@@ -16,9 +16,10 @@ class EigenCentrality():
     """
     Centrality eigenvector
     """
-    def __init__(self, G, operations_obj):
+    def __init__(self, G, eigenvectors):
         self.G = G
-        self.op_obj = operations_obj
+        self.eigenvectors = eigenvectors
+
         self.feature_names = []
         self.features = []
 
@@ -83,25 +84,25 @@ class EigenCentrality():
         self.feature_names = ['mean','std','opt_model','powerlaw_a','powerlaw_SSE']
 
         #G = self.G
-        op_obj = self.op_obj
-        
+        #op_obj = self.op_obj
+
         feature_list = []
 
         # extract the precomputed eigenvectors from the operations object
-        eigenvector = op_obj.eigenvectors[:,0]
+        eigenvector = self.eigenvectors[:,0]
         largest = eigenvector.flatten().real
-        norm = sp.sign(largest.sum()) * sp.linalg.norm(largest)      
+        norm = sp.sign(largest.sum()) * sp.linalg.norm(largest)
         eigenvector_centrality = largest / norm
 
         # Basic stats regarding the degree centrality distribution
         feature_list.append(eigenvector_centrality.mean())
         feature_list.append(eigenvector_centrality.std())
-        
+
         # Fitting the degree centrality distribution and finding the optimal
         # distribution according to SSE
         opt_mod,opt_mod_sse = utils.best_fit_distribution(eigenvector_centrality,bins=bins)
         feature_list.append(opt_mod)
-        
+
         # Fitting power law and finding 'a' and the SSE of fit.
         feature_list.append(utils.power_law_fit(eigenvector_centrality,bins=bins)[0][-2]) # value 'a' in power law
         feature_list.append(utils.power_law_fit(eigenvector_centrality,bins=bins)[1]) # value sse in power law

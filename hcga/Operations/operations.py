@@ -24,24 +24,24 @@ class Operations():
     """
 
     def __init__(self, G, YAMLfilename = 'operations.yaml'):
-        
+
         self.G = G
         self.operations_dict = []
         self.YAMLfilename = YAMLfilename
         self.pre_computations = []
         self.feature_names = []
         self.feature_vals = []
-        
-        
+
+
         # pre computed values
         self.eigenvalues = []
         self.eigenvectors = []
-        
-        
+
+
         # functins to run automatically
         if not self.operations_dict:
             self.load_yaml()
-            
+
         if not self.pre_computations:
             self.pre_compute()
 
@@ -57,17 +57,17 @@ class Operations():
 
 
     def pre_compute(self):
-        
+
         """
         This function pre-computes a set of calculations that are often reused
         by various functions. This saves time by not pre-computing the same data
         for multiple functions.
-        
-        """
-        if not self.eigenvalues:            
-            self.precompute_eigenvectors()        
 
-        
+        """
+        if not self.eigenvalues:
+            self.precompute_eigenvectors()
+
+
 
 
     def feature_extraction(self):
@@ -77,7 +77,7 @@ class Operations():
         feature_vals = []
 
         # loop over the feature classes defined in the YAML file
-        
+
         for i, key in enumerate(operations_dict.keys()):
             operation = operations_dict[key]
 
@@ -100,10 +100,10 @@ class Operations():
 
             # import the class from the file
             feature_class = getattr(import_module('hcga.Operations.'+filename), classname)
-            
-                        
+
+
             if precomputed:
-                feature_obj = feature_class(self.G,self)
+                feature_obj = feature_class(self.G,self.eigenvectors)
             else:
                 feature_obj = feature_class(self.G)
 
@@ -141,25 +141,23 @@ class Operations():
         return feature_names_flat, features_flat
 
 
-    def precompute_eigenvectors(self,weight=None, max_iter=50, tol=0):        
+    def precompute_eigenvectors(self,weight=None, max_iter=50, tol=0):
 
         try:
             M = nx.to_scipy_sparse_matrix(self.G, nodelist=list(self.G), weight=weight,
                                       dtype=float)
-            
+
             eigenvalues, eigenvectors = linalg.eigs(M.T, k = self.G.number_of_nodes() - 2, which='LR',
-                                              maxiter=max_iter, tol=tol)            
-            
+                                              maxiter=max_iter, tol=tol)
+
             self.eigenvalues = eigenvalues
             self.eigenvectors = eigenvectors
-        
+
         except:
             self.eigenvalues = []
             self.eigenvectors = []
             pass
-        
-        
-        
-        return
 
-        
+
+
+        return
