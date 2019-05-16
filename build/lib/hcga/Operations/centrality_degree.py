@@ -5,6 +5,10 @@ import numpy as np
 
 
 class DegreeCentrality():
+    """
+    Degree centrality class
+    """
+ 
     def __init__(self, G):
         self.G = G
         self.feature_names = []

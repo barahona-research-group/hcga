@@ -96,11 +96,21 @@ class Operations():
             args = list(operation.keys() - main_params)
             for arg in args:
                 params.append(operation[arg])
+                
+            
+            #print("Running file {} [{}/{}].".format(filename, i, len(operations_dict)))
+            
+            # import the class from the file            
+            feature_class = getattr(import_module('hcga.Operations.'+filename), classname)           
+
 
 
             # import the class from the file
             feature_class = getattr(import_module('hcga.Operations.'+filename), classname)
 
+
+
+                        
 
             if precomputed:
                 feature_obj = feature_class(self.G,self.eigenvectors)
@@ -154,10 +164,12 @@ class Operations():
             self.eigenvectors = eigenvectors
 
         except:
-            self.eigenvalues = []
-            self.eigenvectors = []
+            self.eigenvalues = np.array([1,1])
+            self.eigenvectors = np.array([[1,1],[1,1]])
             pass
 
 
 
+
         return
+

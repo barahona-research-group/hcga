@@ -7,9 +7,10 @@ Created on Sun Mar  3 18:30:46 2019
 
 import pandas as pd
 import numpy as np
+from hcga.Operations.utils import clustering_quality
 
 from networkx.algorithms.community import greedy_modularity_communities
-
+from networkx.algorithms.community.quality import modularity
 
 class ModularityCommunities():
     def __init__(self, G):
@@ -50,7 +51,7 @@ class ModularityCommunities():
            Physical Review E 70(6), 2004.
         """
 
-        self.feature_names = ['num_comms_greedy_mod']
+        feature_names = ['num_comms_greedy_mod','ratio_max_min_num_nodes','ratio_max_2max_num_nodes']
 
         G = self.G
 
@@ -61,6 +62,27 @@ class ModularityCommunities():
         E = G.number_of_edges()
 
         # The optimised number of communities using greedy modularity
-        feature_list.append(len(greedy_modularity_communities(G)))
+        c = list(greedy_modularity_communities(G))
+        
+        # calculate number of communities
+        feature_list.append(len(c))        
 
+        # calculate ratio of largest to smallest community
+        feature_list.append((len(c[0])/len(c[-1])))        
+
+        # calculate ratio of largest to 2nd largest community
+        if len(c)>1:
+            feature_list.append((len(c[0])/len(c[1])))
+        else:
+            feature_list.append(np.nan)
+
+        # clustering quality functions       
+        qual_names,qual_vals = clustering_quality(G,c)           
+
+            
+        feature_list = feature_list + qual_vals
+        feature_names = feature_names + qual_names     
+        
+
+        self.feature_names = feature_names
         self.features = feature_list

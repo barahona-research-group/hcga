@@ -90,6 +90,9 @@ class EigenCentrality():
 
         # extract the precomputed eigenvectors from the operations object
         eigenvector = self.eigenvectors[:,0]
+            
+        #eigenvector = eigenvectors[:,0]
+        
         largest = eigenvector.flatten().real
         norm = sp.sign(largest.sum()) * sp.linalg.norm(largest)
         eigenvector_centrality = largest / norm

@@ -35,10 +35,12 @@ class Graphs():
         graphs,graph_labels = read_graphfile(directory,dataname)
 
         # selected data for testing code
-        selected_data = np.arange(0,300,10)
+        selected_data = np.arange(0,300,1)
         graphs = [graphs[i] for i in list(selected_data)]
+
         graph_labels = [graph_labels[i] for i in list(selected_data)]
         
+        to_remove = []
         for i,G in enumerate(graphs): 
             if not nx.is_connected(G):  
                 print('Graph '+str(i)+' is not connected. Taking largest subgraph and relabelling the nodes.')
@@ -46,7 +48,14 @@ class Graphs():
                 mapping=dict(zip(Gc.nodes,range(0,len(Gc))))
                 Gc = nx.relabel_nodes(Gc,mapping)                
                 graphs[i] = Gc
+            
+            if len(graphs[i])<3:
+                to_remove.append(i)
+         
+        graph_labels = [i for j, i in enumerate(graphs) if j not in to_remove]
+        graphs = [i for j, i in enumerate(graphs) if j not in to_remove]
 
+        
         self.graphs = graphs
         self.graph_labels = graph_labels
 
