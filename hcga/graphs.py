@@ -31,7 +31,12 @@ class Graphs():
 
     def load_graphs(self, directory = 'TestData', dataname = 'ENZYMES'):
 
+        # node labels are within the graph file
+        
+        # Node features are stored in: G.node[0]['feat'] 
+        # Node labels are stored in: G.node[0]['label']
 
+        
         graphs,graph_labels = read_graphfile(directory,dataname)
 
         # selected data for testing code
