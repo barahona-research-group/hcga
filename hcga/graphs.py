@@ -37,8 +37,8 @@ class Graphs():
         # selected data for testing code
         selected_data = np.arange(0,300,1)
         graphs = [graphs[i] for i in list(selected_data)]
-
         graph_labels = [graph_labels[i] for i in list(selected_data)]
+        
         
         to_remove = []
         for i,G in enumerate(graphs): 
@@ -52,7 +52,8 @@ class Graphs():
             if len(graphs[i])<3:
                 to_remove.append(i)
          
-        graph_labels = [i for j, i in enumerate(graphs) if j not in to_remove]
+        # removing graphs with less than 2 nodes
+        graph_labels = [i for j, i in enumerate(graph_labels) if j not in to_remove]
         graphs = [i for j, i in enumerate(graphs) if j not in to_remove]
 
         

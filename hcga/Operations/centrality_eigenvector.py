@@ -16,10 +16,11 @@ class EigenCentrality():
     """
     Centrality eigenvector
     """
-    def __init__(self, G, eigenvectors):
+    def __init__(self, G, eigens):
         self.G = G
-        self.eigenvectors = eigenvectors
-
+        self.eigenvectors = eigens[1]
+        self.eigenvalues = eigens[0]
+        
         self.feature_names = []
         self.features = []
 
@@ -88,8 +89,11 @@ class EigenCentrality():
 
         feature_list = []
 
+        eigenvalues = self.eigenvalues
+        
+        
         # extract the precomputed eigenvectors from the operations object
-        eigenvector = self.eigenvectors[:,0]
+        eigenvector = self.eigenvectors[:,np.argmax(eigenvalues.real)]
             
         #eigenvector = eigenvectors[:,0]
         

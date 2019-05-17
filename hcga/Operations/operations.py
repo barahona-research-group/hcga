@@ -113,7 +113,7 @@ class Operations():
                         
 
             if precomputed:
-                feature_obj = feature_class(self.G,self.eigenvectors)
+                feature_obj = feature_class(self.G,(self.eigenvalues,self.eigenvectors))
             else:
                 feature_obj = feature_class(self.G)
 
