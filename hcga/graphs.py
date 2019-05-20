@@ -35,7 +35,6 @@ class Graphs():
         
         # Node features are stored in: G.node[0]['feat'] 
         # Node labels are stored in: G.node[0]['label']
-
         
         graphs,graph_labels = read_graphfile(directory,dataname)
 
