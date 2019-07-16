@@ -43,6 +43,15 @@ DegreeCentrality_bin50:
   precomputed: False
   bins: 50
 
+BetweennessCentrality_bin10:
+  filename: centrality_betweenness
+  classname: BetweennessCentrality
+  shortname: BC
+  keywords:
+  calculation_speed:
+  precomputed: False
+  bins: 10
+    
 EigenCentrality_bin10:
   filename: centrality_eigenvector
   classname: EigenCentrality
@@ -169,6 +178,11 @@ CommunitiesLabelprop:
   calculation_speed:
   precomputed: False  
   
-  
-  
+Cycles:
+  filename: cycles
+  classname: Cycles
+  shortname: CY
+  keywords:
+  calculation_speed:
+  precomputed: False
   

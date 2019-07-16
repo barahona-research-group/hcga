@@ -47,7 +47,7 @@ class DegreeCentrality():
         be higher than n-1 and values of degree centrality greater than 1
         are possible.
         """
-            # Defining the input arguments
+        # Defining the input arguments
         bins = args[0]
 
         # Defining featurenames
