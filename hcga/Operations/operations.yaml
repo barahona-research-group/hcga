@@ -51,6 +51,51 @@ BetweennessCentrality_bin10:
   calculation_speed:
   precomputed: False
   bins: 10
+  
+BetweennessCentrality_bin20:
+  filename: centrality_betweenness
+  classname: BetweennessCentrality
+  shortname: BC
+  keywords:
+  calculation_speed:
+  precomputed: False
+  bins: 20
+  
+BetweennessCentrality_bin50:
+  filename: centrality_betweenness
+  classname: BetweennessCentrality
+  shortname: BC
+  keywords:
+  calculation_speed:
+  precomputed: False
+  bins: 50
+  
+ClosenessCentrality_bin10:
+  filename: centrality_closeness
+  classname: ClosenessCentrality
+  shortname: CC
+  keywords:
+  calculation_speed:
+  precomputed: False
+  bins: 10
+  
+ClosenessCentrality_bin20:
+  filename: centrality_closeness
+  classname: ClosenessCentrality
+  shortname: CC
+  keywords:
+  calculation_speed:
+  precomputed: False
+  bins: 20
+  
+ClosenessCentrality_bin50:
+  filename: centrality_closeness
+  classname: ClosenessCentrality
+  shortname: CC
+  keywords:
+  calculation_speed:
+  precomputed: False
+  bins: 50
     
 EigenCentrality_bin10:
   filename: centrality_eigenvector
