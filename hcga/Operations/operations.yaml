@@ -70,6 +70,33 @@ BetweennessCentrality_bin50:
   precomputed: False
   bins: 50
   
+EdgeBetweennessCentrality_bin10:
+  filename: centrality_edge_betweenness
+  classname: EdgeBetweennessCentrality
+  shortname: EC
+  keywords:
+  calculation_speed:
+  precomputed: False
+  bins: 10
+  
+EdgeBetweennessCentrality_bin20:
+  filename: centrality_edge_betweenness
+  classname: EdgeBetweennessCentrality
+  shortname: EC
+  keywords:
+  calculation_speed:
+  precomputed: False
+  bins: 20
+  
+EdgeBetweennessCentrality_bin50:
+  filename: centrality_edge_betweenness
+  classname: EdgeBetweennessCentrality
+  shortname: EC
+  keywords:
+  calculation_speed:
+  precomputed: False
+  bins: 50
+  
 ClosenessCentrality_bin10:
   filename: centrality_closeness
   classname: ClosenessCentrality
