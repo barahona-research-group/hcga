@@ -311,3 +311,12 @@ NodeCliqueNumber_bin10:
   precomputed: False
   bins: 10
   
+CoreNumber_bin10:
+  filename: core_number
+  classname: CoreNumber
+  shortname: CoN
+  keywords:
+  calculation_speed:
+  precomputed: False
+  bins: 10
+  

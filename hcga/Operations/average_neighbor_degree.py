@@ -44,8 +44,8 @@ class AverageNeighborDegree():
         G = self.G
         feature_list = []
         #Calculate the average neighbor degree of each node
-        # Basic stats regarding the average neighbor degree distribution
         average_neighbor_degree = np.asarray(list(assortativity.average_neighbor_degree(G).values()))
+        # Basic stats regarding the average neighbor degree distribution
         feature_list.append(average_neighbor_degree.mean())
         feature_list.append(average_neighbor_degree.std())
         
