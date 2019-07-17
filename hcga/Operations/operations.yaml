@@ -258,7 +258,7 @@ Cycles:
   calculation_speed:
   precomputed: False
   
-AvgNeighbourDegree_bin10:
+AverageNeighborDegree_bin10:
   filename: average_neighbor_degree
   classname: AverageNeighborDegree
   shortname: ND
@@ -267,7 +267,7 @@ AvgNeighbourDegree_bin10:
   precomputed: False
   bins: 10
   
-AvgNeighbourDegree_bin20:
+AverageNeighborDegree_bin20:
   filename: average_neighbor_degree
   classname: AverageNeighborDegree
   shortname: ND
@@ -276,7 +276,7 @@ AvgNeighbourDegree_bin20:
   precomputed: False
   bins: 20
   
-AvgNeighbourDegree_bin50:
+AverageNeighborDegree_bin50:
   filename: average_neighbor_degree
   classname: AverageNeighborDegree
   shortname: ND
@@ -284,5 +284,7 @@ AvgNeighbourDegree_bin50:
   calculation_speed:
   precomputed: False
   bins: 50
+  
+
   
   

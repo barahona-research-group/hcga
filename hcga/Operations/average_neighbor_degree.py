@@ -1,19 +1,18 @@
 
 from networkx.algorithms import assortativity
+from hcga.Operations import utils
 import numpy as np
 
 class AverageNeighborDegree():
-    
-    
     
     def __init__(self, G):
         self.G = G
         self.feature_names = []
         self.features = []
         
-    def feature_extraction(self):
+    def feature_extraction(self,args):
         bins = args[0]
-        feature_names = ['mean','std']
+        feature_names = ['mean','std','opt_model','powerlaw_a','powerlaw_SSE']
         G = self.G
         feature_list = []
         average_neighbor_degree = np.asarray(list(assortativity.average_neighbor_degree(G).values()))
@@ -28,11 +27,6 @@ class AverageNeighborDegree():
         # Fitting power law and finding 'a' and the SSE of fit.
         feature_list.append(utils.power_law_fit(average_neighbor_degree,bins=bins)[0][-2])# value 'a' in power law
         feature_list.append(utils.power_law_fit(average_neighbor_degree,bins=bins)[1])# value sse in power law
-
-        # Fitting normal distribution and finding...
-
-
-        # Fitting exponential and finding ...
 
         
         self.feature_names=feature_names
