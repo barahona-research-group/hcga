@@ -320,3 +320,19 @@ CoreNumber_bin10:
   precomputed: False
   bins: 10
   
+Diameter:
+  filename: diameter
+  classname: Diameter
+  shortname: DI
+  keywords:
+  calculation_speed:
+  precomputed: False
+  
+Eccentricity10:
+  filename: eccentricity
+  classname: Eccentricity
+  shortname: Ecc
+  keywords:
+  calculation_speed:
+  precomputed: False
+  bins: 10
