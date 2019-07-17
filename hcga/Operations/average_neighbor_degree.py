@@ -12,13 +12,28 @@ class AverageNeighborDegree():
         self.features = []
         
     def feature_extraction(self):
-        
+        bins = args[0]
         feature_names = ['mean','std']
         G = self.G
         feature_list = []
         average_neighbor_degree = np.asarray(list(assortativity.average_neighbor_degree(G).values()))
         feature_list.append(average_neighbor_degree.mean())
         feature_list.append(average_neighbor_degree.std())
+        
+        # Fitting the average neighbor degree distribution and finding the optimal
+        # distribution according to SSE
+        opt_mod,opt_mod_sse = utils.best_fit_distribution(average_neighbor_degree,bins=bins)
+        feature_list.append(opt_mod)
+
+        # Fitting power law and finding 'a' and the SSE of fit.
+        feature_list.append(utils.power_law_fit(average_neighbor_degree,bins=bins)[0][-2])# value 'a' in power law
+        feature_list.append(utils.power_law_fit(average_neighbor_degree,bins=bins)[1])# value sse in power law
+
+        # Fitting normal distribution and finding...
+
+
+        # Fitting exponential and finding ...
+
         
         self.feature_names=feature_names
         self.features = feature_list

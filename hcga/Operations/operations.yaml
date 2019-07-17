@@ -258,12 +258,31 @@ Cycles:
   calculation_speed:
   precomputed: False
   
-AvgNeighbourDegree:
+AvgNeighbourDegree_bin10:
   filename: average_neighbor_degree
   classname: AverageNeighborDegree
   shortname: ND
   keywords:
   calculation_speed:
   precomputed: False
+  bins: 10
+  
+AvgNeighbourDegree_bin20:
+  filename: average_neighbor_degree
+  classname: AverageNeighborDegree
+  shortname: ND
+  keywords:
+  calculation_speed:
+  precomputed: False
+  bins: 20
+  
+AvgNeighbourDegree_bin50:
+  filename: average_neighbor_degree
+  classname: AverageNeighborDegree
+  shortname: ND
+  keywords:
+  calculation_speed:
+  precomputed: False
+  bins: 50
   
   
