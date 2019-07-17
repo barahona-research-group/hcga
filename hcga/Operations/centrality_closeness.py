@@ -16,7 +16,30 @@ class ClosenessCentrality():
         self.features = []
 
     def feature_extraction(self,args):
-        """Compute the closeness centrality for nodes.
+        """
+        Compute the closeness centrality for nodes.
+        
+        The closeness centrality for a node is the reciprocal of the mean 
+        distance to all other reachable nodes.
+        
+        Parameters
+        ----------
+        G : graph
+          A networkx graph
+
+        args :
+            arg[0] Number of bins for calculating pdf of chosen distribution for SSE calculation
+
+        Returns
+        -------
+        feature_list :list
+           List of features related to closeness centrality.
+
+
+        Notes
+        -----
+        Closeness centrality calculations using networkx:
+            https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html
         """        
                 
         # Defining the input arguments
