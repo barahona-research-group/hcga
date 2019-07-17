@@ -285,6 +285,29 @@ AverageNeighborDegree_bin50:
   precomputed: False
   bins: 50
   
-
+Cliques:
+  filename: cliques
+  classname: Cliques
+  shortname: CL
+  keywords:
+  calculation_speed:
+  precomputed: False
   
+NodeNumberOfCliques_bin10:
+  filename: node_number_of_cliques
+  classname: NodeNumberOfCliques
+  shortname: NC
+  keywords:
+  calculation_speed:
+  precomputed: False
+  bins: 10
+  
+NodeCliqueNumber_bin10:
+  filename: node_clique_number
+  classname: NodeCliqueNumber
+  shortname: CN
+  keywords:
+  calculation_speed:
+  precomputed: False
+  bins: 10
   
