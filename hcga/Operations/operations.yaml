@@ -344,4 +344,13 @@ Efficiency:
   keywords:
   calculation_speed:
   precomputed: False
+  
+PageRank10:
+  filename: pagerank
+  classname: PageRank
+  shortname: PR
+  keywords:
+  calculation_speed:
+  precomputed: False
+  bins: 10
 
