@@ -380,4 +380,12 @@ PageRank10:
   calculation_speed:
   precomputed: False
   bins: 10
+  
+kComponents:
+  filename: k_components
+  classname: kComponents
+  shortname: kC
+  keywords:
+  calculation_speed:
+  precomputed: False
 
