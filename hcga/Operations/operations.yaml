@@ -336,3 +336,12 @@ Eccentricity10:
   calculation_speed:
   precomputed: False
   bins: 10
+  
+Efficiency:
+  filename: efficiency
+  classname: Efficiency
+  shortname: EF
+  keywords:
+  calculation_speed:
+  precomputed: False
+
