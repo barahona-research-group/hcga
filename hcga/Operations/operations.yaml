@@ -48,59 +48,21 @@ ClosenessCentrality:
   calculation_speed:
   precomputed: False
     
-EigenCentrality_bin10:
+EigenCentrality:
   filename: centrality_eigenvector
   classname: EigenCentrality
   shortname: EC
   keywords:
   calculation_speed:
   precomputed: True
-  bins: 10
-
-EigenCentrality_bin20:
-  filename: centrality_eigenvector
-  classname: EigenCentrality
-  shortname: EC
-  keywords:
-  calculation_speed:
-  precomputed: True
-  bins: 20
-
-EigenCentrality_bin50:
-  filename: centrality_eigenvector
-  classname: EigenCentrality
-  shortname: EC
-  keywords:
-  calculation_speed:
-  precomputed: True
-  bins: 50
   
-KatzCentrality_bin10:
+KatzCentrality:
   filename: centrality_katz
   classname: KatzCentrality
   shortname: KC
   keywords:
   calculation_speed:
   precomputed: False
-  bins: 10
-
-KatzCentrality_bin20:
-  filename: centrality_katz
-  classname: KatzCentrality
-  shortname: KC
-  keywords:
-  calculation_speed:
-  precomputed: False
-  bins: 20
-
-KatzCentrality_bin50:
-  filename: centrality_katz
-  classname: KatzCentrality
-  shortname: KC
-  keywords:
-  calculation_speed:
-  precomputed: False
-  bins: 50
     
 CommunitiesModularity:
   filename: communities_modularity
