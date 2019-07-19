@@ -15,7 +15,7 @@ class BetweennessCentrality():
         self.feature_names = []
         self.features = []
 
-    def feature_extraction(self,args):
+    def feature_extraction(self):
         """
         Compute the betweenness centrality for nodes.
         
@@ -45,7 +45,7 @@ class BetweennessCentrality():
         """        
                 
         # Defining the input arguments
-        bins = args[0]
+        bins = [10,20,50]
 
         # Defining featurenames
         feature_names = ['mean','std','opt_model','powerlaw_a','powerlaw_SSE']
@@ -60,15 +60,23 @@ class BetweennessCentrality():
         # Basic stats regarding the betwenness centrality distribution
         feature_list.append(betweenness_centrality.mean())
         feature_list.append(betweenness_centrality.std())
+        feature_list.append(betweenness_centrality.max())
+        feature_list.append(betweenness_centrality.min())
+        
+        for i in range(len(bins)):
+            # Adding to featurenames
+            feature_names.append('opt_model_{}'.format(bins[i]))
+            feature_names.append('powerlaw_a_{}'.format(bins[i]))
+            feature_names.append('powerlaw_SSE_{}'.format(bins[i]))
+            
+            # Fitting the betweenness centrality distribution and finding the optimal
+            # distribution according to SSE
+            opt_mod,opt_mod_sse = utils.best_fit_distribution(betweenness_centrality,bins=bins[i])
+            feature_list.append(opt_mod)
 
-        # Fitting the betweenness centrality distribution and finding the optimal
-        # distribution according to SSE
-        opt_mod,opt_mod_sse = utils.best_fit_distribution(betweenness_centrality,bins=bins)
-        feature_list.append(opt_mod)
-
-        # Fitting power law and finding 'a' and the SSE of fit.
-        feature_list.append(utils.power_law_fit(betweenness_centrality,bins=bins)[0][-2])# value 'a' in power law
-        feature_list.append(utils.power_law_fit(betweenness_centrality,bins=bins)[1])# value sse in power law
+            # Fitting power law and finding 'a' and the SSE of fit.
+            feature_list.append(utils.power_law_fit(betweenness_centrality,bins=bins[i])[0][-2]) # value 'a' in power law
+            feature_list.append(utils.power_law_fit(betweenness_centrality,bins=bins[i])[1]) # value sse in power law
 
         # Fitting normal distribution and finding...
 
