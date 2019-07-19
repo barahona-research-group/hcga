@@ -14,7 +14,7 @@ class DegreeCentrality():
         self.feature_names = []
         self.features = []
 
-    def feature_extraction(self,args):
+    def feature_extraction(self):
         """Compute the degree centrality for nodes.
 
         The degree centrality for a node v is the fraction of nodes it
@@ -48,10 +48,10 @@ class DegreeCentrality():
         are possible.
         """
         # Defining the input arguments
-        bins = args[0]
+        bins = [10,20,50]
 
         # Defining featurenames
-        self.feature_names = ['mean','std','opt_model','powerlaw_a','powerlaw_SSE']
+        feature_names = ['mean','std','max','min']
 
         G = self.G
 
@@ -63,20 +63,29 @@ class DegreeCentrality():
         # Basic stats regarding the degree centrality distribution
         feature_list.append(degree_centrality.mean())
         feature_list.append(degree_centrality.std())
+        feature_list.append(degree_centrality.max())
+        feature_list.append(degree_centrality.min())
+        
+        
+        for i in range(len(bins)):
+            # Adding to featurenames
+            feature_names.append('opt_model_{}'.format(bins[i]))
+            feature_names.append('powerlaw_a_{}'.format(bins[i]))
+            feature_names.append('powerlaw_SSE_{}'.format(bins[i]))
+            
+            # Fitting the degree centrality distribution and finding the optimal
+            # distribution according to SSE
+            opt_mod,opt_mod_sse = utils.best_fit_distribution(degree_centrality,bins=bins[i])
+            feature_list.append(opt_mod)
 
-        # Fitting the degree centrality distribution and finding the optimal
-        # distribution according to SSE
-        opt_mod,opt_mod_sse = utils.best_fit_distribution(degree_centrality,bins=bins)
-        feature_list.append(opt_mod)
-
-        # Fitting power law and finding 'a' and the SSE of fit.
-        feature_list.append(utils.power_law_fit(degree_centrality,bins=bins)[0][-2]) # value 'a' in power law
-        feature_list.append(utils.power_law_fit(degree_centrality,bins=bins)[1]) # value sse in power law
+            # Fitting power law and finding 'a' and the SSE of fit.
+            feature_list.append(utils.power_law_fit(degree_centrality,bins=bins[i])[0][-2]) # value 'a' in power law
+            feature_list.append(utils.power_law_fit(degree_centrality,bins=bins[i])[1]) # value sse in power law
 
         # Fitting normal distribution and finding...
 
 
         # Fitting exponential and finding ...
 
-
+        self.feature_names=feature_names
         self.features = feature_list

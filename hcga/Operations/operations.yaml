@@ -16,32 +16,13 @@ Clustering:
   calculation_speed:
   precomputed: False
 
-DegreeCentrality_bin10:
+DegreeCentrality:
   filename: centrality_degree
   classname: DegreeCentrality
   shortname: DC
   keywords:
   calculation_speed:
   precomputed: False
-  bins: 10
-
-DegreeCentrality_bin20:
-  filename: centrality_degree
-  classname: DegreeCentrality
-  shortname: DC
-  keywords:
-  calculation_speed:
-  precomputed: False
-  bins: 20
-
-DegreeCentrality_bin50:
-  filename: centrality_degree
-  classname: DegreeCentrality
-  shortname: DC
-  keywords:
-  calculation_speed:
-  precomputed: False
-  bins: 50
 
 BetweennessCentrality_bin10:
   filename: centrality_betweenness
