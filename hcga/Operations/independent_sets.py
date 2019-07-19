@@ -37,7 +37,7 @@ class IndependentSets():
 
         """
 
-        self.feature_names = ['num_ind_nodes_norm']
+        self.feature_names = ['num_ind_nodes_norm','ratio__ind_nodes_norm']
 
         G = self.G
 

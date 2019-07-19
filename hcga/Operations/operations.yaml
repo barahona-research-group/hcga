@@ -389,3 +389,26 @@ kComponents:
   calculation_speed:
   precomputed: False
 
+Assortativity:
+  filename: assortativity
+  classname: Assortativity
+  shortname: AS
+  keywords:
+  calculation_speed:
+  precomputed: False
+
+ChemicalTheory:
+  filename: chemical_theory
+  classname: ChemicalTheory
+  shortname: CT
+  keywords:
+  calculation_speed:
+  precomputed: False
+  
+IndependentSets:
+  filename: independent_sets
+  classname: IndependentSets
+  shortname: IS
+  keywords:
+  calculation_speed:
+  precomputed: False
