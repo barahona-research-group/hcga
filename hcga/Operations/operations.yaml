@@ -203,14 +203,13 @@ NodeCliqueNumber:
   calculation_speed:
   precomputed: False
   
-CoreNumber_bin10:
+CoreNumber:
   filename: core_number
   classname: CoreNumber
   shortname: CoN
   keywords:
   calculation_speed:
   precomputed: False
-  bins: 10
   
 Diameter:
   filename: diameter
