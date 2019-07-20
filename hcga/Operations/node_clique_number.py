@@ -44,7 +44,7 @@ class NodeCliqueNumber():
         bins = [10,20,50]
 
         # Defining featurenames
-        feature_names = ['mean','std','max','min']
+        feature_names = ['mean','std','max','min','median']
 
         G = self.G
 
@@ -59,6 +59,7 @@ class NodeCliqueNumber():
         feature_list.append(node_clique_number.std())
         feature_list.append(node_clique_number.max())
         feature_list.append(node_clique_number.min())
+        feature_list.append(np.median(node_clique_number))
         
 
         for i in range(len(bins)):
