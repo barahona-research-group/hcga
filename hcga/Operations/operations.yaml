@@ -274,3 +274,13 @@ IndependentSets:
   keywords:
   calculation_speed:
   precomputed: False
+  
+MaximalMatching:
+  filename: maximal_matching
+  classname: MaximalMatching
+  shortname: MM
+  keywords:
+  calculation_speed:
+  precomputed: False
+  
+  
