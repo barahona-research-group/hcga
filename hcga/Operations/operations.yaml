@@ -187,14 +187,13 @@ Cliques:
   calculation_speed:
   precomputed: False
   
-NodeNumberOfCliques_bin10:
+NodeNumberOfCliques:
   filename: node_number_of_cliques
   classname: NodeNumberOfCliques
   shortname: NC
   keywords:
   calculation_speed:
   precomputed: False
-  bins: 10
   
 NodeCliqueNumber:
   filename: node_clique_number
