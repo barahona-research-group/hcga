@@ -219,14 +219,13 @@ Diameter:
   calculation_speed:
   precomputed: False
   
-Eccentricity10:
+Eccentricity:
   filename: eccentricity
   classname: Eccentricity
   shortname: Ecc
   keywords:
   calculation_speed:
   precomputed: False
-  bins: 10
   
 Efficiency:
   filename: efficiency

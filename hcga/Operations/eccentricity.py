@@ -12,7 +12,7 @@ class Eccentricity():
         self.feature_names = []
         self.features = []
         
-    def feature_extraction(self,args):
+    def feature_extraction(self):
         """
         Compute eccentricity for each node
         
@@ -40,9 +40,9 @@ class Eccentricity():
         """
         
         # Defining the input arguments
-        bins = args[0]
+        bins = [10,20,50]
         # Defining featurenames
-        feature_names = ['mean','std','opt_model','powerlaw_a','powerlaw_SSE']
+        feature_names = ['mean','std','max','min']
         G = self.G
         feature_list = []
         #Calculate the eccentricity of each node
@@ -50,15 +50,24 @@ class Eccentricity():
         # Basic stats regarding the eccentricity distribution
         feature_list.append(eccentricity.mean())
         feature_list.append(eccentricity.std())
+        feature_list.append(eccentricity.max())
+        feature_list.append(eccentricity.min())
         
-        # Fitting the eccentricity distribution and finding the optimal
-        # distribution according to SSE
-        opt_mod,opt_mod_sse = utils.best_fit_distribution(eccentricity,bins=bins)
-        feature_list.append(opt_mod)
+        
+        for i in range(len(bins)):
+            # Adding to featurenames
+            feature_names.append('opt_model_{}'.format(bins[i]))
+            feature_names.append('powerlaw_a_{}'.format(bins[i]))
+            feature_names.append('powerlaw_SSE_{}'.format(bins[i]))
+            
+            # Fitting the eccentricity distribution and finding the optimal
+            # distribution according to SSE
+            opt_mod,opt_mod_sse = utils.best_fit_distribution(eccentricity,bins=bins[i])
+            feature_list.append(opt_mod)
 
-        # Fitting power law and finding 'a' and the SSE of fit.
-        feature_list.append(utils.power_law_fit(eccentricity,bins=bins)[0][-2])# value 'a' in power law
-        feature_list.append(utils.power_law_fit(eccentricity,bins=bins)[1])# value sse in power law
+            # Fitting power law and finding 'a' and the SSE of fit.
+            feature_list.append(utils.power_law_fit(eccentricity,bins=bins[i])[0][-2]) # value 'a' in power law
+            feature_list.append(utils.power_law_fit(eccentricity,bins=bins[i])[1]) # value sse in power law
 
         
         self.feature_names=feature_names
