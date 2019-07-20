@@ -235,14 +235,13 @@ Efficiency:
   calculation_speed:
   precomputed: False
   
-PageRank10:
+PageRank:
   filename: pagerank
   classname: PageRank
   shortname: PR
   keywords:
   calculation_speed:
   precomputed: False
-  bins: 10
   
 kComponents:
   filename: k_components
