@@ -196,14 +196,13 @@ NodeNumberOfCliques_bin10:
   precomputed: False
   bins: 10
   
-NodeCliqueNumber_bin10:
+NodeCliqueNumber:
   filename: node_clique_number
   classname: NodeCliqueNumber
   shortname: CN
   keywords:
   calculation_speed:
   precomputed: False
-  bins: 10
   
 CoreNumber_bin10:
   filename: core_number
