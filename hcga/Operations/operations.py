@@ -75,6 +75,7 @@ class Operations():
 
         feature_names = []
         feature_vals = []
+        feature_dict = {}
 
         # loop over the feature classes defined in the YAML file
 
@@ -122,7 +123,8 @@ class Operations():
             else:
                 feature_obj.feature_extraction(params)
 
-
+            feature_dict[symbolic_name] = feature_obj.features            
+            
             # Alter the feature feature_names
             f_names = feature_obj.feature_names
             f_names_updated = [symbolic_name + '_' + f_name for f_name in f_names]
@@ -136,7 +138,8 @@ class Operations():
             # Append the altered feature names and the feature list of values
             feature_names.append(f_names_updated)
             feature_vals.append(feature_obj.features)
-
+            
+        self.feature_dict = feature_dict
         self.feature_vals = feature_vals
         self.feature_names = feature_names
 
