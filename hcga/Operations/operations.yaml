@@ -72,14 +72,13 @@ CommunitiesModularity:
   calculation_speed:
   precomputed: False
 
-NodeConnectivity10:
+NodeConnectivity:
   filename: node_connectivity
   classname: NodeConnectivity
   shortname: NC
   keywords:
   calculation_speed:
   precomputed: False
-  bins: 10
   
 Vitality:
   filename: vitality
@@ -136,7 +135,6 @@ CentralityForce:
   keywords:
   calculation_speed:
   precomputed: False  
-  bins: 10
   
 CommunitiesBisection:
   filename: communities_bisection
@@ -153,7 +151,6 @@ CommunitiesAsynFluid:
   keywords:
   calculation_speed:
   precomputed: False  
-  kmax: 10
   
 CommunitiesLabelprop:
   filename: communities_label_propagation
@@ -190,7 +187,7 @@ Cliques:
 NodeNumberOfCliques:
   filename: node_number_of_cliques
   classname: NodeNumberOfCliques
-  shortname: NC
+  shortname: NoC
   keywords:
   calculation_speed:
   precomputed: False

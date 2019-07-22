@@ -16,7 +16,7 @@ class NodeConnectivity():
         self.feature_names = []
         self.features = []
 
-    def feature_extraction(self,bins):
+    def feature_extraction(self):
 
         """Compute node connectivity measures.
 
@@ -48,6 +48,8 @@ class NodeConnectivity():
         """
         self.feature_names = ['mean','std','median','max','min','opt_model_mean','opt_model_std','opt_model_max','wiener_index']
         """
+        # Defining the input arguments
+        bins=[10]
         
         G = self.G
 
@@ -71,17 +73,19 @@ class NodeConnectivity():
         feature_list['max']=np.max(node_conn)
         feature_list['min']=np.min(node_conn)
         
-        # fitting the node connectivity histogram distribution
-        opt_mod_mean,_ =  utils.best_fit_distribution(node_conn.mean(axis=1),bins=bins)
-        feature_list['opt_model_mean']=opt_mod_mean
+        for i in range(len(bins)):
+            
+            # fitting the node connectivity histogram distribution
+            opt_mod_mean,_ =  utils.best_fit_distribution(node_conn.mean(axis=1),bins=bins[i])
+            feature_list['opt_model_mean_{}'.format(bins[i])]=opt_mod_mean
         
-        # fitting the node connectivity histogram distribution
-        opt_mod_std,_ =  utils.best_fit_distribution(node_conn.std(axis=1),bins=bins)
-        feature_list['opt_model_std']=opt_mod_std        
+            # fitting the node connectivity histogram distribution
+            opt_mod_std,_ =  utils.best_fit_distribution(node_conn.std(axis=1),bins=bins[i])
+            feature_list['opt_model_std{}'.format(bins[i])]=opt_mod_std        
         
-        # fitting the node connectivity histogram distribution
-        opt_mod_max,_ =  utils.best_fit_distribution(node_conn.max(axis=1),bins=bins)
-        feature_list['opt_model_max']=opt_mod_max              
+            # fitting the node connectivity histogram distribution
+            opt_mod_max,_ =  utils.best_fit_distribution(node_conn.max(axis=1),bins=bins[i])
+            feature_list['opt_model_max{}'.format(bins[i])]=opt_mod_max              
        
         # calculate the wiener index
         feature_list['wiener_index']=nx.wiener_index(G)
