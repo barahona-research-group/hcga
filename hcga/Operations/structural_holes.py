@@ -56,41 +56,43 @@ class StructuralHoles():
 
 
         """
-
+        
+        """
         self.feature_names = ['constraint_mean','constraint_std','constraint_median','constraint_max','constraint_min','constraint_opt_model',
                               'effective_size_mean','effective_size_std','effective_size_median','effective_size_max','effective_size_min','effective_size_opt_model']
-
+        """
+        
         G = self.G
 
-        feature_list = []
+        feature_list = {}
 
         N = G.number_of_nodes()
         
         constraint = list(nx.structuralholes.constraint(G).values())      
         
         # basic stats of constraint
-        feature_list.append(np.mean(constraint))
-        feature_list.append(np.mean(constraint))
-        feature_list.append(np.median(constraint))
-        feature_list.append(np.max(constraint))
-        feature_list.append(np.min(constraint))
+        feature_list['constraint_mean']=np.mean(constraint)
+        feature_list['constraint_std']=np.mean(constraint)
+        feature_list['constraint_median']=np.median(constraint)
+        feature_list['constraint_max']=np.max(constraint)
+        feature_list['constraint_min']=np.min(constraint)
         
         # best distribution to fit data
         opt_mod_c,_ = utils.best_fit_distribution(constraint,bins=10)
-        feature_list.append(opt_mod_c)
+        feature_list['constraint_opt_model']=opt_mod_c
 
         effective_size = list(nx.structuralholes.effective_size(G).values())  
         
         # basic stats of effective size
-        feature_list.append(np.mean(effective_size))
-        feature_list.append(np.std(effective_size))
-        feature_list.append(np.median(effective_size))
-        feature_list.append(np.max(effective_size))
-        feature_list.append(np.min(effective_size))
+        feature_list['effective_size_mean']=np.mean(effective_size)
+        feature_list['effective_size_std']=np.std(effective_size)
+        feature_list['effective_size_median']=np.median(effective_size)
+        feature_list['effective_size_max']=np.max(effective_size)
+        feature_list['effective_size_min']=np.min(effective_size)
 
 
         # best distribution to fit data
         opt_mod_es,_ = utils.best_fit_distribution(constraint,bins=10)
-        feature_list.append(opt_mod_es)
+        feature_list['effective_size_opt_model']=opt_mod_es
         
         self.features = feature_list

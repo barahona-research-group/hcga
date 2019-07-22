@@ -26,20 +26,22 @@ class AsynfluidCommunities():
         self.feature_names = []
         self.features = []
 
-    def feature_extraction(self,args):
+    def feature_extraction(self):
 
         """
         
         """
 
         # Defining the input arguments
-        kmax = args[0]
-
+        kmax = 10
+        
+        """
         feature_names = []
+        """
 
         G = self.G
 
-        feature_list = []
+        feature_list = {}
 
         # basic normalisation parameters
         N = G.number_of_nodes()
@@ -52,37 +54,53 @@ class AsynfluidCommunities():
             c,density = list(asyn_fluidc(G,2))       
 
             #total density
-            feature_list.append(sum(density))
+            feature_list['total_density_'+str(i)]=sum(density)
+            """
             feature_names.append('total_density_'+str(i))
+            """
 
             # ratio density
-            feature_list.append(np.min(density)/np.max(density))
+            feature_list['ratio_density_'+str(i)]=np.min(density)/np.max(density)
+            """
             feature_names.append('ratio_density_'+str(i))
+            """
 
             # length of most dense community
-            feature_list.append(len(c[np.argmax(density)]))
+            feature_list['most_dense_'+str(i)]=len(c[np.argmax(density)])
+            """
             feature_names.append('most_dense_'+str(i))
+            """
 
             # length of least dense community
-            feature_list.append(len(c[np.argmin(density)]))
+            feature_list['least_dense_'+str(i)]=len(c[np.argmin(density)])
+            """
             feature_names.append('least_dense_'+str(i))
+            """
 
             # clustering quality functions       
             qual_names,qual_vals = clustering_quality(G,c)
             
+            """
             # adding arguments to names
             [name+'_'+str(i) for name in qual_names]
             
             feature_list = feature_list + qual_vals
-            feature_names = feature_names + qual_names          
-
+            feature_names = feature_names + qual_names    
+            """
+            
+            for j in range(len(qual_names)):
+                feature_list[qual_names[j]+'_'+str(i)]=qual_vals[j]
+            
             
             # calculate size ratio of the top 2 largest communities
-            feature_list.append((len(c[0])/len(c[1])))
+            feature_list['num_nodes_ratio_'+str(i)]=(len(c[0])/len(c[1]))
+            """
             feature_names.append('num_nodes_ratio_'+str(i))
+            """
 
-
+        """
         self.feature_names = feature_names
+        """
         self.features = feature_list
 
 

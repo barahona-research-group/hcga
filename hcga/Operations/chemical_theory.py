@@ -34,18 +34,20 @@ class ChemicalTheory():
 
 
         """
-
+        
+        """
         self.feature_names = ['wiener_index']
+        """
 
         G = self.G
 
-        feature_list = []
+        feature_list = {}
 
         N = G.number_of_nodes()
         
 
         # calculate wiener index using networkx
-        feature_list.append(nx.wiener_index(G))
+        feature_list['wiener_index'] = nx.wiener_index(G)
         
         
         

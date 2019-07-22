@@ -36,14 +36,17 @@ class Vitality():
 
 
         """
-
+        
+        """
         self.feature_names = ['ratio_finite','closeness_mean','closeness_std',
                               'closeness_median','closeness_max',
                               'closeness_min']
+        """
+        
 
         G = self.G
 
-        feature_list = []
+        feature_list = {}
 
         N = G.number_of_nodes() 
 
@@ -60,15 +63,15 @@ class Vitality():
 
         
         # standard measures of closeness vitality
-        feature_list.append(np.mean(closeness_vitality_vals_fin))
-        feature_list.append(np.std(closeness_vitality_vals_fin))
-        feature_list.append(np.median(closeness_vitality_vals_fin))
-        feature_list.append(np.max(closeness_vitality_vals_fin))
-        feature_list.append(np.min(closeness_vitality_vals_fin))
+        feature_list['closeness_mean']=np.mean(closeness_vitality_vals_fin)
+        feature_list['closeness_std']=np.std(closeness_vitality_vals_fin)
+        feature_list['closeness_median']=np.median(closeness_vitality_vals_fin)
+        feature_list['closeness_max']=np.max(closeness_vitality_vals_fin)
+        feature_list['closeness_min']=np.min(closeness_vitality_vals_fin)
 
         # fit distribution
         opt_mod,opt_mod_sse = utils.best_fit_distribution(closeness_vitality_vals_fin,bins=10)
-        feature_list.append(opt_mod)        
+        feature_list['opt_mod']=opt_mod    
         
 
         self.features = feature_list

@@ -44,12 +44,14 @@ class NodeConnectivity():
         http://eclectic.ss.uci.edu/~drwhite/working.pdf
 
         """
-
+        
+        """
         self.feature_names = ['mean','std','median','max','min','opt_model_mean','opt_model_std','opt_model_max','wiener_index']
-
+        """
+        
         G = self.G
 
-        feature_list = []
+        feature_list = {}
 
         # calculating node connectivity
         node_connectivity = nx.all_pairs_node_connectivity(G)
@@ -63,27 +65,26 @@ class NodeConnectivity():
     
         
         # mean and median minimum number of nodes to remove connectivity
-        feature_list.append(node_conn.mean())
-        feature_list.append(node_conn.std())
-        feature_list.append(np.median(node_conn))
-        feature_list.append(np.max(node_conn))
-        feature_list.append(np.min(node_conn))
-
-
+        feature_list['mean']=node_conn.mean()
+        feature_list['std']=node_conn.std()
+        feature_list['median']=np.median(node_conn)
+        feature_list['max']=np.max(node_conn)
+        feature_list['min']=np.min(node_conn)
+        
         # fitting the node connectivity histogram distribution
         opt_mod_mean,_ =  utils.best_fit_distribution(node_conn.mean(axis=1),bins=bins)
-        feature_list.append(opt_mod_mean)
+        feature_list['opt_model_mean']=opt_mod_mean
         
         # fitting the node connectivity histogram distribution
         opt_mod_std,_ =  utils.best_fit_distribution(node_conn.std(axis=1),bins=bins)
-        feature_list.append(opt_mod_std)        
+        feature_list['opt_model_std']=opt_mod_std        
         
         # fitting the node connectivity histogram distribution
         opt_mod_max,_ =  utils.best_fit_distribution(node_conn.max(axis=1),bins=bins)
-        feature_list.append(opt_mod_max)               
+        feature_list['opt_model_max']=opt_mod_max              
        
         # calculate the wiener index
-        feature_list.append(nx.wiener_index(G))
+        feature_list['wiener_index']=nx.wiener_index(G)
         
 
         self.features = feature_list

@@ -36,21 +36,23 @@ class IndependentSets():
 
 
         """
-
+        
+        """
         self.feature_names = ['num_ind_nodes_norm','ratio__ind_nodes_norm']
+        """
 
         G = self.G
 
-        feature_list = []
+        feature_list = {}
 
         N = G.number_of_nodes() 
 
 
         ind_set = nx.maximal_independent_set(G)
         
-        feature_list.append(len(ind_set))
+        feature_list['num_ind_nodes_norm']=len(ind_set)
         
-        feature_list.append(len(ind_set)/len(G))
+        feature_list['ratio__ind_nodes_norm']=len(ind_set)/len(G)
 
         
 

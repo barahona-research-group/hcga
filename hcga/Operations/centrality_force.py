@@ -14,14 +14,14 @@ import scipy as sp
 
 class ForceCentrality():
     """
-    Centrality eigenvector
+    Force centrality class
     """
     def __init__(self, G):
         self.G = G
         self.feature_names = []
         self.features = []
 
-    def feature_extraction(self,args):
+    def feature_extraction(self):
 
         """Compute the force centrality for the graph `G`.
 
@@ -52,14 +52,16 @@ class ForceCentrality():
         """
 
         # Defining the input arguments
-        bins = args[0]
-
+        bins = [10]
+        
+        """
         # Defining featurenames
-        self.feature_names = ['mean','std','max','min','opt_mod','power_law_a','power_law_sse']
-
+        self.feature_names = ['mean','std','max','min']
+        """
+        
         G = self.G
         
-        feature_list = []
+        feature_list = {}
         
         # number of times to average force centrality
         n_force = 20
@@ -90,21 +92,27 @@ class ForceCentrality():
                 print('An exception occurred in ForceAtlas2')
 
 
-        feature_list.append(np.mean(c))
-        feature_list.append(np.std(c))
+        feature_list['mean']=np.mean(c)
+        feature_list['std']=np.std(c)
         
-        feature_list.append(np.max(abs(c)))
-        feature_list.append(np.min(abs(c)))
+        feature_list['max']=np.max(abs(c))
+        feature_list['min']=np.min(abs(c))
 
         
-        # Fitting the degree centrality distribution and finding the optimal
-        # distribution according to SSE
-        opt_mod,opt_mod_sse = utils.best_fit_distribution(c,bins=bins)
-        feature_list.append(opt_mod)
-        
-        # Fitting power law and finding 'a' and the SSE of fit.
-        feature_list.append(utils.power_law_fit(c,bins=bins)[0][-2]) # value 'a' in power law
-        feature_list.append(utils.power_law_fit(c,bins=bins)[1]) # value sse in power law
+        for i in range(len(bins)):
+            """# Adding to feature names
+            feature_names.append('opt_model_{}'.format(bins[i]))
+            feature_names.append('powerlaw_a_{}'.format(bins[i]))
+            feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
+            
+            # Fitting the c distribution and finding the optimal
+            # distribution according to SSE
+            opt_mod,opt_mod_sse = utils.best_fit_distribution(c,bins=bins[i])
+            feature_list['opt_model_{}'.format(bins[i])] = opt_mod
+
+            # Fitting power law and finding 'a' and the SSE of fit.
+            feature_list['powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(c,bins=bins[i])[0][-2]# value 'a' in power law
+            feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(c,bins=bins[i])[1] # value sse in power law
 
         
 

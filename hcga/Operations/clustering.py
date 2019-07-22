@@ -38,33 +38,35 @@ class Clustering():
         We followed the same structure as networkx for implementing clustering features.
 
         """
-
+        
+        """
         self.feature_names = ['num_triangles','transitivity','clustering_mean',
                         'clustering_std','clustering_median','square_clustering_mean',
                         'square_clustering_std','square_clustering_median']
+        """
 
         G = self.G
 
-        feature_list = []
+        feature_list = {}
 
         # Calculating number of triangles
-        feature_list.append(np.asarray(list(nx.triangles(G).values())).mean())
+        feature_list['num_triangles']=np.asarray(list(nx.triangles(G).values())).mean()
 
         # graph transivity
         C = nx.transitivity(G)
-        feature_list.append(C)
+        feature_list['transitivity'] = C
         
         
 
         # Average clustering coefficient
-        feature_list.append(nx.average_clustering(G))
-        feature_list.append(np.asarray(list(nx.clustering(G).values())).std())
-        feature_list.append(np.median(np.asarray(list(nx.clustering(G).values()))))
+        feature_list['clustering_mean']=nx.average_clustering(G)
+        feature_list['clustering_std']=np.asarray(list(nx.clustering(G).values())).std()
+        feature_list['clustering_median']=np.median(np.asarray(list(nx.clustering(G).values())))
 
         # generalised degree
-        feature_list.append(np.asarray(list(nx.square_clustering(G).values())).mean())
-        feature_list.append(np.asarray(list(nx.square_clustering(G).values())).std())
-        feature_list.append(np.median(np.asarray(list(nx.square_clustering(G).values()))))
+        feature_list['square_clustering_mean']=np.asarray(list(nx.square_clustering(G).values())).mean()
+        feature_list['square_clustering_std']=np.asarray(list(nx.square_clustering(G).values())).std()
+        feature_list['square_clustering_median']=np.median(np.asarray(list(nx.square_clustering(G).values())))
         
 
         

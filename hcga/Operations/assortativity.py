@@ -37,18 +37,15 @@ class Assortativity():
 
         """
 
-        self.feature_names = ['degree_assortativity_coeff',
-                              'degree_pearson_corr_coef']
-
         G = self.G
 
-        feature_list = []
+        feature_list = {}
 
         N = G.number_of_nodes()
         
 
-        feature_list.append(nx.degree_assortativity_coefficient(G))
-        feature_list.append(nx.degree_pearson_correlation_coefficient(G))
+        feature_list['degree_assortativity_coeff'] = nx.degree_assortativity_coefficient(G)
+        feature_list['degree_pearson_corr_coef'] = nx.degree_pearson_correlation_coefficient(G)
         
         
         

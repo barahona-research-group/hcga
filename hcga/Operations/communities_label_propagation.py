@@ -22,12 +22,14 @@ class LabelpropagationCommunities():
         """
         Identifies community sets determined by label propagation.
         """
-
+        
+        """
         feature_names = ['node_ratio']
+        """
 
         G = self.G
 
-        feature_list = []
+        feature_list = {}
 
         # basic normalisation parameters
         N = G.number_of_nodes()
@@ -38,16 +40,22 @@ class LabelpropagationCommunities():
         
         # calculate ratio of the two communities
         if len(c)>1:
-            feature_list.append((len(c[0])/len(c[1])))
+            feature_list['node_ratio']=(len(c[0])/len(c[1]))
         else:
-            feature_list.append(0)
+            feature_list['node_ratio']=0
         
         # clustering quality functions       
-        qual_names,qual_vals = clustering_quality(G,c)           
+        qual_names,qual_vals = clustering_quality(G,c)  
+        
+        for i in range(len(qual_names)):
+            feature_list[qual_names[i]]=qual_vals[i]         
 
-            
+        """ 
         feature_list = feature_list + qual_vals
-        feature_names = feature_names + qual_names     
+        feature_names = feature_names + qual_names 
+        """
 
+        """
         self.feature_names = feature_names
+        """
         self.features = feature_list

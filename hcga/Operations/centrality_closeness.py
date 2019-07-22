@@ -45,41 +45,44 @@ class ClosenessCentrality():
         # Defining the input arguments
         bins = [10,20,50]
 
-        # Defining featurenames
+        """# Defining featurenames
         feature_names = ['mean','std','max','min']
+        """
 
         G = self.G
 
-        feature_list = []
+        feature_list = {}
 
         #Calculate the closeness centrality of each node
         closeness_centrality = np.asarray(list(centrality.closeness_centrality(G).values()))
 
         # Basic stats regarding the closeness centrality distribution
-        feature_list.append(closeness_centrality.mean())
-        feature_list.append(closeness_centrality.std())
-        feature_list.append(closeness_centrality.max())
-        feature_list.append(closeness_centrality.min())
-
+        feature_list['mean'] = closeness_centrality.mean()
+        feature_list['std'] = closeness_centrality.std()
+        feature_list['max'] = closeness_centrality.max()
+        feature_list['min'] = closeness_centrality.min()
+        
         for i in range(len(bins)):
-            # Adding to featurenames
+            """# Adding to feature names
             feature_names.append('opt_model_{}'.format(bins[i]))
             feature_names.append('powerlaw_a_{}'.format(bins[i]))
-            feature_names.append('powerlaw_SSE_{}'.format(bins[i]))
+            feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
             
             # Fitting the closeness centrality distribution and finding the optimal
             # distribution according to SSE
             opt_mod,opt_mod_sse = utils.best_fit_distribution(closeness_centrality,bins=bins[i])
-            feature_list.append(opt_mod)
+            feature_list['opt_model_{}'.format(bins[i])] = opt_mod
 
             # Fitting power law and finding 'a' and the SSE of fit.
-            feature_list.append(utils.power_law_fit(closeness_centrality,bins=bins[i])[0][-2]) # value 'a' in power law
-            feature_list.append(utils.power_law_fit(closeness_centrality,bins=bins[i])[1]) # value sse in power law
+            feature_list['powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(closeness_centrality,bins=bins[i])[0][-2]# value 'a' in power law
+            feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(closeness_centrality,bins=bins[i])[1] # value sse in power law
 
+        
         # Fitting normal distribution and finding...
 
 
         # Fitting exponential and finding ...
-
+        """
         self.feature_names=feature_names
+        """
         self.features = feature_list

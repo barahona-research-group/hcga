@@ -40,33 +40,37 @@ class PageRank():
         """
         bins = [10,20,50]
         
+        """
         feature_names = ['mean','std','max','min']
+        """
 
         G = self.G
 
-        feature_list = []
+        feature_list = {}
         #Calculate PageRank
         pagerank = np.asarray(list(nx.pagerank(G).values()))
         # Basic stats regarding the PageRank distribution
-        feature_list.append(pagerank.mean())
-        feature_list.append(pagerank.std())
-        feature_list.append(pagerank.max())
-        feature_list.append(pagerank.min())
+        feature_list['mean'] = pagerank.mean()
+        feature_list['std'] = pagerank.std()
+        feature_list['max'] = pagerank.max()
+        feature_list['min'] = pagerank.min()
         
         for i in range(len(bins)):
-            # Adding to featurenames
+            """# Adding to feature names
             feature_names.append('opt_model_{}'.format(bins[i]))
             feature_names.append('powerlaw_a_{}'.format(bins[i]))
-            feature_names.append('powerlaw_SSE_{}'.format(bins[i]))
+            feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
             
             # Fitting the PageRank distribution and finding the optimal
             # distribution according to SSE
             opt_mod,opt_mod_sse = utils.best_fit_distribution(pagerank,bins=bins[i])
-            feature_list.append(opt_mod)
+            feature_list['opt_model_{}'.format(bins[i])] = opt_mod
 
             # Fitting power law and finding 'a' and the SSE of fit.
-            feature_list.append(utils.power_law_fit(pagerank,bins=bins[i])[0][-2]) # value 'a' in power law
-            feature_list.append(utils.power_law_fit(pagerank,bins=bins[i])[1]) # value sse in power law
+            feature_list['powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(pagerank,bins=bins[i])[0][-2]# value 'a' in power law
+            feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(pagerank,bins=bins[i])[1] # value sse in power law
 
         self.features = feature_list
+        """
         self.feature_names=feature_names
+        """

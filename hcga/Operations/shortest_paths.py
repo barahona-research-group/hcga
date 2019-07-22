@@ -35,12 +35,15 @@ class ShortestPaths():
 
 
         """
-
+        
+        
+        """
         self.feature_names = ['path_length_mean','path_length_mean_max','path_length_max']
-
+        """
+        
         G = self.G
 
-        feature_list = []
+        feature_list = {}
 
         # Calculating the shortest paths stats
         shortest_paths = nx.shortest_path(G)
@@ -59,9 +62,9 @@ class ShortestPaths():
             shortest_path_length_mean.append(np.mean(shortest_path_length))
             shortest_path_length_max.append(np.max(shortest_path_length))
 
-        feature_list.append(np.mean(shortest_path_length_mean))
-        feature_list.append(np.mean(shortest_path_length_max))        
-        feature_list.append(np.max(shortest_path_length_max))        
+        feature_list['path_length_mean']=np.mean(shortest_path_length_mean)
+        feature_list['path_length_mean_max']=np.mean(shortest_path_length_max)        
+        feature_list['path_length_max']=np.max(shortest_path_length_max)       
 
 
         self.features = feature_list

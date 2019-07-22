@@ -50,12 +50,14 @@ class ModularityCommunities():
            "Finding community structure in very large networks."
            Physical Review E 70(6), 2004.
         """
-
+        
+        """
         feature_names = ['num_comms_greedy_mod','ratio_max_min_num_nodes','ratio_max_2max_num_nodes']
-
+        """
+        
         G = self.G
 
-        feature_list = []
+        feature_list = {}
 
         # basic normalisation parameters
         N = G.number_of_nodes()
@@ -65,24 +67,29 @@ class ModularityCommunities():
         c = list(greedy_modularity_communities(G))
         
         # calculate number of communities
-        feature_list.append(len(c))        
+        feature_list['num_comms_greedy_mod']=len(c)  
 
         # calculate ratio of largest to smallest community
-        feature_list.append((len(c[0])/len(c[-1])))        
+        feature_list['ratio_max_min_num_nodes']=(len(c[0])/len(c[-1]))      
 
         # calculate ratio of largest to 2nd largest community
         if len(c)>1:
-            feature_list.append((len(c[0])/len(c[1])))
+            feature_list['ratio_max_2max_num_nodes']=(len(c[0])/len(c[1]))
         else:
-            feature_list.append(np.nan)
+            feature_list['ratio_max_2max_num_nodes']=np.nan
 
         # clustering quality functions       
-        qual_names,qual_vals = clustering_quality(G,c)           
-
-            
-        feature_list = feature_list + qual_vals
-        feature_names = feature_names + qual_names     
+        qual_names,qual_vals = clustering_quality(G,c)      
         
+        for i in range(len(qual_names)):
+            feature_list[qual_names[i]]=qual_vals[i]   
 
+        """
+        feature_list = feature_list + qual_vals
+        feature_names = feature_names + qual_names    
+        """
+        
+        """
         self.feature_names = feature_names
+        """
         self.features = feature_list

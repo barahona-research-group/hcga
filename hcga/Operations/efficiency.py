@@ -38,16 +38,19 @@ class Efficiency():
         
         """
 
-
+        """
         feature_names = ['local_efficiency','global_efficiency']
+        """
 
         G = self.G
 
-        feature_list = []
+        feature_list = {}
         
         #Efficiency calculations
-        feature_list.append(nx.local_efficiency(G))
-        feature_list.append(nx.global_efficiency(G))
+        feature_list['local_efficiency']=nx.local_efficiency(G)
+        feature_list['global_efficiency']=nx.global_efficiency(G)
         
+        """
         self.feature_names = feature_names
+        """
         self.features = feature_list

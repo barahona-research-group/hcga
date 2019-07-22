@@ -39,19 +39,22 @@ class MaximalMatching():
 
         """
 
-
+        """
         feature_names = ['num_edges','ratio']
+        """
 
         G = self.G
 
-        feature_list = []
+        feature_list = {}
         
         E=nx.number_of_edges(G)
         #Calculate number of edges in maximal matching
-        feature_list.append(len(nx.maximal_matching(G)))
+        feature_list['num_edges']=len(nx.maximal_matching(G))
         #Calculate the total ratio of edges in the maximal matching to the
         #in the network
-        feature_list.append(len(nx.maximal_matching(G))/E)
+        feature_list['ratio']=len(nx.maximal_matching(G))/E
         
+        """
         self.feature_names=feature_names
+        """
         self.features = feature_list

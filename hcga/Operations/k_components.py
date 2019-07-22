@@ -36,12 +36,13 @@ class kComponents():
             https://networkx.github.io/documentation/stable/reference/algorithms/approximation.html            
         """
         
-        
+        """
         feature_names = ['num_k_components','max_k']
+        """
 
         G = self.G
 
-        feature_list = []
+        feature_list = {}
         
         # Calculate the k_components
         k_components=nx.k_components(G)
@@ -54,25 +55,17 @@ class kComponents():
             num_k=num_k+len(k_components_vals[i])
         
         max_k=max(k_components_keys)
-        feature_list.append(num_k) 
-        feature_list.append(max_k) 
-        
-        # Define other feature names
-        s1='num_{}_components'.format(max_k)
-        s2='mean_{}_component_size'.format(max_k)
-        s3='largest_{}_component'.format(max_k)
-        s4='smallest_{}_component'.format(max_k)
-        feature_names.append(s1)
-        feature_names.append(s2)
-        feature_names.append(s3)
-        feature_names.append(s4)
+        feature_list['num_k_components']=num_k
+        feature_list['max_k']=max_k
         
         # Calculate basic feature related to largest k component
-        feature_list.append(len(k_components_vals[0]))
+        feature_list['num_max_k_components']=len(k_components_vals[0])
         l=[len(i) for i in k_components_vals[0]]
-        feature_list.append(np.mean(l))
-        feature_list.append(max(l))
-        feature_list.append(min(l))
+        feature_list['mean_max_k_component_size']=np.mean(l)
+        feature_list['largest_max_k_component']=max(l)
+        feature_list['smallest_max_k_component']=min(l)
         
+        """
         self.feature_names = feature_names
+        """
         self.features = feature_list

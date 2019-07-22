@@ -34,17 +34,20 @@ class ScaleFree():
 
 
         """
-
+        
+        
+        """
         self.feature_names = ['s_metric']
+        """
 
         G = self.G
 
-        feature_list = []
+        feature_list = {}
 
               
 
         # 
-        feature_list.append(nx.s_metric(G,normalized=False))        
+        feature_list['s_metric']=nx.s_metric(G,normalized=False)        
         
 
         self.features = feature_list

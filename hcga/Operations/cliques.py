@@ -42,20 +42,22 @@ class Cliques():
             https://networkx.github.io/documentation/stable/reference/algorithms/clique.html
         """        
 
-
+        """
         # Defining featurenames
         feature_names = ['clique_number','number_of_cliques',]
+        """
         
         G = self.G
 
-        feature_list = []
+        feature_list = {}
         
         #Calculate the clique number for the graph
-        feature_list.append(clique.graph_clique_number(G))
+        feature_list['clique_number']=clique.graph_clique_number(G)
         
         #Calculate the number of maximal cliques in the graph
-        feature_list.append(clique.graph_number_of_cliques(G))
+        feature_list['number_of_cliques']=clique.graph_number_of_cliques(G)
         
-        
+        """
         self.feature_names=feature_names
+        """
         self.features = feature_list

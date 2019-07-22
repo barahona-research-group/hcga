@@ -30,16 +30,19 @@ class Diameter():
             https://networkx.github.io/documentation/stable/reference/algorithms/distance_measures.html
         """
         
+        """
         feature_names = ['diameter','radius']
+        """
         
         G = self.G
-        feature_list = []
+        feature_list = {}
         #Adding diameter and radius 
-        feature_list.append(nx.diameter(G))
-        feature_list.append(nx.radius(G))
+        feature_list['diameter']=nx.diameter(G)
+        feature_list['radius']=nx.radius(G)
         
-        
+        """
         self.feature_names = feature_names
+        """
         self.features = feature_list
         
         

@@ -34,12 +34,14 @@ class SmallWorld():
 
 
         """
-
+        
+        """
         self.feature_names = ['sigma','omega']
+        """
 
         G = self.G
 
-        feature_list = []
+        feature_list = {}
 
         N = G.number_of_nodes()
         E = G.number_of_edges()
@@ -69,10 +71,10 @@ class SmallWorld():
         
         sigma = (C / Cr) / (L / Lr)
         
-        feature_list.append(sigma)
+        feature_list['sigma']=sigma
 
 
         omega = 0
-        feature_list.append(omega)
+        feature_list['omega']=omega
 
         self.features = feature_list
