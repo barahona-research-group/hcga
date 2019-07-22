@@ -26,5 +26,12 @@ The centrality eigenvector module
 .. automodule:: hcga.Operations.centrality_eigenvector
    :members:
 
+The clustering module
+-----------------------------------
+.. automodule:: hcga.Operations.clustering
+   :members:
 
-
+The modularity module
+-----------------------------------
+.. automodule:: hcga.Operations.communities_modularity
+   :members:

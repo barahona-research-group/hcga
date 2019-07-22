@@ -20,21 +20,12 @@
   <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
   
     
-      <script type="text/javascript">
-          var DOCUMENTATION_OPTIONS = {
-              URL_ROOT:'./',
-              VERSION:'0',
-              LANGUAGE:'None',
-              COLLAPSE_INDEX:false,
-              FILE_SUFFIX:'.html',
-              HAS_SOURCE:  true,
-              SOURCELINK_SUFFIX: '.txt'
-          };
-      </script>
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -101,6 +92,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-hcga.Operations.basic_stats">The Basic statistic module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-hcga.Operations.centrality_degree">The centrality degree module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-hcga.Operations.centrality_eigenvector">The centrality eigenvector module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-hcga.Operations.clustering">The clustering module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-hcga.Operations.communities_modularity">The modularity module</a></li>
 </ul>
 </li>
 </ul>
@@ -192,8 +185,6 @@
 </div>
 <div class="section" id="module-hcga.Operations.basic_stats">
 <span id="the-basic-statistic-module"></span><h2>The Basic statistic module<a class="headerlink" href="#module-hcga.Operations.basic_stats" title="Permalink to this headline">¶</a></h2>
-<p>Created on Sun Mar  3 18:30:46 2019</p>
-<p>&#64;author: Rob</p>
 <dl class="class">
 <dt id="hcga.Operations.basic_stats.BasicStats">
 <em class="property">class </em><code class="descclassname">hcga.Operations.basic_stats.</code><code class="descname">BasicStats</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/Operations/basic_stats.html#BasicStats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.basic_stats.BasicStats" title="Permalink to this definition">¶</a></dt>
@@ -223,7 +214,7 @@
 <dd><p>Degree centrality class</p>
 <dl class="method">
 <dt id="hcga.Operations.centrality_degree.DegreeCentrality.feature_extraction">
-<code class="descname">feature_extraction</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/Operations/centrality_degree.html#DegreeCentrality.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_degree.DegreeCentrality.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/Operations/centrality_degree.html#DegreeCentrality.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_degree.DegreeCentrality.feature_extraction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the degree centrality for nodes.</p>
 <p>The degree centrality for a node v is the fraction of nodes it
 is connected to.</p>
@@ -253,18 +244,20 @@ are possible.</p>
 </div>
 <div class="section" id="module-hcga.Operations.centrality_eigenvector">
 <span id="the-centrality-eigenvector-module"></span><h2>The centrality eigenvector module<a class="headerlink" href="#module-hcga.Operations.centrality_eigenvector" title="Permalink to this headline">¶</a></h2>
+<p>Created on Tue May  7 10:41:52 2019</p>
+<p>&#64;author: robert</p>
 <dl class="class">
 <dt id="hcga.Operations.centrality_eigenvector.EigenCentrality">
-<em class="property">class </em><code class="descclassname">hcga.Operations.centrality_eigenvector.</code><code class="descname">EigenCentrality</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/Operations/centrality_eigenvector.html#EigenCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_eigenvector.EigenCentrality" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcga.Operations.centrality_eigenvector.</code><code class="descname">EigenCentrality</code><span class="sig-paren">(</span><em>G</em>, <em>eigens</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/Operations/centrality_eigenvector.html#EigenCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_eigenvector.EigenCentrality" title="Permalink to this definition">¶</a></dt>
 <dd><p>Centrality eigenvector</p>
 <dl class="method">
 <dt id="hcga.Operations.centrality_eigenvector.EigenCentrality.feature_extraction">
-<code class="descname">feature_extraction</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/Operations/centrality_eigenvector.html#EigenCentrality.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_eigenvector.EigenCentrality.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/Operations/centrality_eigenvector.html#EigenCentrality.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_eigenvector.EigenCentrality.feature_extraction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the eigenvector centrality for the graph <cite>G</cite>.</p>
 <p>Eigenvector centrality computes the centrality for a node based on the
 centrality of its neighbors. The eigenvector centrality for node $i$ is
 the $i$-th element of the vector $x$ defined by the equation</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[Ax = \lambda x\]</div>
 <p>where $A$ is the adjacency matrix of the graph <cite>G</cite> with eigenvalue
 $lambda$. By virtue of the Perron–Frobenius theorem, there is a unique
@@ -314,6 +307,16 @@ Oxford University Press, USA, 2010, pp. 169.</td></tr>
 
 </dd></dl>
 
+</div>
+<div class="section" id="module-hcga.Operations.clustering">
+<span id="the-clustering-module"></span><h2>The clustering module<a class="headerlink" href="#module-hcga.Operations.clustering" title="Permalink to this headline">¶</a></h2>
+<p>Created on Sun Mar  3 18:30:46 2019</p>
+<p>&#64;author: Rob</p>
+</div>
+<div class="section" id="module-hcga.Operations.communities_modularity">
+<span id="the-modularity-module"></span><h2>The modularity module<a class="headerlink" href="#module-hcga.Operations.communities_modularity" title="Permalink to this headline">¶</a></h2>
+<p>Created on Sun Mar  3 18:30:46 2019</p>
+<p>&#64;author: Rob</p>
 </div>
 </div>
 
