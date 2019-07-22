@@ -16,6 +16,7 @@ and then type:
 
 ## Usage
 
+See https://imperialcollegelondon.github.io/hcga/ for the documentation. 
 
 ## Cite
 
