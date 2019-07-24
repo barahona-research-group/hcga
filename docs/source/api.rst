@@ -2,8 +2,9 @@ API
 ==============
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: API:
 
-   Functions
+   graph
+   operations
    Features
