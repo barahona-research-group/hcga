@@ -19,3 +19,12 @@ Features
    Features/efficiency
    Features/independent_sets
    Features/k_components
+   Features/maximal_matching
+   Features/node_connectivity
+   Features/pagerank
+   Features/rich_club
+   Features/scale_free
+   Features/shortest_paths
+   Features/small_worldness
+   Features/structural_holes
+   Features/vitality
