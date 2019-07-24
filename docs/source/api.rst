@@ -1,9 +1,12 @@
-===========================================
+###############
 API
-===========================================
+###############
 
 .. automodule:: hcga
    :members:
+
+Functions
+###############
 
 The Graph module
 ===========================================
@@ -14,6 +17,9 @@ The Operations module
 ==============================
 .. automodule:: hcga.Operations.operations
    :members:
+
+Features
+###############
 
 The assortativity module
 =============================================
