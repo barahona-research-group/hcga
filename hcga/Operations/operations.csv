@@ -1,5 +1,5 @@
 function name:,filename:,classname:,shortname:,keywords:,calculation_speed:,precomputed:
-_BasicStats,_basic_stats,_BasicStats,BS,,,False 
+BasicStats,basic_stats,BasicStats,BS,,,False 
 Clustering,clustering,Clustering,CL,,,False 
 DegreeCentrality,centrality_degree,DegreeCentrality,DC,,,False 
 BetweennessCentrality,centrality_betweenness,BetweennessCentrality,BC,,,False 
