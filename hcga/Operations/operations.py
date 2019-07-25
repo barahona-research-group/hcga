@@ -32,6 +32,7 @@ class Operations():
         self.pre_computations = []
         self.feature_names = []
         self.feature_vals = []
+        self.feature_dict = {}
 
 
         # pre computed values
@@ -128,20 +129,25 @@ class Operations():
 
                         
             
+            """
             # Alter the feature feature_names
             f_names = feature_obj.feature_names
             f_names_updated = [symbolic_name + '_' + f_name for f_name in f_names]
-
+            """
+            """
             # appending the parameter list onto the feature name
-            """param_string = '_'.join(map(str, params))
+            param_string = '_'.join(map(str, params))
             if params:
                 f_names_updated_params = [f_name + '_' + param_string for f_name in f_names_updated]
                 f_names_updated = f_names_updated_params"""
 
+            """
             # Append the altered feature names and the feature list of values
-            feature_names.append(f_names_updated)
-            feature_vals.append(feature_obj.features)
+            feature_names.append(list(feature_obj.features.keys()))
+            feature_vals.append(list(feature_obj.features.values()))
+            """
             
+            # Store features as a dictionary of dictionaries
             feature_dict[symbolic_name] = feature_obj.features
             
         self.feature_dict = feature_dict
