@@ -48,20 +48,28 @@ class Clustering():
         G = self.G
 
         feature_list = {}
-
-        # Calculating number of triangles
-        feature_list['num_triangles']=np.asarray(list(nx.triangles(G).values())).mean()
-
-        # graph transivity
-        C = nx.transitivity(G)
-        feature_list['transitivity'] = C
         
         
+        if not nx.is_directed(G):
+            # Calculating number of triangles
+            feature_list['num_triangles']=np.asarray(list(nx.triangles(G).values())).mean()
+                
+            # graph transivity
+            C = nx.transitivity(G)
+            feature_list['transitivity'] = C
+        else:
+            feature_list['num_triangles']=feature_list['transitivity']='not implemented for directed graphs'
+                
+        
+        if nx.number_of_selfloops(G)==0:
+            # Average clustering coefficient
+            feature_list['clustering_mean']=nx.average_clustering(G)
+            feature_list['clustering_std']=np.asarray(list(nx.clustering(G).values())).std()
+            feature_list['clustering_median']=np.median(np.asarray(list(nx.clustering(G).values())))
+        else:
+            feature_list['clustering_mean']=feature_list['clustering_std']\
+            =feature_list['clustering_median']='not implemented for multigraphs'
 
-        # Average clustering coefficient
-        feature_list['clustering_mean']=nx.average_clustering(G)
-        feature_list['clustering_std']=np.asarray(list(nx.clustering(G).values())).std()
-        feature_list['clustering_median']=np.median(np.asarray(list(nx.clustering(G).values())))
 
         # generalised degree
         feature_list['square_clustering_mean']=np.asarray(list(nx.square_clustering(G).values())).mean()
