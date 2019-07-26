@@ -46,10 +46,11 @@ class Efficiency():
 
         feature_list = {}
         
-        #Efficiency calculations
-        feature_list['local_efficiency']=nx.local_efficiency(G)
-        feature_list['global_efficiency']=nx.global_efficiency(G)
-        
+        if not nx.is_directed(G):            
+            #Efficiency calculations
+            feature_list['local_efficiency']=nx.local_efficiency(G)
+            feature_list['global_efficiency']=nx.global_efficiency(G)
+            
         """
         self.feature_names = feature_names
         """

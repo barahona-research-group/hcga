@@ -49,28 +49,31 @@ class Eccentricity():
         
         G = self.G
         feature_list = {}
-        #Calculate the eccentricity of each node
-        eccentricity = np.asarray(list(nx.eccentricity(G).values()))
-        # Basic stats regarding the eccentricity distribution
-        feature_list['mean'] = eccentricity.mean()
-        feature_list['std'] = eccentricity.std()
-        feature_list['max'] = eccentricity.max()
-        feature_list['min'] = eccentricity.min()
-        
-        for i in range(len(bins)):
-            """# Adding to feature names
-            feature_names.append('opt_model_{}'.format(bins[i]))
-            feature_names.append('powerlaw_a_{}'.format(bins[i]))
-            feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
+        if not nx.is_directed(G) or (nx.is_directed(G) and nx.is_strongly_connected(G)):
+            #Calculate the eccentricity of each node
+            eccentricity = np.asarray(list(nx.eccentricity(G).values()))
+            # Basic stats regarding the eccentricity distribution
+            feature_list['mean'] = eccentricity.mean()
+            feature_list['std'] = eccentricity.std()
+            feature_list['max'] = eccentricity.max()
+            feature_list['min'] = eccentricity.min()
             
-            # Fitting the eccentricity distribution and finding the optimal
-            # distribution according to SSE
-            opt_mod,opt_mod_sse = utils.best_fit_distribution(eccentricity,bins=bins[i])
-            feature_list['opt_model_{}'.format(bins[i])] = opt_mod
-
-            # Fitting power law and finding 'a' and the SSE of fit.
-            feature_list['powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(eccentricity,bins=bins[i])[0][-2]# value 'a' in power law
-            feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(eccentricity,bins=bins[i])[1] # value sse in power law
+            for i in range(len(bins)):
+                """# Adding to feature names
+                feature_names.append('opt_model_{}'.format(bins[i]))
+                feature_names.append('powerlaw_a_{}'.format(bins[i]))
+                feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
+                
+                # Fitting the eccentricity distribution and finding the optimal
+                # distribution according to SSE
+                opt_mod,opt_mod_sse = utils.best_fit_distribution(eccentricity,bins=bins[i])
+                feature_list['opt_model_{}'.format(bins[i])] = opt_mod
+    
+                # Fitting power law and finding 'a' and the SSE of fit.
+                feature_list['powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(eccentricity,bins=bins[i])[0][-2]# value 'a' in power law
+                feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(eccentricity,bins=bins[i])[1] # value sse in power law
+        else:
+            feature_list['eccentricity_calculations']='not implemented for not strongly connected digraphs'
 
         """
         self.feature_names=feature_names

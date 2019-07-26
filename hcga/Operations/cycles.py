@@ -40,15 +40,18 @@ class Cycles():
         
         G=self.G
         feature_list={}
-        # Find list of cycles for graph
-        cycles=nx.cycle_basis(G)
-        # Add basic cycle features 
-        feature_list['num_cycles']=len(cycles)
-        l=[len(i) for i in cycles]
-        feature_list['mean_cycle_length']=np.mean(l)
-        feature_list['shortest_cycle']=min(l)
-        feature_list['longest_cycle']=max(l)
-        
+        if not nx.is_directed(G):
+            # Find list of cycles for graph
+            cycles=nx.cycle_basis(G)
+            # Add basic cycle features 
+            feature_list['num_cycles']=len(cycles)
+            l=[len(i) for i in cycles]
+            feature_list['mean_cycle_length']=np.mean(l)
+            feature_list['shortest_cycle']=min(l)
+            feature_list['longest_cycle']=max(l)
+        else:
+            feature_list['cycles_calculations']='not implemented for directed graphs'
+            
         """
         self.feature_names = feature_names
         """

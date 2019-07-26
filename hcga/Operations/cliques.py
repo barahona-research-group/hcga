@@ -51,11 +51,15 @@ class Cliques():
 
         feature_list = {}
         
-        #Calculate the clique number for the graph
-        feature_list['clique_number']=clique.graph_clique_number(G)
+        if not nx.is_directed(G):
+            #Calculate the clique number for the graph
+            feature_list['clique_number']=clique.graph_clique_number(G)
         
-        #Calculate the number of maximal cliques in the graph
-        feature_list['number_of_cliques']=clique.graph_number_of_cliques(G)
+            #Calculate the number of maximal cliques in the graph
+            feature_list['number_of_cliques']=clique.graph_number_of_cliques(G)
+            
+        else:
+            feature_list['clique_calculations']='not implemented for directed graphs'
         
         """
         self.feature_names=feature_names

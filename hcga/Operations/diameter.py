@@ -36,9 +36,12 @@ class Diameter():
         
         G = self.G
         feature_list = {}
-        #Adding diameter and radius 
-        feature_list['diameter']=nx.diameter(G)
-        feature_list['radius']=nx.radius(G)
+        if not nx.is_directed(G) or (nx.is_directed(G) and nx.is_strongly_connected(G)):
+            #Adding diameter and radius 
+            feature_list['diameter']=nx.diameter(G)
+            feature_list['radius']=nx.radius(G)
+        else:
+            feature_list['diameter_calculations']='not implemented for not strongly connected digraphs'
         
         """
         self.feature_names = feature_names

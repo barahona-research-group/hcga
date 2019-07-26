@@ -42,62 +42,65 @@ class AsynfluidCommunities():
         G = self.G
 
         feature_list = {}
-
-        # basic normalisation parameters
-        N = G.number_of_nodes()
-        E = G.number_of_edges()
+        
+        if not nx.is_directed(G):
+            # basic normalisation parameters
+            N = G.number_of_nodes()
+            E = G.number_of_edges()
 
         
         
-        for i in range(2,kmax):    
-        
-            c,density = list(asyn_fluidc(G,2))       
+            for i in range(2,kmax):    
+                
+                c,density = list(asyn_fluidc(G,2))       
+                
+                #total density
+                feature_list['total_density_'+str(i)]=sum(density)
+                """
+                feature_names.append('total_density_'+str(i))
+                """
+                
+                # ratio density
+                feature_list['ratio_density_'+str(i)]=np.min(density)/np.max(density)
+                """
+                feature_names.append('ratio_density_'+str(i))
+                """
 
-            #total density
-            feature_list['total_density_'+str(i)]=sum(density)
-            """
-            feature_names.append('total_density_'+str(i))
-            """
+                # length of most dense community
+                feature_list['most_dense_'+str(i)]=len(c[np.argmax(density)])
+                """
+                feature_names.append('most_dense_'+str(i))
+                """
+                
+                # length of least dense community
+                feature_list['least_dense_'+str(i)]=len(c[np.argmin(density)])
+                """
+                feature_names.append('least_dense_'+str(i))
+                """
 
-            # ratio density
-            feature_list['ratio_density_'+str(i)]=np.min(density)/np.max(density)
-            """
-            feature_names.append('ratio_density_'+str(i))
-            """
-
-            # length of most dense community
-            feature_list['most_dense_'+str(i)]=len(c[np.argmax(density)])
-            """
-            feature_names.append('most_dense_'+str(i))
-            """
-
-            # length of least dense community
-            feature_list['least_dense_'+str(i)]=len(c[np.argmin(density)])
-            """
-            feature_names.append('least_dense_'+str(i))
-            """
-
-            # clustering quality functions       
-            qual_names,qual_vals = clustering_quality(G,c)
-            
-            """
-            # adding arguments to names
-            [name+'_'+str(i) for name in qual_names]
-            
-            feature_list = feature_list + qual_vals
-            feature_names = feature_names + qual_names    
-            """
-            
-            for j in range(len(qual_names)):
-                feature_list[qual_names[j]+'_'+str(i)]=qual_vals[j]
-            
-            
-            # calculate size ratio of the top 2 largest communities
-            feature_list['num_nodes_ratio_'+str(i)]=(len(c[0])/len(c[1]))
-            """
-            feature_names.append('num_nodes_ratio_'+str(i))
-            """
-
+                # clustering quality functions       
+                qual_names,qual_vals = clustering_quality(G,c)
+                
+                """
+                # adding arguments to names
+                [name+'_'+str(i) for name in qual_names]
+                
+                feature_list = feature_list + qual_vals
+                feature_names = feature_names + qual_names    
+                """
+                
+                for j in range(len(qual_names)):
+                    feature_list[qual_names[j]+'_'+str(i)]=qual_vals[j]
+                    
+                    
+                    # calculate size ratio of the top 2 largest communities
+                    feature_list['num_nodes_ratio_'+str(i)]=(len(c[0])/len(c[1]))
+                    """
+                    feature_names.append('num_nodes_ratio_'+str(i))
+                    """
+        else:
+            feature_list['asyn_fluid_calculations']='not implemented for directed graphs'
+                    
         """
         self.feature_names = feature_names
         """
