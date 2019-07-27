@@ -8,6 +8,7 @@ Created on Sun Mar  3 18:30:46 2019
 import pandas as pd
 import numpy as np
 from hcga.Operations.utils import clustering_quality
+import networkx as nx
 
 from networkx.algorithms.community import label_propagation_communities
 
@@ -56,7 +57,7 @@ class LabelpropagationCommunities():
             feature_names = feature_names + qual_names 
             """
         else:
-            feature_list['label_propagation_calculations']='not implemented for directed graphs'
+            feature_list['label_propagation_features']='unavailable for directed graphs'
 
         """
         self.feature_names = feature_names

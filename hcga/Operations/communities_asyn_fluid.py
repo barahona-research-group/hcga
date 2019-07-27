@@ -7,6 +7,7 @@ Created on Sun Mar  3 18:30:46 2019
 
 import pandas as pd
 import numpy as np
+import networkx as nx
 
 #from networkx.algorithms.community import asyn_fluidc
 from networkx.algorithms.community import quality
@@ -99,7 +100,7 @@ class AsynfluidCommunities():
                     feature_names.append('num_nodes_ratio_'+str(i))
                     """
         else:
-            feature_list['asyn_fluid_calculations']='not implemented for directed graphs'
+            feature_list['asyn_fluid_features']='unavailable for directed graphs'
                     
         """
         self.feature_names = feature_names

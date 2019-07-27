@@ -44,17 +44,19 @@ class IndependentSets():
         G = self.G
 
         feature_list = {}
-
-        N = G.number_of_nodes() 
-
-
-        ind_set = nx.maximal_independent_set(G)
         
-        feature_list['num_ind_nodes_norm']=len(ind_set)
-        
-        feature_list['ratio__ind_nodes_norm']=len(ind_set)/len(G)
-
-        
+        if not nx.is_directed(G):            
+            N = G.number_of_nodes() 
+    
+    
+            ind_set = nx.maximal_independent_set(G)
+            
+            feature_list['num_ind_nodes_norm']=len(ind_set)
+            
+            feature_list['ratio__ind_nodes_norm']=len(ind_set)/len(G)
+        else:
+            feature_list['independent_set_features']='unavailable for directed graphs'
+            
 
 
         self.features = feature_list

@@ -50,6 +50,8 @@ class Efficiency():
             #Efficiency calculations
             feature_list['local_efficiency']=nx.local_efficiency(G)
             feature_list['global_efficiency']=nx.global_efficiency(G)
+        else:
+            feature_list['efficiency_features']='unavailable for directed graphs'
             
         """
         self.feature_names = feature_names

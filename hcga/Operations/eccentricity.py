@@ -73,7 +73,7 @@ class Eccentricity():
                 feature_list['powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(eccentricity,bins=bins[i])[0][-2]# value 'a' in power law
                 feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(eccentricity,bins=bins[i])[1] # value sse in power law
         else:
-            feature_list['eccentricity_calculations']='not implemented for not strongly connected digraphs'
+            feature_list['eccentricity_features']='unavailable for not strongly connected digraphs'
 
         """
         self.feature_names=feature_names

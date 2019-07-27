@@ -49,32 +49,30 @@ class KatzCentrality():
         G = self.G
         feature_list = {}
         
-        if nx.number_of_selfloops(G)==0:
-            #Calculate the Katz centrality of each node
-            katz_centrality = np.asarray(list(centrality.katz_centrality(G).values()))
-            # Basic stats regarding the Katz centrality distribution
-            feature_list['mean'] = katz_centrality.mean()
-            feature_list['std'] = katz_centrality.std()
-            feature_list['max'] = katz_centrality.max()
-            feature_list['min'] = katz_centrality.min()
         
-            for i in range(len(bins)):
-                """# Adding to feature names
-                feature_names.append('opt_model_{}'.format(bins[i]))
-                feature_names.append('powerlaw_a_{}'.format(bins[i]))
-                feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
-                
-                # Fitting the katz centrality distribution and finding the optimal
-                # distribution according to SSE
-                opt_mod,opt_mod_sse = utils.best_fit_distribution(katz_centrality,bins=bins[i])
-                feature_list['opt_model_{}'.format(bins[i])] = opt_mod
-                
-                # Fitting power law and finding 'a' and the SSE of fit.
-                feature_list['powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(katz_centrality,bins=bins[i])[0][-2]# value 'a' in power law
-                feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(katz_centrality,bins=bins[i])[1] # value sse in power law
+        #Calculate the Katz centrality of each node
+        katz_centrality = np.asarray(list(centrality.katz_centrality(G).values()))
+        # Basic stats regarding the Katz centrality distribution
+        feature_list['mean'] = katz_centrality.mean()
+        feature_list['std'] = katz_centrality.std()
+        feature_list['max'] = katz_centrality.max()
+        feature_list['min'] = katz_centrality.min()
         
-        else:
-            feature_list['katz_centrality_calculations'] = 'not implemented for multigraphs'
+        for i in range(len(bins)):
+            """# Adding to feature names
+            feature_names.append('opt_model_{}'.format(bins[i]))
+            feature_names.append('powerlaw_a_{}'.format(bins[i]))
+            feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
+                
+            # Fitting the katz centrality distribution and finding the optimal
+            # distribution according to SSE
+            opt_mod,opt_mod_sse = utils.best_fit_distribution(katz_centrality,bins=bins[i])
+            feature_list['opt_model_{}'.format(bins[i])] = opt_mod
+                
+            # Fitting power law and finding 'a' and the SSE of fit.
+            feature_list['powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(katz_centrality,bins=bins[i])[0][-2]# value 'a' in power law
+            feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(katz_centrality,bins=bins[i])[1] # value sse in power law
+
         """
         self.feature_names=feature_names
         """

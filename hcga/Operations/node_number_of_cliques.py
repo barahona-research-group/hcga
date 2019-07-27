@@ -2,7 +2,7 @@
 from networkx.algorithms import clique
 from hcga.Operations import utils
 import numpy as np
-
+import networkx as nx
 
 class NodeNumberOfCliques():
     """
@@ -53,31 +53,32 @@ class NodeNumberOfCliques():
 
         feature_list = {}
         
-        
-        #Calculate the the number of maximal cliques for each node
-        number_of_cliques = np.asarray(list(clique.number_of_cliques(G).values()))
-
-        # Basic stats regarding the number of cliques distribution
-        feature_list['mean'] = number_of_cliques.mean()
-        feature_list['std'] = number_of_cliques.std()
-        feature_list['max'] = number_of_cliques.max()
-        feature_list['min'] = number_of_cliques.min()
-        
-        for i in range(len(bins)):
-            """# Adding to feature names
-            feature_names.append('opt_model_{}'.format(bins[i]))
-            feature_names.append('powerlaw_a_{}'.format(bins[i]))
-            feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
+        if not nx.is_directed(G):
+            #Calculate the the number of maximal cliques for each node
+            number_of_cliques = np.asarray(list(clique.number_of_cliques(G).values()))
+    
+            # Basic stats regarding the number of cliques distribution
+            feature_list['mean'] = number_of_cliques.mean()
+            feature_list['std'] = number_of_cliques.std()
+            feature_list['max'] = number_of_cliques.max()
+            feature_list['min'] = number_of_cliques.min()
             
-            # Fitting the number of cliques distribution and finding the optimal
-            # distribution according to SSE
-            opt_mod,opt_mod_sse = utils.best_fit_distribution(number_of_cliques,bins=bins[i])
-            feature_list['opt_model_{}'.format(bins[i])] = opt_mod
-
-            # Fitting power law and finding 'a' and the SSE of fit.
-            feature_list['powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(number_of_cliques,bins=bins[i])[0][-2]# value 'a' in power law
-            feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(number_of_cliques,bins=bins[i])[1] # value sse in power law
-
+            for i in range(len(bins)):
+                """# Adding to feature names
+                feature_names.append('opt_model_{}'.format(bins[i]))
+                feature_names.append('powerlaw_a_{}'.format(bins[i]))
+                feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
+                
+                # Fitting the number of cliques distribution and finding the optimal
+                # distribution according to SSE
+                opt_mod,opt_mod_sse = utils.best_fit_distribution(number_of_cliques,bins=bins[i])
+                feature_list['opt_model_{}'.format(bins[i])] = opt_mod
+    
+                # Fitting power law and finding 'a' and the SSE of fit.
+                feature_list['powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(number_of_cliques,bins=bins[i])[0][-2]# value 'a' in power law
+                feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(number_of_cliques,bins=bins[i])[1] # value sse in power law
+        else:
+            feature_list['number_of_clique_features']='unavailable for directed graphs'
         # Fitting normal distribution and finding...
 
 

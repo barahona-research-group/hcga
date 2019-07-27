@@ -50,7 +50,7 @@ class Cycles():
             feature_list['shortest_cycle']=min(l)
             feature_list['longest_cycle']=max(l)
         else:
-            feature_list['cycles_calculations']='not implemented for directed graphs'
+            feature_list['cycles_features']='unavailable for directed graphs'
             
         """
         self.feature_names = feature_names

@@ -50,31 +50,30 @@ class CoreNumber():
         
         G = self.G
         feature_list = {}
-        if nx.number_of_selfloops(G)==0:
-            #Calculate the core number of each node
-            core_number = np.asarray(list(nx.core_number(G).values()))
-            # Basic stats regarding the core number distribution
-            feature_list['mean'] = core_number.mean()
-            feature_list['std'] = core_number.std()
-            feature_list['max'] = core_number.max()
-            feature_list['min'] = core_number.min()
+        
+        #Calculate the core number of each node
+        core_number = np.asarray(list(nx.core_number(G).values()))
+        # Basic stats regarding the core number distribution
+        feature_list['mean'] = core_number.mean()
+        feature_list['std'] = core_number.std()
+        feature_list['max'] = core_number.max()
+        feature_list['min'] = core_number.min()
             
-            for i in range(len(bins)):
-                """# Adding to feature names
-                feature_names.append('opt_model_{}'.format(bins[i]))
-                feature_names.append('powerlaw_a_{}'.format(bins[i]))
-                feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
+        for i in range(len(bins)):
+            """# Adding to feature names
+            feature_names.append('opt_model_{}'.format(bins[i]))
+            feature_names.append('powerlaw_a_{}'.format(bins[i]))
+            feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
                 
-                # Fitting the core number and finding the optimal
-                # distribution according to SSE
-                opt_mod,opt_mod_sse = utils.best_fit_distribution(core_number,bins=bins[i])
-                feature_list['opt_model_{}'.format(bins[i])] = opt_mod
+            # Fitting the core number and finding the optimal
+            # distribution according to SSE
+            opt_mod,opt_mod_sse = utils.best_fit_distribution(core_number,bins=bins[i])
+            feature_list['opt_model_{}'.format(bins[i])] = opt_mod
     
-                # Fitting power law and finding 'a' and the SSE of fit.
-                feature_list['powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(core_number,bins=bins[i])[0][-2]# value 'a' in power law
-                feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(core_number,bins=bins[i])[1] # value sse in power law
-        else:
-            feature_list['core_number_calculations']='not implemented for multigraphs'
+            # Fitting power law and finding 'a' and the SSE of fit.
+            feature_list['powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(core_number,bins=bins[i])[0][-2]# value 'a' in power law
+            feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(core_number,bins=bins[i])[1] # value sse in power law
+
         
         """
         self.feature_names=feature_names

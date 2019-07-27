@@ -43,28 +43,30 @@ class kComponents():
         G = self.G
 
         feature_list = {}
-        
-        # Calculate the k_components
-        k_components=nx.k_components(G)
-        k_components_keys=np.asarray(list(k_components.keys()))
-        k_components_vals=np.asarray(list(k_components.values()))
-        
-        # Calculate basic features related to k_components
-        num_k=0
-        for i in range(len(k_components_vals)):
-            num_k=num_k+len(k_components_vals[i])
-        
-        max_k=max(k_components_keys)
-        feature_list['num_k_components']=num_k
-        feature_list['max_k']=max_k
-        
-        # Calculate basic feature related to largest k component
-        feature_list['num_max_k_components']=len(k_components_vals[0])
-        l=[len(i) for i in k_components_vals[0]]
-        feature_list['mean_max_k_component_size']=np.mean(l)
-        feature_list['largest_max_k_component']=max(l)
-        feature_list['smallest_max_k_component']=min(l)
-        
+        if not nx.is_directed(G):            
+            # Calculate the k_components
+            k_components=nx.k_components(G)
+            k_components_keys=np.asarray(list(k_components.keys()))
+            k_components_vals=np.asarray(list(k_components.values()))
+            
+            # Calculate basic features related to k_components
+            num_k=0
+            for i in range(len(k_components_vals)):
+                num_k=num_k+len(k_components_vals[i])
+            
+            max_k=max(k_components_keys)
+            feature_list['num_k_components']=num_k
+            feature_list['max_k']=max_k
+            
+            # Calculate basic feature related to largest k component
+            feature_list['num_max_k_components']=len(k_components_vals[0])
+            l=[len(i) for i in k_components_vals[0]]
+            feature_list['mean_max_k_component_size']=np.mean(l)
+            feature_list['largest_max_k_component']=max(l)
+            feature_list['smallest_max_k_component']=min(l)
+        else:
+            feature_list['k_component_features']='unavailable for directed graphs'
+            
         """
         self.feature_names = feature_names
         """

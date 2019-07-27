@@ -8,6 +8,7 @@ Created on Sun Mar  3 18:30:46 2019
 import pandas as pd
 import numpy as np
 from hcga.Operations.utils import clustering_quality
+import networkx as nx
 
 from networkx.algorithms.community import kernighan_lin_bisection
 
@@ -54,7 +55,7 @@ class BisectionCommunities():
             feature_names = feature_names + qual_names     
             """
         else:
-            feature_list['bisection_calculations']='not implemented for directed graphs'
+            feature_list['bisection_features']='unavailable for directed graphs'
 
         """
         self.feature_names = feature_names

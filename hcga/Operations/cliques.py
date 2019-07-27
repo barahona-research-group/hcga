@@ -2,6 +2,7 @@
 from networkx.algorithms import clique
 from hcga.Operations import utils
 import numpy as np
+import networkx as nx
 
 
 class Cliques():
@@ -59,7 +60,7 @@ class Cliques():
             feature_list['number_of_cliques']=clique.graph_number_of_cliques(G)
             
         else:
-            feature_list['clique_calculations']='not implemented for directed graphs'
+            feature_list['cliques_features']='unavailable for directed graphs'
         
         """
         self.feature_names=feature_names

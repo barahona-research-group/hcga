@@ -56,7 +56,7 @@ class ShortestPaths():
             shortest_path_length = []
             sp = list(shortest_paths[i].values())
             
-            for j in G.nodes():
+            for j in range(len(sp)):
                 shortest_path_length.append(len(sp[j]))
                 
             shortest_path_length_mean.append(np.mean(shortest_path_length))

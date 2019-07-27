@@ -8,6 +8,7 @@ Created on Sun Mar  3 18:30:46 2019
 import pandas as pd
 import numpy as np
 from hcga.Operations.utils import clustering_quality
+import networkx as nx
 
 from networkx.algorithms.community import greedy_modularity_communities
 from networkx.algorithms.community.quality import modularity
@@ -59,31 +60,34 @@ class ModularityCommunities():
 
         feature_list = {}
         
-        # basic normalisation parameters
-        N = G.number_of_nodes()
-        E = G.number_of_edges()
+        if not nx.is_directed(G):
+            # basic normalisation parameters
+            N = G.number_of_nodes()
+            E = G.number_of_edges()
     
-        # The optimised number of communities using greedy modularity
-        c = list(greedy_modularity_communities(G))
+            # The optimised number of communities using greedy modularity
+            c = list(greedy_modularity_communities(G))
             
-        # calculate number of communities
-        feature_list['num_comms_greedy_mod']=len(c)  
-    
-        # calculate ratio of largest to smallest community
-        feature_list['ratio_max_min_num_nodes']=(len(c[0])/len(c[-1]))      
-    
-        # calculate ratio of largest to 2nd largest community
-        if len(c)>1:
-            feature_list['ratio_max_2max_num_nodes']=(len(c[0])/len(c[1]))
-        else:
-            feature_list['ratio_max_2max_num_nodes']=np.nan
-    
-        # clustering quality functions       
-        qual_names,qual_vals = clustering_quality(G,c)      
-            
-        for i in range(len(qual_names)):
-            feature_list[qual_names[i]]=qual_vals[i]   
+            # calculate number of communities
+            feature_list['num_comms_greedy_mod']=len(c)  
         
+            # calculate ratio of largest to smallest community
+            feature_list['ratio_max_min_num_nodes']=(len(c[0])/len(c[-1]))      
+        
+            # calculate ratio of largest to 2nd largest community
+            if len(c)>1:
+                feature_list['ratio_max_2max_num_nodes']=(len(c[0])/len(c[1]))
+            else:
+                feature_list['ratio_max_2max_num_nodes']=np.nan
+        
+            # clustering quality functions       
+            qual_names,qual_vals = clustering_quality(G,c)      
+                
+            for i in range(len(qual_names)):
+                feature_list[qual_names[i]]=qual_vals[i]   
+        else:
+            feature_list['communities_modularity_features']='unavailable'
+            
         """
         feature_list = feature_list + qual_vals
         feature_names = feature_names + qual_names    
