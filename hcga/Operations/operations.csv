@@ -4,7 +4,10 @@ Clustering,clustering,Clustering,CL,,,False
 DegreeCentrality,centrality_degree,DegreeCentrality,DC,,,False 
 BetweennessCentrality,centrality_betweenness,BetweennessCentrality,BC,,,False 
 EdgeBetweennessCentrality,centrality_edge_betweenness,EdgeBetweennessCentrality,EC,,,False 
+SubgraphCentrality,centrality_subgraph,SubgraphCentrality,SC,,,False 
 ClosenessCentrality,centrality_closeness,ClosenessCentrality,CC,,,False 
+HarmonicCentrality,centrality_harmonic,HarmonicCentrality,HC,,,False 
+SecondOrderCentrality,centrality_second_order,SecondOrderCentrality,SOC,,,False 
 EigenCentrality,centrality_eigenvector,EigenCentrality,EC,,,True 
 KatzCentrality,centrality_katz,KatzCentrality,KC,,,False 
 CommunitiesModularity,communities_modularity,ModularityCommunities,MC,,,False 
