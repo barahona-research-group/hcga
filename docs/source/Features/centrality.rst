@@ -26,9 +26,24 @@ The edge betweenness centrality module
 .. automodule:: hcga.Operations.centrality_edge_betweenness
    :members:
 
+The subgraph centrality module
+-----------------------------------
+.. automodule:: hcga.Operations.centrality_subgraph
+   :members:
+
 The closeness centrality module
 -----------------------------------
 .. automodule:: hcga.Operations.centrality_closeness
+   :members:
+
+The harmonic centrality module
+-----------------------------------
+.. automodule:: hcga.Operations.centrality_harmonic
+   :members:
+
+The second order centrality module
+-----------------------------------
+.. automodule:: hcga.Operations.centrality_second_order
    :members:
 
 The force centrality module
