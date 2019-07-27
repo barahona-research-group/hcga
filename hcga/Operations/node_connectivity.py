@@ -86,8 +86,13 @@ class NodeConnectivity():
             # fitting the node connectivity histogram distribution
             opt_mod_max,_ =  utils.best_fit_distribution(node_conn.max(axis=1),bins=bins[i])
             feature_list['opt_model_max{}'.format(bins[i])]=opt_mod_max              
-       
-        # calculate the wiener index
+        
+        # Calculate connectivity
+        feature_list['node_connectivity']=nx.node_connectivity(G)
+        feature_list['average_node_connectivity']=nx.average_node_connectivity(G)
+        feature_list['edge_connectivity']=nx.edge_connectivity(G)
+        
+        # calculate the wiener index 
         feature_list['wiener_index']=nx.wiener_index(G)
         
 

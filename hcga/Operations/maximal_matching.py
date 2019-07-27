@@ -4,7 +4,7 @@ import networkx as nx
 
 class MaximalMatching():
     """
-    maximal matching class
+    Maximal matching class
     """
     def __init__(self, G):
         self.G = G
