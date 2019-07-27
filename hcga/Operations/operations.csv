@@ -34,3 +34,4 @@ Assortativity,assortativity,Assortativity,AS,,,False
 ChemicalTheory,chemical_theory,ChemicalTheory,CT,,,False 
 IndependentSets,independent_sets,IndependentSets,IS,,,False 
 MaximalMatching,maximal_matching,MaximalMatching,MM,,,False 
+MinimumCuts,minimum_cuts,MinimumCuts,MiC,,,False 
