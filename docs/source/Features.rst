@@ -20,6 +20,7 @@ Features
    Features/independent_sets
    Features/k_components
    Features/maximal_matching
+   Features/minimum_cuts
    Features/node_connectivity
    Features/pagerank
    Features/rich_club
