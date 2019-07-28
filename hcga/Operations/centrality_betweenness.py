@@ -13,7 +13,7 @@ class BetweennessCentrality():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
         """
@@ -21,16 +21,16 @@ class BetweennessCentrality():
         
         The betweenness centrality for a node is defined as the number of 
         shortest paths that pass through that node.
-        Here we calculate the fraction of shortest paths that pass through 
-        each node.
+        Here the fraction of shortest paths that pass through each node is
+        calculated.
         
         Parameters
         ----------
         G : graph
           A networkx graph
 
-        args :
-            arg[0] Number of bins for calculating pdf of chosen distribution
+        bins :
+            Number of bins for calculating pdf of chosen distribution
             for SSE calculation
 
         Returns
@@ -41,7 +41,7 @@ class BetweennessCentrality():
          Notes
         -----
         Betweenness centrality calculations using networkx:
-            https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html
+            `Networkx_centrality <https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html>`_
         """        
                 
         # Defining the input arguments

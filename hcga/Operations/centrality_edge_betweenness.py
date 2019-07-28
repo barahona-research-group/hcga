@@ -13,7 +13,7 @@ class EdgeBetweennessCentrality():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
         """
@@ -21,16 +21,16 @@ class EdgeBetweennessCentrality():
         
         The edge betweeness centrality for an edge is the number of shortest
         paths that pass through it.
-        Here we calculate the fraction of shortest paths that pass through
-        each edge.
+        Here the fraction of shortest paths that pass through
+        each edge is calculated.
         
         Parameters
         ----------
         G : graph
           A networkx graph
 
-        args :
-            arg[0] Number of bins for calculating pdf of chosen distribution
+        bins :
+            Number of bins for calculating pdf of chosen distribution
             for SSE calculation
 
         Returns
@@ -41,7 +41,7 @@ class EdgeBetweennessCentrality():
          Notes
         -----
         Betweenness centrality calculations using networkx:
-            https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html
+            `Networkx_centrality <https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html>`_
         """     
                 
         # Defining the input arguments

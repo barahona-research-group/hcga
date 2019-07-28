@@ -12,11 +12,12 @@ class BasicStats():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
-        """Compute some basic stats of the network
+        """
+        Compute some basic stats of the network
 
 
         Parameters
@@ -28,8 +29,11 @@ class BasicStats():
         -------
         feature_list : list
            List of features related to basic stats.
-
-
+            
+        Notes
+        -----
+        Basic stats calculations using networkx:
+            `Networkx_basic_stats <https://networkx.github.io/documentation/stable/reference/functions.html>`_
         """
 
 

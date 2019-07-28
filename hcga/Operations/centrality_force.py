@@ -19,7 +19,7 @@ class ForceCentrality():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
@@ -32,10 +32,9 @@ class ForceCentrality():
         G : graph
           A networkx graph
 
-        args: list
-            Parameters for calculating feature_list
-                arg[0]: integer
-                    number of bins
+        bins:
+            Number of bins for calculating pdf of chosen distribution
+            for SSE calculation
 
 
         Returns

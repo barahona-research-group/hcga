@@ -22,11 +22,12 @@ class EigenCentrality():
         self.eigenvalues = eigens[0]
         
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
-        """Compute the eigenvector centrality for the graph `G`.
+        """
+        Compute the eigenvector centrality for the graph `G`.
 
         Eigenvector centrality computes the centrality for a node based on the
         centrality of its neighbors. The eigenvector centrality for node $i$ is
@@ -48,8 +49,10 @@ class EigenCentrality():
 
         args: list
             Parameters for calculating feature_list
-                arg[0]: integer
-                    number of bins
+        
+        bins:
+            Number of bins for calculating pdf of chosen distribution
+            for SSE calculation
 
 
         Returns
@@ -60,9 +63,8 @@ class EigenCentrality():
 
         Notes
         -----
-
         Implemented using networkx:
-            https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/centrality/eigenvector.html#eigenvector_centrality
+            `Networkx_centrality <https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/centrality/eigenvector.html#eigenvector_centrality>`_
 
         The measure was introduced by [1]_ and is discussed in [2]_.
 

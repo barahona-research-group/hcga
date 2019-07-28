@@ -62,18 +62,20 @@ class Vitality():
             
             # ratio of finite nodes to infinite vitality nodes
             ratio_finite = len(closeness_vitality_vals_fin)/len(closeness_vitality_vals)
-    
             
-            # standard measures of closeness vitality
-            feature_list['closeness_mean']=np.mean(closeness_vitality_vals_fin)
-            feature_list['closeness_std']=np.std(closeness_vitality_vals_fin)
-            feature_list['closeness_median']=np.median(closeness_vitality_vals_fin)
-            feature_list['closeness_max']=np.max(closeness_vitality_vals_fin)
-            feature_list['closeness_min']=np.min(closeness_vitality_vals_fin)
-    
-            # fit distribution
-            opt_mod,opt_mod_sse = utils.best_fit_distribution(closeness_vitality_vals_fin,bins=10)
-            feature_list['opt_mod']=opt_mod    
-            
+            if ratio_finite==0:
+                feature_list['vitality_features']='unavailable'
+            else:
+                # standard measures of closeness vitality
+                feature_list['closeness_mean']=np.mean(closeness_vitality_vals_fin)
+                feature_list['closeness_std']=np.std(closeness_vitality_vals_fin)
+                feature_list['closeness_median']=np.median(closeness_vitality_vals_fin)
+                feature_list['closeness_max']=np.max(closeness_vitality_vals_fin)
+                feature_list['closeness_min']=np.min(closeness_vitality_vals_fin)
+        
+                # fit distribution
+                opt_mod,opt_mod_sse = utils.best_fit_distribution(closeness_vitality_vals_fin,bins=10)
+                feature_list['opt_mod']=opt_mod    
+                
 
         self.features = feature_list

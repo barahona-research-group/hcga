@@ -15,7 +15,8 @@ class DegreeCentrality():
         self.features = []
 
     def feature_extraction(self):
-        """Compute the degree centrality for nodes.
+        """
+        Compute the degree centrality for nodes.
 
         The degree centrality for a node v is the fraction of nodes it
         is connected to.
@@ -26,8 +27,8 @@ class DegreeCentrality():
         G : graph
           A networkx graph
 
-        args :
-            arg[0] Number of bins for calculating pdf of chosen distribution for SSE calculation
+        bins :
+            Number of bins for calculating pdf of chosen distribution for SSE calculation
 
         Returns
         -------
@@ -38,10 +39,11 @@ class DegreeCentrality():
         Notes
         -----
         Degree centrality calculations using networkx:
-            https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/centrality/degree_alg.html#degree_centrality
+            `Networkx_centrality <https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/centrality/degree_alg.html#degree_centrality>`_
             
         The degree centrality values are normalized by dividing by the maximum
-        possible degree in a simple graph n-1 where n is the number of nodes in G.
+        possible degree in a simple graph n-1 where n is the number of nodes 
+        in G.
 
         For multigraphs or graphs with self loops the maximum degree might
         be higher than n-1 and values of degree centrality greater than 1

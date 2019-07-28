@@ -10,36 +10,37 @@ class AverageNeighborDegree():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
         
     def feature_extraction(self):
         """
         Compute average neighbor degree for each node
         
-                Parameters
-        ----------
-        G : graph
+        Parameters
+        -----------
+        G: graph
           A networkx graph
 
-        args :
-            arg[0] Number of bins for calculating pdf of chosen distribution for SSE calculation
+        bins:
+            Number of bins for calculating pdf of chosen distribution for SSE calculation
 
         Returns
         -------
-        feature_list :list
+        feature_list: list
            List of features related to average neighbor degree.
 
 
         Notes
         -----
         Average neighbor degree calculations using networkx:
-            https://networkx.github.io/documentation/stable/reference/algorithms/assortativity.html
+            `Networkx_average_neighbor_degree <https://networkx.github.io/documentation/stable/reference/algorithms/assortativity.html>`_
         
         """
         
         # Defining the input arguments
         bins = [10,20,50]
-        """# Defining featurenames
+        """
+        # Defining featurenames
         feature_names = ['mean','std','max','min']
         """
         
