@@ -33,6 +33,7 @@ Eccentricity,eccentricity,Eccentricity,Ecc,,,False
 Efficiency,efficiency,Efficiency,EF,,,False 
 PageRank,pagerank,PageRank,PR,,,False 
 kComponents,k_components,kComponents,kC,,,False 
+Components,components,Components,CO,,,False 
 Assortativity,assortativity,Assortativity,AS,,,False 
 ChemicalTheory,chemical_theory,ChemicalTheory,CT,,,False 
 IndependentSets,independent_sets,IndependentSets,IS,,,False 

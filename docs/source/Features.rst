@@ -13,12 +13,12 @@ Features
    Features/cliques
    Features/clustering
    Features/communities
+   Features/components
    Features/core_number
    Features/cycles
    Features/eccentricity
    Features/efficiency
    Features/independent_sets
-   Features/k_components
    Features/maximal_matching
    Features/minimum_cuts
    Features/node_connectivity
