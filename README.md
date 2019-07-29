@@ -48,6 +48,7 @@ This is to be done the first time, then the next to upate it.
 ```cd html```
 4) Switch branches to gh-pages:
 ```
+git branch gh-pages
 git symbolic-ref HEAD refs/heads/gh-pages  # auto-switches branches to gh-pages
 rm .git/index
 git clean -fdx
