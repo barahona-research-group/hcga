@@ -10,7 +10,7 @@ class Eccentricity():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
         
     def feature_extraction(self):
         """
@@ -36,7 +36,7 @@ class Eccentricity():
         Notes
         -----
         Eccentricity using networkx:
-            https://networkx.github.io/documentation/stable/reference/algorithms/distance_measures.html        
+            `Networx_eccentricity <https://networkx.github.io/documentation/stable/reference/algorithms/distance_measures.html>`_   
         """
         
         # Defining the input arguments
@@ -73,7 +73,14 @@ class Eccentricity():
                 feature_list['powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(eccentricity,bins=bins[i])[0][-2]# value 'a' in power law
                 feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(eccentricity,bins=bins[i])[1] # value sse in power law
         else:
-            feature_list['eccentricity_features']='unavailable for not strongly connected digraphs'
+            feature_list['mean'] = np.nan
+            feature_list['std'] = np.nan
+            feature_list['max'] = np.nan
+            feature_list['min'] = np.nan
+            for i in range(len(bins)):
+                feature_list['opt_model_{}'.format(bins[i])] = np.nan
+                feature_list['powerlaw_a_{}'.format(bins[i])] = np.nan
+                feature_list['powerlaw_SSE_{}'.format(bins[i])] = np.nan
 
         """
         self.feature_names=feature_names

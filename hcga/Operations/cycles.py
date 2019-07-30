@@ -10,7 +10,7 @@ class Cycles():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
         
     def feature_extraction(self):
         
@@ -31,7 +31,7 @@ class Cycles():
         Notes
         -----
         Cycles calculations using networkx:
-            https://networkx.github.io/documentation/stable/reference/algorithms/cycles.html
+            `Networkx_cycles <https://networkx.github.io/documentation/stable/reference/algorithms/cycles.html>`_
         """
         
         """
@@ -50,7 +50,10 @@ class Cycles():
             feature_list['shortest_cycle']=min(l)
             feature_list['longest_cycle']=max(l)
         else:
-            feature_list['cycles_features']='unavailable for directed graphs'
+            feature_list['num_cycles']=np.nan
+            feature_list['mean_cycle_length']=np.nan
+            feature_list['shortest_cycle']=np.nan
+            feature_list['longest_cycle']=np.nan
             
         """
         self.feature_names = feature_names

@@ -16,7 +16,7 @@ class LabelpropagationCommunities():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
@@ -57,8 +57,16 @@ class LabelpropagationCommunities():
             feature_names = feature_names + qual_names 
             """
         else:
-            feature_list['label_propagation_features']='unavailable for directed graphs'
-
+            feature_list['node_ratio']=np.nan
+            feature_list['node_ratio']=np.nan
+            feature_list['mod']=np.nan
+            feature_list['coverage']=np.nan
+            feature_list['performance']=np.nan
+            feature_list['inter_comm_edge']=np.nan
+            feature_list['inter_comm_nedge']=np.nan
+            feature_list['intra_comm_edge']=np.nan
+            
+            
         """
         self.feature_names = feature_names
         """

@@ -9,7 +9,7 @@ class MaximalMatching():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
@@ -34,7 +34,7 @@ class MaximalMatching():
         Notes
         -----
         Maximal matching calculations using networkx:
-            https://networkx.github.io/documentation/stable/reference/algorithms/matching.html
+            `Networkx_maximal_matching <https://networkx.github.io/documentation/stable/reference/algorithms/matching.html>`_
 
 
         """

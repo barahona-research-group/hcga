@@ -17,7 +17,7 @@ class ModularityCommunities():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
@@ -41,7 +41,7 @@ class ModularityCommunities():
         Notes
         -----
         Greedy modularity implemented using networkx:
-            https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/community/modularity_max.html#greedy_modularity_communities
+            `Networkx_communities <https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/community/modularity_max.html#greedy_modularity_communities>`_
 
         References
         ----------
@@ -86,7 +86,17 @@ class ModularityCommunities():
             for i in range(len(qual_names)):
                 feature_list[qual_names[i]]=qual_vals[i]   
         else:
-            feature_list['communities_modularity_features']='unavailable'
+            feature_list['num_comms_greedy_mod'] =np.nan
+            feature_list['ratio_max_min_num_nodes'] =np.nan
+            feature_list['ratio_max_2max_num_nodes']=np.nan
+            feature_list['node_ratio']=np.nan
+            feature_list['mod']=np.nan
+            feature_list['coverage']=np.nan
+            feature_list['performance']=np.nan
+            feature_list['inter_comm_edge']=np.nan
+            feature_list['inter_comm_nedge']=np.nan
+            feature_list['intra_comm_edge']=np.nan
+
             
         """
         feature_list = feature_list + qual_vals

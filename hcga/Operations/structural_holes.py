@@ -14,7 +14,7 @@ class StructuralHoles():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
@@ -70,9 +70,7 @@ class StructuralHoles():
         
         constraint = list(nx.structuralholes.constraint(G).values())      
         
-        if True in np.isnan(constraint):
-            feature_list['constraint_features']='unavailable'
-        else:
+        try:
             # basic stats of constraint
             feature_list['constraint_mean']=np.mean(constraint)
             feature_list['constraint_std']=np.std(constraint)
@@ -83,12 +81,18 @@ class StructuralHoles():
             # best distribution to fit data
             opt_mod_c,_ = utils.best_fit_distribution(constraint,bins=10)
             feature_list['constraint_opt_model']=opt_mod_c
-
+        
+        except:
+            feature_list['constraint_mean']=np.nan
+            feature_list['constraint_std']=np.nan
+            feature_list['constraint_median']=np.nan
+            feature_list['constraint_max']=np.nan
+            feature_list['constraint_min']=np.nan
+            feature_list['constraint_opt_model']=np.nan
+            
         effective_size = list(nx.structuralholes.effective_size(G).values())  
         
-        if True in np.isnan(effective_size):
-            feature_list['effective_size_features']='unavailable'
-        else:
+        try:
             # basic stats of effective size
             feature_list['effective_size_mean']=np.mean(effective_size)
             feature_list['effective_size_std']=np.std(effective_size)
@@ -100,5 +104,13 @@ class StructuralHoles():
             # best distribution to fit data
             opt_mod_es,_ = utils.best_fit_distribution(constraint,bins=10)
             feature_list['effective_size_opt_model']=opt_mod_es
+            
+        except:
+            feature_list['effective_size_mean']=np.nan
+            feature_list['effective_size_std']=np.nan
+            feature_list['effective_size_median']=np.nan
+            feature_list['effective_size_max']=np.nan
+            feature_list['effective_size_min']=np.nan
+            feature_list['effective_size_opt_model']=np.nan
             
         self.features = feature_list

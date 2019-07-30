@@ -21,7 +21,7 @@ class HarmonicCentrality():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
         """Compute the harmonic centrality for nodes.
@@ -45,7 +45,7 @@ class HarmonicCentrality():
         Notes
         -----
         Harmonic centrality calculations using networkx:
-            https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html 
+            `Networkx_centrality <https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html>`_ 
         """
         
         # Defining the input arguments

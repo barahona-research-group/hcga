@@ -14,7 +14,7 @@ class IndependentSets():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
@@ -55,8 +55,7 @@ class IndependentSets():
             
             feature_list['ratio__ind_nodes_norm']=len(ind_set)/len(G)
         else:
-            feature_list['independent_set_features']='unavailable for directed graphs'
-            
-
+            feature_list['num_ind_nodes_norm']=np.nan
+            feature_list['ratio__ind_nodes_norm']=np.nan
 
         self.features = feature_list

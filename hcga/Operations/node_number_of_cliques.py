@@ -12,7 +12,7 @@ class NodeNumberOfCliques():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
         """
@@ -25,8 +25,8 @@ class NodeNumberOfCliques():
         G : graph
           A networkx graph
 
-        args :
-            arg[0] Number of bins for calculating pdf of chosen distribution for SSE calculation
+        bins :
+            Number of bins for calculating pdf of chosen distribution for SSE calculation
 
         Returns
         -------
@@ -38,7 +38,7 @@ class NodeNumberOfCliques():
         Notes
         -----
         Number of cliques calculations using networkx:
-            https://networkx.github.io/documentation/stable/reference/algorithms/clique.html
+            `Networkx_cliques <https://networkx.github.io/documentation/stable/reference/algorithms/clique.html>`_
         """        
                 
         # Defining the input arguments
@@ -78,7 +78,16 @@ class NodeNumberOfCliques():
                 feature_list['powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(number_of_cliques,bins=bins[i])[0][-2]# value 'a' in power law
                 feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(number_of_cliques,bins=bins[i])[1] # value sse in power law
         else:
-            feature_list['number_of_clique_features']='unavailable for directed graphs'
+            feature_list['mean'] = np.nan
+            feature_list['std'] = np.nan
+            feature_list['max'] = np.nan
+            feature_list['min'] = np.nan
+            for i in range(len(bins)):
+                feature_list['opt_model_{}'.format(bins[i])] = np.nan
+                feature_list['powerlaw_a_{}'.format(bins[i])] = np.nan
+                feature_list['powerlaw_SSE_{}'.format(bins[i])] = np.nan
+
+
         # Fitting normal distribution and finding...
 
 

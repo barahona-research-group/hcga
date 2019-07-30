@@ -15,7 +15,7 @@ class MinimumCuts():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
@@ -38,7 +38,7 @@ class MinimumCuts():
         Notes
         -----
         Calculations using networkx:
-            https://networkx.github.io/documentation/stable/reference/algorithms/connectivity.html
+            `Networkx_minimum_cuts <https://networkx.github.io/documentation/stable/reference/algorithms/connectivity.html>`_
         
         """
         

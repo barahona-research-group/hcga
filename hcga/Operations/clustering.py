@@ -13,7 +13,7 @@ class Clustering():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
@@ -33,7 +33,7 @@ class Clustering():
         Notes
         -----
         Implementation of networkx code:
-            https://networkx.github.io/documentation/stable/reference/algorithms/clustering.html
+            `Networkx_clustering <https://networkx.github.io/documentation/stable/reference/algorithms/clustering.html>`_
 
         We followed the same structure as networkx for implementing clustering features.
 
@@ -58,8 +58,8 @@ class Clustering():
             C = nx.transitivity(G)
             feature_list['transitivity'] = C
         else:
-            feature_list['num_triangles']=feature_list['transitivity']='unavailable for directed graphs'
-                
+            feature_list['num_triangles'] = np.nan
+            feature_list['transitivity'] = np.nan
         
 
         # Average clustering coefficient

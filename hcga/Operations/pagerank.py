@@ -8,7 +8,7 @@ class PageRank():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
@@ -35,7 +35,7 @@ class PageRank():
         Notes
         -----
         Implementation of networkx code:
-            https://networkx.github.io/documentation/stable/reference/algorithms/link_analysis.html        
+            `Networkx_pagerank <https://networkx.github.io/documentation/stable/reference/algorithms/link_analysis.html>`_        
 
         """
         bins = [10,20,50]

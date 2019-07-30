@@ -13,7 +13,7 @@ class Cliques():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
         """
@@ -40,7 +40,7 @@ class Cliques():
         Notes
         -----
         Clique number calculations using networkx:
-            https://networkx.github.io/documentation/stable/reference/algorithms/clique.html
+            `Networkx <https://networkx.github.io/documentation/stable/reference/algorithms/clique.html>`_
         """        
 
         """
@@ -60,7 +60,8 @@ class Cliques():
             feature_list['number_of_cliques']=clique.graph_number_of_cliques(G)
             
         else:
-            feature_list['cliques_features']='unavailable for directed graphs'
+            feature_list['clique_number'] = np.nan
+            feature_list['number_of_cliques'] = np.nan
         
         """
         self.feature_names=feature_names

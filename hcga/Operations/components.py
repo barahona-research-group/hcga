@@ -17,7 +17,7 @@ class Components():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
         """Compute the component features for the network
@@ -38,7 +38,7 @@ class Components():
         Notes
         -----
         Components calculations using networkx:
-            https://networkx.github.io/documentation/stable/reference/algorithms/component.html
+            `Networkx_components <https://networkx.github.io/documentation/stable/reference/algorithms/component.html>`_
         """
         
 
@@ -54,7 +54,10 @@ class Components():
             feature_list['num_attracting_comps']=nx.number_attracting_components(G)
             
         else:
-            feature_list['component_features']='unavailable for undirected graphs'
+            feature_list['num_strongly_conn_comps']=np.nan
+            feature_list['num_weak_conn_comps']=np.nan
+            feature_list['num_attracting_comps']=np.nan
     
-    
+        
+        
         self.features = feature_list

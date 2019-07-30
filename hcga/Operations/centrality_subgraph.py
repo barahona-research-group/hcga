@@ -21,7 +21,7 @@ class SubgraphCentrality():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
         """Compute the subgraph centrality for nodes.
@@ -45,7 +45,7 @@ class SubgraphCentrality():
         Notes
         -----
         Subgraph centrality calculations using networkx:
-            https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html 
+            `Networkx_centrality <https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html>`_ 
         """
         
         # Defining the input arguments
@@ -84,7 +84,16 @@ class SubgraphCentrality():
             feature_list['estrada_index']=centrality.estrada_index(G)
         
         else:
-            feature_list['subgraph_centrality_features']='unavailable for directed graphs'
-
-
+            feature_list['mean'] = np.nan
+            feature_list['std'] = np.nan
+            feature_list['max'] = np.nan
+            feature_list['min'] = np.nan
+            for i in range(len(bins)):
+                feature_list['opt_model_{}'.format(bins[i])] = np.nan
+                feature_list['powerlaw_a_{}'.format(bins[i])] = np.nan
+                feature_list['powerlaw_SSE_{}'.format(bins[i])] = np.nan
+        
+                
+                
+                
         self.features = feature_list

@@ -1,5 +1,6 @@
 
 import networkx as nx
+import numpy as np
 
 class Diameter():
     """
@@ -8,7 +9,7 @@ class Diameter():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
         """
@@ -27,7 +28,7 @@ class Diameter():
         Notes
         -----
         Diameter/radius calculations using networkx:
-            https://networkx.github.io/documentation/stable/reference/algorithms/distance_measures.html
+            `Networkx_diameter/radius <https://networkx.github.io/documentation/stable/reference/algorithms/distance_measures.html>`_
         """
         
         """
@@ -41,8 +42,8 @@ class Diameter():
             feature_list['diameter']=nx.diameter(G)
             feature_list['radius']=nx.radius(G)
         else:
-            feature_list['diameter_features']='unavailable for not strongly connected digraphs'
-        
+            feature_list['diameter']=np.nan
+            feature_list['radius']=np.nan
         """
         self.feature_names = feature_names
         """

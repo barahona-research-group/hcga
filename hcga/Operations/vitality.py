@@ -14,7 +14,7 @@ class Vitality():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
@@ -54,18 +54,15 @@ class Vitality():
         
         closeness_vitality_vals = np.asarray(list(nx.closeness_vitality(G).values()))      
         
-        if True in np.isnan(closeness_vitality_vals):
-            feature_list['vitality_features']='unavailable'
-        else:
+        
+        try:
             # remove infinites
             closeness_vitality_vals_fin  = closeness_vitality_vals[np.isfinite(closeness_vitality_vals)]
             
             # ratio of finite nodes to infinite vitality nodes
             ratio_finite = len(closeness_vitality_vals_fin)/len(closeness_vitality_vals)
             
-            if ratio_finite==0:
-                feature_list['vitality_features']='unavailable'
-            else:
+            try:
                 # standard measures of closeness vitality
                 feature_list['closeness_mean']=np.mean(closeness_vitality_vals_fin)
                 feature_list['closeness_std']=np.std(closeness_vitality_vals_fin)
@@ -75,7 +72,22 @@ class Vitality():
         
                 # fit distribution
                 opt_mod,opt_mod_sse = utils.best_fit_distribution(closeness_vitality_vals_fin,bins=10)
-                feature_list['opt_mod']=opt_mod    
+                feature_list['opt_mod']=opt_mod  
                 
+            except:
+                feature_list['closeness_mean']=np.nan
+                feature_list['closeness_std']=np.nan
+                feature_list['closeness_median']=np.nan
+                feature_list['closeness_max']=np.nan
+                feature_list['closeness_min']=np.nan
+                feature_list['opt_mod']=np.nan
+        
+        except:
+            feature_list['closeness_mean']=np.nan
+            feature_list['closeness_std']=np.nan
+            feature_list['closeness_median']=np.nan
+            feature_list['closeness_max']=np.nan
+            feature_list['closeness_min']=np.nan
+            feature_list['opt_mod']=np.nan
 
         self.features = feature_list

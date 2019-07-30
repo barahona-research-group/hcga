@@ -1,7 +1,7 @@
 
 
 import networkx as nx
-
+import numpy as np
 
 class Efficiency():
     """
@@ -10,7 +10,7 @@ class Efficiency():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
@@ -34,7 +34,7 @@ class Efficiency():
         Notes
         -----
         Degree centrality calculations using networkx:
-            https://networkx.github.io/documentation/stable/reference/algorithms/efficiency.html
+            `Networkx_efficiency <https://networkx.github.io/documentation/stable/reference/algorithms/efficiency.html>`_
         
         """
 
@@ -51,7 +51,8 @@ class Efficiency():
             feature_list['local_efficiency']=nx.local_efficiency(G)
             feature_list['global_efficiency']=nx.global_efficiency(G)
         else:
-            feature_list['efficiency_features']='unavailable for directed graphs'
+            feature_list['local_efficiency']=np.nan
+            feature_list['global_efficiency']=np.nan
             
         """
         self.feature_names = feature_names

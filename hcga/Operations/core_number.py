@@ -9,7 +9,7 @@ class CoreNumber():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
         
     def feature_extraction(self):
         """
@@ -37,7 +37,7 @@ class CoreNumber():
         Notes
         -----
         Core number calculations using networkx:
-            https://networkx.github.io/documentation/stable/reference/algorithms/core.html
+            `Networkx_cycles <https://networkx.github.io/documentation/stable/reference/algorithms/core.html>`_
         """
         
         # Defining the input arguments

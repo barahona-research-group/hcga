@@ -14,7 +14,7 @@ class NodeConnectivity():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
@@ -34,7 +34,7 @@ class NodeConnectivity():
         Notes
         -----
         Implementation of networkx code:
-            https://networkx.github.io/documentation/latest/_modules/networkx/algorithms/approximation/connectivity.html#all_pairs_node_connectivity
+            `Networkx_node_connectivity <https://networkx.github.io/documentation/latest/_modules/networkx/algorithms/approximation/connectivity.html#all_pairs_node_connectivity>`_
 
         
         References

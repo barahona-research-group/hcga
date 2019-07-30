@@ -25,7 +25,7 @@ class AsynfluidCommunities():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
@@ -94,14 +94,29 @@ class AsynfluidCommunities():
                     feature_list[qual_names[j]+'_'+str(i)]=qual_vals[j]
                     
                     
-                    # calculate size ratio of the top 2 largest communities
-                    feature_list['num_nodes_ratio_'+str(i)]=(len(c[0])/len(c[1]))
-                    """
-                    feature_names.append('num_nodes_ratio_'+str(i))
-                    """
+                # calculate size ratio of the top 2 largest communities
+                feature_list['num_nodes_ratio_'+str(i)]=(len(c[0])/len(c[1]))
+                """
+                feature_names.append('num_nodes_ratio_'+str(i))
+                
+                """
         else:
-            feature_list['asyn_fluid_features']='unavailable for directed graphs'
-                    
+            qual_names = ['mod','coverage','performance','inter_comm_edge','inter_comm_nedge','intra_comm_edge']
+            
+            for i in range(2,kmax):
+                feature_list['total_density_'+str(i)]=np.nan
+                feature_list['ratio_density_'+str(i)]=np.nan
+                feature_list['most_dense_'+str(i)]=np.nan
+                feature_list['least_dense_'+str(i)]=np.nan
+                
+                for j in range(len(qual_names)):
+                    feature_list[qual_names[j]+'_'+str(i)]=np.nan
+                
+                feature_list['num_nodes_ratio_'+str(i)]=np.nan
+                
+            
+            
+            
         """
         self.feature_names = feature_names
         """

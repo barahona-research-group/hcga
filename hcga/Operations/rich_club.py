@@ -13,7 +13,7 @@ class RichClub():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
@@ -87,7 +87,13 @@ class RichClub():
                 for j in range(len(feature_names)):
                     feature_list[feature_names[j]]=0
         else:
-            feature_list['rich_club_features']='unavailable for directed graphs'
+            feature_names = ['num_rich','mean_rich_coef','std_rich_coef','max_rich_coef','ratio_rich_coef','ratio_top2_coef',
+                                  'top10_10','top10_9','top10_8','top10_7','top10_6','top10_5','top10_4','top10_3',
+                                  'top10_2','top10_1']
+            for j in range(len(feature_names)):
+                    feature_list[feature_names[j]]=np.nan
+            
+            
             
         """
         feature_list = [0] * 16

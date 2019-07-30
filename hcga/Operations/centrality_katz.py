@@ -10,7 +10,7 @@ class KatzCentrality():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
         
     def feature_extraction(self):
         """
@@ -36,7 +36,8 @@ class KatzCentrality():
         Notes
         -----
         Katz centrality using networkx:
-            https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html        """
+            `Networkx_centrality <https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html>`_
+        """
         
         # Defining the input arguments
         bins = [10,20,50]

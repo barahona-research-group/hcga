@@ -10,7 +10,7 @@ class kComponents():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
@@ -33,7 +33,7 @@ class kComponents():
         Notes
         -----
         K components calculations using networkx:
-            https://networkx.github.io/documentation/stable/reference/algorithms/approximation.html            
+            `Networkx_kcomponents <https://networkx.github.io/documentation/stable/reference/algorithms/approximation.html>`_            
         """
         
         """
@@ -64,8 +64,14 @@ class kComponents():
             feature_list['mean_max_k_component_size']=np.mean(l)
             feature_list['largest_max_k_component']=max(l)
             feature_list['smallest_max_k_component']=min(l)
+        
         else:
-            feature_list['k_component_features']='unavailable for directed graphs'
+            feature_list['num_k_components']=np.nan
+            feature_list['max_k']=np.nan
+            feature_list['num_max_k_components']=np.nan
+            feature_list['mean_max_k_component_size']=np.nan
+            feature_list['largest_max_k_component']=np.nan
+            feature_list['smallest_max_k_component']=np.nan
             
         """
         self.feature_names = feature_names
