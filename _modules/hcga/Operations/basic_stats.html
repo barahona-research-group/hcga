@@ -157,18 +157,19 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="BasicStats"><a class="viewcode-back" href="../../../api.html#hcga.Operations.basic_stats.BasicStats">[docs]</a><span class="k">class</span> <span class="nc">BasicStats</span><span class="p">():</span>
+<div class="viewcode-block" id="BasicStats"><a class="viewcode-back" href="../../../Features/basic_stats.html#hcga.Operations.basic_stats.BasicStats">[docs]</a><span class="k">class</span> <span class="nc">BasicStats</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Basic stats class</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">G</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
 
-<div class="viewcode-block" id="BasicStats.feature_extraction"><a class="viewcode-back" href="../../../api.html#hcga.Operations.basic_stats.BasicStats.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BasicStats.feature_extraction"><a class="viewcode-back" href="../../../Features/basic_stats.html#hcga.Operations.basic_stats.BasicStats.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Compute some basic stats of the network</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute some basic stats of the network</span>
 
 
 <span class="sd">        Parameters</span>
@@ -180,33 +181,34 @@
 <span class="sd">        -------</span>
 <span class="sd">        feature_list : list</span>
 <span class="sd">           List of features related to basic stats.</span>
-
-
+<span class="sd">            </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Basic stats calculations using networkx:</span>
+<span class="sd">            `Networkx_basic_stats &lt;https://networkx.github.io/documentation/stable/reference/functions.html&gt;`_</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
 
-        <span class="n">feature_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;num_nodes&#39;</span><span class="p">,</span><span class="s1">&#39;num_edges&#39;</span><span class="p">,</span><span class="s1">&#39;degree_mean&#39;</span><span class="p">,</span><span class="s1">&#39;degree_median&#39;</span><span class="p">,</span><span class="s1">&#39;degree_std&#39;</span><span class="p">]</span>
-
         <span class="n">G</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span>
 
-        <span class="n">feature_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">feature_list</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="c1"># basic normalisation parameters</span>
         <span class="n">N</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
         <span class="n">E</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
 
         <span class="c1"># Adding basic node and edge numbers</span>
-        <span class="n">feature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-        <span class="n">feature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
+        <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_nodes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">N</span>
+        <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_edges&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">E</span>
 
         <span class="c1"># Degree stats</span>
         <span class="n">degree_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">degree</span><span class="p">())))</span>
 
-        <span class="n">feature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">degree_vals</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
-        <span class="n">feature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">degree_vals</span><span class="p">))</span>
-        <span class="n">feature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">degree_vals</span><span class="o">.</span><span class="n">std</span><span class="p">())</span>
+        <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;degree_mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">degree_vals</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;degree_median&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">degree_vals</span><span class="p">)</span>
+        <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;degree_std&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">degree_vals</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="n">feature_names</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">feature_list</span></div></div>
 
 

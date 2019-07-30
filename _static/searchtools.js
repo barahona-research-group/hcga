@@ -138,10 +138,6 @@ var Search = {
    */
   query : function(query) {
     var i;
-<<<<<<< HEAD
-=======
-    var stopwords = DOCUMENTATION_OPTIONS.SEARCH_LANGUAGE_STOP_WORDS;
->>>>>>> gh-pages
 
     // stem the searchterms and add them to the correct list
     var stemmer = new Stemmer();

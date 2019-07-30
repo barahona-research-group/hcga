@@ -164,7 +164,7 @@
 <span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
 
 
-<div class="viewcode-block" id="EigenCentrality"><a class="viewcode-back" href="../../../api.html#hcga.Operations.centrality_eigenvector.EigenCentrality">[docs]</a><span class="k">class</span> <span class="nc">EigenCentrality</span><span class="p">():</span>
+<div class="viewcode-block" id="EigenCentrality"><a class="viewcode-back" href="../../../Features/centrality.html#hcga.Operations.centrality_eigenvector.EigenCentrality">[docs]</a><span class="k">class</span> <span class="nc">EigenCentrality</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Centrality eigenvector</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -174,11 +174,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">eigenvalues</span> <span class="o">=</span> <span class="n">eigens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
 
-<div class="viewcode-block" id="EigenCentrality.feature_extraction"><a class="viewcode-back" href="../../../api.html#hcga.Operations.centrality_eigenvector.EigenCentrality.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="EigenCentrality.feature_extraction"><a class="viewcode-back" href="../../../Features/centrality.html#hcga.Operations.centrality_eigenvector.EigenCentrality.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Compute the eigenvector centrality for the graph `G`.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the eigenvector centrality for the graph `G`.</span>
 
 <span class="sd">        Eigenvector centrality computes the centrality for a node based on the</span>
 <span class="sd">        centrality of its neighbors. The eigenvector centrality for node $i$ is</span>
@@ -200,8 +201,10 @@
 
 <span class="sd">        args: list</span>
 <span class="sd">            Parameters for calculating feature_list</span>
-<span class="sd">                arg[0]: integer</span>
-<span class="sd">                    number of bins</span>
+<span class="sd">        </span>
+<span class="sd">        bins:</span>
+<span class="sd">            Number of bins for calculating pdf of chosen distribution</span>
+<span class="sd">            for SSE calculation</span>
 
 
 <span class="sd">        Returns</span>
@@ -212,9 +215,8 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-
 <span class="sd">        Implemented using networkx:</span>
-<span class="sd">            https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/centrality/eigenvector.html#eigenvector_centrality</span>
+<span class="sd">            `Networkx_centrality &lt;https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/centrality/eigenvector.html#eigenvector_centrality&gt;`_</span>
 
 <span class="sd">        The measure was introduced by [1]_ and is discussed in [2]_.</span>
 
@@ -232,14 +234,16 @@
 
         <span class="c1"># Defining the input arguments</span>
         <span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">50</span><span class="p">]</span>
-
-        <span class="c1"># Defining featurenames</span>
-        <span class="n">feature_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span><span class="s1">&#39;std&#39;</span><span class="p">,</span><span class="s1">&#39;max&#39;</span><span class="p">,</span><span class="s1">&#39;min&#39;</span><span class="p">]</span>
+        
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        # Defining featurenames</span>
+<span class="sd">        feature_names = [&#39;mean&#39;,&#39;std&#39;,&#39;max&#39;,&#39;min&#39;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1">#G = self.G</span>
         <span class="c1">#op_obj = self.op_obj</span>
 
-        <span class="n">feature_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">feature_list</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="n">eigenvalues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eigenvalues</span>
         
@@ -253,26 +257,26 @@
         <span class="n">norm</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">largest</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span> <span class="o">*</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">largest</span><span class="p">)</span>
         <span class="n">eigenvector_centrality</span> <span class="o">=</span> <span class="n">largest</span> <span class="o">/</span> <span class="n">norm</span>
 
-        <span class="c1"># Basic stats regarding the degree centrality distribution</span>
-        <span class="n">feature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eigenvector_centrality</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
-        <span class="n">feature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eigenvector_centrality</span><span class="o">.</span><span class="n">std</span><span class="p">())</span>
-        <span class="n">feature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eigenvector_centrality</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
-        <span class="n">feature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eigenvector_centrality</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
-
+        <span class="c1"># Basic stats regarding the eigenvector centrality distribution</span>
+        <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eigenvector_centrality</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eigenvector_centrality</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+        <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;max&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eigenvector_centrality</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eigenvector_centrality</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bins</span><span class="p">)):</span>
-            <span class="c1"># Adding to featurenames</span>
-            <span class="n">feature_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;opt_model_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
-            <span class="n">feature_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;powerlaw_a_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
-            <span class="n">feature_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;powerlaw_SSE_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+            <span class="sd">&quot;&quot;&quot;# Adding to feature names</span>
+<span class="sd">            feature_names.append(&#39;opt_model_{}&#39;.format(bins[i]))</span>
+<span class="sd">            feature_names.append(&#39;powerlaw_a_{}&#39;.format(bins[i]))</span>
+<span class="sd">            feature_names.append(&#39;powerlaw_SSE_{}&#39;.format(bins[i]))&quot;&quot;&quot;</span>
             
             <span class="c1"># Fitting the eigenvector centrality distribution and finding the optimal</span>
             <span class="c1"># distribution according to SSE</span>
             <span class="n">opt_mod</span><span class="p">,</span><span class="n">opt_mod_sse</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">best_fit_distribution</span><span class="p">(</span><span class="n">eigenvector_centrality</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-            <span class="n">feature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">opt_mod</span><span class="p">)</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;opt_model_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">])]</span> <span class="o">=</span> <span class="n">opt_mod</span>
 
             <span class="c1"># Fitting power law and finding &#39;a&#39; and the SSE of fit.</span>
-            <span class="n">feature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">power_law_fit</span><span class="p">(</span><span class="n">eigenvector_centrality</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="c1"># value &#39;a&#39; in power law</span>
-            <span class="n">feature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">power_law_fit</span><span class="p">(</span><span class="n">eigenvector_centrality</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># value sse in power law</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;powerlaw_a_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">])]</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">power_law_fit</span><span class="p">(</span><span class="n">eigenvector_centrality</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="c1"># value &#39;a&#39; in power law</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;powerlaw_SSE_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">])]</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">power_law_fit</span><span class="p">(</span><span class="n">eigenvector_centrality</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># value sse in power law</span>
 
         <span class="c1">#Calculate the degree centrality of each node</span>
 <span class="c1">#        try:</span>
@@ -303,8 +307,9 @@
 
         <span class="c1"># Fitting exponential and finding ...</span>
 
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span><span class="o">=</span><span class="n">feature_names</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        self.feature_names=feature_names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">feature_list</span></div></div>
 </pre></div>
 
