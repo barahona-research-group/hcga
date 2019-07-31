@@ -78,8 +78,6 @@ class Operations():
     def feature_extraction(self):
         operations_dict = self.operations_dict
 
-        feature_names = []
-        feature_vals = []
         feature_dict = {}
 
         # loop over the feature classes defined in the YAML file
@@ -149,20 +147,35 @@ class Operations():
             
             # Store features as a dictionary of dictionaries
             feature_dict[symbolic_name] = feature_obj.features
-            
+        
+        
         self.feature_dict = feature_dict
-        self.feature_vals = feature_vals
-        self.feature_names = feature_names
+        self.feature_vals = []
+        self.feature_names = []
 
     def _extract_data(self):
-
-        features = self.feature_vals # features as list of lists
-        feature_names = self.feature_names # feature names as list of lists
-
+        
+        feature_dict = self.feature_dict
+        feature_vals = [] 
+        feature_names = [] 
+        
+        # Seperate out names and values from dictionary of features into 
+        # feature_names and feature_vals
+        symbolic_names=list(feature_dict.keys())
+        features=list(feature_dict.values())
+        for k in range(len(feature_dict)):
+            names=list(features[k].keys())
+            values=list(features[k].values())
+            for l in range(len(names)):
+                feature_names.append(symbolic_names[k]+'_'+names[l])
+                feature_vals.append(values[l])
+        
+        """
         features_flat = [item for sublist in features for item in sublist] # features as single list
         feature_names_flat = [item for sublist in feature_names for item in sublist] # feature names as single list
-
-        return feature_names_flat, features_flat
+        """
+        
+        return feature_names, feature_vals
 
 
     def precompute_eigenvectors(self,weight=None, max_iter=50, tol=0):
