@@ -84,21 +84,22 @@ class Graphs():
         for i in range(len(graph_feature_set)):
             graph_feature_matrix=np.vstack([graph_feature_matrix,graph_feature_set[i]._extract_data()[1]])
         
-        # Find the position of nan within features
-        nan_pos=[]
+        # Find the position of nan or inf within features
+        nan_inf_pos=[]
         for j in range(len(graph_feature_set)):
-            nan_pos.append(np.where(np.isnan(graph_feature_set[j]._extract_data()[1])==True)[0])
-        nan_positions=[r for s in nan_pos for r in s]
+            nan_inf_pos.append(np.where(np.isnan(graph_feature_set[j]._extract_data()[1])==True)[0])
+            nan_inf_pos.append(np.where(np.isinf(graph_feature_set[j]._extract_data()[1])==True)[0])
+        nan_inf_positions=[r for s in nan_inf_pos for r in s]
         # Remove any duplicates
-        nan_positions=list(dict.fromkeys(nan_positions))
+        nan_inf_positions=list(dict.fromkeys(nan_inf_positions))
         
         # Features to delete
-        deleted_features=[graph_feature_matrix[0,k] for k in nan_positions]
-        # Delete columns where nan is present
-        graph_feature_matrix=np.delete(graph_feature_matrix,nan_positions,axis=1)
+        deleted_features=[graph_feature_matrix[0,k] for k in nan_inf_positions]
+        # Delete columns where nan or inf are present
+        graph_feature_matrix=np.delete(graph_feature_matrix,nan_inf_positions,axis=1)
         
-        self.deleted_features=deleted_features
-        self.graph_feature_matrix=graph_feature_matrix
+        self.deleted_features = deleted_features
+        self.graph_feature_matrix = graph_feature_matrix
         self.calculated_graph_features = graph_feature_set
 
     def top_features(self):
