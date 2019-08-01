@@ -176,7 +176,7 @@ class Operations():
         """
         
         return feature_names, feature_vals
-
+        
 
     def precompute_eigenvectors(self,weight=None, max_iter=50, tol=0):
 

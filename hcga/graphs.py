@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import networkx as nx
 
 from hcga.utils import read_graphfile
@@ -78,11 +79,14 @@ class Graphs():
             G_operations.feature_extraction()
             graph_feature_set.append(G_operations)
             
+        feature_names=graph_feature_set[0]._extract_data()[0]
         # Create graph feature matrix
-        graph_feature_matrix=np.array([graph_feature_set[0]._extract_data()[0]])
+        feature_vals_matrix=np.array([graph_feature_set[0]._extract_data()[1]])
         # Append features for each graph as rows
-        for i in range(len(graph_feature_set)):
-            graph_feature_matrix=np.vstack([graph_feature_matrix,graph_feature_set[i]._extract_data()[1]])
+        for i in range(1,len(graph_feature_set)):
+            feature_vals_matrix=np.vstack([feature_vals_matrix,graph_feature_set[i]._extract_data()[1]])
+        
+        graph_feature_matrix=pd.DataFrame(feature_vals_matrix,columns=feature_names)
         
         # Find the position of nan or inf within features
         nan_inf_pos=[]
@@ -94,13 +98,16 @@ class Graphs():
         nan_inf_positions=list(dict.fromkeys(nan_inf_positions))
         
         # Features to delete
-        deleted_features=[graph_feature_matrix[0,k] for k in nan_inf_positions]
+        deleted_features=[feature_names[k] for k in nan_inf_positions]
         # Delete columns where nan or inf are present
-        graph_feature_matrix=np.delete(graph_feature_matrix,nan_inf_positions,axis=1)
+        for k in range(len(deleted_features)):
+            del graph_feature_matrix[deleted_features[k]]
+
         
         self.deleted_features = deleted_features
         self.graph_feature_matrix = graph_feature_matrix
         self.calculated_graph_features = graph_feature_set
+        
 
     def top_features(self):
 
