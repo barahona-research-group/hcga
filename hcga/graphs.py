@@ -108,6 +108,18 @@ class Graphs():
         self.graph_feature_matrix = graph_feature_matrix
         self.calculated_graph_features = graph_feature_set
         
+        
+    def extract_feature(self,n):
+        
+        graph_feature_matrix = self.graph_feature_matrix
+        
+        # if n is an int, extract column corresponding to n
+        if type(n)==int:
+            return graph_feature_matrix.iloc[:,n]
+        # if n is a feature name, extract column corresponding to that feature name
+        else:
+            return graph_feature_matrix[n]   
+        
 
     def top_features(self):
 
