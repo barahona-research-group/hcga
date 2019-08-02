@@ -164,7 +164,17 @@ class Graphs():
 
         return
 
-
+    def save_dataset(self):
+        import pickle as pkl
+        with open('dataset.pkl','wb') as output:
+            pkl.dump(self,output,pkl.HIGHEST_PROTOCOL)
+            
+        
+    
+    def load_dataset(self):
+        import pickle as pkl
+        with open('dataset.pkl','wb') as output:
+            pkl.load(output)
 
     def graph_classification(self):
 
@@ -173,13 +183,9 @@ class Graphs():
 
         """
 
-        from sklearn import model_selection
-        from sklearn.linear_model import LogisticRegression
-        from sklearn.tree import DecisionTreeClassifier
-        from sklearn.neighbors import KNeighborsClassifier
-        from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-        from sklearn.naive_bayes import GaussianNB
-        from sklearn.svm import SVC
+
+        from sklearn.svm import LinearSVC
+        from sklearn.ensemble import RandomForestClassifier
 
         """self.organise_feature_data()"""
         self.normalise_feature_data()
@@ -193,11 +199,9 @@ class Graphs():
 
         # prepare models
         models = []
-        models.append(('LDA', LinearDiscriminantAnalysis()))
-        models.append(('KNN', KNeighborsClassifier()))
-        models.append(('CART', DecisionTreeClassifier()))
-        models.append(('NB', GaussianNB()))
-        models.append(('SVM', SVC(gamma='auto')))
+
+        models.append(('RandomForest', RandomForestClassifier()))
+        models.append(('LinearSVM', LinearSVC()))
 
         results = []
         names = []
