@@ -127,7 +127,7 @@ class Graphs():
 
 
 
-    def organise_feature_data(self):
+    """def organise_feature_data(self):
 
         X = []
         for graph in self.calculated_graph_features:
@@ -140,13 +140,15 @@ class Graphs():
         self.X = X
         self.y = y
 
-        return
+        return"""
 
 
 
     def normalise_feature_data(self):
 
-        X = self.X
+        graph_feature_matrix=self.graph_feature_matrix
+        
+        X=graph_feature_matrix.to_numpy()
 
         X_N = X / X.max(axis=0)
         
@@ -154,8 +156,11 @@ class Graphs():
         We remove nan but we haven't removed the feature names that were nan
         """
         X_N = X_N[:,~np.isnan(X_N).any(axis=0)] # removing features with nan
-
+        
+    
+        
         self.X_N = X_N
+        self.y=np.asarray(self.graph_labels)
 
         return
 
@@ -176,7 +181,7 @@ class Graphs():
         from sklearn.naive_bayes import GaussianNB
         from sklearn.svm import SVC
 
-        self.organise_feature_data()
+        """self.organise_feature_data()"""
         self.normalise_feature_data()
 
         X = self.X_N
@@ -198,12 +203,12 @@ class Graphs():
         names = []
         scoring = 'accuracy'
         for name, model in models:
-        	kfold = model_selection.KFold(n_splits=10, random_state=seed)
-        	cv_results = model_selection.cross_val_score(model, X, y, cv=kfold, scoring=scoring)
-        	results.append(cv_results)
-        	names.append(name)
-        	msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
-        	print(msg)
+            	kfold = model_selection.KFold(n_splits=10, random_state=seed)
+            	cv_results = model_selection.cross_val_score(model, X, y, cv=kfold, scoring=scoring)
+            	results.append(cv_results)
+            	names.append(name)
+            	msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
+            	print(msg)
 
         fig = plt.figure()
         fig.suptitle('Algorithm Comparison')

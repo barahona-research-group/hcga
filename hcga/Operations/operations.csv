@@ -21,10 +21,10 @@ RichClub,rich_club,RichClub,RC,,,False
 CentralityForce,centrality_force,ForceCentrality,FC,,,False 
 CommunitiesBisection,communities_bisection,BisectionCommunities,CB,,,False 
 CommunitiesAsynFluid,communities_asyn_fluid,AsynfluidCommunities,CA,,,False 
-CommunitiesLabelprop,communities_label_propagation,LabelpropagationCommunities,CL,,,False 
+CommunitiesLabelprop,communities_label_propagation,LabelpropagationCommunities,CLP,,,False 
 Cycles,cycles,Cycles,CY,,,False 
 AverageNeighborDegree,average_neighbor_degree,AverageNeighborDegree,ND,,,False 
-Cliques,cliques,Cliques,CL,,,False 
+Cliques,cliques,Cliques,Cl,,,False 
 NodeNumberOfCliques,node_number_of_cliques,NodeNumberOfCliques,NoC,,,False 
 NodeCliqueNumber,node_clique_number,NodeCliqueNumber,CN,,,False 
 CoreNumber,core_number,CoreNumber,CoN,,,False 
