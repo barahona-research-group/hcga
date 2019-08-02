@@ -171,14 +171,14 @@ class Graphs():
 
         return
 
-    def save_dataset(self):
+    def save_obj(self):
         import pickle as pkl
         with open('dataset.pkl','wb') as output:
             pkl.dump(self,output,pkl.HIGHEST_PROTOCOL)
             
         
     
-    def load_dataset(self):
+    def load_obj(self):
         import pickle as pkl
         with open('dataset.pkl','wb') as output:
             pkl.load(output)
