@@ -121,8 +121,15 @@ class Graphs():
             return graph_feature_matrix[n]   
         
 
-    def top_features(self):
+    def top_features(self,method='random_forest'):
 
+        if method =='random_forest':
+            return
+        elif method == 'univariate':
+            return  
+        
+            
+            
         return
 
 
@@ -148,7 +155,7 @@ class Graphs():
 
         graph_feature_matrix=self.graph_feature_matrix
         
-        X=graph_feature_matrix.to_numpy()
+        X=graph_feature_matrix.as_matrix()
 
         X_N = X / X.max(axis=0)
         
@@ -183,7 +190,7 @@ class Graphs():
 
         """
 
-
+        from sklearn import model_selection
         from sklearn.svm import LinearSVC
         from sklearn.ensemble import RandomForestClassifier
 
