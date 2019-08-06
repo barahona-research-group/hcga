@@ -122,17 +122,62 @@ class Graphs():
         
 
     def top_features(self,method='random_forest'):
+        
+        from sklearn.ensemble import RandomForestClassifier
+        from sklearn import datasets
+        from sklearn.model_selection import train_test_split
+        from sklearn.feature_selection import SelectFromModel
+        from sklearn.metrics import accuracy_score
+                    
+        self.normalise_feature_data()
+        X=self.X_N
+        y=self.y
+        feature_names=[col for col in g.graph_feature_matrix.columns]
+        
+        if method =='random_forest': 
+            
+            top_features_list=[]
 
-        if method =='random_forest':
-            return
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
+            
+            clf=RandomForestClassifier(n_estimators=10000, random_state=0)
+            clf.fit(X_train, y_train)
+            
+            sfm = SelectFromModel(clf, threshold=0.01)
+            sfm.fit(X_train, y_train)
+            
+            for feature_list_index in sfm.get_support(indices=True):
+                top_features_list.append(feature_names[feature_list_index])
+            
+            self.top_features_list=top_features_list
+        
         elif method == 'univariate':
             return  
         
             
-            
         return
 
-
+        
+    
+    def organise_top_features(self):
+            
+        top_features_list = self.top_features_list
+            
+        feature_values = np.transpose(np.array([self.extract_feature(i).values for i in top_features_list]))
+            
+        top_feature_matrix = pd.DataFrame(feature_values,columns=top_features_list)
+            
+        t_X = top_feature_matrix.as_matrix()
+            
+        t_X_N = t_X / t_X.max(axis=0)
+        t_X_N = t_X_N[:,~np.isnan(t_X_N).any(axis=0)]
+            
+        self.top_feature_matrix = top_feature_matrix
+        self.t_X_N = t_X_N
+        self.y = np.asarray(self.graph_labels)
+            
+                
+            
 
     """def organise_feature_data(self):
 
@@ -228,4 +273,46 @@ class Graphs():
         ax.set_xticklabels(names)
         #plt.show()
 
+        return
+    
+
+    
+    def top_feature_graph_classification(self):
+            
+        from sklearn import model_selection
+        from sklearn.svm import LinearSVC
+        from sklearn.ensemble import RandomForestClassifier
+            
+        self.organise_top_features()
+        X=self.t_X_N
+        y=self.y
+        
+        # prepare configuration for cross validation test harness
+        seed = 7
+
+        # prepare models
+        models = []
+
+        models.append(('RandomForest', RandomForestClassifier()))
+        models.append(('LinearSVM', LinearSVC()))
+
+        results = []
+        names = []
+        scoring = 'accuracy'
+        for name, model in models:
+            	kfold = model_selection.KFold(n_splits=10, random_state=seed)
+            	cv_results = model_selection.cross_val_score(model, X, y, cv=kfold, scoring=scoring)
+            	results.append(cv_results)
+            	names.append(name)
+            	msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
+            	print(msg)
+
+        fig = plt.figure()
+        fig.suptitle('Algorithm Comparison (top features)')
+        ax = fig.add_subplot(111)
+        plt.boxplot(results)
+        ax.set_xticklabels(names)
+        #plt.show()
+        
+        
         return
