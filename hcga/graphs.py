@@ -132,7 +132,7 @@ class Graphs():
         self.normalise_feature_data()
         X=self.X_N
         y=self.y
-        feature_names=[col for col in g.graph_feature_matrix.columns]
+        feature_names=[col for col in self.graph_feature_matrix.columns]
         
         if method =='random_forest': 
             
