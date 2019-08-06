@@ -137,17 +137,20 @@ class Graphs():
         if method =='random_forest': 
             
             top_features_list=[]
-
-            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
             
-            clf=RandomForestClassifier(n_estimators=10000, random_state=0)
-            clf.fit(X_train, y_train)
+            for i in range(5):
+                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
             
-            sfm = SelectFromModel(clf, threshold=0.01)
-            sfm.fit(X_train, y_train)
+                clf=RandomForestClassifier(n_estimators=10000, random_state=0)
+                clf.fit(X_train, y_train)
             
-            for feature_list_index in sfm.get_support(indices=True):
-                top_features_list.append(feature_names[feature_list_index])
+                sfm = SelectFromModel(clf, threshold=0.01)
+                sfm.fit(X_train, y_train)
+            
+                for feature_list_index in sfm.get_support(indices=True):
+                    top_features_list.append(feature_names[feature_list_index])
+            
+            top_features_list=list(dict.fromkeys(top_features_list))
             
             self.top_features_list=top_features_list
         
