@@ -110,7 +110,11 @@ class Graphs():
         
         # remove infinite and nan columns
         feature_matrix_clean = raw_feature_matrix.replace([np.inf, -np.inf], np.nan).dropna(1,how="any")
-        feature_matrix_clean = feature_matrix_clean.replace(0, np.nan).dropna(1,how="all")
+        
+        #remove all zero cols
+        feats_all_zeros = (feature_matrix_clean==0).all(0)        
+        feature_matrix_clean = feature_matrix_clean.drop(columns=feats_all_zeros[feats_all_zeros].index)
+        
 
         self.graph_feature_matrix = feature_matrix_clean
 
@@ -188,6 +192,7 @@ class Graphs():
         
         accuracy = []        
         for i in range(0,X.shape[1]):
+            print('Computing feature: '+str(i))
             kfold = model_selection.StratifiedKFold(n_splits=10, random_state=seed)
             cv_results = model_selection.cross_val_score(LinearSVC(), X[:,i].reshape(-1,1), y, cv=kfold, scoring=scoring)
             accuracy.append(cv_results.mean())
@@ -268,7 +273,7 @@ class Graphs():
 
 
 
-    def graph_classification(self):
+    def graph_classification(self,plot=True):
 
         """
         Graph Classification
@@ -306,14 +311,16 @@ class Graphs():
             	msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
             	print(msg)
 
-        fig = plt.figure()
-        fig.suptitle('Algorithm Comparison')
-        ax = fig.add_subplot(111)
-        plt.boxplot(results)
-        ax.set_xticklabels(names)
+        if plot:
+            fig = plt.figure()
+            fig.suptitle('Algorithm Comparison')
+            ax = fig.add_subplot(111)
+            plt.boxplot(results)
+            plt.ylim(0,1)
+            ax.set_xticklabels(names)
         #plt.show()
 
-        return
+        return results
     
 
     def save_feature_set(self,filename = 'TestData/feature_set.pkl'):
