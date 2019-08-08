@@ -8,6 +8,7 @@ Created on Sun Mar  3 18:30:46 2019
 import pandas as pd
 import numpy as np
 from hcga.Operations.utils import clustering_quality
+import networkx as nx
 
 from networkx.algorithms.community import greedy_modularity_communities
 from networkx.algorithms.community.quality import modularity
@@ -16,7 +17,7 @@ class ModularityCommunities():
     def __init__(self, G):
         self.G = G
         self.feature_names = []
-        self.features = []
+        self.features = {}
 
     def feature_extraction(self):
 
@@ -40,7 +41,7 @@ class ModularityCommunities():
         Notes
         -----
         Greedy modularity implemented using networkx:
-            https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/community/modularity_max.html#greedy_modularity_communities
+            `Networkx_communities <https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/community/modularity_max.html#greedy_modularity_communities>`_
 
         References
         ----------
@@ -50,39 +51,59 @@ class ModularityCommunities():
            "Finding community structure in very large networks."
            Physical Review E 70(6), 2004.
         """
-
+        
+        """
         feature_names = ['num_comms_greedy_mod','ratio_max_min_num_nodes','ratio_max_2max_num_nodes']
-
+        """
+        
         G = self.G
 
-        feature_list = []
-
-        # basic normalisation parameters
-        N = G.number_of_nodes()
-        E = G.number_of_edges()
-
-        # The optimised number of communities using greedy modularity
-        c = list(greedy_modularity_communities(G))
+        feature_list = {}
         
-        # calculate number of communities
-        feature_list.append(len(c))        
-
-        # calculate ratio of largest to smallest community
-        feature_list.append((len(c[0])/len(c[-1])))        
-
-        # calculate ratio of largest to 2nd largest community
-        if len(c)>1:
-            feature_list.append((len(c[0])/len(c[1])))
+        if not nx.is_directed(G):
+            # basic normalisation parameters
+            N = G.number_of_nodes()
+            E = G.number_of_edges()
+    
+            # The optimised number of communities using greedy modularity
+            c = list(greedy_modularity_communities(G))
+            
+            # calculate number of communities
+            feature_list['num_comms_greedy_mod']=len(c)  
+        
+            # calculate ratio of largest to smallest community
+            feature_list['ratio_max_min_num_nodes']=(len(c[0])/len(c[-1]))      
+        
+            # calculate ratio of largest to 2nd largest community
+            if len(c)>1:
+                feature_list['ratio_max_2max_num_nodes']=(len(c[0])/len(c[1]))
+            else:
+                feature_list['ratio_max_2max_num_nodes']=np.nan
+        
+            # clustering quality functions       
+            qual_names,qual_vals = clustering_quality(G,c)      
+                
+            for i in range(len(qual_names)):
+                feature_list[qual_names[i]]=qual_vals[i]   
         else:
-            feature_list.append(np.nan)
-
-        # clustering quality functions       
-        qual_names,qual_vals = clustering_quality(G,c)           
+            feature_list['num_comms_greedy_mod'] =np.nan
+            feature_list['ratio_max_min_num_nodes'] =np.nan
+            feature_list['ratio_max_2max_num_nodes']=np.nan
+            feature_list['node_ratio']=np.nan
+            feature_list['mod']=np.nan
+            feature_list['coverage']=np.nan
+            feature_list['performance']=np.nan
+            feature_list['inter_comm_edge']=np.nan
+            feature_list['inter_comm_nedge']=np.nan
+            feature_list['intra_comm_edge']=np.nan
 
             
+        """
         feature_list = feature_list + qual_vals
-        feature_names = feature_names + qual_names     
+        feature_names = feature_names + qual_names    
+        """
         
-
+        """
         self.feature_names = feature_names
+        """
         self.features = feature_list

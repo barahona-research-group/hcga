@@ -17,51 +17,57 @@ class Graphs():
         Takes a list of graphs
     """
 
-    def __init__(self, graphs = [], graph_meta_data = [], node_meta_data = [], graph_class = []):
+    def __init__(self, graphs = [], graph_meta_data = [], node_meta_data = [], graph_class = [], directory='', dataset = 'synthetic'):
         self.graphs = graphs # A list of networkx graphs
         self.graph_labels = graph_class # A list of class IDs - A single class ID for each graph.
 
         self.graph_metadata = graph_meta_data # A list of vectors with additional feature data describing the graph
         self.node_metadata = node_meta_data # A list of arrays with additional feature data describing nodes on the graph
 
+        self.dataset = dataset
         if not graphs:
-            self.load_graphs()
+            self.load_graphs(directory=directory,dataset=dataset)
 
 
 
 
-    def load_graphs(self, directory = 'TestData', dataname = 'ENZYMES'):
+    def load_graphs(self, directory = '', dataset = 'synthetic'):
 
         # node labels are within the graph file
         
         # Node features are stored in: G.node[0]['feat'] 
         # Node labels are stored in: G.node[0]['label']
         
-        graphs,graph_labels = read_graphfile(directory,dataname)
-
-        # selected data for testing code
-        selected_data = np.arange(0,300,1)
-        graphs = [graphs[i] for i in list(selected_data)]
-        graph_labels = [graph_labels[i] for i in list(selected_data)]
+        if dataset == 'ENZYMES':
         
-        
-        to_remove = []
-        for i,G in enumerate(graphs): 
-            if not nx.is_connected(G):  
-                print('Graph '+str(i)+' is not connected. Taking largest subgraph and relabelling the nodes.')
-                Gc = max(nx.connected_component_subgraphs(G), key=len)
-                mapping=dict(zip(Gc.nodes,range(0,len(Gc))))
-                Gc = nx.relabel_nodes(Gc,mapping)                
-                graphs[i] = Gc
+            graphs,graph_labels = read_graphfile(directory,dataset)
+    
+            # selected data for testing code
+            selected_data = np.arange(0,300,1)
+            graphs = [graphs[i] for i in list(selected_data)]
+            graph_labels = [graph_labels[i] for i in list(selected_data)]
             
-            if len(graphs[i])<3:
-                to_remove.append(i)
-         
-        # removing graphs with less than 2 nodes
-        graph_labels = [i for j, i in enumerate(graph_labels) if j not in to_remove]
-        graphs = [i for j, i in enumerate(graphs) if j not in to_remove]
-
-        
+            
+            to_remove = []
+            for i,G in enumerate(graphs): 
+                if not nx.is_connected(G):  
+                    print('Graph '+str(i)+' is not connected. Taking largest subgraph and relabelling the nodes.')
+                    Gc = max(nx.connected_component_subgraphs(G), key=len)
+                    mapping=dict(zip(Gc.nodes,range(0,len(Gc))))
+                    Gc = nx.relabel_nodes(Gc,mapping)                
+                    graphs[i] = Gc
+                
+                if len(graphs[i])<3:
+                    to_remove.append(i)
+             
+            # removing graphs with less than 2 nodes
+            graph_labels = [i for j, i in enumerate(graph_labels) if j not in to_remove]
+            graphs = [i for j, i in enumerate(graphs) if j not in to_remove]
+    
+        elif dataset == 'synthetic':
+            from hcga.TestData.create_synthetic_data import synthetic_data
+            graphs,graph_labels = synthetic_data()
+            
         self.graphs = graphs
         self.graph_labels = graph_labels
 
@@ -84,9 +90,15 @@ class Graphs():
         feature_vals_matrix=np.array([graph_feature_set[0]._extract_data()[1]])
         # Append features for each graph as rows
         for i in range(1,len(graph_feature_set)):
-            feature_vals_matrix=np.vstack([feature_vals_matrix,graph_feature_set[i]._extract_data()[1]])
+            
+            graph_feats = graph_feature_set[i]._extract_data()[1]
+            compounded_feats = np.hstack([graph_feats,graph_feats/self.graphs[i].number_of_nodes(),graph_feats/self.graphs[i].number_of_edges()]) 
+            
+            feature_vals_matrix=np.vstack([feature_vals_matrix,compounded_feats])
         
         graph_feature_matrix=pd.DataFrame(feature_vals_matrix,columns=feature_names)
+        
+        self.raw_feature_matrix = graph_feature_matrix
         
         # Find the position of nan or inf within features
         nan_inf_pos=[]
@@ -121,7 +133,7 @@ class Graphs():
             return graph_feature_matrix[n]   
         
 
-    def top_features(self,method='random_forest'):
+    def top_features_model(self,method='random_forest'):
         
         from sklearn.ensemble import RandomForestClassifier
         from sklearn import datasets
@@ -160,6 +172,20 @@ class Graphs():
             
         return
 
+        
+    def top_features_univariate(self,method='random_forest'):
+        
+        self.normalise_feature_data()
+        X=self.X_N
+        y=self.y
+        feature_names=[col for col in self.graph_feature_matrix.columns]
+        
+        
+        
+        for i, feat in enumerate():
+            return
+        
+        
         
     
     def organise_top_features(self):
@@ -219,17 +245,24 @@ class Graphs():
 
         return
 
-    def save_obj(self):
-        import pickle as pkl
-        with open('dataset.pkl','wb') as output:
-            pkl.dump(self,output,pkl.HIGHEST_PROTOCOL)
+    def save_feature_set(self,filename = 'TestData/feature_set.pkl'):
+        import pickle as pkl        
+        feature_matrix = self.graph_feature_matrix
+        
+        with open(filename,'wb') as output:
+            pkl.dump(feature_matrix,output,pkl.HIGHEST_PROTOCOL)
             
         
+        
     
-    def load_obj(self):
+    def load_feature_set(self,filename = 'TestData/feature_set.pkl'):
         import pickle as pkl
-        with open('dataset.pkl','wb') as output:
-            pkl.load(output)
+        with open(filename,'rb') as output:
+            feature_matrix = pkl.load(output)
+        
+        self.graph_feature_matrix = feature_matrix
+
+        
 
     def graph_classification(self):
 

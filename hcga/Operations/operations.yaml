@@ -160,6 +160,7 @@ CommunitiesLabelprop:
   calculation_speed:
   precomputed: False  
   
+<<<<<<< Updated upstream
 Cycles:
   filename: cycles
   classname: Cycles
@@ -281,3 +282,8 @@ MaximalMatching:
   precomputed: False
   
   
+=======
+
+
+  
+>>>>>>> Stashed changes
