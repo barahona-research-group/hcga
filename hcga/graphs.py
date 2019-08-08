@@ -85,41 +85,36 @@ class Graphs():
             G_operations.feature_extraction()
             graph_feature_set.append(G_operations)
             
+        self.graph_feature_set = graph_feature_set
+        
+        
+        
         feature_names=graph_feature_set[0]._extract_data()[0]
         # Create graph feature matrix
-        feature_vals_matrix=np.array([graph_feature_set[0]._extract_data()[1]])
-        # Append features for each graph as rows
-        for i in range(1,len(graph_feature_set)):
+        feature_vals_matrix=np.empty([len(graph_feature_set),3*len(feature_names)])  #array([graph_feature_set[0]._extract_data()[1]])
+        # Append features for each graph as rows   
+        
+        for i in range(0,len(graph_feature_set)):
+            N = self.graphs[i].number_of_nodes()
+            E = self.graphs[i].number_of_edges()
+            graph_feats = np.asarray(graph_feature_set[i]._extract_data()[1])
+            compounded_feats = np.hstack([graph_feats,graph_feats/N,graph_feats/E]) 
             
-            graph_feats = graph_feature_set[i]._extract_data()[1]
-            compounded_feats = np.hstack([graph_feats,graph_feats/self.graphs[i].number_of_nodes(),graph_feats/self.graphs[i].number_of_edges()]) 
-            
-            feature_vals_matrix=np.vstack([feature_vals_matrix,compounded_feats])
+            feature_vals_matrix[i,:]=compounded_feats
         
-        graph_feature_matrix=pd.DataFrame(feature_vals_matrix,columns=feature_names)
+        compounded_feature_names = feature_names + [s +'_N' for s in feature_names] + [s +'_E' for s in feature_names]
         
-        self.raw_feature_matrix = graph_feature_matrix
+        raw_feature_matrix=pd.DataFrame(feature_vals_matrix,columns=compounded_feature_names)
         
-        # Find the position of nan or inf within features
-        nan_inf_pos=[]
-        for j in range(len(graph_feature_set)):
-            nan_inf_pos.append(np.where(np.isnan(graph_feature_set[j]._extract_data()[1])==True)[0])
-            nan_inf_pos.append(np.where(np.isinf(graph_feature_set[j]._extract_data()[1])==True)[0])
-        nan_inf_positions=[r for s in nan_inf_pos for r in s]
-        # Remove any duplicates
-        nan_inf_positions=list(dict.fromkeys(nan_inf_positions))
+        self.raw_feature_matrix = raw_feature_matrix 
         
-        # Features to delete
-        deleted_features=[feature_names[k] for k in nan_inf_positions]
-        # Delete columns where nan or inf are present
-        for k in range(len(deleted_features)):
-            del graph_feature_matrix[deleted_features[k]]
+        # remove infinite and nan columns
+        feature_matrix_clean = raw_feature_matrix.replace([np.inf, -np.inf], np.nan).dropna(1,how="any")
+        feature_matrix_clean = feature_matrix_clean.replace(0, np.nan).dropna(1,how="all")
 
-        
-        self.deleted_features = deleted_features
-        self.graph_feature_matrix = graph_feature_matrix
-        self.calculated_graph_features = graph_feature_set
-        
+        self.graph_feature_matrix = feature_matrix_clean
+
+
         
     def extract_feature(self,n):
         
@@ -173,18 +168,67 @@ class Graphs():
         return
 
         
-    def top_features_univariate(self,method='random_forest'):
+    def top_features_univariate(self,method='random_forest', plot=True):
         
-        self.normalise_feature_data()
+        from sklearn.svm import LinearSVC
+        from sklearn import datasets
+        from sklearn import model_selection
+        from sklearn.feature_selection import SelectFromModel
+        from sklearn.metrics import accuracy_score
+        from sklearn.metrics import balanced_accuracy_score               
+        import seaborn as sns
+
+        seed = 7
+        
+        scoring = 'balanced_accuracy'
+        
         X=self.X_N
         y=self.y
         feature_names=[col for col in self.graph_feature_matrix.columns]
         
+        accuracy = []        
+        for i in range(0,X.shape[1]):
+            kfold = model_selection.StratifiedKFold(n_splits=10, random_state=seed)
+            cv_results = model_selection.cross_val_score(LinearSVC(), X[:,i].reshape(-1,1), y, cv=kfold, scoring=scoring)
+            accuracy.append(cv_results.mean())
+        
+        top_feat_ids = np.flip(np.argsort(accuracy))
+        top_feat_acc = np.flip(np.sort(accuracy))
+        top_feats_names = [feature_names[i] for i in top_feat_ids]
+        
+        self.top_feat_ids =  top_feat_ids
+        self.top_feat_acc = top_feat_acc
+        self.top_feats_names = top_feats_names
+        
+        if plot is True:
+            plt.figure()
+            plt.hist(top_feat_acc,20)
         
         
-        for i, feat in enumerate():
-            return
+        # plot top 40 feats
+        top_feats_names[:40]
+        df_top40 = pd.DataFrame(columns = top_feats_names[:40], data=X[:,top_feat_ids[:40]])    
         
+        
+        cor = np.abs(df_top40.corr())
+        
+        from scipy.cluster.hierarchy import dendrogram, linkage
+        Z = linkage(cor, 'ward')
+        
+        plt.figure()
+        dn = dendrogram(Z)         
+
+        
+        new_index = [int(i) for  i in dn['ivl']]
+        top_feats_names = [top_feats_names[i] for i in new_index]        
+        
+        df = df_top40[top_feats_names]
+        cor2 = np.abs(df.corr())
+        
+        plt.figure()
+        ax = sns.heatmap(cor2, linewidth=0.5)
+        plt.show()
+            
         
         
     
@@ -205,64 +249,24 @@ class Graphs():
         self.t_X_N = t_X_N
         self.y = np.asarray(self.graph_labels)
             
-                
-            
 
-    """def organise_feature_data(self):
-
-        X = []
-        for graph in self.calculated_graph_features:
-            feature_names, features = graph._extract_data()
-            X.append(features)
-
-        X = np.asarray(X)
-        y = np.asarray(self.graph_labels)
-
-        self.X = X
-        self.y = y
-
-        return"""
 
 
 
     def normalise_feature_data(self):
 
-        graph_feature_matrix=self.graph_feature_matrix
+        graph_feature_matrix = self.graph_feature_matrix
         
         X=graph_feature_matrix.as_matrix()
 
         X_N = X / X.max(axis=0)
-        
-        """
-        We remove nan but we haven't removed the feature names that were nan
-        """
-        X_N = X_N[:,~np.isnan(X_N).any(axis=0)] # removing features with nan
-        
-    
         
         self.X_N = X_N
         self.y=np.asarray(self.graph_labels)
 
         return
 
-    def save_feature_set(self,filename = 'TestData/feature_set.pkl'):
-        import pickle as pkl        
-        feature_matrix = self.graph_feature_matrix
-        
-        with open(filename,'wb') as output:
-            pkl.dump(feature_matrix,output,pkl.HIGHEST_PROTOCOL)
-            
-        
-        
-    
-    def load_feature_set(self,filename = 'TestData/feature_set.pkl'):
-        import pickle as pkl
-        with open(filename,'rb') as output:
-            feature_matrix = pkl.load(output)
-        
-        self.graph_feature_matrix = feature_matrix
 
-        
 
     def graph_classification(self):
 
@@ -312,43 +316,21 @@ class Graphs():
         return
     
 
+    def save_feature_set(self,filename = 'TestData/feature_set.pkl'):
+        import pickle as pkl        
+        feature_matrix = self.graph_feature_matrix
+        
+        with open(filename,'wb') as output:
+            pkl.dump(feature_matrix,output,pkl.HIGHEST_PROTOCOL)
+            
+        
+        
     
-    def top_feature_graph_classification(self):
+    def load_feature_set(self,filename = 'TestData/feature_set.pkl'):
+        import pickle as pkl
+        with open(filename,'rb') as output:
+            feature_matrix = pkl.load(output)
+        
+        self.graph_feature_matrix = feature_matrix
+
             
-        from sklearn import model_selection
-        from sklearn.svm import LinearSVC
-        from sklearn.ensemble import RandomForestClassifier
-            
-        self.organise_top_features()
-        X=self.t_X_N
-        y=self.y
-        
-        # prepare configuration for cross validation test harness
-        seed = 7
-
-        # prepare models
-        models = []
-
-        models.append(('RandomForest', RandomForestClassifier()))
-        models.append(('LinearSVM', LinearSVC()))
-
-        results = []
-        names = []
-        scoring = 'accuracy'
-        for name, model in models:
-            	kfold = model_selection.KFold(n_splits=10, random_state=seed)
-            	cv_results = model_selection.cross_val_score(model, X, y, cv=kfold, scoring=scoring)
-            	results.append(cv_results)
-            	names.append(name)
-            	msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
-            	print(msg)
-
-        fig = plt.figure()
-        fig.suptitle('Algorithm Comparison (top features)')
-        ax = fig.add_subplot(111)
-        plt.boxplot(results)
-        ax.set_xticklabels(names)
-        #plt.show()
-        
-        
-        return
