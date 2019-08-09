@@ -41,7 +41,10 @@ class kComponents():
         """
 
         G = self.G
-
+        
+        
+        # This function is very slow for some graphs... 
+        
         feature_list = {}
         if not nx.is_directed(G):            
             # Calculate the k_components

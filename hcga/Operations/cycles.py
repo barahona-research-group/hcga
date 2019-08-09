@@ -40,7 +40,7 @@ class Cycles():
         
         G=self.G
         feature_list={}
-        if not nx.is_directed(G):
+        if not nx.is_directed(G) and nx.cycle_basis(G):
             # Find list of cycles for graph
             cycles=nx.cycle_basis(G)
             # Add basic cycle features 

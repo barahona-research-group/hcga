@@ -6,6 +6,8 @@ from hcga.utils import read_graphfile
 from hcga.Operations.operations import Operations
 
 from tqdm import tqdm
+import time
+
 
 from sklearn.preprocessing import normalize
 
@@ -80,10 +82,21 @@ class Graphs():
 
         graph_feature_set = []
 
+        cnt = 0
         for G in tqdm(self.graphs):
+            print("-------------------------------------------------")              
+
+            print("----- Computing features for graph "+str(cnt)+" -----")               
+            start_time = time.time()    
+            print("-------------------------------------------------")               
+
             G_operations = Operations(G)
             G_operations.feature_extraction()
             graph_feature_set.append(G_operations)
+            print("-------------------------------------------------")               
+            print("Time to calculate all features for graph "+ str(cnt) +": --- %s seconds ---" % round(time.time() - start_time,3))               
+            cnt = cnt+1
+            
             
         self.graph_feature_set = graph_feature_set
         
@@ -94,11 +107,16 @@ class Graphs():
         feature_vals_matrix=np.empty([len(graph_feature_set),3*len(feature_names)])  #array([graph_feature_set[0]._extract_data()[1]])
         # Append features for each graph as rows   
         
-        for i in range(0,len(graph_feature_set)):
+        
+        
+        for i in range(0,len(graph_feature_set)):            
+
             N = self.graphs[i].number_of_nodes()
             E = self.graphs[i].number_of_edges()
             graph_feats = np.asarray(graph_feature_set[i]._extract_data()[1])
             compounded_feats = np.hstack([graph_feats,graph_feats/N,graph_feats/E]) 
+            
+            
             
             feature_vals_matrix[i,:]=compounded_feats
         
@@ -111,11 +129,14 @@ class Graphs():
         # remove infinite and nan columns
         feature_matrix_clean = raw_feature_matrix.replace([np.inf, -np.inf], np.nan).dropna(1,how="any")
         
-        #remove all zero cols
+        #remove columns with all zeros
         feats_all_zeros = (feature_matrix_clean==0).all(0)        
         feature_matrix_clean = feature_matrix_clean.drop(columns=feats_all_zeros[feats_all_zeros].index)
         
-
+        # introduce a measure of how many features were removed and their ids and names.
+        
+        
+        
         self.graph_feature_matrix = feature_matrix_clean
 
 
@@ -133,6 +154,12 @@ class Graphs():
         
 
     def top_features_model(self,method='random_forest'):
+        
+        """
+        This class identifies top features given a classification algorithm 
+        that ranks features.
+        
+        """
         
         from sklearn.ensemble import RandomForestClassifier
         from sklearn import datasets

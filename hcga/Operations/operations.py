@@ -16,6 +16,7 @@ import networkx as nx
 from scipy.sparse import linalg
 import scipy as sp
 
+import time
 from tqdm import tqdm
 
 class Operations():
@@ -113,7 +114,7 @@ class Operations():
 
 
 
-                        
+            start_time = time.time()                    
 
             if precomputed=='True ':
                 feature_obj = feature_class(self.G,(self.eigenvalues,self.eigenvectors))
@@ -125,7 +126,7 @@ class Operations():
             else:
                 feature_obj.feature_extraction(params)
 
-                        
+            print("Time to calculate feature class "+ classname +"("+ symbolic_name +") :" + "--- %s seconds ---" % round(time.time() - start_time,3))               
             
             """
             # Alter the feature feature_names
