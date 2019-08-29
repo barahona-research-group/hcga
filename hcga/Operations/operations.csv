@@ -39,3 +39,4 @@ IndependentSets,independent_sets,IndependentSets,IS,,,False
 MaximalMatching,maximal_matching,MaximalMatching,MM,,,False 
 MinimumCuts,minimum_cuts,MinimumCuts,MiC,,,False 
 NodeFeatures,node_features,NodeFeatures,NF,,,False 
+NodeLabels,node_labels,NodeLabels,NL,,,False 
