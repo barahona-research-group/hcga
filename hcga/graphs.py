@@ -44,8 +44,8 @@ class Graphs():
         
             graphs,graph_labels = read_graphfile(directory,dataset)
     
-            # selected data for testing code
-            selected_data = np.arange(0,300,1)
+            # selected data for testing code from the enzymes dataset...
+            selected_data = np.arange(0,600,1) 
             graphs = [graphs[i] for i in list(selected_data)]
             graph_labels = [graph_labels[i] for i in list(selected_data)]
             
@@ -349,6 +349,129 @@ class Graphs():
 
         return results
     
+    
+    
+    def graph_classification_mlp(self):
+        
+        from sklearn.model_selection import train_test_split
+        from sklearn.preprocessing import LabelBinarizer        
+                    
+        import numpy as np
+        import tensorflow as tf
+        from sklearn.metrics import accuracy_score
+        
+        
+        def load_dataset(X,y):
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=None)   # normalize x
+            X_train = X_train.astype(float) 
+            X_test = X_test.astype(float)    # we reserve the last 10000 training examples for validation
+            X_train, X_val = X_train[:-60], X_train[-60:]
+            y_train, y_val = y_train[:-60], y_train[-60:]    
+            return X_train, y_train, X_val, y_val, X_test, y_test
+        
+        X = self.X_N
+        y = self.y
+        
+        testing_accuracy = []
+
+        for _ in range(20):
+            X_train, y_train, X_val, y_val, X_test, y_test = load_dataset(X,y)
+            
+            ## Changing labels to one-hot encoded vector
+            lb = LabelBinarizer()
+            y_train = lb.fit_transform(y_train)
+            y_val = lb.transform(y_val)
+            y_test = lb.transform(y_test)
+    
+            print('Train labels dimension:');print(y_train.shape)
+            print('Train labels dimension:');print(y_val.shape)
+            print('Test labels dimension:');print(y_test.shape)            
+            
+
+            s = tf.InteractiveSession()
+            
+            ## Defining various initialization parameters for 784-512-256-10 MLP model
+            num_classes = y_train.shape[1]
+            num_features = X_train.shape[1]
+            num_output = y_train.shape[1]
+            num_layers_0 = 256
+            num_layers_1 = 128
+            starter_learning_rate = 0.001
+            regularizer_rate = 0.1
+            
+            # Placeholders for the input data
+            input_X = tf.placeholder('float32',shape =(None,num_features),name="input_X")
+            input_y = tf.placeholder('float32',shape = (None,num_classes),name='input_Y')
+            
+            ## for dropout layer
+            keep_prob = tf.placeholder(tf.float32)
+            
+            
+            weights_0 = tf.Variable(tf.random_normal([num_features,num_layers_0], stddev=(1/tf.sqrt(float(num_features)))))
+            bias_0 = tf.Variable(tf.random_normal([num_layers_0]))
+            
+            weights_1 = tf.Variable(tf.random_normal([num_layers_0,num_layers_1], stddev=(1/tf.sqrt(float(num_layers_0)))))
+            bias_1 = tf.Variable(tf.random_normal([num_layers_1]))
+            
+            weights_2 = tf.Variable(tf.random_normal([num_layers_1,num_output], stddev=(1/tf.sqrt(float(num_layers_1)))))
+            bias_2 = tf.Variable(tf.random_normal([num_output]))
+            
+            hidden_output_0 = tf.nn.relu(tf.matmul(input_X,weights_0)+bias_0)
+            hidden_output_0_0 = tf.nn.dropout(hidden_output_0, keep_prob)
+            
+            hidden_output_1 = tf.nn.relu(tf.matmul(hidden_output_0_0,weights_1)+bias_1)
+            hidden_output_1_1 = tf.nn.dropout(hidden_output_1, keep_prob)
+            
+            predicted_y = tf.sigmoid(tf.matmul(hidden_output_1_1,weights_2) + bias_2)
+            
+            loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=predicted_y,labels=input_y)) + regularizer_rate*(tf.reduce_sum(tf.square(bias_0)) + tf.reduce_sum(tf.square(bias_1)))
+            
+            learning_rate = tf.train.exponential_decay(starter_learning_rate, 0, 5, 0.85, staircase=True)
+            ## Adam optimzer for finding the right weight
+            optimizer = tf.train.AdamOptimizer(learning_rate).minimize(loss,var_list=[weights_0,weights_1,weights_2,bias_0,bias_1,bias_2])
+            
+            ## Metrics definition
+            correct_prediction = tf.equal(tf.argmax(y_train,1), tf.argmax(predicted_y,1))
+            accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+    
+            ## Training parameters
+            batch_size = 128
+            epochs=500
+            dropout_prob = 0.6
+            training_accuracy = []
+            training_loss = []
+            validation_accuracy = []
+            s.run(tf.global_variables_initializer())
+            for epoch in range(epochs):    
+                arr = np.arange(X_train.shape[0])
+                np.random.shuffle(arr)
+                for index in range(0,X_train.shape[0],batch_size):
+                    s.run(optimizer, {input_X: X_train[arr[index:index+batch_size]],
+                                      input_y: y_train[arr[index:index+batch_size]],
+                                    keep_prob:dropout_prob})
+                training_accuracy.append(s.run(accuracy, feed_dict= {input_X:X_train, 
+                                                                     input_y: y_train,keep_prob:1}))
+                training_loss.append(s.run(loss, {input_X: X_train, 
+                                                  input_y: y_train,keep_prob:1}))
+            
+                ## Evaluation of model
+                validation_accuracy.append(accuracy_score(y_val.argmax(1), 
+                                        s.run(predicted_y, {input_X: X_val,keep_prob:1}).argmax(1)))
+                print("Epoch:{0}, Train loss: {1:.2f} Train acc: {2:.3f}, Val acc:{3:.3f}".format(epoch,
+                                                                                training_loss[epoch],
+                                                                                training_accuracy[epoch],
+                                                                                validation_accuracy[epoch]))
+            
+            test_acc = accuracy_score(y_test.argmax(1),s.run(predicted_y, {input_X: X_test,keep_prob:1}).argmax(1))  
+            testing_accuracy.append(test_acc)   
+            
+            print("Test acc:{0:.3f}".format(test_acc))   
+            
+            s.close()
+        
+        
+        
+        
 
     def save_feature_set(self,filename = 'TestData/feature_set.pkl'):
         import pickle as pkl        
