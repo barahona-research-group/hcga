@@ -96,7 +96,7 @@ class Graphs():
             print("-------------------------------------------------")               
             print("Time to calculate all features for graph "+ str(cnt) +": --- %s seconds ---" % round(time.time() - start_time,3))               
             cnt = cnt+1
-            
+            self.graph_feature_set_temp = graph_feature_set
             
         self.graph_feature_set = graph_feature_set
         
@@ -291,7 +291,7 @@ class Graphs():
         
         X=graph_feature_matrix.as_matrix()
 
-        X_N = X / X.max(axis=0)
+        X_N = abs(X) / abs(X).max(axis=0)
         
         self.X_N = X_N
         self.y=np.asarray(self.graph_labels)
@@ -324,7 +324,7 @@ class Graphs():
         # prepare models
         models = []
 
-        models.append(('RandomForest', RandomForestClassifier()))
+        models.append(('RandomForest', RandomForestClassifier(n_estimators=100)))
         models.append(('LinearSVM', LinearSVC()))
 
         results = []

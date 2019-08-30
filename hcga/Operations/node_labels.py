@@ -31,7 +31,7 @@ class NodeLabels():
         N = G.number_of_nodes()
         node_degrees = [nx.degree(G)[i] for i in range(N)]
 
-
+        
         # Only compute for networks with node features
         try:
             
@@ -40,6 +40,18 @@ class NodeLabels():
             for i in range(N):
                 node_matrix = np.vstack([node_matrix,G.node[i]['label']])
             
+            
+            
+            num_feats = node_matrix.shape[1]
+            
+            for i in range(0,num_feats):                
+                feature_list['mean_feat'+str(i)] = np.mean(node_matrix,0)[i]
+                feature_list['max_feat'+str(i)] = np.max(node_matrix,0)[i]
+                feature_list['min_feat'+str(i)] = np.min(node_matrix,0)[i]
+                feature_list['median_feat'+str(i)] = np.median(node_matrix,0)[i]
+                feature_list['std_feat'+str(i)] = np.std(node_matrix,0)[i]
+                feature_list['sum_feat'+str(i)] = np.sum(node_matrix,0)[i]            
+            
             # Calculate some basic stats from this matrix
             feature_list['mean'] = np.mean(node_matrix)
             feature_list['max'] = np.max(node_matrix)
@@ -47,9 +59,13 @@ class NodeLabels():
             feature_list['median'] = np.median(node_matrix)
             feature_list['std'] = np.std(node_matrix)
             feature_list['sum'] = np.sum(node_matrix)
+
             
             dim=np.shape(node_matrix)
              
+            
+            
+            
             # List containing the mean of each feature for all nodes
             mean_feat_val_list = [np.mean(node_matrix[:,i]) for i in range(dim[1])]
             

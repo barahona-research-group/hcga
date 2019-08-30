@@ -56,6 +56,17 @@ class NodeFeatures():
             for i in range(N):
                 node_matrix = np.vstack([node_matrix,G.node[i]['feat']])
             
+            
+            num_feats = node_matrix.shape[1]
+            
+            for i in range(0,num_feats):                
+                feature_list['mean_feat'+str(i)] = np.mean(node_matrix,0)[i]
+                feature_list['max_feat'+str(i)] = np.max(node_matrix,0)[i]
+                feature_list['min_feat'+str(i)] = np.min(node_matrix,0)[i]
+                feature_list['median_feat'+str(i)] = np.median(node_matrix,0)[i]
+                feature_list['std_feat'+str(i)] = np.std(node_matrix,0)[i]
+                feature_list['sum_feat'+str(i)] = np.sum(node_matrix,0)[i]            
+            
             # Calculate some basic stats from this matrix
             feature_list['mean'] = np.mean(node_matrix)
             feature_list['max'] = np.max(node_matrix)
