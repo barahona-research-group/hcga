@@ -138,7 +138,7 @@ class Graphs():
         
         
         self.graph_feature_matrix = feature_matrix_clean
-
+        self.save_feature_set()
 
         
     def extract_feature(self,n):
@@ -168,7 +168,7 @@ class Graphs():
         from sklearn.metrics import accuracy_score
                     
         self.normalise_feature_data()
-        X=self.X_N
+        X=self.X_norm
         y=self.y
         feature_names=[col for col in self.graph_feature_matrix.columns]
         
@@ -213,7 +213,7 @@ class Graphs():
         
         scoring = 'balanced_accuracy'
         
-        X=self.X_N
+        X=self.X_norm
         y=self.y
         feature_names=[col for col in self.graph_feature_matrix.columns]
         
@@ -262,6 +262,32 @@ class Graphs():
         plt.show()
             
         
+    def top_features_leaveoneout(self):
+        
+        X = self.X_norm
+        y = self.y
+        
+        feature_names=[col for col in self.graph_feature_matrix.columns]
+        
+        original_acc = self.graph_classification_mlp(verbose=False)
+        
+        accuracy = []
+        
+        for i in range(X.shape[1]):
+            mask = np.ones(X.shape[1], dtype=bool)
+            mask[i] = False
+            X_leaveoneout = X[:,mask]        
+            acc = self.graph_classification_mlp(X=X_leaveoneout,y=y,verbose=False)
+            accuracy.append(acc)
+            
+        reduction_accuracy = original_acc - np.asarray(accuracy)   
+        
+        top_feat_ids = np.flip(np.argsort(reduction_accuracy))
+        top_feat_acc = np.flip(np.sort(reduction_accuracy))
+        top_feats_names = [feature_names[i] for i in top_feat_ids]        
+        
+        self.top_feat_leaveoneout = (top_feat_ids,top_feat_acc,top_feats_names)
+        
         
     
     def organise_top_features(self):
@@ -286,14 +312,15 @@ class Graphs():
 
 
     def normalise_feature_data(self):
-
+        from sklearn.preprocessing import StandardScaler
+        
         graph_feature_matrix = self.graph_feature_matrix
         
-        X=graph_feature_matrix.as_matrix()
-
-        X_N = abs(X) / abs(X).max(axis=0)
+        X=graph_feature_matrix.values
+        scaler = StandardScaler()
+        X_norm = scaler.fit_transform(X)
         
-        self.X_N = X_N
+        self.X_norm = X_norm
         self.y=np.asarray(self.graph_labels)
 
         return
@@ -314,7 +341,7 @@ class Graphs():
         """self.organise_feature_data()"""
         self.normalise_feature_data()
 
-        X = self.X_N
+        X = self.X_norm
         y = self.y
 
 
@@ -351,53 +378,50 @@ class Graphs():
     
     
     
-    def graph_classification_mlp(self):
+    def graph_classification_mlp(self,X = None, y = None , verbose=True):
         
-        from sklearn.model_selection import train_test_split
+        #from sklearn.model_selection import train_test_split
         from sklearn.preprocessing import LabelBinarizer        
-                    
+        from sklearn.model_selection import StratifiedKFold          
         import numpy as np
         import tensorflow as tf
         from sklearn.metrics import accuracy_score
-        
-        
-        def load_dataset(X,y):
-            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=None)   # normalize x
-            X_train = X_train.astype(float) 
-            X_test = X_test.astype(float)    # we reserve the last 10000 training examples for validation
-            X_train, X_val = X_train[:-60], X_train[-60:]
-            y_train, y_val = y_train[:-60], y_train[-60:]    
-            return X_train, y_train, X_val, y_val, X_test, y_test
-        
-        X = self.X_N
-        y = self.y
-        
-        testing_accuracy = []
+               
 
-        for _ in range(20):
-            X_train, y_train, X_val, y_val, X_test, y_test = load_dataset(X,y)
+        if X is None:
+            X = self.X_norm
+            y = self.y        
+       
+        testing_accuracy = []
+        
+        skf = StratifiedKFold(n_splits=5, random_state=42, shuffle=True)
+        
+        
+        for train_index, test_index in skf.split(X, y):
+            
+            X_train, X_test = X[train_index], X[test_index]
+            y_train, y_test = y[train_index], y[test_index]
+            #X_train, y_train, X_test, y_test = load_dataset(X,y)
             
             ## Changing labels to one-hot encoded vector
             lb = LabelBinarizer()
             y_train = lb.fit_transform(y_train)
-            y_val = lb.transform(y_val)
             y_test = lb.transform(y_test)
     
             print('Train labels dimension:');print(y_train.shape)
-            print('Train labels dimension:');print(y_val.shape)
             print('Test labels dimension:');print(y_test.shape)            
             
 
-            s = tf.InteractiveSession()
+            s = tf.Session()  # Create new session            
             
-            ## Defining various initialization parameters for 784-512-256-10 MLP model
+            ## Defining various initialization parameters for 600-256-128-3 MLP model
             num_classes = y_train.shape[1]
             num_features = X_train.shape[1]
             num_output = y_train.shape[1]
             num_layers_0 = 256
-            num_layers_1 = 128
+            num_layers_1 = 128#128
             starter_learning_rate = 0.001
-            regularizer_rate = 0.1
+            regularizer_rate = 0.1#0.1
             
             # Placeholders for the input data
             input_X = tf.placeholder('float32',shape =(None,num_features),name="input_X")
@@ -427,6 +451,8 @@ class Graphs():
             loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=predicted_y,labels=input_y)) + regularizer_rate*(tf.reduce_sum(tf.square(bias_0)) + tf.reduce_sum(tf.square(bias_1)))
             
             learning_rate = tf.train.exponential_decay(starter_learning_rate, 0, 5, 0.85, staircase=True)
+            
+            
             ## Adam optimzer for finding the right weight
             optimizer = tf.train.AdamOptimizer(learning_rate).minimize(loss,var_list=[weights_0,weights_1,weights_2,bias_0,bias_1,bias_2])
             
@@ -436,7 +462,7 @@ class Graphs():
     
             ## Training parameters
             batch_size = 128
-            epochs=500
+            epochs=100
             dropout_prob = 0.6
             training_accuracy = []
             training_loss = []
@@ -455,22 +481,27 @@ class Graphs():
                                                   input_y: y_train,keep_prob:1}))
             
                 ## Evaluation of model
-                validation_accuracy.append(accuracy_score(y_val.argmax(1), 
-                                        s.run(predicted_y, {input_X: X_val,keep_prob:1}).argmax(1)))
-                print("Epoch:{0}, Train loss: {1:.2f} Train acc: {2:.3f}, Val acc:{3:.3f}".format(epoch,
-                                                                                training_loss[epoch],
-                                                                                training_accuracy[epoch],
-                                                                                validation_accuracy[epoch]))
+                validation_accuracy.append(accuracy_score(y_test.argmax(1), 
+                                        s.run(predicted_y, {input_X: X_test,keep_prob:1}).argmax(1)))
+                if verbose:
+                    print("Epoch:{0}, Train loss: {1:.2f} Train acc: {2:.3f}, Val acc:{3:.3f}".format(epoch,
+                                                                                    training_loss[epoch],
+                                                                                    training_accuracy[epoch],
+                                                                                    validation_accuracy[epoch]))
             
-            test_acc = accuracy_score(y_test.argmax(1),s.run(predicted_y, {input_X: X_test,keep_prob:1}).argmax(1))  
-            testing_accuracy.append(test_acc)   
             
-            print("Test acc:{0:.3f}".format(test_acc))   
+            #test_acc = accuracy_score(y_test.argmax(1),s.run(predicted_y, {input_X: X_test,keep_prob:1}).argmax(1))  
+            testing_accuracy.append(validation_accuracy[-10:])   
             
-            s.close()
+            #print("Test acc:{0:.3f}".format(test_acc))   
+            tf.reset_default_graph()
+                        
+        print("Final mean test accuracy: --- {0:.3f} ---)".format(np.mean(testing_accuracy)))            
+            
+            
+        self.mlp_test_accuracy = testing_accuracy
         
-        
-        
+        return np.mean(testing_accuracy)
         
 
     def save_feature_set(self,filename = 'TestData/feature_set.pkl'):
