@@ -394,7 +394,7 @@ class Graphs():
        
         testing_accuracy = []
         
-        skf = StratifiedKFold(n_splits=5, random_state=42, shuffle=True)
+        skf = StratifiedKFold(n_splits=10, random_state=10, shuffle=True)
         
         
         for train_index, test_index in skf.split(X, y):
@@ -462,7 +462,7 @@ class Graphs():
     
             ## Training parameters
             batch_size = 128
-            epochs=100
+            epochs=200
             dropout_prob = 0.6
             training_accuracy = []
             training_loss = []
