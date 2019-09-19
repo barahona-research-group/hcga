@@ -74,8 +74,9 @@ class ForceCentrality():
                 # Log
                 verbose=False)
         
-	# producing a zero array in case force atlas fails.
-	c = np.zeros(G.number_of_nodes())
+        #producing a zero array in case force atlas fails.
+        
+        c = np.zeros(G.number_of_nodes())
 
         try:
             pos = forceatlas2.forceatlas2_networkx_layout(G, pos=None, iterations=2000)

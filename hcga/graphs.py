@@ -20,6 +20,7 @@ class Graphs():
     """
 
     def __init__(self, graphs = [], graph_meta_data = [], node_meta_data = [], graph_class = [], directory='', dataset = 'synthetic'):
+        
         self.graphs = graphs # A list of networkx graphs
         self.graph_labels = graph_class # A list of class IDs - A single class ID for each graph.
 
@@ -27,6 +28,7 @@ class Graphs():
         self.node_metadata = node_meta_data # A list of arrays with additional feature data describing nodes on the graph
 
         self.dataset = dataset
+        
         if not graphs:
             self.load_graphs(directory=directory,dataset=dataset)
 
@@ -40,24 +42,28 @@ class Graphs():
         # Node features are stored in: G.node[0]['feat'] 
         # Node labels are stored in: G.node[0]['label']
         
-        if dataset == 'ENZYMES':
+        if dataset == 'ENZYMES' or dataset == 'DD' :
         
             graphs,graph_labels = read_graphfile(directory,dataset)
     
             # selected data for testing code from the enzymes dataset...
-            selected_data = np.arange(0,600,1) 
-            graphs = [graphs[i] for i in list(selected_data)]
-            graph_labels = [graph_labels[i] for i in list(selected_data)]
+            #selected_data = np.arange(0,600,1) 
+            #graphs = [graphs[i] for i in list(selected_data)]
+            #graph_labels = [graph_labels[i] for i in list(selected_data)]
             
             
             to_remove = []
             for i,G in enumerate(graphs): 
-                if not nx.is_connected(G):  
-                    print('Graph '+str(i)+' is not connected. Taking largest subgraph and relabelling the nodes.')
-                    Gc = max(nx.connected_component_subgraphs(G), key=len)
-                    mapping=dict(zip(Gc.nodes,range(0,len(Gc))))
-                    Gc = nx.relabel_nodes(Gc,mapping)                
-                    graphs[i] = Gc
+                """
+                The fact that some nodes are not connected needs to be changed. We need to append the subgraphs and run feature extraction
+                on each subgraph. Add features that relate to the extra subgraphs. or features indicatnig there are subgraphs.
+                """
+#                if not nx.is_connected(G):  
+#                    print('Graph '+str(i)+' is not connected. Taking largest subgraph and relabelling the nodes.')
+#                    Gc = max(nx.connected_component_subgraphs(G), key=len)
+#                    mapping=dict(zip(Gc.nodes,range(0,len(Gc))))
+#                    Gc = nx.relabel_nodes(Gc,mapping)                
+#                    graphs[i] = Gc
                 
                 if len(graphs[i])<3:
                     to_remove.append(i)
@@ -65,7 +71,9 @@ class Graphs():
             # removing graphs with less than 2 nodes
             graph_labels = [i for j, i in enumerate(graph_labels) if j not in to_remove]
             graphs = [i for j, i in enumerate(graphs) if j not in to_remove]
-    
+
+            
+        
         elif dataset == 'synthetic':
             from hcga.TestData.create_synthetic_data import synthetic_data
             graphs,graph_labels = synthetic_data()

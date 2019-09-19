@@ -41,6 +41,22 @@ class Operations():
         self.eigenvectors = []
 
 
+        """
+        The fact that some nodes are not connected needs to be changed. We need to append the subgraphs and run feature extraction
+        on each subgraph. Add features that relate to the extra subgraphs. or features indicatnig there are subgraphs.
+        """
+        
+        if not nx.is_connected(G):  
+            Gc = max(nx.connected_component_subgraphs(G), key=len)
+            mapping=dict(zip(Gc.nodes,range(0,len(Gc))))
+            Gc = nx.relabel_nodes(Gc,mapping)                
+            self.G_largest_subgraph = Gc            
+        else:
+            self.G_largest_subgraph = G
+        
+
+
+
         # functins to run automatically
         if not self.operations_dict:
             self.load_csv()
@@ -82,12 +98,26 @@ class Operations():
         feature_dict = {}
 
         # loop over the feature classes defined in the YAML file
+        
+        """
+        First add features to do with subgraphs       
+        
+        """
+        filename = 'connected_components'
+        classname = 'ConnectedComponents'
+        feature_class = getattr(import_module('hcga.Operations.'+filename), classname)           
+        feature_obj = feature_class(self.G)
+        feature_obj.feature_extraction()
+        feature_dict['CComp'] = feature_obj.features
+
+        
+        # now looping over operations dictionary to calculate features
 
         for i in range(len(operations_dict)):
             operation = operations_dict[i]
 
             #Extract the filename and class name
-            main_params = ['filename','classname','shortname','keywords','calculation_speed','precomputed']
+            #main_params = ['filename','classname','shortname','keywords','calculation_speed','precomputed']
             filename = operation[1]
             classname = operation[2]
             symbolic_name = operation[3]
@@ -117,9 +147,9 @@ class Operations():
             start_time = time.time()                    
 
             if precomputed=='True ':
-                feature_obj = feature_class(self.G,(self.eigenvalues,self.eigenvectors))
+                feature_obj = feature_class(self.G_largest_subgraph,(self.eigenvalues,self.eigenvectors))
             else:
-                feature_obj = feature_class(self.G)
+                feature_obj = feature_class(self.G_largest_subgraph)
 
             if not params:
                 feature_obj.feature_extraction()
@@ -182,10 +212,10 @@ class Operations():
     def precompute_eigenvectors(self,weight=None, max_iter=50, tol=0):
 
         try:
-            M = nx.to_scipy_sparse_matrix(self.G, nodelist=list(self.G), weight=weight,
+            M = nx.to_scipy_sparse_matrix(self.G_largest_subgraph, nodelist=list(self.G_largest_subgraph), weight=weight,
                                       dtype=float)
 
-            eigenvalues, eigenvectors = linalg.eigs(M.T, k = self.G.number_of_nodes() - 2, which='LR',
+            eigenvalues, eigenvectors = linalg.eigs(M.T, k = self.G_largest_subgraph.number_of_nodes() - 2, which='LR',
                                               maxiter=max_iter, tol=tol)
 
             self.eigenvalues = eigenvalues
