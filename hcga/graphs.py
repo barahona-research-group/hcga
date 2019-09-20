@@ -82,7 +82,7 @@ class Graphs():
         self.graph_labels = graph_labels
 
 
-    def calculate_features(self):
+    def calculate_features(self,calc_speed='slow'):
         """
         Calculation the features for each graph in the set of graphs
 
@@ -91,6 +91,7 @@ class Graphs():
         graph_feature_set = []
 
         cnt = 0
+        
         for G in tqdm(self.graphs):
             print("-------------------------------------------------")              
 
@@ -99,7 +100,7 @@ class Graphs():
             print("-------------------------------------------------")               
 
             G_operations = Operations(G)
-            G_operations.feature_extraction()
+            G_operations.feature_extraction(calc_speed=calc_speed)
             graph_feature_set.append(G_operations)
             print("-------------------------------------------------")               
             print("Time to calculate all features for graph "+ str(cnt) +": --- %s seconds ---" % round(time.time() - start_time,3))               
@@ -335,16 +336,15 @@ class Graphs():
 
 
 
-    def graph_classification(self,plot=True):
+    def graph_classification(self,plot=True,ml_model='random_forest'):
 
         """
         Graph Classification
 
         """
-
-        from sklearn import model_selection
-        from sklearn.svm import LinearSVC
-        from sklearn.ensemble import RandomForestClassifier
+        
+        from sklearn.model_selection import StratifiedKFold  
+        from sklearn.metrics import accuracy_score
 
         """self.organise_feature_data()"""
         self.normalise_feature_data()
@@ -354,35 +354,67 @@ class Graphs():
 
 
         # prepare configuration for cross validation test harness
-        seed = 7
 
-        # prepare models
-        models = []
 
-        models.append(('RandomForest', RandomForestClassifier(n_estimators=100)))
-        models.append(('LinearSVM', LinearSVC()))
 
-        results = []
-        names = []
-        scoring = 'accuracy'
-        for name, model in models:
-            	kfold = model_selection.KFold(n_splits=10, random_state=seed)
-            	cv_results = model_selection.cross_val_score(model, X, y, cv=kfold, scoring=scoring)
-            	results.append(cv_results)
-            	names.append(name)
-            	msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
-            	print(msg)
+        skf = StratifiedKFold(n_splits=10, random_state=10, shuffle=True)
+        testing_accuracy = []
+        
+        if ml_model =='random_forest':
+            from sklearn.ensemble import RandomForestClassifier
+            model = RandomForestClassifier(n_estimators=100,max_depth=30)
+        elif ml_model == 'xgboost':
+            from xgboost import XGBClassifier
+            model = XGBClassifier(max_depth=4)
+            
 
-        if plot:
-            fig = plt.figure()
-            fig.suptitle('Algorithm Comparison')
-            ax = fig.add_subplot(111)
-            plt.boxplot(results)
-            plt.ylim(0,1)
-            ax.set_xticklabels(names)
+        for train_index, test_index in skf.split(X, y):
+            
+            X_train, X_test = X[train_index], X[test_index]
+            y_train, y_test = y[train_index], y[test_index]
+            #X_train, y_train, X_test, y_test = load_dataset(X,y)
+            
+            ## Changing labels to one-hot encoded vector
+            #lb = LabelBinarizer()
+            #y_train = lb.fit_transform(y_train)
+            #y_test = lb.transform(y_test)
+    
+            print('Train labels dimension:');print(y_train.shape)
+            print('Test labels dimension:');print(y_test.shape)   
+            
+            #rf = RandomForestClassifier(n_estimators=100,max_depth=100,max_features=None)
+            y_pred = model.fit(X_train,y_train).predict(X_test)
+            
+            acc = accuracy_score(y_test,y_pred)
+            print("Fold test accuracy: --- {0:.3f} ---)".format(acc))            
+
+            testing_accuracy.append(acc)   
+            
+        
+        print("Final mean test accuracy: --- {0:.3f} ---)".format(np.mean(testing_accuracy)))            
+            
+            
+        self.test_accuracy = testing_accuracy
+            
+
+#        for name, model in models:
+#            	kfold = model_selection.KFold(n_splits=10, random_state=10)
+#            	cv_results = model_selection.cross_val_score(model, X, y, cv=kfold, scoring=scoring)
+#            	results.append(cv_results)
+#            	names.append(name)
+#            	msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
+#            	print(msg)
+#
+#        if plot:
+#            fig = plt.figure()
+#            fig.suptitle('Algorithm Comparison')
+#            ax = fig.add_subplot(111)
+#            plt.boxplot(results)
+#            plt.ylim(0,1)
+#            ax.set_xticklabels(names)
         #plt.show()
 
-        return results
+        return np.mean(testing_accuracy)
     
     
     
@@ -499,7 +531,7 @@ class Graphs():
             
             
             #test_acc = accuracy_score(y_test.argmax(1),s.run(predicted_y, {input_X: X_test,keep_prob:1}).argmax(1))  
-            testing_accuracy.append(validation_accuracy[-10:])   
+            testing_accuracy.append(validation_accuracy[-50:])   
             
             #print("Test acc:{0:.3f}".format(test_acc))   
             tf.reset_default_graph()

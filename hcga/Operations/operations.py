@@ -92,12 +92,19 @@ class Operations():
 
 
 
-    def feature_extraction(self):
+    def feature_extraction(self,calc_speed='slow'):
         operations_dict = self.operations_dict
 
         feature_dict = {}
 
         # loop over the feature classes defined in the YAML file
+        calculation_speeds = ['fast']
+        if calc_speed == 'medium':
+            calculation_speeds.append('medium')
+        elif calc_speed == 'slow':
+            calculation_speeds.append('medium')
+            calculation_speeds.append('slow')
+        
         
         """
         First add features to do with subgraphs       
@@ -114,6 +121,7 @@ class Operations():
         # now looping over operations dictionary to calculate features
 
         for i in range(len(operations_dict)):
+            
             operation = operations_dict[i]
 
             #Extract the filename and class name
@@ -125,6 +133,9 @@ class Operations():
             calculation_speed = operation[5]
             precomputed = operation[6]
 
+            # skip calculation if its too slow
+            if calculation_speed not in calculation_speeds:
+                continue
 
             # Extracting all additional arguments if they exist
             params = []   
