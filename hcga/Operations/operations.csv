@@ -40,6 +40,6 @@ MaximalMatching,maximal_matching,MaximalMatching,MM,,fast,False
 MinimumCuts,minimum_cuts,MinimumCuts,MiC,,fast,False 
 NodeFeatures,node_features,NodeFeatures,NF,,fast,False 
 NodeLabels,node_labels,NodeLabels,NL,,fast,False 
-SpectrumLaplacian,spectrum_laplacian,SpectrumLaplacian,SL,,medium,False
-SpectrumAdjacency,spectrum_adjacency,SpectrumAdjacency,SA,,medium,False
-SpectrumModularity,spectrum_modularity,SpectrumModularity,SM,,medium,False
+SpectrumLaplacian,spectrum_laplacian,SpectrumLaplacian,SL,,fast,False
+SpectrumAdjacency,spectrum_adjacency,SpectrumAdjacency,SA,,fast,False
+SpectrumModularity,spectrum_modularity,SpectrumModularity,SM,,fast,False
