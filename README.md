@@ -82,7 +82,14 @@ Download your data from https://ls11-www.cs.tu-dortmund.de/staff/morris/graphker
 
 Add the data into TestData folder e.g. /TestData/ENZYMES/
 
+### Run test file
 
+In the command line type
+
+```
+python test.py
+
+```
 ### Run an example
 ```
 from hcga.graphs import Graphs
