@@ -52,6 +52,10 @@ class CoreNumber():
         feature_list = {}
         
         #Calculate the core number of each node
+        
+        G.remove_edges_from(nx.selfloop_edges(G))
+        
+        
         core_number = np.asarray(list(nx.core_number(G).values()))
         # Basic stats regarding the core number distribution
         feature_list['mean'] = core_number.mean()

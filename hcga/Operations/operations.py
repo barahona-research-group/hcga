@@ -54,7 +54,8 @@ class Operations():
         else:
             self.G_largest_subgraph = G
         
-
+        
+        
 
 
         # functins to run automatically
@@ -106,17 +107,18 @@ class Operations():
             calculation_speeds.append('slow')
         
         
-        """
-        First add features to do with subgraphs       
-        
-        """
+        ###############
+        # First add features to do with subgraphs  
+        ###############
+       
         filename = 'connected_components'
         classname = 'ConnectedComponents'
         feature_class = getattr(import_module('hcga.Operations.'+filename), classname)           
         feature_obj = feature_class(self.G)
         feature_obj.feature_extraction()
         feature_dict['CComp'] = feature_obj.features
-
+        
+        ###############
         
         # now looping over operations dictionary to calculate features
 

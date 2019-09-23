@@ -21,7 +21,7 @@ RichClub,rich_club,RichClub,RC,,fast,False
 CentralityForce,centrality_force,ForceCentrality,FC,,slow,False 
 CommunitiesBisection,communities_bisection,BisectionCommunities,CB,,medium,False 
 CommunitiesAsynFluid,communities_asyn_fluid,AsynfluidCommunities,CA,,medium,False 
-CommunitiesLabelprop,communities_label_propagation,LabelpropagationCommunities,CLP,,fast,False 
+CommunitiesLabelprop,communities_label_propagation,LabelpropagationCommunities,CLP,,medium,False 
 Cycles,cycles,Cycles,CY,,fast,False 
 AverageNeighborDegree,average_neighbor_degree,AverageNeighborDegree,ND,,fast,False 
 Cliques,cliques,Cliques,Cl,,fast,False 
@@ -40,3 +40,6 @@ MaximalMatching,maximal_matching,MaximalMatching,MM,,fast,False
 MinimumCuts,minimum_cuts,MinimumCuts,MiC,,fast,False 
 NodeFeatures,node_features,NodeFeatures,NF,,fast,False 
 NodeLabels,node_labels,NodeLabels,NL,,fast,False 
+SpectrumLaplacian,spectrum_laplacian,SpectrumLaplacian,SL,,medium,False
+SpectrumAdjacency,spectrum_adjacency,SpectrumAdjacency,SA,,medium,False
+SpectrumModularity,spectrum_modularity,SpectrumModularity,SM,,medium,False

@@ -19,7 +19,7 @@ class Graphs():
         Takes a list of graphs
     """
 
-    def __init__(self, graphs = [], graph_meta_data = [], node_meta_data = [], graph_class = [], directory='', dataset = 'synthetic'):
+    def __init__(self, graphs = None, graph_meta_data = [], node_meta_data = [], graph_class = [], directory='', dataset = 'synthetic'):
         
         self.graphs = graphs # A list of networkx graphs
         self.graph_labels = graph_class # A list of class IDs - A single class ID for each graph.
@@ -42,7 +42,7 @@ class Graphs():
         # Node features are stored in: G.node[0]['feat'] 
         # Node labels are stored in: G.node[0]['label']
         
-        if dataset == 'ENZYMES' or dataset == 'DD' :
+        if dataset == 'ENZYMES' or dataset == 'DD' or dataset == 'COLLAB' :
         
             graphs,graph_labels = read_graphfile(directory,dataset)
     
@@ -426,7 +426,9 @@ class Graphs():
         import numpy as np
         import tensorflow as tf
         from sklearn.metrics import accuracy_score
-               
+        
+        
+        self.normalise_feature_data()
 
         if X is None:
             X = self.X_norm
@@ -444,17 +446,21 @@ class Graphs():
             #X_train, y_train, X_test, y_test = load_dataset(X,y)
             
             ## Changing labels to one-hot encoded vector
-            lb = LabelBinarizer()
-            y_train = lb.fit_transform(y_train)
-            y_test = lb.transform(y_test)
-    
+            if len(np.unique(y_train)) > 2:
+                lb = LabelBinarizer()
+                y_train = lb.fit_transform(y_train)
+                y_test = lb.transform(y_test)
+            else:
+                y_train = np.array([y_train, 1-y_train]).T
+                y_test = np.array([y_test, 1-y_test]).T
+        
             print('Train labels dimension:');print(y_train.shape)
             print('Test labels dimension:');print(y_test.shape)            
             
 
             s = tf.Session()  # Create new session            
             
-            ## Defining various initialization parameters for 600-256-128-3 MLP model
+            ## Defining various initialization parameters for 600-256-128-# MLP model
             num_classes = y_train.shape[1]
             num_features = X_train.shape[1]
             num_output = y_train.shape[1]
@@ -537,7 +543,8 @@ class Graphs():
             tf.reset_default_graph()
                         
         print("Final mean test accuracy: --- {0:.3f} ---)".format(np.mean(testing_accuracy)))            
-            
+        
+        s.close()
             
         self.mlp_test_accuracy = testing_accuracy
         
