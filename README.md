@@ -84,12 +84,12 @@ Add the data into TestData folder e.g. /TestData/ENZYMES/
 
 
 ### Run an example
-
+```
 from hcga.graphs import Graphs
 
 g = Graphs(directory='/home/robert/Documents/PythonCode/hcga/hcga/TestData',dataset='ENZYMES')
 
 g.calculate_features(calc_speed='slow')
-
+```
 
 
