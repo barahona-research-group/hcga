@@ -121,7 +121,7 @@ class Operations():
         ###############
         
         # now looping over operations dictionary to calculate features
-
+        self.computational_times = {}
         for i in range(len(operations_dict)):
             
             operation = operations_dict[i]
@@ -168,8 +168,10 @@ class Operations():
                 feature_obj.feature_extraction()
             else:
                 feature_obj.feature_extraction(params)
-
-            print("Time to calculate feature class "+ classname +"("+ symbolic_name +") :" + "--- %s seconds ---" % round(time.time() - start_time,3))               
+                
+            self.computational_times[classname] = time.time() - start_time
+            
+            # print("Time to calculate feature class "+ classname +"("+ symbolic_name +") :" + "--- %s seconds ---" % round(time.time() - start_time,3))               
             
             """
             # Alter the feature feature_names

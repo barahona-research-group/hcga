@@ -8,6 +8,8 @@ from hcga.Operations.operations import Operations
 from tqdm import tqdm
 import time
 
+from multiprocessing import Pool
+from functools import partial
 
 from sklearn.preprocessing import normalize
 
@@ -82,16 +84,16 @@ class Graphs():
         self.graph_labels = graph_labels
 
 
+    
     def calculate_features(self,calc_speed='slow'):
         """
         Calculation the features for each graph in the set of graphs
 
         """
 
+        """
         graph_feature_set = []
-
         cnt = 0
-        
         for G in tqdm(self.graphs):
             print("-------------------------------------------------")              
 
@@ -106,32 +108,43 @@ class Graphs():
             print("Time to calculate all features for graph "+ str(cnt) +": --- %s seconds ---" % round(time.time() - start_time,3))               
             cnt = cnt+1
             self.graph_feature_set_temp = graph_feature_set
-            
         self.graph_feature_set = graph_feature_set
+
+        """
+        calculate_features_single_graphf = partial(calculate_features_single_graph, calc_speed)
         
+        with Pool(processes = self.n_processes) as p_feat:  #initialise the parallel computation
+            self.graph_feature_set = list(tqdm(p_feat.imap(calculate_features_single_graphf, self.graphs), total = len(self.graphs)))
+
+
         
+        comp_times = []
+        for op in self.graph_feature_set:
+            comp_times.append(list(op.computational_times.values()))
+            
+        comp_times_mean = np.mean(np.array(comp_times), axis = 0)
         
-        feature_names=graph_feature_set[0]._extract_data()[0]
+        feature_names = self.graph_feature_set[0]._extract_data()[0]
+        for i, fn in enumerate(list(self.graph_feature_set[0].computational_times.keys())):
+            print('Computation time for feature: ' + str(fn) + ' is ' + str(np.round(comp_times_mean[i],3)) + ' seconds.')
         # Create graph feature matrix
-        feature_vals_matrix=np.empty([len(graph_feature_set),3*len(feature_names)])  #array([graph_feature_set[0]._extract_data()[1]])
+        feature_vals_matrix = np.empty([len(self.graph_feature_set),3*len(feature_names)])  
+        
         # Append features for each graph as rows   
-        
-        
-        
-        for i in range(0,len(graph_feature_set)):            
+        for i in range(0,len(self.graph_feature_set)):            
 
             N = self.graphs[i].number_of_nodes()
             E = self.graphs[i].number_of_edges()
-            graph_feats = np.asarray(graph_feature_set[i]._extract_data()[1])
-            compounded_feats = np.hstack([graph_feats,graph_feats/N,graph_feats/E]) 
+            graph_feats = np.asarray(self.graph_feature_set[i]._extract_data()[1])
+            compounded_feats = np.hstack([graph_feats, graph_feats/N,graph_feats/E]) 
             
             
             
-            feature_vals_matrix[i,:]=compounded_feats
+            feature_vals_matrix[i,:] = compounded_feats
         
         compounded_feature_names = feature_names + [s +'_N' for s in feature_names] + [s +'_E' for s in feature_names]
         
-        raw_feature_matrix=pd.DataFrame(feature_vals_matrix,columns=compounded_feature_names)
+        raw_feature_matrix = pd.DataFrame(feature_vals_matrix, columns = compounded_feature_names)
         
         self.raw_feature_matrix = raw_feature_matrix 
         
@@ -569,3 +582,9 @@ class Graphs():
         self.graph_feature_matrix = feature_matrix
 
     
+def calculate_features_single_graph(calc_speed, G):
+        
+        G_operations = Operations(G)
+        G_operations.feature_extraction(calc_speed=calc_speed)
+        
+        return G_operations
