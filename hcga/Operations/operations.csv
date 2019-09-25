@@ -1,6 +1,6 @@
 function name:,filename:,classname:,shortname:,keywords:,calculation_speed:,precomputed:
 BasicStats,basic_stats,BasicStats,BS,,fast,False 
-Clustering,clustering,Clustering,CL,,fast,False 
+Clustering,clustering,Clustering,CL,,medium,False 
 DegreeCentrality,centrality_degree,DegreeCentrality,DC,,fast,False 
 BetweennessCentrality,centrality_betweenness,BetweennessCentrality,BC,,fast,False 
 EdgeBetweennessCentrality,centrality_edge_betweenness,EdgeBetweennessCentrality,EC,,fast,False 
