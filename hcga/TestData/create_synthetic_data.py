@@ -8,6 +8,8 @@ Created on Thu Aug  8 11:17:21 2019
 
 import networkx as nx
 import random as rd
+import numpy as np
+
 
 def synthetic_data():
     
@@ -26,3 +28,18 @@ def synthetic_data():
     graph_class=[1 for i in range(50)]+[2 for i in range(50)]
     
     return graphs,graph_class
+
+
+def synthetic_data_watts_strogatz(N=100):
+    
+    graphs = []
+    graph_labels = []
+    
+    p = np.linspace(0,1,N)
+    
+    for i in range(N):
+        G = nx.connected_watts_strogatz_graph(40,5,p[i])
+        graphs.append(G)
+        graph_labels.append(p[i])
+    
+    return graphs, np.asarray(graph_labels)

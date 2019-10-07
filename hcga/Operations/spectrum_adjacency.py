@@ -60,7 +60,7 @@ class SpectrumAdjacency():
         eigenvals_A = np.real(nx.linalg.spectrum.adjacency_spectrum(G))
         
         if len(eigenvals_A) < 10:
-            eigenvals_A = np.concatenate((eigenvals_A,np.zeros(5-len(eigenvals_A))))        
+            eigenvals_A = np.concatenate((eigenvals_A,np.zeros(10-len(eigenvals_A))))        
             
         for i in range(10):               
             feature_list['A_eigvals_'+str(i)]=eigenvals_A[i]

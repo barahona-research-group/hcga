@@ -28,7 +28,7 @@ class Graphs():
 
         self.graph_metadata = graph_meta_data # A list of vectors with additional feature data describing the graph
         self.node_metadata = node_meta_data # A list of arrays with additional feature data describing nodes on the graph
-
+        self.n_processes = 4
         self.dataset = dataset
         
         if not graphs:
@@ -44,7 +44,7 @@ class Graphs():
         # Node features are stored in: G.node[0]['feat'] 
         # Node labels are stored in: G.node[0]['label']
         
-        if dataset == 'ENZYMES' or dataset == 'DD' or dataset == 'COLLAB' :
+        if dataset == 'ENZYMES' or dataset == 'DD' or dataset == 'COLLAB' or dataset == 'PROTEINS' or dataset == 'REDDIT-MULTI-12K' :
         
             graphs,graph_labels = read_graphfile(directory,dataset)
     
@@ -79,6 +79,13 @@ class Graphs():
         elif dataset == 'synthetic':
             from hcga.TestData.create_synthetic_data import synthetic_data
             graphs,graph_labels = synthetic_data()
+        elif dataset == 'synthetic_watts_strogatz':
+            from hcga.TestData.create_synthetic_data import synthetic_data_watts_strogatz
+            graphs,graph_labels = synthetic_data_watts_strogatz(N=100)
+        elif dataset == 'HELICENES':
+            from hcga.TestData.HELICENES.graph_construction import construct_helicene_graphs
+            graphs,graph_labels = construct_helicene_graphs()
+
             
         self.graphs = graphs
         self.graph_labels = graph_labels
@@ -127,6 +134,8 @@ class Graphs():
         feature_names = self.graph_feature_set[0]._extract_data()[0]
         for i, fn in enumerate(list(self.graph_feature_set[0].computational_times.keys())):
             print('Computation time for feature: ' + str(fn) + ' is ' + str(np.round(comp_times_mean[i],3)) + ' seconds.')
+            
+            
         # Create graph feature matrix
         feature_vals_matrix = np.empty([len(self.graph_feature_set),3*len(feature_names)])  
         
@@ -175,160 +184,7 @@ class Graphs():
             return graph_feature_matrix[n]   
         
 
-#    def top_features_model(self,method='random_forest'):
-#        
-#        """
-#        This class identifies top features given a classification algorithm 
-#        that ranks features.
-#        
-#        """
-#        
-#        from sklearn.ensemble import RandomForestClassifier
-#        from sklearn import datasets
-#        from sklearn.model_selection import train_test_split
-#        from sklearn.feature_selection import SelectFromModel
-#        from sklearn.metrics import accuracy_score
-#                    
-#        self.normalise_feature_data()
-#        X=self.X_norm
-#        y=self.y
-#        feature_names=[col for col in self.graph_feature_matrix.columns]
-#        
-#        if method =='random_forest': 
-#            
-#            top_features_list=[]
-#            
-#            for i in range(5):
-#                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
-#            
-#                clf=RandomForestClassifier(n_estimators=10000, random_state=0)
-#                clf.fit(X_train, y_train)
-#            
-#                sfm = SelectFromModel(clf, threshold=0.01)
-#                sfm.fit(X_train, y_train)
-#            
-#                for feature_list_index in sfm.get_support(indices=True):
-#                    top_features_list.append(feature_names[feature_list_index])
-#            
-#            top_features_list=list(dict.fromkeys(top_features_list))
-#            
-#            self.top_features_list=top_features_list
-#        
-#        elif method == 'univariate':
-#            return  
-#        
-#            
-#        return
 
-        
-#    def top_features_univariate(self,method='random_forest', plot=True):
-#        
-#        from sklearn.svm import LinearSVC
-#        from sklearn import datasets
-#        from sklearn import model_selection
-#        from sklearn.feature_selection import SelectFromModel
-#        from sklearn.metrics import accuracy_score
-#        from sklearn.metrics import balanced_accuracy_score               
-#        import seaborn as sns
-#
-#        seed = 7
-#        
-#        scoring = 'balanced_accuracy'
-#        
-#        X=self.X_norm
-#        y=self.y
-#        feature_names=[col for col in self.graph_feature_matrix.columns]
-#        
-#        accuracy = []        
-#        for i in range(0,X.shape[1]):
-#            print('Computing feature: '+str(i))
-#            kfold = model_selection.StratifiedKFold(n_splits=10, random_state=seed)
-#            cv_results = model_selection.cross_val_score(LinearSVC(), X[:,i].reshape(-1,1), y, cv=kfold, scoring=scoring)
-#            accuracy.append(cv_results.mean())
-#        
-#        top_feat_ids = np.flip(np.argsort(accuracy))
-#        top_feat_acc = np.flip(np.sort(accuracy))
-#        top_feats_names = [feature_names[i] for i in top_feat_ids]
-#        
-#        self.top_feat_ids =  top_feat_ids
-#        self.top_feat_acc = top_feat_acc
-#        self.top_feats_names = top_feats_names
-#        
-#        if plot is True:
-#            plt.figure()
-#            plt.hist(top_feat_acc,20)
-#        
-#        
-#        # plot top 40 feats
-#        top_feats_names[:40]
-#        df_top40 = pd.DataFrame(columns = top_feats_names[:40], data=X[:,top_feat_ids[:40]])    
-#        
-#        
-#        cor = np.abs(df_top40.corr())
-#        
-#        from scipy.cluster.hierarchy import dendrogram, linkage
-#        Z = linkage(cor, 'ward')
-#        
-#        plt.figure()
-#        dn = dendrogram(Z)         
-#
-#        
-#        new_index = [int(i) for  i in dn['ivl']]
-#        top_feats_names = [top_feats_names[i] for i in new_index]        
-#        
-#        df = df_top40[top_feats_names]
-#        cor2 = np.abs(df.corr())
-#        
-#        plt.figure()
-#        ax = sns.heatmap(cor2, linewidth=0.5)
-#        plt.show()
-            
-        
-#    def top_features_leaveoneout(self):
-#        
-#        X = self.X_norm
-#        y = self.y
-#        
-#        feature_names=[col for col in self.graph_feature_matrix.columns]
-#        
-#        original_acc = self.graph_classification_mlp(verbose=False)
-#        
-#        accuracy = []
-#        
-#        for i in range(X.shape[1]):
-#            mask = np.ones(X.shape[1], dtype=bool)
-#            mask[i] = False
-#            X_leaveoneout = X[:,mask]        
-#            acc = self.graph_classification_mlp(X=X_leaveoneout,y=y,verbose=False)
-#            accuracy.append(acc)
-#            
-#        reduction_accuracy = original_acc - np.asarray(accuracy)   
-#        
-#        top_feat_ids = np.flip(np.argsort(reduction_accuracy))
-#        top_feat_acc = np.flip(np.sort(reduction_accuracy))
-#        top_feats_names = [feature_names[i] for i in top_feat_ids]        
-#        
-#        self.top_feat_leaveoneout = (top_feat_ids,top_feat_acc,top_feats_names)
-#        
-        
-    
-#    def organise_top_features(self):
-#            
-#        top_features_list = self.top_features_list
-#            
-#        feature_values = np.transpose(np.array([self.extract_feature(i).values for i in top_features_list]))
-#            
-#        top_feature_matrix = pd.DataFrame(feature_values,columns=top_features_list)
-#            
-#        t_X = top_feature_matrix.as_matrix()
-#            
-#        t_X_N = t_X / t_X.max(axis=0)
-#        t_X_N = t_X_N[:,~np.isnan(t_X_N).any(axis=0)]
-#            
-#        self.top_feature_matrix = top_feature_matrix
-#        self.t_X_N = t_X_N
-#        self.y = np.asarray(self.graph_labels)
-            
 
 
 
@@ -361,11 +217,8 @@ class Graphs():
 
         """
         
-        from sklearn.model_selection import StratifiedKFold  
-        from sklearn.metrics import accuracy_score
-        from scipy.cluster.hierarchy import dendrogram, linkage
-        import seaborn as sns
-        import pandas as pd
+
+
         
         """self.organise_feature_data()"""
         self.normalise_feature_data()
@@ -390,86 +243,73 @@ class Graphs():
             feature_names = [i for j, i in enumerate(feature_names) if j in matching]
 
 
-        # prepare configuration for cross validation test harness
-        skf = StratifiedKFold(n_splits=10, random_state=10, shuffle=True)
-        testing_accuracy = []
-        
-        if ml_model =='random_forest':
-            from sklearn.ensemble import RandomForestClassifier
-            model = RandomForestClassifier(n_estimators=100,max_depth=30)
-        elif ml_model == 'xgboost':
-            from xgboost import XGBClassifier
-            model = XGBClassifier(max_depth=4)
+
+        testing_accuracy, top_feats = classification(X,y,ml_model)
+        print("Mean test accuracy full set: --- {0:.3f} ---)".format(np.mean(testing_accuracy)))            
+
+        # get names of top features
+        if top_feat == True:               
+            top_features_list = top_features(X,top_feats,feature_names)            
+            self.top_features_list=top_features_list       
             
-        top_feats = []
+           
+        # re running classification with reduced feature set
+        X_reduced = reduce_feature_set(X,top_feats)        
+        testing_accuracy_reduced_set, top_feats_reduced_set = classification(X_reduced,y,ml_model) 
+        print("Final mean test accuracy reduced feature set: --- {0:.3f} ---)".format(np.mean(testing_accuracy_reduced_set)))            
+         
+        self.test_accuracy = testing_accuracy_reduced_set 
+        return np.mean(testing_accuracy_reduced_set)
+    
+    
+    
+    def graph_regression(self,plot=True,top_feat=True, data='all'):
         
-        for train_index, test_index in skf.split(X, y):
-            
+        from sklearn.model_selection import StratifiedKFold   
+        import xgboost
+        from sklearn.metrics import explained_variance_score
+
+               
+        self.normalise_feature_data()
+
+        X = self.X_norm
+        y = self.y
+        
+        feature_names=[col for col in self.graph_feature_matrix.columns]            
+
+        
+        # Let's try XGboost algorithm to see if we can get better results
+        xgb = xgboost.XGBRegressor(n_estimators=100, learning_rate=0.08,gamma=0,subsample=0.75,colsample_bytree=1, max_depth=7)
+                
+        bins = np.linspace(np.min(y), np.max(y), 10) 
+        y_binned = np.digitize(y, bins)
+        
+        skf = StratifiedKFold(n_splits = 10, shuffle = True)        
+        
+        top_feats = []        
+        explained_variance = []
+        for train_index, test_index in skf.split(X, y_binned):            
             X_train, X_test = X[train_index], X[test_index]
             y_train, y_test = y[train_index], y[test_index]
-            #X_train, y_train, X_test, y_test = load_dataset(X,y)
+        
+            xgb.fit(X_train,y_train)
+        
+            y_pred = xgb.predict(X_test)
             
-            ## Changing labels to one-hot encoded vector
-            #lb = LabelBinarizer()
-            #y_train = lb.fit_transform(y_train)
-            #y_test = lb.transform(y_test)
-    
-            print('Train labels dimension:');print(y_train.shape)
-            print('Test labels dimension:');print(y_test.shape)   
-            
-            #rf = RandomForestClassifier(n_estimators=100,max_depth=100,max_features=None)
-            y_pred = model.fit(X_train,y_train).predict(X_test)
-            
-            acc = accuracy_score(y_test,y_pred)
-            print("Fold test accuracy: --- {0:.3f} ---)".format(acc))            
+            explained_variance.append(explained_variance_score(y_test,y_pred))
 
-            testing_accuracy.append(acc)   
+            print("Fold explained variance: --- {0:.3f} ---)".format(explained_variance_score(y_test,y_pred)))            
+
             
             if top_feat == True:
-                top_feats.append(model.feature_importances_)
-                
-        
-        
-        print("Final mean test accuracy: --- {0:.3f} ---)".format(np.mean(testing_accuracy)))            
+                top_feats.append(xgb.feature_importances_)
 
-        
-        
-        # compute top features using feature importance
-        
-        if top_feat == True:   
-            
-            mean_importance = np.mean(np.asarray(top_feats),0)                  
-            top_feat_indices = np.argsort(mean_importance)[::-1]            
-            top_features_list = []
-            for i in range(len(top_feat_indices)):                
-                top_features_list.append(feature_names[top_feat_indices[i]])    
-                
-            top_features_list=list(dict.fromkeys(top_features_list))    
+        if top_feat == True:               
+            top_features_list = top_features(X,top_feats,feature_names)            
             self.top_features_list=top_features_list            
-            top_features_list[:40]
-            df_top40 = pd.DataFrame(columns = top_features_list[:40], data=X[:,top_feat_indices[:40]])            
-            cor = np.abs(df_top40.corr())        
-            Z = linkage(cor, 'ward')            
-            plt.figure()
-            dn = dendrogram(Z)             
-            new_index = [int(i) for  i in dn['ivl']]
-            top_feats_names = [top_features_list[i] for i in new_index]             
-            df = df_top40[top_feats_names]
-            cor2 = np.abs(df.corr())            
-            plt.figure()
-            ax = sns.heatmap(cor2, linewidth=0.5)
-            plt.show()
-            
-            
-        
-            
-            
-        self.test_accuracy = testing_accuracy
+
             
 
-        return np.mean(testing_accuracy)
-    
-    
     
     def graph_classification_mlp(self,X = None, y = None , verbose=True):
         
@@ -604,6 +444,9 @@ class Graphs():
         return np.mean(testing_accuracy)
         
 
+    
+        
+
     def save_feature_set(self,filename = 'TestData/feature_set.pkl'):
         import pickle as pkl        
         feature_matrix = self.graph_feature_matrix
@@ -621,6 +464,50 @@ class Graphs():
         
         self.graph_feature_matrix = feature_matrix
 
+
+def classification(X,y,ml_model):
+    from sklearn.model_selection import StratifiedKFold  
+    from sklearn.metrics import accuracy_score
+    # prepare configuration for cross validation test harness
+    skf = StratifiedKFold(n_splits=10, random_state=10, shuffle=True)        
+    
+    testing_accuracy = []
+    
+    if ml_model =='random_forest':
+        from sklearn.ensemble import RandomForestClassifier
+        model = RandomForestClassifier(n_estimators=100,max_depth=30)
+    elif ml_model == 'xgboost':
+        from xgboost import XGBClassifier
+        model = XGBClassifier(max_depth=4)
+        
+        
+    top_feats = []
+    
+    for train_index, test_index in skf.split(X, y):
+        
+        X_train, X_test = X[train_index], X[test_index]
+        y_train, y_test = y[train_index], y[test_index]
+        #X_train, y_train, X_test, y_test = load_dataset(X,y)
+        
+        ## Changing labels to one-hot encoded vector
+        #lb = LabelBinarizer()
+        #y_train = lb.fit_transform(y_train)
+        #y_test = lb.transform(y_test)
+
+        print('Train labels dimension:');print(y_train.shape)
+        print('Test labels dimension:');print(y_test.shape)   
+        
+        #rf = RandomForestClassifier(n_estimators=100,max_depth=100,max_features=None)
+        y_pred = model.fit(X_train,y_train).predict(X_test)
+        
+        acc = accuracy_score(y_test,y_pred)
+        print("Fold test accuracy: --- {0:.3f} ---)".format(acc))            
+
+        testing_accuracy.append(acc)         
+        
+        top_feats.append(model.feature_importances_)
+
+    return testing_accuracy, top_feats
     
 def calculate_features_single_graph(calc_speed, G):
         
@@ -628,3 +515,39 @@ def calculate_features_single_graph(calc_speed, G):
         G_operations.feature_extraction(calc_speed=calc_speed)
         
         return G_operations
+
+
+def top_features(X,top_feats,feature_names):
+    import pandas as pd
+    from scipy.cluster.hierarchy import dendrogram, linkage
+    import seaborn as sns
+    
+    mean_importance = np.mean(np.asarray(top_feats),0)                  
+    top_feat_indices = np.argsort(mean_importance)[::-1]            
+    top_features_list = []
+    for i in range(len(top_feat_indices)):                
+        top_features_list.append(feature_names[top_feat_indices[i]])    
+        
+    top_features_list=list(dict.fromkeys(top_features_list))    
+    top_features_list[:40]
+    df_top40 = pd.DataFrame(columns = top_features_list[:40], data=X[:,top_feat_indices[:40]])            
+    cor = np.abs(df_top40.corr())        
+    Z = linkage(cor, 'ward')            
+    plt.figure()
+    dn = dendrogram(Z)             
+    new_index = [int(i) for  i in dn['ivl']]
+    top_feats_names = [top_features_list[i] for i in new_index]             
+    df = df_top40[top_feats_names]
+    cor2 = np.abs(df.corr())            
+    plt.figure()
+    ax = sns.heatmap(cor2, linewidth=0.5)
+    plt.show()
+    
+    return top_features_list
+
+def reduce_feature_set(X,top_feats):
+    mean_importance = np.mean(np.asarray(top_feats),0)                  
+    top_feat_indices = np.argsort(mean_importance)[::-1][0:250]     
+        
+    X_reduced = X[:,top_feat_indices]
+    return X_reduced

@@ -60,7 +60,7 @@ class SpectrumModularity():
         eigenvals_M = np.real(nx.linalg.spectrum.modularity_spectrum(G))
         
         if len(eigenvals_M) < 10:
-            eigenvals_M = np.concatenate((eigenvals_M,np.zeros(5-len(eigenvals_M))))        
+            eigenvals_M = np.concatenate((eigenvals_M,np.zeros(10-len(eigenvals_M))))        
             
         for i in range(10):               
             feature_list['M_eigvals_'+str(i)]=eigenvals_M[i]

@@ -15,7 +15,7 @@ NodeConnectivity,node_connectivity,NodeConnectivity,NC,,slow,False
 Vitality,vitality,Vitality,VT,,slow,False 
 StructuralHoles,structural_holes,StructuralHoles,SH,,slow,False 
 ScaleFree,scale_free,ScaleFree,SF,,fast,False 
-SmallWorldness,small_worldness,SmallWorld,SW,,medium,False 
+SmallWorldness,small_worldness,SmallWorld,SW,,slow,False 
 ShortestPaths,shortest_paths,ShortestPaths,SP,,fast,False 
 RichClub,rich_club,RichClub,RC,,fast,False 
 CentralityForce,centrality_force,ForceCentrality,FC,,slow,False 

@@ -60,7 +60,7 @@ class SpectrumLaplacian():
         eigenvals_L = np.real(nx.linalg.spectrum.laplacian_spectrum(G))
         
         if len(eigenvals_L) < 10:
-            eigenvals_L = np.concatenate((eigenvals_L,np.zeros(5-len(eigenvals_L))))        
+            eigenvals_L = np.concatenate((eigenvals_L,np.zeros(10-len(eigenvals_L))))        
             
         for i in range(10):               
             feature_list['L_eigvals_'+str(i)]=eigenvals_L[i]

@@ -58,21 +58,21 @@ class SmallWorld():
         #feature_list.append(nx.sigma(G))
         #feature_list.append(nx.omega(G))
         # small worldness sigma
-        nrand=20
+#        nrand=20
+#        
+#        randMetrics = {"C": [], "L": []}
+#        for i in range(nrand):
+#            Gr = nx.dense_gnm_random_graph(N,E)
+#            if nx.is_connected(Gr):
+#                randMetrics["C"].append(nx.transitivity(Gr))
+#                randMetrics["L"].append(nx.average_shortest_path_length(Gr))
+#            
+#        Cr = np.mean(randMetrics["C"])
+#        Lr = np.mean(randMetrics["L"])
+#        
+#        sigma = (C / Cr) / (L / Lr)
         
-        randMetrics = {"C": [], "L": []}
-        for i in range(nrand):
-            Gr = nx.dense_gnm_random_graph(N,E)
-            if nx.is_connected(Gr):
-                randMetrics["C"].append(nx.transitivity(Gr))
-                randMetrics["L"].append(nx.average_shortest_path_length(Gr))
-            
-        Cr = np.mean(randMetrics["C"])
-        Lr = np.mean(randMetrics["L"])
-        
-        sigma = (C / Cr) / (L / Lr)
-        
-        feature_list['sigma']=sigma
+        feature_list['sigma']=nx.sigma(G)
 
 
         omega = 0
