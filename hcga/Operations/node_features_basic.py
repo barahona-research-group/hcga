@@ -11,7 +11,7 @@ import numpy as np
 from hcga.Operations import utils
 
 
-class NodeFeatures():
+class NodeFeaturesBasic():
     
     
     def __init__(self, G):
@@ -53,7 +53,7 @@ class NodeFeatures():
             
             # Create a matrix features from each node
             node_matrix = np.array([G.node[0]['feat']])
-            for i in range(N):
+            for i in range(1,N):
                 node_matrix = np.vstack([node_matrix,G.node[i]['feat']])
             
             

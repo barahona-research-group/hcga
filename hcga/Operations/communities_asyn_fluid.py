@@ -53,7 +53,7 @@ class AsynfluidCommunities():
         
             for i in range(2,kmax):    
                 
-                c,density = list(asyn_fluidc(G,2))       
+                c,density = list(asyn_fluidc(G,i))       
                 
                 #total density
                 feature_list['total_density_'+str(i)]=sum(density)

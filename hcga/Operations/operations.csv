@@ -32,13 +32,16 @@ Diameter,diameter,Diameter,DI,,fast,False
 Eccentricity,eccentricity,Eccentricity,Ecc,,fast,False 
 Efficiency,efficiency,Efficiency,EF,,medium,False 
 PageRank,pagerank,PageRank,PR,,fast,False 
+Hits,link_analysis_hits,Hits,LAH,,fast,False
 Components,components,Components,CO,,fast,False 
 Assortativity,assortativity,Assortativity,AS,,fast,False 
 ChemicalTheory,chemical_theory,ChemicalTheory,CT,,fast,False 
 IndependentSets,independent_sets,IndependentSets,IS,,fast,False 
+DominatingSets,dominating_sets,DominatingSets,DS,,fast,False 
 MaximalMatching,maximal_matching,MaximalMatching,MM,,fast,False 
 MinimumCuts,minimum_cuts,MinimumCuts,MiC,,fast,False 
-NodeFeatures,node_features,NodeFeatures,NF,,fast,False 
+NodeFeaturesBasic,node_features_basic,NodeFeaturesBasic,NFB,,fast,False 
+NodeFeaturesConv,node_features_convolution,NodeFeaturesConv,NFC,,fast,False 
 NodeLabels,node_labels,NodeLabels,NL,,fast,False 
 SpectrumLaplacian,spectrum_laplacian,SpectrumLaplacian,SL,,fast,False
 SpectrumAdjacency,spectrum_adjacency,SpectrumAdjacency,SA,,fast,False

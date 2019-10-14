@@ -52,16 +52,24 @@ class SpectrumLaplacian():
 
         feature_list = {}         
         
-        
-        
-        
-        
+
         # laplacian spectrum
         eigenvals_L = np.real(nx.linalg.spectrum.laplacian_spectrum(G))
         
         if len(eigenvals_L) < 10:
             eigenvals_L = np.concatenate((eigenvals_L,np.zeros(10-len(eigenvals_L))))        
             
+        
+        feature_list['algebraic_connectivity']=nx.algebraic_connectivity(G)
+
+
+        fiedler_vector = nx.fiedler_vector(G)
+        
+        # nodes in spectral partition by fiedler vector
+        feature_list['fiedler_vector_neg']=sum(1 for number in fiedler_vector if number <0)
+        feature_list['fiedler_vector_pos']=sum(1 for number in fiedler_vector if number >0)
+        feature_list['fiedler_vector_ratio_neg_pos']=sum(1 for number in fiedler_vector if number <0)/sum(1 for number in fiedler_vector if number >0)
+     
         for i in range(10):               
             feature_list['L_eigvals_'+str(i)]=eigenvals_L[i]
         

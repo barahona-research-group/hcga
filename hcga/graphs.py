@@ -81,7 +81,13 @@ class Graphs():
             graphs,graph_labels = synthetic_data()
         elif dataset == 'synthetic_watts_strogatz':
             from hcga.TestData.create_synthetic_data import synthetic_data_watts_strogatz
-            graphs,graph_labels = synthetic_data_watts_strogatz(N=100)
+            graphs,graph_labels = synthetic_data_watts_strogatz(N=1000)
+        elif dataset == 'synthetic_powerlaw_cluster':
+            from hcga.TestData.create_synthetic_data import synthetic_data_powerlaw_cluster
+            graphs,graph_labels = synthetic_data_powerlaw_cluster(N=1000)
+        elif dataset == 'synthetic_sbm':
+            from hcga.TestData.create_synthetic_data import synthetic_data_sbm
+            graphs,graph_labels = synthetic_data_sbm(N=1000)
         elif dataset == 'HELICENES':
             from hcga.TestData.HELICENES.graph_construction import construct_helicene_graphs
             graphs,graph_labels = construct_helicene_graphs()
@@ -205,7 +211,7 @@ class Graphs():
 
 
 
-    def graph_classification(self,plot=True,ml_model='random_forest',top_feat=True, data='all'):
+    def graph_classification(self,plot=True,ml_model='xgboost', data='all'):
 
         """
         Graph Classification
@@ -248,22 +254,25 @@ class Graphs():
         print("Mean test accuracy full set: --- {0:.3f} ---)".format(np.mean(testing_accuracy)))            
 
         # get names of top features
-        if top_feat == True:               
-            top_features_list = top_features(X,top_feats,feature_names)            
-            self.top_features_list=top_features_list       
+        top_features_list = top_features(X,top_feats,feature_names)  
+        self.top_feats = top_feats         
+        self.top_features_list=top_features_list       
             
            
         # re running classification with reduced feature set
         X_reduced = reduce_feature_set(X,top_feats)        
         testing_accuracy_reduced_set, top_feats_reduced_set = classification(X_reduced,y,ml_model) 
         print("Final mean test accuracy reduced feature set: --- {0:.3f} ---)".format(np.mean(testing_accuracy_reduced_set)))            
-         
+        
+    
+        self.top_features_importance_plot(X,top_feats,y)
+    
         self.test_accuracy = testing_accuracy_reduced_set 
         return np.mean(testing_accuracy_reduced_set)
     
     
     
-    def graph_regression(self,plot=True,top_feat=True, data='all'):
+    def graph_regression(self,plot=True, data='all'):
         
         from sklearn.model_selection import StratifiedKFold   
         import xgboost
@@ -277,11 +286,13 @@ class Graphs():
         
         feature_names=[col for col in self.graph_feature_matrix.columns]            
 
+        X = np.delete(X,np.where(np.isnan(y))[0],axis=0)
+        y = np.delete(y,np.where(np.isnan(y))[0],axis=0)
         
         # Let's try XGboost algorithm to see if we can get better results
         xgb = xgboost.XGBRegressor(n_estimators=100, learning_rate=0.08,gamma=0,subsample=0.75,colsample_bytree=1, max_depth=7)
                 
-        bins = np.linspace(np.min(y), np.max(y), 10) 
+        bins = np.logspace(np.min(y), np.max(y), 10) 
         y_binned = np.digitize(y, bins)
         
         skf = StratifiedKFold(n_splits = 10, shuffle = True)        
@@ -301,15 +312,18 @@ class Graphs():
             print("Fold explained variance: --- {0:.3f} ---)".format(explained_variance_score(y_test,y_pred)))            
 
             
-            if top_feat == True:
-                top_feats.append(xgb.feature_importances_)
+            top_feats.append(xgb.feature_importances_)
 
-        if top_feat == True:               
-            top_features_list = top_features(X,top_feats,feature_names)            
-            self.top_features_list=top_features_list            
+        
+        print("Final mean explained variance: --- {0:.3f} ---)".format(np.mean(explained_variance)))            
+        print("Final .std explained variance: --- {0:.3f} ---)".format(np.std(explained_variance)))           
+
+        top_features_list = top_features(X,top_feats,feature_names)            
+        self.top_features_list=top_features_list            
 
             
-
+        if plot==True:
+            self.top_features_importance_plot(X,top_feats,y)
     
     def graph_classification_mlp(self,X = None, y = None , verbose=True):
         
@@ -444,7 +458,34 @@ class Graphs():
         return np.mean(testing_accuracy)
         
 
-    
+
+        
+    def pca_features_plot(self,X,y,indices): 
+        from sklearn.decomposition import PCA
+        import matplotlib.cm as cm  
+        pca = PCA(n_components=2)
+        
+        X1 = X[np.argsort(y),:]
+        y1 = y[np.argsort(y)]
+        
+        X_pca = pca.fit_transform(X1[:,indices]) 
+        cm = cm.get_cmap('RdYlBu') 
+        plt.scatter(X_pca[:,0],X_pca[:,1],cmap=cm,c=y1)                
+        #plt.ylim([-30,30])
+        #plt.xlim([-30,30])
+        plt.xlabel('PC1')        
+        plt.ylabel('PC2')
+        
+    def top_features_importance_plot(self,X,top_feats,y):        
+        import matplotlib.cm as cm        
+        mean_importance = np.mean(np.asarray(top_feats),0)                  
+        top_feat_indices = np.argsort(mean_importance)[::-1]  
+        cm = cm.get_cmap('RdYlBu')                  
+        sc = plt.scatter(X[:,top_feat_indices[0]],X[:,top_feat_indices[1]],cmap=cm,c=y)
+        plt.xlabel(self.top_features_list[0])        
+        plt.ylabel(self.top_features_list[1])
+        plt.colorbar(sc)
+        plt.savefig('Images/scatter_top2_feats_'+self.dataset+'.png') 
         
 
     def save_feature_set(self,filename = 'TestData/feature_set.pkl'):
@@ -509,6 +550,8 @@ def classification(X,y,ml_model):
 
     return testing_accuracy, top_feats
     
+
+
 def calculate_features_single_graph(calc_speed, G):
         
         G_operations = Operations(G)
@@ -534,15 +577,25 @@ def top_features(X,top_feats,feature_names):
     cor = np.abs(df_top40.corr())        
     Z = linkage(cor, 'ward')            
     plt.figure()
-    dn = dendrogram(Z)             
+    dn = dendrogram(Z)         
+    plt.savefig('Images/dendogram_top40_features.eps') 
+    
     new_index = [int(i) for  i in dn['ivl']]
     top_feats_names = [top_features_list[i] for i in new_index]             
     df = df_top40[top_feats_names]
     cor2 = np.abs(df.corr())            
     plt.figure()
     ax = sns.heatmap(cor2, linewidth=0.5)
-    plt.show()
+    plt.savefig('Images/heatmap_top40_feature_dependencies.eps') 
     
+    
+    plt.figure()
+    plt.plot(np.sort(mean_importance)[::-1])
+    plt.xlabel('Features')
+    plt.ylabel('Feature Importance')
+    plt.savefig('Images/feature_importance_distribution.eps') 
+    
+
     return top_features_list
 
 def reduce_feature_set(X,top_feats):
