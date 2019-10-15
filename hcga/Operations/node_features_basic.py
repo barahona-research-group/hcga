@@ -34,12 +34,7 @@ class NodeFeaturesBasic():
         node_degrees = [nx.degree(G)[i] for i in range(N)]
         
         # Calculate some basic stats for degrees
-        feature_list['deg_mean'] = np.mean(node_degrees)
-        feature_list['deg_max'] = np.max(node_degrees)
-        feature_list['deg_min'] = np.min(node_degrees)
-        feature_list['deg_median'] = np.median(node_degrees)
-        feature_list['deg_std'] = np.std(node_degrees)
-        feature_list['deg_sum'] = np.sum(node_degrees)
+        feature_list = utils.summary_statistics(feature_list,node_degrees,'node_degrees')
         
         # Distribution calculations and fit
         for i in range(len(bins)):        

@@ -120,3 +120,40 @@ def clustering_quality(G,c):
     quality_values.append(quality.intra_community_edges(G,c))
 
     return quality_names,quality_values
+
+
+
+def summary_statistics(feature_list,dist,feat_name):
+    
+    """ Computes summary statistics of distribution """
+        
+    feature_list[feat_name + '_mean'] = np.mean(dist)
+    feature_list[feat_name + '_min'] = np.min(dist)
+    feature_list[feat_name + '_max'] = np.max(dist)
+    feature_list[feat_name + '_median'] = np.median(dist)
+    feature_list[feat_name + '_std'] = np.std(dist)
+    feature_list[feat_name + '_gmean'] = st.gmean(dist)
+    
+    try:
+        feature_list[feat_name + '_hmean'] = st.hmean(dist)
+    except:
+        feature_list[feat_name + '_hmean'] = np.nan
+        
+    feature_list[feat_name + '_kurtosis'] = st.kurtosis(dist)
+    feature_list[feat_name + '_mode'] = st.mode(dist)[0][0]
+    feature_list[feat_name + '_kstat'] = st.kstat(dist)
+    feature_list[feat_name + '_kstatvar'] = st.kstatvar(dist)
+    feature_list[feat_name + '_tmean'] = st.tmean(dist)   
+    feature_list[feat_name + '_tvar'] = st.tvar(dist)   
+    feature_list[feat_name + '_tmin'] = st.tmin(dist)   
+    feature_list[feat_name + '_tmax'] = st.tmax(dist)   
+    feature_list[feat_name + '_tstd'] = st.tstd(dist)   
+    feature_list[feat_name + '_tsem'] = st.tsem(dist)   
+    feature_list[feat_name + '_variation'] = st.variation(dist)   
+    feature_list[feat_name + '_mean_repeats'] = np.mean(st.find_repeats(dist)[1])
+    feature_list[feat_name + '_max_repeat'] = np.max(st.find_repeats(dist)[0])
+    feature_list[feat_name + '_entropy'] = st.entropy(dist)   
+    feature_list[feat_name + '_sem'] = st.sem(dist)
+    feature_list[feat_name + '_bayes_confint'] = st.bayes_mvs(dist)[0][1][1] - st.bayes_mvs(dist)[0][1][0]
+
+    return feature_list

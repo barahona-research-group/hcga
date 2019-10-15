@@ -599,8 +599,19 @@ def top_features(X,top_feats,feature_names):
     return top_features_list
 
 def reduce_feature_set(X,top_feats):
-    mean_importance = np.mean(np.asarray(top_feats),0)                  
-    top_feat_indices = np.argsort(mean_importance)[::-1][0:250]     
+    mean_importance = np.mean(np.asarray(top_feats),0)   
+    sorted_mean_importance = np.sort(mean_importance)[::-1]     
+    
+    
+    # Taking only features till we have reached 90% importance
+    sum_importance = 0      
+    for i in range(len(sorted_mean_importance)):
+        sum_importance = sum_importance + sorted_mean_importance[i]
+        if sum_importance > 0.9:
+            final_index = i
+            break
+    
+    top_feat_indices = np.argsort(mean_importance)[::-1][0:final_index]     
         
     X_reduced = X[:,top_feat_indices]
     return X_reduced

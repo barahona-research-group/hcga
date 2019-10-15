@@ -67,12 +67,8 @@ class NodeConnectivity():
     
         
         # mean and median minimum number of nodes to remove connectivity
-        feature_list['mean']=node_conn.mean()
-        feature_list['std']=node_conn.std()
-        feature_list['median']=np.median(node_conn)
-        feature_list['max']=np.max(node_conn)
-        feature_list['min']=np.min(node_conn)
-        
+        feature_list = utils.summary_statistics(feature_list,node_conn,'node_conn')
+
         for i in range(len(bins)):
             
             # fitting the node connectivity histogram distribution

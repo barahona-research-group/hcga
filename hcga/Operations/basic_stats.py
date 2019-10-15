@@ -3,7 +3,7 @@
 
 import pandas as pd
 import numpy as np
-
+from hcga.Operations.utils import summary_statistics
 
 class BasicStats():
     """
@@ -50,12 +50,16 @@ class BasicStats():
         feature_list['num_edges'] = E
 
         # Degree stats
-        degree_vals = np.asarray(list(dict(G.degree())))
+        degree_vals = list(dict(G.degree()).values())
+        
+        feature_list = summary_statistics(feature_list,degree_vals,'degree')       
 
-        feature_list['degree_mean'] = degree_vals.mean()
-        feature_list['degree_median'] = np.median(degree_vals)
-        feature_list['degree_std'] = degree_vals.std()
-
+        #feature_list['degree_mean'] = degree_vals.mean()
+        #feature_list['degree_median'] = np.median(degree_vals)
+        #feature_list['degree_std'] = degree_vals.std()
+        
+        
+        feature_list['density'] = 2*E / (N*(N-1))
 
         self.features = feature_list
 

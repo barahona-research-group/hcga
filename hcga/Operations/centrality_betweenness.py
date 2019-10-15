@@ -59,10 +59,8 @@ class BetweennessCentrality():
         betweenness_centrality = np.asarray(list(centrality.betweenness_centrality(G).values()))
 
         # Basic stats regarding the betwenness centrality distribution
-        feature_list['mean'] = betweenness_centrality.mean()
-        feature_list['std'] = betweenness_centrality.std()
-        feature_list['max'] = betweenness_centrality.max()
-        feature_list['min'] = betweenness_centrality.min()
+        feature_list = utils.summary_statistics(feature_list,betweenness_centrality,'')
+
         
         for i in range(len(bins)):
             """# Adding to feature names
