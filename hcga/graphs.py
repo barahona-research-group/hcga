@@ -98,7 +98,7 @@ class Graphs():
 
 
     
-    def calculate_features(self,calc_speed='slow'):
+    def calculate_features(self,calc_speed='slow',parallel=True):
         """
         Calculation the features for each graph in the set of graphs
 
@@ -124,23 +124,47 @@ class Graphs():
         self.graph_feature_set = graph_feature_set
 
         """
-        calculate_features_single_graphf = partial(calculate_features_single_graph, calc_speed)
         
-        with Pool(processes = self.n_processes) as p_feat:  #initialise the parallel computation
-            self.graph_feature_set = list(tqdm(p_feat.imap(calculate_features_single_graphf, self.graphs), total = len(self.graphs)))
-
-
-        
-        comp_times = []
-        for op in self.graph_feature_set:
-            comp_times.append(list(op.computational_times.values()))
+        if parallel:
+            calculate_features_single_graphf = partial(calculate_features_single_graph, calc_speed)
             
-        comp_times_mean = np.mean(np.array(comp_times), axis = 0)
+            with Pool(processes = self.n_processes) as p_feat:  #initialise the parallel computation
+                self.graph_feature_set = list(tqdm(p_feat.imap(calculate_features_single_graphf, self.graphs), total = len(self.graphs)))
+            
+            comp_times = []
+            for op in self.graph_feature_set:
+                comp_times.append(list(op.computational_times.values()))
+                
+            comp_times_mean = np.mean(np.array(comp_times), axis = 0)
+                
+            for i, fn in enumerate(list(self.graph_feature_set[0].computational_times.keys())):
+                print('Computation time for feature: ' + str(fn) + ' is ' + str(np.round(comp_times_mean[i],3)) + ' seconds.')
+                
+                
+        else: 
+            graph_feature_set = []
+            cnt = 0
+            for G in tqdm(self.graphs):
+                print("-------------------------------------------------")              
+    
+                print("----- Computing features for graph "+str(cnt)+" -----")               
+                start_time = time.time()    
+                print("-------------------------------------------------")               
+    
+                G_operations = Operations(G)
+                G_operations.feature_extraction(calc_speed=calc_speed)
+                graph_feature_set.append(G_operations)
+                print("-------------------------------------------------")               
+                print("Time to calculate all features for graph "+ str(cnt) +": --- %s seconds ---" % round(time.time() - start_time,3))               
+                cnt = cnt+1
+                self.graph_feature_set_temp = graph_feature_set
+            self.graph_feature_set = graph_feature_set            
+
+
+        
+
         
         feature_names = self.graph_feature_set[0]._extract_data()[0]
-        for i, fn in enumerate(list(self.graph_feature_set[0].computational_times.keys())):
-            print('Computation time for feature: ' + str(fn) + ' is ' + str(np.round(comp_times_mean[i],3)) + ' seconds.')
-            
             
         # Create graph feature matrix
         feature_vals_matrix = np.empty([len(self.graph_feature_set),3*len(feature_names)])  
