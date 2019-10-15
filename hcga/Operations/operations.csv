@@ -42,6 +42,7 @@ MaximalMatching,maximal_matching,MaximalMatching,MM,,fast,False
 MinimumCuts,minimum_cuts,MinimumCuts,MiC,,fast,False 
 NodeFeaturesBasic,node_features_basic,NodeFeaturesBasic,NFB,,fast,False 
 NodeFeaturesConv,node_features_convolution,NodeFeaturesConv,NFC,,fast,False 
+EdgeFeaturesBasic,edge_features_basic,EdgeFeaturesBasic,EFB,,fast,False 
 NodeLabels,node_labels,NodeLabels,NL,,fast,False 
 SpectrumLaplacian,spectrum_laplacian,SpectrumLaplacian,SL,,fast,False
 SpectrumAdjacency,spectrum_adjacency,SpectrumAdjacency,SA,,fast,False

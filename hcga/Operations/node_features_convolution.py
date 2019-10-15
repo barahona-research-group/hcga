@@ -30,25 +30,9 @@ class NodeFeaturesConv():
         
         N = G.number_of_nodes()
         
-        # Calculate degree of each node
-        node_degrees = [nx.degree(G)[i] for i in range(N)]
-        
-        # Calculate some basic stats for degrees
-        feature_list['deg_mean'] = np.mean(node_degrees)
-        feature_list['deg_max'] = np.max(node_degrees)
-        feature_list['deg_min'] = np.min(node_degrees)
-        feature_list['deg_median'] = np.median(node_degrees)
-        feature_list['deg_std'] = np.std(node_degrees)
-        feature_list['deg_sum'] = np.sum(node_degrees)
-        
-        # Distribution calculations and fit
-        for i in range(len(bins)):        
-                opt_mod,opt_mod_sse = utils.best_fit_distribution(node_degrees,bins=bins[i])
-                feature_list['deg_opt_model_{}'.format(bins[i])] = opt_mod
-                feature_list['deg_powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(node_degrees,bins=bins[i])[0][-2]# value 'a' in power law
-                feature_list['deg_powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(node_degrees,bins=bins[i])[1] # value sse in power law
-        
-        # Only compute for networks with node features
+        node_degrees = list(dict(nx.degree(G)).values())
+
+
         try:
             
             # Create a matrix features from each node
@@ -120,7 +104,7 @@ class NodeFeaturesConv():
                     feature_list['node_powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(mean_node_feat_list,bins=bins[i])[1] # value sse in power law
                 
                 # Divide the mean of the features of a node by its degree
-                mean_node_feat_norm = [mean_node_feat_list[i]-node_degrees[i] for i in range(N)]
+                mean_node_feat_norm = [mean_node_feat_list[i]/node_degrees[i] for i in range(N)]
                 
                 # Calculate some basic stats for this normalisation
                 feature_list['norm_mean'] = np.mean(mean_node_feat_norm)
@@ -143,7 +127,7 @@ class NodeFeaturesConv():
             for conv in range(2):
                 
                 # each loop imposes a one step random walk convolution
-                
+                num_feats = 0
                 
                 for i in range(0,num_feats):                
                     feature_list['mean_feat'+str(i)] = np.nan

@@ -56,10 +56,10 @@ class DominatingSets():
             feature_list['len_min_domset']=len(dom_set_min)            
             feature_list['len_edge_domset']=len(edges_dom)
             
-            ramsey_split = nx.algorithms.approximation.ramsey.ramsey_R2(G)
-            feature_list['ramsey_number_1']=len(list(ramsey_split)[0])
-            feature_list['ramsey_number_2']=len(list(ramsey_split)[1])
-            feature_list['ramsey_ratio']=len(list(ramsey_split)[0])/len(list(ramsey_split)[1])
+            #ramsey_split = nx.algorithms.approximation.ramsey.ramsey_R2(G)
+            #feature_list['ramsey_number_1']=len(list(ramsey_split)[0])
+            #feature_list['ramsey_number_2']=len(list(ramsey_split)[1])
+            #feature_list['ramsey_ratio']=len(list(ramsey_split)[0])/len(list(ramsey_split)[1])
 
 
         else:
@@ -67,10 +67,10 @@ class DominatingSets():
             feature_list['len_min_domset']=np.nan          
             feature_list['len_edge_domset']=np.nan      
             
-            ramsey_split = nx.algorithms.approximation.ramsey.ramsey_R2(G)
-            feature_list['ramsey_number_1']=np.nan      
-            feature_list['ramsey_number_2']=np.nan      
-            feature_list['ramsey_ratio']=np.nan      
+            #ramsey_split = nx.algorithms.approximation.ramsey.ramsey_R2(G)
+            #feature_list['ramsey_number_1']=np.nan      
+            #feature_list['ramsey_number_2']=np.nan      
+            #feature_list['ramsey_ratio']=np.nan      
 
         self.features = feature_list
 

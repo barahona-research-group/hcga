@@ -29,7 +29,7 @@ class NodeLabels():
         feature_list = {}
         
         N = G.number_of_nodes()
-        node_degrees = [nx.degree(G)[i] for i in range(N)]
+        node_degrees = list(dict(nx.degree(G)).values())
 
         
         # Only compute for networks with node features

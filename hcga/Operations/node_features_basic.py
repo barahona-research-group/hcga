@@ -31,7 +31,7 @@ class NodeFeaturesBasic():
         N = G.number_of_nodes()
         
         # Calculate degree of each node
-        node_degrees = [nx.degree(G)[i] for i in range(N)]
+        node_degrees = list(dict(nx.degree(G)).values())
         
         # Calculate some basic stats for degrees
         feature_list = utils.summary_statistics(feature_list,node_degrees,'node_degrees')
@@ -123,6 +123,16 @@ class NodeFeaturesBasic():
                 feature_list['norm_powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(mean_node_feat_norm,bins=bins[i])[1] # value sse in power law
                 
         except:
+            
+            num_feats = 0
+            
+            for i in range(0,num_feats):                
+                feature_list['mean_feat'+str(i)] = np.nan
+                feature_list['max_feat'+str(i)] = np.nan
+                feature_list['min_feat'+str(i)] = np.nan
+                feature_list['median_feat'+str(i)] = np.nan
+                feature_list['std_feat'+str(i)] = np.nan
+                feature_list['sum_feat'+str(i)] = np.nan       
             
             feature_list['mean'] = np.nan
             feature_list['max'] = np.nan

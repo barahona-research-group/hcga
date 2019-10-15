@@ -62,13 +62,20 @@ class SpectrumLaplacian():
         
         feature_list['algebraic_connectivity']=nx.algebraic_connectivity(G)
 
-
-        fiedler_vector = nx.fiedler_vector(G)
+        try: 
+            # computing with weights
+            fiedler_vector = nx.fiedler_vector(G,weight='weight') # can use None
+            
+            # nodes in spectral partition by fiedler vector
+            feature_list['fiedler_vector_neg']=sum(1 for number in fiedler_vector if number <0)
+            feature_list['fiedler_vector_pos']=sum(1 for number in fiedler_vector if number >0)
+            feature_list['fiedler_vector_ratio_neg_pos']=sum(1 for number in fiedler_vector if number <0)/sum(1 for number in fiedler_vector if number >0)
+        except:
+                    # nodes in spectral partition by fiedler vector
+            feature_list['fiedler_vector_neg']=np.nan
+            feature_list['fiedler_vector_pos']=np.nan
+            feature_list['fiedler_vector_ratio_neg_pos']=np.nan
         
-        # nodes in spectral partition by fiedler vector
-        feature_list['fiedler_vector_neg']=sum(1 for number in fiedler_vector if number <0)
-        feature_list['fiedler_vector_pos']=sum(1 for number in fiedler_vector if number >0)
-        feature_list['fiedler_vector_ratio_neg_pos']=sum(1 for number in fiedler_vector if number <0)/sum(1 for number in fiedler_vector if number >0)
      
         for i in range(10):               
             feature_list['L_eigvals_'+str(i)]=eigenvals_L[i]

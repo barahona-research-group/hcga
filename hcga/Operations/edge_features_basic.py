@@ -7,8 +7,6 @@ Created on Fri Aug  9 14:43:56 2019
 """
 
 import networkx as nx
-import numpy as np
-from hcga.Operations import utils
 
 from hcga.Operations.utils import summary_statistics
 
