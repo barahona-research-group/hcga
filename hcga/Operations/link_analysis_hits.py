@@ -40,11 +40,13 @@ class Hits():
 
         feature_list = {}
         
-        #Calculate PageRank
-        h,a=nx.hits(G,max_iter=1000)
-        h = np.asarray(list(h.values()))
+        try:
+            # if undirected h and a are the same
+            h,a=nx.hits(G,max_iter=1000)
+            h = np.asarray(list(h.values()))
+        except:
+            h = np.array([1,1,1]) # random filling array
         
-        # if undirected h and a are the same
         
         
         # Basic stats regarding the PageRank distribution

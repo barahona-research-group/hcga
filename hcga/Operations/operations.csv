@@ -32,7 +32,7 @@ Diameter,diameter,Diameter,DI,,fast,False
 Eccentricity,eccentricity,Eccentricity,Ecc,,fast,False 
 Efficiency,efficiency,Efficiency,EF,,medium,False 
 PageRank,pagerank,PageRank,PR,,fast,False 
-Hits,link_analysis_hits,Hits,LAH,,fast,False
+Hits,link_analysis_hits,Hits,LAH,,medium,False
 Components,components,Components,CO,,fast,False 
 Assortativity,assortativity,Assortativity,AS,,fast,False 
 ChemicalTheory,chemical_theory,ChemicalTheory,CT,,fast,False 

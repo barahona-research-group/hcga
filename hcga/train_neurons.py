@@ -17,20 +17,22 @@ import sys
 cwd = os.getcwd()
 #g = Graphs(directory=cwd+'/TestData',dataset='COLLAB')
 
-sys.setrecursionlimit(25000)
+
 
 filehandler = open('TestData/NEURONS/neurons_for_hcga.pkl','rb')
 graphs_full = pickle.load(filehandler)
 
 graphs = []
-graph_labels = np.zeros(len(graphs_full))
+graph_labels = []
 
 
 for i in range(len(graphs_full)):
     G = graphs_full[i][0]
     if G.number_of_nodes() > 0:	
         graphs.append(graphs_full[i][0])
-        graph_labels[i] =  graphs_full[i][1]
+        graph_labels.append(graphs_full[i][1])
+
+graph_labels = np.asarray(graph_labels)
 
 len(graphs)
 
@@ -43,7 +45,7 @@ for i in range(10):
 
 g.n_processes = 20
 
-g.calculate_features(calc_speed='fast')
+g.calculate_features(calc_speed='fast',parallel=False)
 
 g.normalise_feature_data()
 

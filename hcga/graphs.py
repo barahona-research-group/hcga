@@ -194,6 +194,10 @@ class Graphs():
         feats_all_zeros = (feature_matrix_clean==0).all(0)        
         feature_matrix_clean = feature_matrix_clean.drop(columns=feats_all_zeros[feats_all_zeros].index)
         
+        # remove features with constant values
+        feature_matrix_clean = feature_matrix_clean.loc[:, (feature_matrix_clean != feature_matrix_clean.iloc[0]).any()]
+        
+        
         # introduce a measure of how many features were removed and their ids and names.
         
         
@@ -226,7 +230,8 @@ class Graphs():
         
         X=graph_feature_matrix.values
         scaler = StandardScaler()
-        X_norm = scaler.fit_transform(X)
+        X_norm = scaler.fit_transform(X)     
+    
         
         self.X_norm = X_norm
         self.y=np.asarray(self.graph_labels)
@@ -284,12 +289,22 @@ class Graphs():
             
            
         # re running classification with reduced feature set
-        X_reduced = reduce_feature_set(X,top_feats)        
+        X_reduced, top_feat_indices = reduce_feature_set(X,top_feats)        
         testing_accuracy_reduced_set, top_feats_reduced_set = classification(X_reduced,y,ml_model) 
         print("Final mean test accuracy reduced feature set: --- {0:.3f} ---)".format(np.mean(testing_accuracy_reduced_set)))            
         
-    
-        self.top_features_importance_plot(X,top_feats,y)
+        #top_features_list = top_features(X,top_feats_reduced_set,feature_names)  
+
+        
+        self.top_features_importance_plot(X,top_feat_indices,feature_names,y)
+        
+        
+        # univariate classification on top features
+        univariate_topfeat_acc = univariate_classification(X_reduced,y)
+        feature_names_reduced = [feature_names[i] for i in top_feat_indices]
+        top_feat_index = np.argsort(univariate_topfeat_acc)[::-1]       
+        self.top_features_importance_plot(X_reduced,top_feat_index[0:2],feature_names_reduced,y)
+        
     
         self.test_accuracy = testing_accuracy_reduced_set 
         return np.mean(testing_accuracy_reduced_set)
@@ -367,7 +382,13 @@ class Graphs():
        
         testing_accuracy = []
         
-        skf = StratifiedKFold(n_splits=10, random_state=10, shuffle=True)
+        
+        counts = np.bincount(y)
+        least_populated_class = np.argmin(counts)
+        if least_populated_class<10:
+            skf = StratifiedKFold(n_splits=len(y[y==least_populated_class]), random_state=10, shuffle=True)
+        else:
+            skf = StratifiedKFold(n_splits=10, random_state=10, shuffle=True)
         
         
         for train_index, test_index in skf.split(X, y):
@@ -482,7 +503,17 @@ class Graphs():
         return np.mean(testing_accuracy)
         
 
+    def univariate_top_features(self):
+        
+        self.normalise_feature_data()
 
+        X = self.X_norm
+        y = self.y
+        
+        classification_accs = univariate_classification(X,y)
+        
+        self.univariate_classification_accuracy = classification_accs
+        
         
     def pca_features_plot(self,X,y,indices): 
         from sklearn.decomposition import PCA
@@ -500,16 +531,18 @@ class Graphs():
         plt.xlabel('PC1')        
         plt.ylabel('PC2')
         
-    def top_features_importance_plot(self,X,top_feats,y):        
-        import matplotlib.cm as cm        
-        mean_importance = np.mean(np.asarray(top_feats),0)                  
-        top_feat_indices = np.argsort(mean_importance)[::-1]  
+    def top_features_importance_plot(self,X,top_feat_indices,feature_names,y):        
+        import matplotlib.cm as cm  
+        import random
+        #mean_importance = np.mean(np.asarray(top_feats),0)                  
+        #top_feat_indices = np.argsort(mean_importance)[::-1]  
+        plt.figure()
         cm = cm.get_cmap('RdYlBu')                  
         sc = plt.scatter(X[:,top_feat_indices[0]],X[:,top_feat_indices[1]],cmap=cm,c=y)
-        plt.xlabel(self.top_features_list[0])        
-        plt.ylabel(self.top_features_list[1])
+        plt.xlabel(feature_names[top_feat_indices[0]])        
+        plt.ylabel(feature_names[top_feat_indices[1]])
         plt.colorbar(sc)
-        plt.savefig('Images/scatter_top2_feats_'+self.dataset+'.png') 
+        plt.savefig('Images/scatter_top2_feats_'+self.dataset+str(random.randint(1,101))+'.eps') 
         
 
     def save_feature_set(self,filename = 'TestData/feature_set.pkl'):
@@ -530,11 +563,19 @@ class Graphs():
         self.graph_feature_matrix = feature_matrix
 
 
-def classification(X,y,ml_model):
+def classification(X,y,ml_model, verbose=True):
     from sklearn.model_selection import StratifiedKFold  
     from sklearn.metrics import accuracy_score
-    # prepare configuration for cross validation test harness
-    skf = StratifiedKFold(n_splits=10, random_state=10, shuffle=True)        
+    
+    # reducing number of folds to half the least populated class
+    # e.g. if only 9 elements of class A then we only use int(9/2)=4 folds
+    counts = np.bincount(y)
+    least_populated_class = np.argmin(counts)
+    if least_populated_class<10:
+        skf = StratifiedKFold(n_splits=int(len(y[y==least_populated_class])/2), random_state=10, shuffle=True)
+    else:
+        skf = StratifiedKFold(n_splits=10, random_state=10, shuffle=True)
+         
     
     testing_accuracy = []
     
@@ -559,14 +600,16 @@ def classification(X,y,ml_model):
         #y_train = lb.fit_transform(y_train)
         #y_test = lb.transform(y_test)
 
-        print('Train labels dimension:');print(y_train.shape)
-        print('Test labels dimension:');print(y_test.shape)   
+        #print('Train labels dimension:');print(y_train.shape)
+        #print('Test labels dimension:');print(y_test.shape)   
         
         #rf = RandomForestClassifier(n_estimators=100,max_depth=100,max_features=None)
         y_pred = model.fit(X_train,y_train).predict(X_test)
         
         acc = accuracy_score(y_test,y_pred)
-        print("Fold test accuracy: --- {0:.3f} ---)".format(acc))            
+        
+        if verbose:
+            print("Fold test accuracy: --- {0:.3f} ---)".format(acc))            
 
         testing_accuracy.append(acc)         
         
@@ -583,6 +626,16 @@ def calculate_features_single_graph(calc_speed, G):
         
         return G_operations
 
+
+def univariate_classification(X,y):
+    
+    classification_acc = []
+    for i in range(X.shape[1]):
+        testing_accuracy, top_feats = classification(X[:,i].reshape(-1,1),y,'xgboost',verbose=False)
+        classification_acc.append(np.mean(testing_accuracy))
+        
+    return classification_acc
+    
 
 def top_features(X,top_feats,feature_names):
     import pandas as pd
@@ -609,14 +662,25 @@ def top_features(X,top_feats,feature_names):
     df = df_top40[top_feats_names]
     cor2 = np.abs(df.corr())            
     plt.figure()
-    ax = sns.heatmap(cor2, linewidth=0.5)
+    sns.heatmap(cor2, linewidth=0.5)
     plt.savefig('Images/heatmap_top40_feature_dependencies.eps') 
+    
+    
+    sorted_mean_importance = np.sort(mean_importance)[::-1]    
+    sum_importance = 0      
+    for i in range(len(sorted_mean_importance)):
+        sum_importance = sum_importance + sorted_mean_importance[i]
+        if sum_importance > 0.9:
+            final_index = i
+            break
     
     
     plt.figure()
     plt.plot(np.sort(mean_importance)[::-1])
+    plt.axvline(x=i)
     plt.xlabel('Features')
     plt.ylabel('Feature Importance')
+    plt.yscale('log')
     plt.savefig('Images/feature_importance_distribution.eps') 
     
 
@@ -638,4 +702,5 @@ def reduce_feature_set(X,top_feats):
     top_feat_indices = np.argsort(mean_importance)[::-1][0:final_index]     
         
     X_reduced = X[:,top_feat_indices]
-    return X_reduced
+    
+    return X_reduced, top_feat_indices
