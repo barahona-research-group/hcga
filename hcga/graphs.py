@@ -296,8 +296,11 @@ class Graphs():
         #top_features_list = top_features(X,top_feats_reduced_set,feature_names)  
 
         
-        self.top_features_importance_plot(X,top_feat_indices,feature_names,y)
+        self.top_features_importance_plot(X,top_feat_indices,feature_names,y)     
         
+        self.plot_violin_feature(X,y,top_feat_indices[0],feature_names)
+
+
         
         # univariate classification on top features
         univariate_topfeat_acc = univariate_classification(X_reduced,y)
@@ -305,7 +308,10 @@ class Graphs():
         top_feat_index = np.argsort(univariate_topfeat_acc)[::-1]       
         self.top_features_importance_plot(X_reduced,top_feat_index[0:2],feature_names_reduced,y)
         
-    
+        # violin plot top feature
+        self.plot_violin_feature(X_reduced,y,top_feat_index[0],feature_names_reduced)
+        
+        
         self.test_accuracy = testing_accuracy_reduced_set 
         return np.mean(testing_accuracy_reduced_set)
     
@@ -544,7 +550,24 @@ class Graphs():
         plt.colorbar(sc)
         plt.savefig('Images/scatter_top2_feats_'+self.dataset+str(random.randint(1,101))+'.eps') 
         
+    def plot_violin_feature(self,X,y,feature_id,feature_names):   
+        import random
+        feature_data = X[:,feature_id]
+        
+        data_split = []
+        for k in np.unique(y):
+            indices = np.argwhere(y==k)
+            data_split.append(feature_data[indices])        
+        
+        import seaborn as sns
+        plt.figure()
+        sns.set(style="whitegrid")
+        ax = sns.violinplot(data=data_split,palette="muted",width=1)
+        ax.set(xlabel='Class label', ylabel=feature_names[feature_id])
+        plt.savefig('Images/violin_plot_'+self.dataset+'_'+feature_names[feature_id]+'_'+str(random.randint(1,101))+'.eps') 
 
+
+        
     def save_feature_set(self,filename = 'TestData/feature_set.pkl'):
         import pickle as pkl        
         feature_matrix = self.graph_feature_matrix
@@ -552,7 +575,7 @@ class Graphs():
         with open(filename,'wb') as output:
             pkl.dump(feature_matrix,output,pkl.HIGHEST_PROTOCOL)
             
-        
+ 
         
     
     def load_feature_set(self,filename = 'TestData/feature_set.pkl'):
@@ -677,10 +700,11 @@ def top_features(X,top_feats,feature_names):
     
     plt.figure()
     plt.plot(np.sort(mean_importance)[::-1])
-    plt.axvline(x=i)
     plt.xlabel('Features')
     plt.ylabel('Feature Importance')
-    plt.yscale('log')
+    plt.xscale('log')
+    plt.yscale('symlog', nonposy='clip', linthreshy=0.001)    
+    plt.axvline(x=final_index,color='r')
     plt.savefig('Images/feature_importance_distribution.eps') 
     
 
