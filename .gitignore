@@ -10,10 +10,13 @@ hcga\.egg-info/
 
 hcga/__pycache__/
 
-hcga/Operations/__pycache__/
+Operations/__pycache__/
 
-hcga/TestData/__pycache__/
+TestData/__pycache__/
 
 hcga/\.ipynb_checkpoints/
 
-hcga/TestData/feature_set\.pkl
+examples/TestData/feature_set\.pkl
+
+examples/Images/
+

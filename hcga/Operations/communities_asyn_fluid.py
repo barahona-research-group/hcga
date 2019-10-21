@@ -33,8 +33,6 @@ class AsynfluidCommunities():
         
         """
 
-        # Defining the input arguments
-        kmax = 10
         
         """
         feature_names = []
@@ -50,9 +48,12 @@ class AsynfluidCommunities():
             E = G.number_of_edges()
 
         
-        
+            # Defining the input arguments
+            kmax = 10
+            if kmax > len(G): 
+                kmax = len(G)
+
             for i in range(2,kmax):    
-                
                 c,density = list(asyn_fluidc(G,i))       
                 
                 #total density

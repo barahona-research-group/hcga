@@ -23,7 +23,7 @@ g.graphs = [g.graphs[i] for i in graph_subset]
 g.graph_labels = [g.graph_labels[i] for i in graph_subset]
 
 print("Calculate features...")
-g.calculate_features(calc_speed='slow', parallel = True)
+g.calculate_features(calc_speed='medium', parallel = True)
 
 g.normalise_feature_data()
 

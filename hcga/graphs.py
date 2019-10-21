@@ -608,7 +608,7 @@ def classification(X,y,ml_model, verbose=True):
     # reducing number of folds to half the least populated class
     # e.g. if only 9 elements of class A then we only use int(9/2)=4 folds
     counts = np.bincount(y)
-    least_populated_class = np.argmin(counts)
+    least_populated_class = np.min(counts)
 
     n_splits = int(len(y[y==least_populated_class])/2)
 
