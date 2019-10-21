@@ -27,7 +27,6 @@ class EdgeFeaturesBasic():
         
 
         edge_attributes = list(nx.get_edge_attributes(G,'weight').values())
-
         feature_list = summary_statistics(feature_list,edge_attributes,'edge_weights')       
         
         

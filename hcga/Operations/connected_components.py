@@ -46,7 +46,7 @@ class ConnectedComponents():
 
               
         if not nx.is_connected(G): 
-            conn_components = list(nx.connected_component_subgraphs(G)) 
+            conn_components = list(nx.connected_components(G)) 
             feature_list['is_connected']=0
             feature_list['num_conncomp']=len(conn_components)
             feature_list['ratio_conncomp_size_max1_max2']=len(conn_components[0])/len(conn_components[1])

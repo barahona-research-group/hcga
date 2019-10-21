@@ -47,7 +47,7 @@ class Operations():
         """
         
         if not nx.is_connected(G):  
-            Gc = max(nx.connected_component_subgraphs(G), key=len)
+            Gc = G.subgraph(max(nx.connected_components(G), key=len)).copy()
             mapping=dict(zip(Gc.nodes,range(0,len(Gc))))
             Gc = nx.relabel_nodes(Gc,mapping)                
             self.G_largest_subgraph = Gc            

@@ -2,11 +2,20 @@ from setuptools import setup, find_packages
 
 setup(
    name='hcga',
-   version='1.0',
+   version='0.1',
    description='Highly comparative graph analysis',
-   author='Robert Peach + Alexis Arnaudon',
+   author='Robert Peach + Alexis Arnaudon + Henry Palasciano',
    author_email='r.peach13@imperial.ac.uk',
    packages=['hcga'],  #same as name
-   install_requires=['networkx','numpy','scipy','tqdm'], #external packages as dependencies
+   install_requires=['numpy',
+                     'scipy',
+                     'pickle',
+                     'tqdm', 
+                     'networkx',
+                     'statsmodels', 
+                     'sklearn', 
+                     'fa2', 
+                     'xgboost', 
+                     'seaborn'], #external packages as dependencies
    include_package_data = True
 )

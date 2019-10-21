@@ -1,3 +1,9 @@
+#to remove warnings
+import numpy
+numpy.seterr(all='ignore') 
+import warnings
+warnings.simplefilter("ignore")
+
 import numpy as np
 import pandas as pd
 import networkx as nx
@@ -13,7 +19,10 @@ from functools import partial
 
 from sklearn.preprocessing import normalize
 
+import matplotlib
+matplotlib.use("agg")
 import matplotlib.pyplot as plt
+
 
 class Graphs():
 
@@ -56,6 +65,12 @@ class Graphs():
             
             to_remove = []
             for i,G in enumerate(graphs): 
+
+                #hack to add weights on edges if not present
+                for u,v in G.edges: 
+                    if len(G[u][v]) == 0:
+                        G[u][v]['weight'] = 1.
+                    
                 """
                 The fact that some nodes are not connected needs to be changed. We need to append the subgraphs and run feature extraction
                 on each subgraph. Add features that relate to the extra subgraphs. or features indicatnig there are subgraphs.
@@ -543,12 +558,12 @@ class Graphs():
         #mean_importance = np.mean(np.asarray(top_feats),0)                  
         #top_feat_indices = np.argsort(mean_importance)[::-1]  
         plt.figure()
-        cm = cm.get_cmapol('RdYlBu')                  
+        cm = cm.get_cmap('RdYlBu')                  
         sc = plt.scatter(X[:,top_feat_indices[0]],X[:,top_feat_indices[1]],cmap=cm,c=y)
         plt.xlabel(feature_names[top_feat_indices[0]])        
         plt.ylabel(feature_names[top_feat_indices[1]])
         plt.colorbar(sc)
-        plt.savefig('Images/scatter_top2_feats_'+self.dataset+str(random.randint(1,101))+'.eps') 
+        plt.savefig('Images/scatter_top2_feats_'+self.dataset+str(random.randint(1,101))+'.svg', bbox_inches = 'tight') 
         
     def plot_violin_feature(self,X,y,feature_id,feature_names):   
         import random
@@ -564,7 +579,7 @@ class Graphs():
         sns.set(style="whitegrid")
         ax = sns.violinplot(data=data_split,palette="muted",width=1)
         ax.set(xlabel='Class label', ylabel=feature_names[feature_id])
-        plt.savefig('Images/violin_plot_'+self.dataset+'_'+feature_names[feature_id]+'_'+str(random.randint(1,101))+'.eps') 
+        plt.savefig('Images/violin_plot_'+self.dataset+'_'+feature_names[feature_id]+'_'+str(random.randint(1,101))+'.svg', bbox_inches = 'tight') 
 
 
         
@@ -594,12 +609,19 @@ def classification(X,y,ml_model, verbose=True):
     # e.g. if only 9 elements of class A then we only use int(9/2)=4 folds
     counts = np.bincount(y)
     least_populated_class = np.argmin(counts)
-    if least_populated_class<10:
-        skf = StratifiedKFold(n_splits=int(len(y[y==least_populated_class])/2), random_state=10, shuffle=True)
-    else:
-        skf = StratifiedKFold(n_splits=10, random_state=10, shuffle=True)
-         
+
+    n_splits = int(len(y[y==least_populated_class])/2)
+
+    if n_splits < 2:
+        n_splits = 2
+        if verbose:
+            print('Small dataset, we only do ', n_splits, ' splits.')
+
+    elif n_splits > 10:
+        n_splits = 10
     
+    skf = StratifiedKFold(n_splits=n_splits, random_state=10, shuffle=True)
+         
     testing_accuracy = []
     
     if ml_model =='random_forest':
@@ -678,7 +700,7 @@ def top_features(X,top_feats,feature_names):
     Z = linkage(cor, 'ward')            
     plt.figure()
     dn = dendrogram(Z)         
-    plt.savefig('Images/dendogram_top40_features.eps') 
+    plt.savefig('Images/dendogram_top40_features.svg', bbox_inches = 'tight') 
     
     new_index = [int(i) for  i in dn['ivl']]
     top_feats_names = [top_features_list[i] for i in new_index]             
@@ -686,13 +708,13 @@ def top_features(X,top_feats,feature_names):
     cor2 = np.abs(df.corr())            
     plt.figure()
     sns.heatmap(cor2, linewidth=0.5)
-    plt.savefig('Images/heatmap_top40_feature_dependencies.eps') 
+    plt.savefig('Images/heatmap_top40_feature_dependencies.svg', bbox_inches = 'tight') 
     
     
     sorted_mean_importance = np.sort(mean_importance)[::-1]    
     sum_importance = 0      
     for i in range(len(sorted_mean_importance)):
-        sum_importance = sum_importance + sorted_mean_importance[i]
+        sum_importance += sorted_mean_importance[i]
         if sum_importance > 0.9:
             final_index = i
             break
@@ -705,7 +727,7 @@ def top_features(X,top_feats,feature_names):
     plt.xscale('log')
     plt.yscale('symlog', nonposy='clip', linthreshy=0.001)    
     plt.axvline(x=final_index,color='r')
-    plt.savefig('Images/feature_importance_distribution.eps') 
+    plt.savefig('Images/feature_importance_distribution.svg', bbox_inches = 'tight') 
     
 
     return top_features_list
