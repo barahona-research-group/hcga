@@ -151,9 +151,15 @@ class Graphs():
                 comp_times.append(list(op.computational_times.values()))
                 
             comp_times_mean = np.mean(np.array(comp_times), axis = 0)
-                
+
+            #print the computational time from fast to slow
+            sort_id = np.argsort(comp_times_mean)
+            fns = [] 
             for i, fn in enumerate(list(self.graph_feature_set[0].computational_times.keys())):
-                print('Computation time for feature: ' + str(fn) + ' is ' + str(np.round(comp_times_mean[i],3)) + ' seconds.')
+                fns.append(fn)
+
+            for i in sort_id:
+                print('Computation time for feature: ' + str(fns[i]) + ' is ' + str(np.round(comp_times_mean[i],3)) + ' seconds.')
                 
                 
         else: 
