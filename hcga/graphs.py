@@ -185,14 +185,12 @@ class Graphs():
         feature_vals_matrix = np.empty([len(self.graph_feature_set),3*len(feature_names)])  
         
         # Append features for each graph as rows   
-        for i in range(0,len(self.graph_feature_set)):            
+        for i in range(len(self.graph_feature_set)):            
 
             N = self.graphs[i].number_of_nodes()
             E = self.graphs[i].number_of_edges()
             graph_feats = np.asarray(self.graph_feature_set[i]._extract_data()[1])
             compounded_feats = np.hstack([graph_feats, graph_feats/N,graph_feats/E]) 
-            
-            
             
             feature_vals_matrix[i,:] = compounded_feats
         

@@ -47,14 +47,16 @@ class AsynfluidCommunities():
             N = G.number_of_nodes()
             E = G.number_of_edges()
 
-        
             # Defining the input arguments
             kmax = 10
-            if kmax > len(G): 
-                kmax = len(G)
 
             for i in range(2,kmax):    
-                c,density = list(asyn_fluidc(G,i))       
+                 
+                #if not enough nodes, last elements are the max ones
+                if i > len(G): 
+                    c,density = list(asyn_fluidc(G,len(G)))       
+                else:
+                    c,density = list(asyn_fluidc(G,i))       
                 
                 #total density
                 feature_list['total_density_'+str(i)]=sum(density)

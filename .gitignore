@@ -1,5 +1,7 @@
 *.pyc
 
+*.svg 
+
 build/
 
 dist/
@@ -18,5 +20,6 @@ hcga/\.ipynb_checkpoints/
 
 examples/TestData/feature_set\.pkl
 
-examples/Images/
+examples/Images/*
+
 
