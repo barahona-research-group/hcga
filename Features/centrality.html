@@ -1,0 +1,611 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Centrality modules &mdash; hcga 0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="The chemical theory module" href="chemical_theory.html" />
+    <link rel="prev" title="Basic features" href="basic_features.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> hcga
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">How to install HCGA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../graph.html">The Graph module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../operations.html">The Operations module</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../Features.html">Features</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="assortativity.html">The assortativity module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="average_neighbor_degree.html">The average neighbour degree module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="basic_features.html">Basic features</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Centrality modules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-hcga.Operations.centrality_degree">The degree centrality module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-hcga.Operations.centrality_eigenvector">The eigenvector centrality module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-hcga.Operations.centrality_katz">The katz centrality module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-hcga.Operations.centrality_betweenness">The betweenness centrality module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-hcga.Operations.centrality_edge_betweenness">The edge betweenness centrality module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-hcga.Operations.centrality_subgraph">The subgraph centrality module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-hcga.Operations.centrality_closeness">The closeness centrality module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-hcga.Operations.centrality_harmonic">The harmonic centrality module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-hcga.Operations.centrality_second_order">The second order centrality module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-hcga.Operations.centrality_force">The force centrality module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="chemical_theory.html">The chemical theory module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cliques.html">Cliques modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="clustering.html">The clustering module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="communities.html">Communities modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="components.html">Components modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core_number.html">The core_number module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cycles.html">The cycles module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eccentricity.html">The eccentricity module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="efficiency.html">The efficiency module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="independent_sets.html">The independent sets module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="maximal_matching.html">The maximal matching module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="minimum_cuts.html">The minimum cuts module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="node_connectivity.html">The node connectivity module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pagerank.html">The PageRank module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rich_club.html">The rich club module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scale_free.html">The scale free module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shortest_paths.html">The shortest paths module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="small_worldness.html">The small worldness module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structural_holes.html">The structural holes module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vitality.html">The vitality module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">hcga</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../api.html">API</a> &raquo;</li>
+        
+          <li><a href="../Features.html">Features</a> &raquo;</li>
+        
+      <li>Centrality modules</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/Features/centrality.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="centrality-modules">
+<h1>Centrality modules<a class="headerlink" href="#centrality-modules" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-hcga.Operations.centrality_degree">
+<span id="the-degree-centrality-module"></span><h2>The degree centrality module<a class="headerlink" href="#module-hcga.Operations.centrality_degree" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcga.Operations.centrality_degree.DegreeCentrality">
+<em class="property">class </em><code class="descclassname">hcga.Operations.centrality_degree.</code><code class="descname">DegreeCentrality</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_degree.html#DegreeCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_degree.DegreeCentrality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Degree centrality class</p>
+<dl class="method">
+<dt id="hcga.Operations.centrality_degree.DegreeCentrality.feature_extraction">
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_degree.html#DegreeCentrality.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_degree.DegreeCentrality.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the degree centrality for nodes.</p>
+<p>The degree centrality for a node v is the fraction of nodes it
+is connected to.</p>
+<dl class="docutils">
+<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
+<dd>A networkx graph</dd>
+<dt>bins :</dt>
+<dd>Number of bins for calculating pdf of chosen distribution for SSE calculation</dd>
+</dl>
+<dl class="docutils">
+<dt>feature_list :list</dt>
+<dd>List of features related to degree centrality.</dd>
+</dl>
+<dl class="docutils">
+<dt>Degree centrality calculations using networkx:</dt>
+<dd><a class="reference external" href="https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/centrality/degree_alg.html#degree_centrality">Networkx_centrality</a></dd>
+</dl>
+<p>The degree centrality values are normalized by dividing by the maximum
+possible degree in a simple graph n-1 where n is the number of nodes 
+in G.</p>
+<p>For multigraphs or graphs with self loops the maximum degree might
+be higher than n-1 and values of degree centrality greater than 1
+are possible.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcga.Operations.centrality_eigenvector">
+<span id="the-eigenvector-centrality-module"></span><h2>The eigenvector centrality module<a class="headerlink" href="#module-hcga.Operations.centrality_eigenvector" title="Permalink to this headline">¶</a></h2>
+<p>Created on Tue May  7 10:41:52 2019</p>
+<p>&#64;author: robert</p>
+<dl class="class">
+<dt id="hcga.Operations.centrality_eigenvector.EigenCentrality">
+<em class="property">class </em><code class="descclassname">hcga.Operations.centrality_eigenvector.</code><code class="descname">EigenCentrality</code><span class="sig-paren">(</span><em>G</em>, <em>eigens</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_eigenvector.html#EigenCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_eigenvector.EigenCentrality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Centrality eigenvector</p>
+<dl class="method">
+<dt id="hcga.Operations.centrality_eigenvector.EigenCentrality.feature_extraction">
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_eigenvector.html#EigenCentrality.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_eigenvector.EigenCentrality.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the eigenvector centrality for the graph <cite>G</cite>.</p>
+<p>Eigenvector centrality computes the centrality for a node based on the
+centrality of its neighbors. The eigenvector centrality for node $i$ is
+the $i$-th element of the vector $x$ defined by the equation</p>
+<div class="math notranslate nohighlight">
+\[Ax = \lambda x\]</div>
+<p>where $A$ is the adjacency matrix of the graph <cite>G</cite> with eigenvalue
+$lambda$. By virtue of the Perron–Frobenius theorem, there is a unique
+solution $x$, all of whose entries are positive, if $lambda$ is the
+largest eigenvalue of the adjacency matrix $A$ (<a class="footnote-reference" href="#id6" id="id1">[2]</a>).</p>
+<dl class="docutils">
+<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
+<dd>A networkx graph</dd>
+<dt>args: list</dt>
+<dd>Parameters for calculating feature_list</dd>
+<dt>bins:</dt>
+<dd>Number of bins for calculating pdf of chosen distribution
+for SSE calculation</dd>
+</dl>
+<dl class="docutils">
+<dt>feature_list :list</dt>
+<dd>List of features related to eigenvector centrality.</dd>
+</dl>
+<dl class="docutils">
+<dt>Implemented using networkx:</dt>
+<dd><a class="reference external" href="https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/centrality/eigenvector.html#eigenvector_centrality">Networkx_centrality</a></dd>
+</dl>
+<p>The measure was introduced by <a class="footnote-reference" href="#id5" id="id3">[1]</a> and is discussed in <a class="footnote-reference" href="#id6" id="id4">[2]</a>.</p>
+<table class="docutils footnote" frame="void" id="id5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[1]</a></td><td>Phillip Bonacich.
+“Power and Centrality: A Family of Measures.”
+<em>American Journal of Sociology</em> 92(5):1170–1182, 1986
+&lt;<a class="reference external" href="http://www.leonidzhukov.net/hse/2014/socialnetworks/papers/Bonacich-Centrality.pdf">http://www.leonidzhukov.net/hse/2014/socialnetworks/papers/Bonacich-Centrality.pdf</a>&gt;</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id4">2</a>)</em> Mark E. J. Newman.
+<em>Networks: An Introduction.</em>
+Oxford University Press, USA, 2010, pp. 169.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcga.Operations.centrality_katz">
+<span id="the-katz-centrality-module"></span><h2>The katz centrality module<a class="headerlink" href="#module-hcga.Operations.centrality_katz" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcga.Operations.centrality_katz.KatzCentrality">
+<em class="property">class </em><code class="descclassname">hcga.Operations.centrality_katz.</code><code class="descname">KatzCentrality</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_katz.html#KatzCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_katz.KatzCentrality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Eccentricity class</p>
+<dl class="method">
+<dt id="hcga.Operations.centrality_katz.KatzCentrality.feature_extraction">
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_katz.html#KatzCentrality.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_katz.KatzCentrality.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute Katz centrality for each node</p>
+<p>Katz centrality is similar to eigenvector centrality with the main
+difference being that each node is given a base value of centrality.</p>
+<dl class="docutils">
+<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
+<dd>A networkx graph</dd>
+<dt>args :</dt>
+<dd>arg[0] Number of bins for calculating pdf of chosen distribution for SSE calculation</dd>
+</dl>
+<dl class="docutils">
+<dt>feature_list :list</dt>
+<dd>List of features related to Katz centrality.</dd>
+</dl>
+<dl class="docutils">
+<dt>Katz centrality using networkx:</dt>
+<dd><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html">https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html</a></dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcga.Operations.centrality_betweenness">
+<span id="the-betweenness-centrality-module"></span><h2>The betweenness centrality module<a class="headerlink" href="#module-hcga.Operations.centrality_betweenness" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcga.Operations.centrality_betweenness.BetweennessCentrality">
+<em class="property">class </em><code class="descclassname">hcga.Operations.centrality_betweenness.</code><code class="descname">BetweennessCentrality</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_betweenness.html#BetweennessCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_betweenness.BetweennessCentrality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Betweenness centrality class</p>
+<dl class="method">
+<dt id="hcga.Operations.centrality_betweenness.BetweennessCentrality.feature_extraction">
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_betweenness.html#BetweennessCentrality.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_betweenness.BetweennessCentrality.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the betweenness centrality for nodes.</p>
+<p>The betweenness centrality for a node is defined as the number of 
+shortest paths that pass through that node.
+Here the fraction of shortest paths that pass through each node is
+calculated.</p>
+<dl class="docutils">
+<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
+<dd>A networkx graph</dd>
+<dt>bins :</dt>
+<dd>Number of bins for calculating pdf of chosen distribution
+for SSE calculation</dd>
+</dl>
+<dl class="docutils">
+<dt>feature_list :list</dt>
+<dd><blockquote class="first">
+<div>List of features related to betweenness centrality.</div></blockquote>
+<p class="last">Notes</p>
+</dd>
+</dl>
+<dl class="docutils">
+<dt>Betweenness centrality calculations using networkx:</dt>
+<dd><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html">Networkx_centrality</a></dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcga.Operations.centrality_edge_betweenness">
+<span id="the-edge-betweenness-centrality-module"></span><h2>The edge betweenness centrality module<a class="headerlink" href="#module-hcga.Operations.centrality_edge_betweenness" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcga.Operations.centrality_edge_betweenness.EdgeBetweennessCentrality">
+<em class="property">class </em><code class="descclassname">hcga.Operations.centrality_edge_betweenness.</code><code class="descname">EdgeBetweennessCentrality</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_edge_betweenness.html#EdgeBetweennessCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_edge_betweenness.EdgeBetweennessCentrality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Edge betweenness centrality class</p>
+<dl class="method">
+<dt id="hcga.Operations.centrality_edge_betweenness.EdgeBetweennessCentrality.feature_extraction">
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_edge_betweenness.html#EdgeBetweennessCentrality.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_edge_betweenness.EdgeBetweennessCentrality.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the edge betweenness centrality for nodes.</p>
+<p>The edge betweeness centrality for an edge is the number of shortest
+paths that pass through it.
+Here the fraction of shortest paths that pass through
+each edge is calculated.</p>
+<dl class="docutils">
+<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
+<dd>A networkx graph</dd>
+<dt>bins :</dt>
+<dd>Number of bins for calculating pdf of chosen distribution
+for SSE calculation</dd>
+</dl>
+<dl class="docutils">
+<dt>feature_list :list</dt>
+<dd><blockquote class="first">
+<div>List of features related to betweenness centrality.</div></blockquote>
+<p class="last">Notes</p>
+</dd>
+</dl>
+<dl class="docutils">
+<dt>Betweenness centrality calculations using networkx:</dt>
+<dd><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html">Networkx_centrality</a></dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcga.Operations.centrality_subgraph">
+<span id="the-subgraph-centrality-module"></span><h2>The subgraph centrality module<a class="headerlink" href="#module-hcga.Operations.centrality_subgraph" title="Permalink to this headline">¶</a></h2>
+<p>Created on Sat Jul 27 19:56:02 2019</p>
+<p>&#64;author: Henry</p>
+<dl class="class">
+<dt id="hcga.Operations.centrality_subgraph.SubgraphCentrality">
+<em class="property">class </em><code class="descclassname">hcga.Operations.centrality_subgraph.</code><code class="descname">SubgraphCentrality</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_subgraph.html#SubgraphCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_subgraph.SubgraphCentrality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subgraph centrality class</p>
+<dl class="method">
+<dt id="hcga.Operations.centrality_subgraph.SubgraphCentrality.feature_extraction">
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_subgraph.html#SubgraphCentrality.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_subgraph.SubgraphCentrality.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the subgraph centrality for nodes.</p>
+<p>The subgraph centrality for a node is the sum of weighted closed walks
+of all lenghts starting and ending st that node.</p>
+<dl class="docutils">
+<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
+<dd>A networkx graph</dd>
+</dl>
+<dl class="docutils">
+<dt>feature_list :list</dt>
+<dd>List of features related to subgraph centrality.</dd>
+</dl>
+<dl class="docutils">
+<dt>Subgraph centrality calculations using networkx:</dt>
+<dd><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html">https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html</a></dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcga.Operations.centrality_closeness">
+<span id="the-closeness-centrality-module"></span><h2>The closeness centrality module<a class="headerlink" href="#module-hcga.Operations.centrality_closeness" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcga.Operations.centrality_closeness.ClosenessCentrality">
+<em class="property">class </em><code class="descclassname">hcga.Operations.centrality_closeness.</code><code class="descname">ClosenessCentrality</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_closeness.html#ClosenessCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_closeness.ClosenessCentrality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closeness centrality class</p>
+<dl class="method">
+<dt id="hcga.Operations.centrality_closeness.ClosenessCentrality.feature_extraction">
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_closeness.html#ClosenessCentrality.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_closeness.ClosenessCentrality.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the closeness centrality for nodes.</p>
+<p>The closeness centrality for a node is the reciprocal of the mean 
+distance to all other reachable nodes.</p>
+<dl class="docutils">
+<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
+<dd>A networkx graph</dd>
+<dt>bins :</dt>
+<dd>Number of bins for calculating pdf of chosen distribution for SSE calculation</dd>
+</dl>
+<dl class="docutils">
+<dt>feature_list :list</dt>
+<dd>List of features related to closeness centrality.</dd>
+</dl>
+<dl class="docutils">
+<dt>Closeness centrality calculations using networkx:</dt>
+<dd><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html">Networkx_centrality</a></dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcga.Operations.centrality_harmonic">
+<span id="the-harmonic-centrality-module"></span><h2>The harmonic centrality module<a class="headerlink" href="#module-hcga.Operations.centrality_harmonic" title="Permalink to this headline">¶</a></h2>
+<p>Created on Sat Jul 27 20:13:58 2019</p>
+<p>&#64;author: Henry</p>
+<dl class="class">
+<dt id="hcga.Operations.centrality_harmonic.HarmonicCentrality">
+<em class="property">class </em><code class="descclassname">hcga.Operations.centrality_harmonic.</code><code class="descname">HarmonicCentrality</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_harmonic.html#HarmonicCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_harmonic.HarmonicCentrality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Harmonic centrality class</p>
+<dl class="method">
+<dt id="hcga.Operations.centrality_harmonic.HarmonicCentrality.feature_extraction">
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_harmonic.html#HarmonicCentrality.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_harmonic.HarmonicCentrality.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the harmonic centrality for nodes.</p>
+<p>The harmonic centrality of a node is the sum of the reciprocal
+of the shortest paths from all other nodes in the graph</p>
+<dl class="docutils">
+<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
+<dd>A networkx graph</dd>
+</dl>
+<dl class="docutils">
+<dt>feature_list :list</dt>
+<dd>List of features related to harmonic centrality.</dd>
+</dl>
+<dl class="docutils">
+<dt>Harmonic centrality calculations using networkx:</dt>
+<dd><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html">https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html</a></dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcga.Operations.centrality_second_order">
+<span id="the-second-order-centrality-module"></span><h2>The second order centrality module<a class="headerlink" href="#module-hcga.Operations.centrality_second_order" title="Permalink to this headline">¶</a></h2>
+<p>Created on Sat Jul 27 20:24:06 2019</p>
+<p>&#64;author: Henry</p>
+<dl class="class">
+<dt id="hcga.Operations.centrality_second_order.SecondOrderCentrality">
+<em class="property">class </em><code class="descclassname">hcga.Operations.centrality_second_order.</code><code class="descname">SecondOrderCentrality</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_second_order.html#SecondOrderCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_second_order.SecondOrderCentrality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Second order centrality class</p>
+<dl class="method">
+<dt id="hcga.Operations.centrality_second_order.SecondOrderCentrality.feature_extraction">
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_second_order.html#SecondOrderCentrality.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_second_order.SecondOrderCentrality.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the second order centrality for nodes.</p>
+<p>The second order centrality of a node is the standard deviation of 
+the return time to that node via a perpetual random walk.</p>
+<dl class="docutils">
+<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
+<dd>A networkx graph</dd>
+</dl>
+<dl class="docutils">
+<dt>feature_list :list</dt>
+<dd>List of features related to second order centrality.</dd>
+</dl>
+<dl class="docutils">
+<dt>Second order centrality calculations using networkx:</dt>
+<dd><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html">https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html</a></dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcga.Operations.centrality_force">
+<span id="the-force-centrality-module"></span><h2>The force centrality module<a class="headerlink" href="#module-hcga.Operations.centrality_force" title="Permalink to this headline">¶</a></h2>
+<p>Created on Tue May  7 10:41:52 2019</p>
+<p>&#64;author: robert</p>
+<dl class="class">
+<dt id="hcga.Operations.centrality_force.ForceCentrality">
+<em class="property">class </em><code class="descclassname">hcga.Operations.centrality_force.</code><code class="descname">ForceCentrality</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_force.html#ForceCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_force.ForceCentrality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Force centrality class</p>
+<dl class="method">
+<dt id="hcga.Operations.centrality_force.ForceCentrality.feature_extraction">
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_force.html#ForceCentrality.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_force.ForceCentrality.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the force centrality for the graph <cite>G</cite>.</p>
+<dl class="docutils">
+<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
+<dd>A networkx graph</dd>
+<dt>bins:</dt>
+<dd>Number of bins for calculating pdf of chosen distribution
+for SSE calculation</dd>
+</dl>
+<dl class="docutils">
+<dt>feature_list :list</dt>
+<dd>List of features related to force centrality.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="chemical_theory.html" class="btn btn-neutral float-right" title="The chemical theory module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="basic_features.html" class="btn btn-neutral float-left" title="Basic features" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, R. Peach, A. Arnaudon
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

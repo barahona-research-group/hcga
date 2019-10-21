@@ -1,0 +1,341 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Cliques modules &mdash; hcga 0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="The clustering module" href="clustering.html" />
+    <link rel="prev" title="The chemical theory module" href="chemical_theory.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> hcga
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">How to install HCGA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../graph.html">The Graph module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../operations.html">The Operations module</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../Features.html">Features</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="assortativity.html">The assortativity module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="average_neighbor_degree.html">The average neighbour degree module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="basic_features.html">Basic features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="centrality.html">Centrality modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chemical_theory.html">The chemical theory module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Cliques modules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-hcga.Operations.cliques">The cliques module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-hcga.Operations.node_clique_number">The clique number module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-hcga.Operations.node_number_of_cliques">The number of cliques module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="clustering.html">The clustering module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="communities.html">Communities modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="components.html">Components modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core_number.html">The core_number module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cycles.html">The cycles module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eccentricity.html">The eccentricity module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="efficiency.html">The efficiency module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="independent_sets.html">The independent sets module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="maximal_matching.html">The maximal matching module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="minimum_cuts.html">The minimum cuts module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="node_connectivity.html">The node connectivity module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pagerank.html">The PageRank module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rich_club.html">The rich club module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scale_free.html">The scale free module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shortest_paths.html">The shortest paths module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="small_worldness.html">The small worldness module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structural_holes.html">The structural holes module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vitality.html">The vitality module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">hcga</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../api.html">API</a> &raquo;</li>
+        
+          <li><a href="../Features.html">Features</a> &raquo;</li>
+        
+      <li>Cliques modules</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/Features/cliques.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cliques-modules">
+<h1>Cliques modules<a class="headerlink" href="#cliques-modules" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-hcga.Operations.cliques">
+<span id="the-cliques-module"></span><h2>The cliques module<a class="headerlink" href="#module-hcga.Operations.cliques" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcga.Operations.cliques.Cliques">
+<em class="property">class </em><code class="descclassname">hcga.Operations.cliques.</code><code class="descname">Cliques</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/cliques.html#Cliques"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.cliques.Cliques" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cliques class</p>
+<dl class="method">
+<dt id="hcga.Operations.cliques.Cliques.feature_extraction">
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/cliques.html#Cliques.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.cliques.Cliques.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the clique number for the graph and the number of maximal 
+cliques</p>
+<p>A clique is the maximal subset of nodes such that all the nodes in 
+this set are connected to each other. 
+The clique number is the size of the largest clique in a graph.</p>
+<dl class="docutils">
+<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
+<dd>A networkx graph</dd>
+</dl>
+<dl class="docutils">
+<dt>feature_list :list</dt>
+<dd>List of features related to cliques.</dd>
+</dl>
+<dl class="docutils">
+<dt>Clique number calculations using networkx:</dt>
+<dd><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/clique.html">https://networkx.github.io/documentation/stable/reference/algorithms/clique.html</a></dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcga.Operations.node_clique_number">
+<span id="the-clique-number-module"></span><h2>The clique number module<a class="headerlink" href="#module-hcga.Operations.node_clique_number" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcga.Operations.node_clique_number.NodeCliqueNumber">
+<em class="property">class </em><code class="descclassname">hcga.Operations.node_clique_number.</code><code class="descname">NodeCliqueNumber</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/node_clique_number.html#NodeCliqueNumber"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.node_clique_number.NodeCliqueNumber" title="Permalink to this definition">¶</a></dt>
+<dd><p>Node clique number class</p>
+<dl class="method">
+<dt id="hcga.Operations.node_clique_number.NodeCliqueNumber.feature_extraction">
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/node_clique_number.html#NodeCliqueNumber.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.node_clique_number.NodeCliqueNumber.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the maximal clique containing each node, i.e passing through
+that node.</p>
+<dl class="docutils">
+<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
+<dd>A networkx graph</dd>
+<dt>args :</dt>
+<dd>arg[0] Number of bins for calculating pdf of chosen distribution for SSE calculation</dd>
+</dl>
+<dl class="docutils">
+<dt>feature_list :list</dt>
+<dd>List of features related to clique number.</dd>
+</dl>
+<dl class="docutils">
+<dt>Clique number calculations using networkx:</dt>
+<dd><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/clique.html">https://networkx.github.io/documentation/stable/reference/algorithms/clique.html</a></dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcga.Operations.node_number_of_cliques">
+<span id="the-number-of-cliques-module"></span><h2>The number of cliques module<a class="headerlink" href="#module-hcga.Operations.node_number_of_cliques" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcga.Operations.node_number_of_cliques.NodeNumberOfCliques">
+<em class="property">class </em><code class="descclassname">hcga.Operations.node_number_of_cliques.</code><code class="descname">NodeNumberOfCliques</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/node_number_of_cliques.html#NodeNumberOfCliques"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.node_number_of_cliques.NodeNumberOfCliques" title="Permalink to this definition">¶</a></dt>
+<dd><p>Node number of cliques class</p>
+<dl class="method">
+<dt id="hcga.Operations.node_number_of_cliques.NodeNumberOfCliques.feature_extraction">
+<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/node_number_of_cliques.html#NodeNumberOfCliques.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.node_number_of_cliques.NodeNumberOfCliques.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the number of maximal cliques for each node in the graph,
+i.e passing through that node</p>
+<dl class="docutils">
+<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
+<dd>A networkx graph</dd>
+<dt>args :</dt>
+<dd>arg[0] Number of bins for calculating pdf of chosen distribution for SSE calculation</dd>
+</dl>
+<dl class="docutils">
+<dt>feature_list :list</dt>
+<dd>List of features related to the number of maximal cliques for
+each node.</dd>
+</dl>
+<dl class="docutils">
+<dt>Number of cliques calculations using networkx:</dt>
+<dd><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/clique.html">https://networkx.github.io/documentation/stable/reference/algorithms/clique.html</a></dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="clustering.html" class="btn btn-neutral float-right" title="The clustering module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="chemical_theory.html" class="btn btn-neutral float-left" title="The chemical theory module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, R. Peach, A. Arnaudon
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
