@@ -155,7 +155,7 @@
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
+<span class="kn">from</span> <span class="nn">hcga.Operations.utils</span> <span class="k">import</span> <span class="n">summary_statistics</span>
 
 <div class="viewcode-block" id="BasicStats"><a class="viewcode-back" href="../../../Features/basic_stats.html#hcga.Operations.basic_stats.BasicStats">[docs]</a><span class="k">class</span> <span class="nc">BasicStats</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -202,12 +202,16 @@
         <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_edges&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">E</span>
 
         <span class="c1"># Degree stats</span>
-        <span class="n">degree_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">degree</span><span class="p">())))</span>
+        <span class="n">degree_vals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">degree</span><span class="p">())</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        
+        <span class="n">feature_list</span> <span class="o">=</span> <span class="n">summary_statistics</span><span class="p">(</span><span class="n">feature_list</span><span class="p">,</span><span class="n">degree_vals</span><span class="p">,</span><span class="s1">&#39;degree&#39;</span><span class="p">)</span>       
 
-        <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;degree_mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">degree_vals</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-        <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;degree_median&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">degree_vals</span><span class="p">)</span>
-        <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;degree_std&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">degree_vals</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-
+        <span class="c1">#feature_list[&#39;degree_mean&#39;] = degree_vals.mean()</span>
+        <span class="c1">#feature_list[&#39;degree_median&#39;] = np.median(degree_vals)</span>
+        <span class="c1">#feature_list[&#39;degree_std&#39;] = degree_vals.std()</span>
+        
+        
+        <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;density&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">E</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span><span class="o">*</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">feature_list</span></div></div>
 

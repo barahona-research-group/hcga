@@ -169,7 +169,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">G</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="Components.feature_extraction"><a class="viewcode-back" href="../../../Features/components.html#hcga.Operations.components.Components.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the component features for the network</span>
@@ -190,7 +190,7 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        Components calculations using networkx:</span>
-<span class="sd">            https://networkx.github.io/documentation/stable/reference/algorithms/component.html</span>
+<span class="sd">            `Networkx_components &lt;https://networkx.github.io/documentation/stable/reference/algorithms/component.html&gt;`_</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
 
@@ -206,9 +206,12 @@
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_attracting_comps&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">number_attracting_components</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
             
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;component_features&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;unavailable for undirected graphs&#39;</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_strongly_conn_comps&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_weak_conn_comps&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_attracting_comps&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     
-    
+        
+        
         <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">feature_list</span></div></div>
 </pre></div>
 

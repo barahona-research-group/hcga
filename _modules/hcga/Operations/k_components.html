@@ -162,7 +162,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">G</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="kComponents.feature_extraction"><a class="viewcode-back" href="../../../Features/components.html#hcga.Operations.k_components.kComponents.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -185,7 +185,7 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        K components calculations using networkx:</span>
-<span class="sd">            https://networkx.github.io/documentation/stable/reference/algorithms/approximation.html            </span>
+<span class="sd">            `Networkx_kcomponents &lt;https://networkx.github.io/documentation/stable/reference/algorithms/approximation.html&gt;`_            </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="sd">&quot;&quot;&quot;</span>
@@ -193,7 +193,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">G</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span>
-
+        
+        
+        <span class="c1"># This function is very slow for some graphs... </span>
+        
         <span class="n">feature_list</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>            
             <span class="c1"># Calculate the k_components</span>
@@ -216,8 +219,14 @@
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;mean_max_k_component_size&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;largest_max_k_component&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;smallest_max_k_component&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+        
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;k_component_features&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;unavailable for directed graphs&#39;</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_k_components&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;max_k&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_max_k_components&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;mean_max_k_component_size&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;largest_max_k_component&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;smallest_max_k_component&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        self.feature_names = feature_names</span>

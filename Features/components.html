@@ -198,25 +198,25 @@
 <span id="the-k-components-module"></span><h2>The k components module<a class="headerlink" href="#module-hcga.Operations.k_components" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hcga.Operations.k_components.kComponents">
-<em class="property">class </em><code class="descclassname">hcga.Operations.k_components.</code><code class="descname">kComponents</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/k_components.html#kComponents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.k_components.kComponents" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.k_components.</code><code class="sig-name descname">kComponents</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/k_components.html#kComponents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.k_components.kComponents" title="Permalink to this definition">¶</a></dt>
 <dd><p>k components class</p>
 <dl class="method">
 <dt id="hcga.Operations.k_components.kComponents.feature_extraction">
-<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/k_components.html#kComponents.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.k_components.kComponents.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/k_components.html#kComponents.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.k_components.kComponents.feature_extraction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute features related to the k components of the network</p>
 <p>A k_component is a subgraph such that every node in it is connected to
 at least k other nodes in the subgraph.</p>
-<dl class="docutils">
-<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
-<dd>A networkx graph</dd>
+<dl class="simple">
+<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
+</dd>
 </dl>
-<dl class="docutils">
-<dt>feature_list <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
-<dd>List of features related to k components.</dd>
+<dl class="simple">
+<dt>feature_list<span class="classifier">list</span></dt><dd><p>List of features related to k components.</p>
+</dd>
 </dl>
-<dl class="docutils">
-<dt>K components calculations using networkx:</dt>
-<dd><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/approximation.html">https://networkx.github.io/documentation/stable/reference/algorithms/approximation.html</a></dd>
+<dl class="simple">
+<dt>K components calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/approximation.html">Networkx_kcomponents</a></p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -229,23 +229,23 @@ at least k other nodes in the subgraph.</p>
 <p>&#64;author: Henry</p>
 <dl class="class">
 <dt id="hcga.Operations.components.Components">
-<em class="property">class </em><code class="descclassname">hcga.Operations.components.</code><code class="descname">Components</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/components.html#Components"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.components.Components" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.components.</code><code class="sig-name descname">Components</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/components.html#Components"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.components.Components" title="Permalink to this definition">¶</a></dt>
 <dd><p>Components class</p>
 <dl class="method">
 <dt id="hcga.Operations.components.Components.feature_extraction">
-<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/components.html#Components.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.components.Components.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/components.html#Components.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.components.Components.feature_extraction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the component features for the network</p>
-<dl class="docutils">
-<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
-<dd>A networkx graph</dd>
+<dl class="simple">
+<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
+</dd>
 </dl>
-<dl class="docutils">
-<dt>feature_list :list</dt>
-<dd>List of features related to components.</dd>
+<dl class="simple">
+<dt>feature_list :list</dt><dd><p>List of features related to components.</p>
+</dd>
 </dl>
-<dl class="docutils">
-<dt>Components calculations using networkx:</dt>
-<dd><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/component.html">https://networkx.github.io/documentation/stable/reference/algorithms/component.html</a></dd>
+<dl class="simple">
+<dt>Components calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/component.html">Networkx_components</a></p>
+</dd>
 </dl>
 </dd></dl>
 

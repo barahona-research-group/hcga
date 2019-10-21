@@ -164,7 +164,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">G</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="NodeNumberOfCliques.feature_extraction"><a class="viewcode-back" href="../../../Features/cliques.html#hcga.Operations.node_number_of_cliques.NodeNumberOfCliques.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -177,8 +177,8 @@
 <span class="sd">        G : graph</span>
 <span class="sd">          A networkx graph</span>
 
-<span class="sd">        args :</span>
-<span class="sd">            arg[0] Number of bins for calculating pdf of chosen distribution for SSE calculation</span>
+<span class="sd">        bins :</span>
+<span class="sd">            Number of bins for calculating pdf of chosen distribution for SSE calculation</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -190,7 +190,7 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        Number of cliques calculations using networkx:</span>
-<span class="sd">            https://networkx.github.io/documentation/stable/reference/algorithms/clique.html</span>
+<span class="sd">            `Networkx_cliques &lt;https://networkx.github.io/documentation/stable/reference/algorithms/clique.html&gt;`_</span>
 <span class="sd">        &quot;&quot;&quot;</span>        
                 
         <span class="c1"># Defining the input arguments</span>
@@ -230,7 +230,16 @@
                 <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;powerlaw_a_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">])]</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">power_law_fit</span><span class="p">(</span><span class="n">number_of_cliques</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="c1"># value &#39;a&#39; in power law</span>
                 <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;powerlaw_SSE_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">])]</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">power_law_fit</span><span class="p">(</span><span class="n">number_of_cliques</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># value sse in power law</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;number_of_clique_features&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;unavailable for directed graphs&#39;</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;max&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bins</span><span class="p">)):</span>
+                <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;opt_model_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">])]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;powerlaw_a_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">])]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;powerlaw_SSE_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">])]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+
         <span class="c1"># Fitting normal distribution and finding...</span>
 
 

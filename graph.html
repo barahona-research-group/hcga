@@ -164,18 +164,24 @@
 <span id="the-graph-module"></span><h1>The Graph module<a class="headerlink" href="#module-hcga.graphs" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="hcga.graphs.Graphs">
-<em class="property">class </em><code class="descclassname">hcga.graphs.</code><code class="descname">Graphs</code><span class="sig-paren">(</span><em>graphs=[]</em>, <em>graph_meta_data=[]</em>, <em>node_meta_data=[]</em>, <em>graph_class=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">hcga.graphs.</code><code class="sig-name descname">Graphs</code><span class="sig-paren">(</span><em class="sig-param">graphs=None</em>, <em class="sig-param">graph_meta_data=[]</em>, <em class="sig-param">node_meta_data=[]</em>, <em class="sig-param">graph_class=[]</em>, <em class="sig-param">directory=''</em>, <em class="sig-param">dataset='synthetic'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes a list of graphs</p>
 <dl class="method">
 <dt id="hcga.graphs.Graphs.calculate_features">
-<code class="descname">calculate_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.calculate_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.calculate_features" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">calculate_features</code><span class="sig-paren">(</span><em class="sig-param">calc_speed='slow'</em>, <em class="sig-param">parallel=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.calculate_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.calculate_features" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculation the features for each graph in the set of graphs</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="hcga.graphs.Graphs.graph_classification">
-<code class="descname">graph_classification</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.graph_classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.graph_classification" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">graph_classification</code><span class="sig-paren">(</span><em class="sig-param">plot=True</em>, <em class="sig-param">ml_model='xgboost'</em>, <em class="sig-param">data='all'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.graph_classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.graph_classification" title="Permalink to this definition">¶</a></dt>
 <dd><p>Graph Classification</p>
+<dl class="simple">
+<dt>data: the type of features to classify</dt><dd><p>‘all’ - all the features calculated
+‘feats’ - features based on node features and node labels only
+‘topology’ - features based only on the graph topology features</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

@@ -192,31 +192,32 @@
 <span id="the-core-number-module"></span><h1>The core_number module<a class="headerlink" href="#module-hcga.Operations.core_number" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="hcga.Operations.core_number.CoreNumber">
-<em class="property">class </em><code class="descclassname">hcga.Operations.core_number.</code><code class="descname">CoreNumber</code><span class="sig-paren">(</span><em>G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/core_number.html#CoreNumber"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.core_number.CoreNumber" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.core_number.</code><code class="sig-name descname">CoreNumber</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/core_number.html#CoreNumber"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.core_number.CoreNumber" title="Permalink to this definition">¶</a></dt>
 <dd><p>Core number class</p>
 <dl class="method">
 <dt id="hcga.Operations.core_number.CoreNumber.feature_extraction">
-<code class="descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/core_number.html#CoreNumber.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.core_number.CoreNumber.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/core_number.html#CoreNumber.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.core_number.CoreNumber.feature_extraction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute core number for each node</p>
 <p>A k-core is the maximal subgraph that contains nodes of degree k or 
 higher. 
 The core number for a node is the largest value of k such that a 
 k-core containing that node exists.</p>
 <blockquote>
-<div>Parameters</div></blockquote>
-<dl class="docutils">
-<dt>G <span class="classifier-delimiter">:</span> <span class="classifier">graph</span></dt>
-<dd>A networkx graph</dd>
-<dt>args :</dt>
-<dd>arg[0] Number of bins for calculating pdf of chosen distribution for SSE calculation</dd>
+<div><p>Parameters</p>
+</div></blockquote>
+<dl class="simple">
+<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
+</dd>
+<dt>args :</dt><dd><p>arg[0] Number of bins for calculating pdf of chosen distribution for SSE calculation</p>
+</dd>
 </dl>
-<dl class="docutils">
-<dt>feature_list :list</dt>
-<dd>List of features related to core number.</dd>
+<dl class="simple">
+<dt>feature_list :list</dt><dd><p>List of features related to core number.</p>
+</dd>
 </dl>
-<dl class="docutils">
-<dt>Core number calculations using networkx:</dt>
-<dd><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/core.html">https://networkx.github.io/documentation/stable/reference/algorithms/core.html</a></dd>
+<dl class="simple">
+<dt>Core number calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/core.html">Networkx_cycles</a></p>
+</dd>
 </dl>
 </dd></dl>
 

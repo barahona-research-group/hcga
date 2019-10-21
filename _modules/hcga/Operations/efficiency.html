@@ -153,7 +153,7 @@
 <span></span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <div class="viewcode-block" id="Efficiency"><a class="viewcode-back" href="../../../Features/efficiency.html#hcga.Operations.efficiency.Efficiency">[docs]</a><span class="k">class</span> <span class="nc">Efficiency</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -162,7 +162,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">G</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="Efficiency.feature_extraction"><a class="viewcode-back" href="../../../Features/efficiency.html#hcga.Operations.efficiency.Efficiency.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -186,7 +186,7 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        Degree centrality calculations using networkx:</span>
-<span class="sd">            https://networkx.github.io/documentation/stable/reference/algorithms/efficiency.html</span>
+<span class="sd">            `Networkx_efficiency &lt;https://networkx.github.io/documentation/stable/reference/algorithms/efficiency.html&gt;`_</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -203,7 +203,8 @@
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;local_efficiency&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">local_efficiency</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;global_efficiency&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">global_efficiency</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;efficiency_features&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;unavailable for directed graphs&#39;</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;local_efficiency&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;global_efficiency&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        self.feature_names = feature_names</span>

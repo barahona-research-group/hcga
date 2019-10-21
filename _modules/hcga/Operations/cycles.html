@@ -162,7 +162,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">G</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
         
 <div class="viewcode-block" id="Cycles.feature_extraction"><a class="viewcode-back" href="../../../Features/cycles.html#hcga.Operations.cycles.Cycles.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         
@@ -183,7 +183,7 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        Cycles calculations using networkx:</span>
-<span class="sd">            https://networkx.github.io/documentation/stable/reference/algorithms/cycles.html</span>
+<span class="sd">            `Networkx_cycles &lt;https://networkx.github.io/documentation/stable/reference/algorithms/cycles.html&gt;`_</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="sd">&quot;&quot;&quot;</span>
@@ -192,7 +192,7 @@
         
         <span class="n">G</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span>
         <span class="n">feature_list</span><span class="o">=</span><span class="p">{}</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="ow">and</span> <span class="n">nx</span><span class="o">.</span><span class="n">cycle_basis</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
             <span class="c1"># Find list of cycles for graph</span>
             <span class="n">cycles</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">cycle_basis</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
             <span class="c1"># Add basic cycle features </span>
@@ -202,7 +202,10 @@
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;shortest_cycle&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;longest_cycle&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;cycles_features&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;unavailable for directed graphs&#39;</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_cycles&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;mean_cycle_length&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;shortest_cycle&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;longest_cycle&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        self.feature_names = feature_names</span>

@@ -165,7 +165,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">G</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="Cliques.feature_extraction"><a class="viewcode-back" href="../../../Features/cliques.html#hcga.Operations.cliques.Cliques.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -192,7 +192,7 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        Clique number calculations using networkx:</span>
-<span class="sd">            https://networkx.github.io/documentation/stable/reference/algorithms/clique.html</span>
+<span class="sd">            `Networkx &lt;https://networkx.github.io/documentation/stable/reference/algorithms/clique.html&gt;`_</span>
 <span class="sd">        &quot;&quot;&quot;</span>        
 
         <span class="sd">&quot;&quot;&quot;</span>
@@ -212,7 +212,8 @@
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;number_of_cliques&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">clique</span><span class="o">.</span><span class="n">graph_number_of_cliques</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
             
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;cliques_features&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;unavailable for directed graphs&#39;</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;clique_number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;number_of_cliques&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        self.feature_names=feature_names</span>

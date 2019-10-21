@@ -226,6 +226,10 @@
                 <span class="c1"># Log</span>
                 <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         
+        <span class="c1">#producing a zero array in case force atlas fails.</span>
+        
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">())</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="n">pos</span> <span class="o">=</span> <span class="n">forceatlas2</span><span class="o">.</span><span class="n">forceatlas2_networkx_layout</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
             <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">values</span><span class="p">())),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>        

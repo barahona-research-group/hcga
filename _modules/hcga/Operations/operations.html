@@ -168,6 +168,7 @@
 <span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="k">import</span> <span class="n">linalg</span>
 <span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
 
+<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
 
 <div class="viewcode-block" id="Operations"><a class="viewcode-back" href="../../../operations.html#hcga.Operations.operations.Operations">[docs]</a><span class="k">class</span> <span class="nc">Operations</span><span class="p">():</span>
@@ -190,6 +191,23 @@
         <span class="c1"># pre computed values</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">eigenvalues</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">eigenvectors</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The fact that some nodes are not connected needs to be changed. We need to append the subgraphs and run feature extraction</span>
+<span class="sd">        on each subgraph. Add features that relate to the extra subgraphs. or features indicatnig there are subgraphs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_connected</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>  
+            <span class="n">Gc</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">subgraph</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">connected_components</span><span class="p">(</span><span class="n">G</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">))</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">mapping</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">Gc</span><span class="o">.</span><span class="n">nodes</span><span class="p">,</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Gc</span><span class="p">))))</span>
+            <span class="n">Gc</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">relabel_nodes</span><span class="p">(</span><span class="n">Gc</span><span class="p">,</span><span class="n">mapping</span><span class="p">)</span>                
+            <span class="bp">self</span><span class="o">.</span><span class="n">G_largest_subgraph</span> <span class="o">=</span> <span class="n">Gc</span>            
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">G_largest_subgraph</span> <span class="o">=</span> <span class="n">G</span>
+        
+        
+        
 
 
         <span class="c1"># functins to run automatically</span>
@@ -227,20 +245,41 @@
 
 
 
-    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">calc_speed</span><span class="o">=</span><span class="s1">&#39;slow&#39;</span><span class="p">):</span>
         <span class="n">operations_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations_dict</span>
 
-        <span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">feature_vals</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">feature_dict</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="c1"># loop over the feature classes defined in the YAML file</span>
-
+        <span class="n">calculation_speeds</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;fast&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">calc_speed</span> <span class="o">==</span> <span class="s1">&#39;medium&#39;</span><span class="p">:</span>
+            <span class="n">calculation_speeds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;medium&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">calc_speed</span> <span class="o">==</span> <span class="s1">&#39;slow&#39;</span><span class="p">:</span>
+            <span class="n">calculation_speeds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;medium&#39;</span><span class="p">)</span>
+            <span class="n">calculation_speeds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;slow&#39;</span><span class="p">)</span>
+        
+        
+        <span class="c1">###############</span>
+        <span class="c1"># First add features to do with subgraphs  </span>
+        <span class="c1">###############</span>
+       
+        <span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;connected_components&#39;</span>
+        <span class="n">classname</span> <span class="o">=</span> <span class="s1">&#39;ConnectedComponents&#39;</span>
+        <span class="n">feature_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">import_module</span><span class="p">(</span><span class="s1">&#39;hcga.Operations.&#39;</span><span class="o">+</span><span class="n">filename</span><span class="p">),</span> <span class="n">classname</span><span class="p">)</span>           
+        <span class="n">feature_obj</span> <span class="o">=</span> <span class="n">feature_class</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">)</span>
+        <span class="n">feature_obj</span><span class="o">.</span><span class="n">feature_extraction</span><span class="p">()</span>
+        <span class="n">feature_dict</span><span class="p">[</span><span class="s1">&#39;CComp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">feature_obj</span><span class="o">.</span><span class="n">features</span>
+        
+        <span class="c1">###############</span>
+        
+        <span class="c1"># now looping over operations dictionary to calculate features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">computational_times</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">operations_dict</span><span class="p">)):</span>
+            
             <span class="n">operation</span> <span class="o">=</span> <span class="n">operations_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
             <span class="c1">#Extract the filename and class name</span>
-            <span class="n">main_params</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span><span class="s1">&#39;classname&#39;</span><span class="p">,</span><span class="s1">&#39;shortname&#39;</span><span class="p">,</span><span class="s1">&#39;keywords&#39;</span><span class="p">,</span><span class="s1">&#39;calculation_speed&#39;</span><span class="p">,</span><span class="s1">&#39;precomputed&#39;</span><span class="p">]</span>
+            <span class="c1">#main_params = [&#39;filename&#39;,&#39;classname&#39;,&#39;shortname&#39;,&#39;keywords&#39;,&#39;calculation_speed&#39;,&#39;precomputed&#39;]</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="n">operation</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">classname</span> <span class="o">=</span> <span class="n">operation</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
             <span class="n">symbolic_name</span> <span class="o">=</span> <span class="n">operation</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
@@ -248,6 +287,9 @@
             <span class="n">calculation_speed</span> <span class="o">=</span> <span class="n">operation</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
             <span class="n">precomputed</span> <span class="o">=</span> <span class="n">operation</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
 
+            <span class="c1"># skip calculation if its too slow</span>
+            <span class="k">if</span> <span class="n">calculation_speed</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">calculation_speeds</span><span class="p">:</span>
+                <span class="k">continue</span>
 
             <span class="c1"># Extracting all additional arguments if they exist</span>
             <span class="n">params</span> <span class="o">=</span> <span class="p">[]</span>   
@@ -267,19 +309,21 @@
 
 
 
-                        
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>                    
 
             <span class="k">if</span> <span class="n">precomputed</span><span class="o">==</span><span class="s1">&#39;True &#39;</span><span class="p">:</span>
-                <span class="n">feature_obj</span> <span class="o">=</span> <span class="n">feature_class</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">,(</span><span class="bp">self</span><span class="o">.</span><span class="n">eigenvalues</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">eigenvectors</span><span class="p">))</span>
+                <span class="n">feature_obj</span> <span class="o">=</span> <span class="n">feature_class</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G_largest_subgraph</span><span class="p">,(</span><span class="bp">self</span><span class="o">.</span><span class="n">eigenvalues</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">eigenvectors</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">feature_obj</span> <span class="o">=</span> <span class="n">feature_class</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">)</span>
+                <span class="n">feature_obj</span> <span class="o">=</span> <span class="n">feature_class</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G_largest_subgraph</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">params</span><span class="p">:</span>
                 <span class="n">feature_obj</span><span class="o">.</span><span class="n">feature_extraction</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">feature_obj</span><span class="o">.</span><span class="n">feature_extraction</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-
-                        
+                
+            <span class="bp">self</span><span class="o">.</span><span class="n">computational_times</span><span class="p">[</span><span class="n">classname</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+            
+            <span class="c1"># print(&quot;Time to calculate feature class &quot;+ classname +&quot;(&quot;+ symbolic_name +&quot;) :&quot; + &quot;--- %s seconds ---&quot; % round(time.time() - start_time,3))               </span>
             
             <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            # Alter the feature feature_names</span>
@@ -301,29 +345,44 @@
             
             <span class="c1"># Store features as a dictionary of dictionaries</span>
             <span class="n">feature_dict</span><span class="p">[</span><span class="n">symbolic_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">feature_obj</span><span class="o">.</span><span class="n">features</span>
-            
+        
+        
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_dict</span> <span class="o">=</span> <span class="n">feature_dict</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">feature_vals</span> <span class="o">=</span> <span class="n">feature_vals</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="n">feature_names</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_vals</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="nf">_extract_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-        <span class="n">features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_vals</span> <span class="c1"># features as list of lists</span>
-        <span class="n">feature_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="c1"># feature names as list of lists</span>
-
-        <span class="n">features_flat</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">features</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]</span> <span class="c1"># features as single list</span>
-        <span class="n">feature_names_flat</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">feature_names</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]</span> <span class="c1"># feature names as single list</span>
-
-        <span class="k">return</span> <span class="n">feature_names_flat</span><span class="p">,</span> <span class="n">features_flat</span>
-
+        
+        <span class="n">feature_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_dict</span>
+        <span class="n">feature_vals</span> <span class="o">=</span> <span class="p">[]</span> 
+        <span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span> 
+        
+        <span class="c1"># Seperate out names and values from dictionary of features into </span>
+        <span class="c1"># feature_names and feature_vals</span>
+        <span class="n">symbolic_names</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">feature_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">features</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">feature_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">feature_dict</span><span class="p">)):</span>
+            <span class="n">names</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">values</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)):</span>
+                <span class="n">feature_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbolic_names</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">names</span><span class="p">[</span><span class="n">l</span><span class="p">])</span>
+                <span class="n">feature_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">l</span><span class="p">])</span>
+        
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        features_flat = [item for sublist in features for item in sublist] # features as single list</span>
+<span class="sd">        feature_names_flat = [item for sublist in feature_names for item in sublist] # feature names as single list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">return</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">feature_vals</span>
+        
 
     <span class="k">def</span> <span class="nf">precompute_eigenvectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">M</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">to_scipy_sparse_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="n">nodelist</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">),</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
+            <span class="n">M</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">to_scipy_sparse_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G_largest_subgraph</span><span class="p">,</span> <span class="n">nodelist</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G_largest_subgraph</span><span class="p">),</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
                                       <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
-            <span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">eigs</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;LR&#39;</span><span class="p">,</span>
+            <span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">eigs</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">G_largest_subgraph</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;LR&#39;</span><span class="p">,</span>
                                               <span class="n">maxiter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">eigenvalues</span> <span class="o">=</span> <span class="n">eigenvalues</span>

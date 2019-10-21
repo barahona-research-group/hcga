@@ -152,6 +152,7 @@
   <h1>Source code for hcga.Operations.diameter</h1><div class="highlight"><pre>
 <span></span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <div class="viewcode-block" id="Diameter"><a class="viewcode-back" href="../../../Features/basic_features.html#hcga.Operations.diameter.Diameter">[docs]</a><span class="k">class</span> <span class="nc">Diameter</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -160,7 +161,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">G</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="Diameter.feature_extraction"><a class="viewcode-back" href="../../../Features/basic_features.html#hcga.Operations.diameter.Diameter.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -179,7 +180,7 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        Diameter/radius calculations using networkx:</span>
-<span class="sd">            https://networkx.github.io/documentation/stable/reference/algorithms/distance_measures.html</span>
+<span class="sd">            `Networkx_diameter/radius &lt;https://networkx.github.io/documentation/stable/reference/algorithms/distance_measures.html&gt;`_</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="sd">&quot;&quot;&quot;</span>
@@ -193,8 +194,8 @@
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;diameter&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">diameter</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">radius</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;diameter_features&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;unavailable for not strongly connected digraphs&#39;</span>
-        
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;diameter&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        self.feature_names = feature_names</span>
 <span class="sd">        &quot;&quot;&quot;</span>
