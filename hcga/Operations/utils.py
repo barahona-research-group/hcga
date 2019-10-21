@@ -151,7 +151,7 @@ def summary_statistics(feature_list,dist,feat_name):
     feature_list[feat_name + '_tsem'] = st.tsem(dist)   
     feature_list[feat_name + '_variation'] = st.variation(dist)   
     feature_list[feat_name + '_mean_repeats'] = np.mean(st.find_repeats(dist)[1])
-    feature_list[feat_name + '_max_repeat'] = np.max(st.find_repeats(dist)[0])
+    #feature_list[feat_name + '_max_repeat'] = np.max(st.find_repeats(dist)[0])
     feature_list[feat_name + '_entropy'] = st.entropy(dist)   
     feature_list[feat_name + '_sem'] = st.sem(dist)
     feature_list[feat_name + '_bayes_confint'] = st.bayes_mvs(dist)[0][1][1] - st.bayes_mvs(dist)[0][1][0]

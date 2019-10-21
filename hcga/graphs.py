@@ -543,7 +543,7 @@ class Graphs():
         #mean_importance = np.mean(np.asarray(top_feats),0)                  
         #top_feat_indices = np.argsort(mean_importance)[::-1]  
         plt.figure()
-        cm = cm.get_cmap('RdYlBu')                  
+        cm = cm.get_cmapol('RdYlBu')                  
         sc = plt.scatter(X[:,top_feat_indices[0]],X[:,top_feat_indices[1]],cmap=cm,c=y)
         plt.xlabel(feature_names[top_feat_indices[0]])        
         plt.ylabel(feature_names[top_feat_indices[1]])
