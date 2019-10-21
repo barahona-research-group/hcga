@@ -57,17 +57,15 @@ class NodeConnectivity():
 
         # calculating node connectivity
         node_connectivity = nx.all_pairs_node_connectivity(G)
-
         N = G.number_of_nodes()
         
         node_conn = np.zeros([N,N])
         for key1, value1 in node_connectivity.items():    
             for key2, value2 in value1.items():
                 node_conn[key1,key2] = value2
-    
-        
+
         # mean and median minimum number of nodes to remove connectivity
-        feature_list = utils.summary_statistics(feature_list,node_conn,'node_conn')
+        feature_list = utils.summary_statistics(feature_list,list(np.triu(node_conn).flatten()),'node_conn')
 
         for i in range(len(bins)):
             

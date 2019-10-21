@@ -49,15 +49,12 @@ class ConnectedComponents():
             conn_components = list(nx.connected_components(G)) 
             feature_list['is_connected']=0
             feature_list['num_conncomp']=len(conn_components)
-            feature_list['ratio_conncomp_size_max1_max2']=len(conn_components[0])/len(conn_components[1])
+            feature_list['ratio_conncomp_size']=len(conn_components[0])/len(conn_components[1])
             feature_list['ratio_conncomp_size_max_min']=len(conn_components[0])/len(conn_components[-1])
-
         else:
             feature_list['is_connected']=1
             feature_list['num_conncomp']=np.nan   
             feature_list['ratio_conncomp_size']=np.nan
             feature_list['ratio_conncomp_size_max_min']=np.nan
-
-        
 
         self.features = feature_list

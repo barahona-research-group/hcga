@@ -48,8 +48,8 @@ class SmallWorld():
         E = G.number_of_edges()
 
         
-        C = nx.transitivity(G)
-        L = nx.average_shortest_path_length(G)
+        #C = nx.transitivity(G)
+        #L = nx.average_shortest_path_length(G)
         
         # sigma requires recalculating the average clustering effiient 
         # and the average shortest path length. These can be reused from
@@ -72,10 +72,10 @@ class SmallWorld():
 #        
 #        sigma = (C / Cr) / (L / Lr)
         
-        feature_list['sigma']=nx.sigma(G)
+        #feature_list['sigma']=nx.sigma(G)
 
 
-        omega = 0
-        feature_list['omega']=omega
+        #omega = 0
+        feature_list['omega']=nx.omega(G)
 
         self.features = feature_list

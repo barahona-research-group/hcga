@@ -149,7 +149,6 @@ class Graphs():
             comp_times = []
             for op in self.graph_feature_set:
                 comp_times.append(list(op.computational_times.values()))
-                
             comp_times_mean = np.mean(np.array(comp_times), axis = 0)
 
             #print the computational time from fast to slow
@@ -197,7 +196,13 @@ class Graphs():
             E = self.graphs[i].number_of_edges()
             graph_feats = np.asarray(self.graph_feature_set[i]._extract_data()[1])
             compounded_feats = np.hstack([graph_feats, graph_feats/N,graph_feats/E]) 
-            
+           
+            debug_features = False
+            if debug_features:
+                namesf =  self.graph_feature_set[i]._extract_data()[0]
+                for ci, cf in enumerate( self.graph_feature_set[i]._extract_data()[1]):
+                    print(namesf[ci], cf)
+
             feature_vals_matrix[i,:] = compounded_feats
         
         compounded_feature_names = feature_names + [s +'_N' for s in feature_names] + [s +'_E' for s in feature_names]
