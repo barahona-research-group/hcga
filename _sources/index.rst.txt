@@ -50,7 +50,7 @@ Bibliography
                 “hctsa:  A computational framework for automated time-series phenotyping using massive feature extraction,” Cell systems, vol. 5, no. 5, pp. 527–531, 2017
 
 API documentation
-=============
+=================
 
 Documentation of the API of *hcga*. 
 
