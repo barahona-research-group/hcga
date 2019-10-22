@@ -1,5 +1,5 @@
-Thefeature module
-==============================
+The feature module
+====================
 
 
 The node feature basic module
