@@ -11,10 +11,33 @@ This code comes with the companion paper [Hcga]_  containing more details and ex
 How to install HCGA
 -------------------
 
-Navigate to the folder with setup.py and type:
+To install the dev version:
+    
+    $ git clone https://github.com/ImperialCollegeLondon/hcga.git
+    $ cd hcga
+    $ pip install -e .
 
-```pip install .```
+There is no release version yet, but stay tuned!
 
+Citing
+------
+
+To cite *hcga*, please use [Hcga]_ 
+
+Credits
+-------
+
+Original authors:
+^^^^^^^^^^^^^^^^^
+
+- Robert Peach, GitHub: `peach-lucien <https://github.com/peach-lucien>`_
+- Alexis Arnaudon, GitHub: `arnaudon <https://github.com/arnaudon`_
+- Henry Palasciano, GitHub: `henrypalasciano <https://github.com/henrypalasciano`_
+
+Contributors:
+^^^^^^^^^^^^^
+
+Any contributors are welcome, please contact us if interested. 
 
 Bibliography
 ------------
