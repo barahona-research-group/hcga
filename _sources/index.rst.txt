@@ -22,7 +22,7 @@ There is no release version yet, but stay tuned for more!
 Usage
 -----
 
-See the example folder with a '''test.py''' example script. 
+See the example folder with a ```test.py``` example script. 
 
 To add another dataset, do ...
 
