@@ -6,9 +6,9 @@
 **hcga**: Highly Comparative Graph Analysis
 ============================================
 
-**hcga** is inspired by [hctsa]_
+**hcga** is inspired by the time serie massive feature extraction framework of [Hctsa]_ and instead extracts features from graphs. 
 
-.. [hctsa] B. D. Fulcher and N. S. Jones, “hctsa:  A computational framework for automated time-series phenotyping using massive feature extraction,” Cell systems, vol. 5, no. 5, pp. 527–531, 2017
+.. [Hctsa] B. D. Fulcher and N. S. Jones, “hctsa:  A computational framework for automated time-series phenotyping using massive feature extraction,” Cell systems, vol. 5, no. 5, pp. 527–531, 2017
 
 .. toctree::
    :maxdepth: 2
