@@ -36,8 +36,7 @@
           <a href="clustering.html" title="The clustering module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">hcga 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../api.html" >API</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../Features.html" accesskey="U">Features</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../Features.html" accesskey="U">Features</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -50,14 +49,47 @@
 <h1>Communities modules<a class="headerlink" href="#communities-modules" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-hcga.Operations.communities_asyn_fluid">
 <span id="the-asyn-fluid-communities-module"></span><h2>The asyn fluid communities module<a class="headerlink" href="#module-hcga.Operations.communities_asyn_fluid" title="Permalink to this headline">¶</a></h2>
-<p>Created on Sun Mar  3 18:30:46 2019</p>
-<p>&#64;author: Rob</p>
+<dl class="class">
+<dt id="hcga.Operations.communities_asyn_fluid.AsynfluidCommunities">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.communities_asyn_fluid.</code><code class="sig-name descname">AsynfluidCommunities</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/communities_asyn_fluid.html#AsynfluidCommunities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.communities_asyn_fluid.AsynfluidCommunities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Asyn fluid communities class</p>
+<dl class="method">
+<dt id="hcga.Operations.communities_asyn_fluid.AsynfluidCommunities.feature_extraction">
+<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/communities_asyn_fluid.html#AsynfluidCommunities.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.communities_asyn_fluid.AsynfluidCommunities.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the measures based on the Fluid communities algorithm.</p>
+<dl class="simple">
+<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to the fluid communities algorithm.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Implementation of networkx code:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/networkx-2.2/reference/algorithms/generated/networkx.algorithms.community.asyn_fluid.asyn_fluidc.html#networkx.algorithms.community.asyn_fluid.asyn_fluidc">Networkx_communities_asyn</a></p>
+</dd>
+</dl>
+<p>The asynchronous fluid communities algorithm is described in
+<a href="#id13"><span class="problematic" id="id1">[1]_</span></a>. The algorithm is based on the simple idea of fluids interacting
+in an environment, expanding and pushing each other. It’s initialization is
+random, so found communities may vary on different executions.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets">1</span></dt>
+<dd><p>Parés F., Garcia-Gasulla D. et al. “Fluid Communities: A
+Competitive and Highly Scalable Community Detection Algorithm”.
+[<a class="reference external" href="https://arxiv.org/pdf/1703.09307.pdf">https://arxiv.org/pdf/1703.09307.pdf</a>].</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="hcga.Operations.communities_asyn_fluid.asyn_fluidc">
 <code class="sig-prename descclassname">hcga.Operations.communities_asyn_fluid.</code><code class="sig-name descname">asyn_fluidc</code><span class="sig-paren">(</span><em class="sig-param">G</em>, <em class="sig-param">k</em>, <em class="sig-param">max_iter=100</em>, <em class="sig-param">seed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/communities_asyn_fluid.html#asyn_fluidc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.communities_asyn_fluid.asyn_fluidc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns communities in <cite>G</cite> as detected by Fluid Communities algorithm.</p>
 <p>The asynchronous fluid communities algorithm is described in
-<a class="footnote-reference brackets" href="#id3" id="id1">1</a>. The algorithm is based on the simple idea of fluids interacting
+<a href="#id14"><span class="problematic" id="id3">[1]_</span></a>. The algorithm is based on the simple idea of fluids interacting
 in an environment, expanding and pushing each other. It’s initialization is
 random, so found communities may vary on different executions.</p>
 <p>The algorithm proceeds as follows. First each of the initial k communities
@@ -71,7 +103,7 @@ community, vertex densities of affected communities are adjusted
 immediately. When a complete iteration over all vertices is done, such that
 no vertex changes the community it belongs to, the algorithm has converged
 and returns.</p>
-<p>This is the original version of the algorithm described in <a class="footnote-reference brackets" href="#id3" id="id2">1</a>.
+<p>This is the original version of the algorithm described in <a href="#id15"><span class="problematic" id="id4">[1]_</span></a>.
 Unfortunately, it does not support weighted graphs yet.</p>
 <p>G : Graph</p>
 <dl class="simple">
@@ -89,7 +121,7 @@ See <span class="xref std std-ref">Randomness</span>.</p>
 </dl>
 <p>k variable is not an optional argument.</p>
 <dl class="footnote brackets">
-<dt class="label" id="id3"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
+<dt class="label" id="id5"><span class="brackets">1</span></dt>
 <dd><p>Parés F., Garcia-Gasulla D. et al. “Fluid Communities: A
 Competitive and Highly Scalable Community Detection Algorithm”.
 [<a class="reference external" href="https://arxiv.org/pdf/1703.09307.pdf">https://arxiv.org/pdf/1703.09307.pdf</a>].</p>
@@ -100,18 +132,123 @@ Competitive and Highly Scalable Community Detection Algorithm”.
 </div>
 <div class="section" id="module-hcga.Operations.communities_bisection">
 <span id="the-bisection-communities-module"></span><h2>The bisection communities module<a class="headerlink" href="#module-hcga.Operations.communities_bisection" title="Permalink to this headline">¶</a></h2>
-<p>Created on Sun Mar  3 18:30:46 2019</p>
-<p>&#64;author: Rob</p>
+<dl class="class">
+<dt id="hcga.Operations.communities_bisection.BisectionCommunities">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.communities_bisection.</code><code class="sig-name descname">BisectionCommunities</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/communities_bisection.html#BisectionCommunities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.communities_bisection.BisectionCommunities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bisection communities class</p>
+<dl class="method">
+<dt id="hcga.Operations.communities_bisection.BisectionCommunities.feature_extraction">
+<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/communities_bisection.html#BisectionCommunities.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.communities_bisection.BisectionCommunities.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the measures based on the Kernighan–Lin Bisection communities algorithm.</p>
+<dl class="simple">
+<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to the Kernighan–Lin communities algorithm.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Implementation of networkx code:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.community.kernighan_lin.kernighan_lin_bisection.html">Networkx_kernighan_lin_bisection</a></p>
+</dd>
+</dl>
+<p>Partition a graph into two blocks using the Kernighan–Lin algorithm described in
+<a href="#id16"><span class="problematic" id="id6">[1]_</span></a>.</p>
+<p>This algorithm paritions a network into two sets by iteratively swapping pairs of nodes to reduce the edge cut between the two sets.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id7"><span class="brackets">1</span></dt>
+<dd><p>Kernighan, B. W.; Lin, Shen (1970).
+“An efficient heuristic procedure for partitioning graphs.”
+<em>Bell Systems Technical Journal</em> 49: 291–307.
+Oxford University Press 2011.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="the-label-propagation-communities-module">
 <h2>The label propagation communities module<a class="headerlink" href="#the-label-propagation-communities-module" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-hcga.Operations.communities_label_propagation"></span><p>Created on Sun Mar  3 18:30:46 2019</p>
-<p>&#64;author: Rob</p>
+<span class="target" id="module-hcga.Operations.communities_label_propagation"></span><dl class="class">
+<dt id="hcga.Operations.communities_label_propagation.LabelpropagationCommunities">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.communities_label_propagation.</code><code class="sig-name descname">LabelpropagationCommunities</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/communities_label_propagation.html#LabelpropagationCommunities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.communities_label_propagation.LabelpropagationCommunities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Label propagation communities class</p>
+<dl class="method">
+<dt id="hcga.Operations.communities_label_propagation.LabelpropagationCommunities.feature_extraction">
+<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/communities_label_propagation.html#LabelpropagationCommunities.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.communities_label_propagation.LabelpropagationCommunities.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the measures based on the Label propagation communities algorithm.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to the label propagation communities algorithm.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Implementation of networkx code:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/networkx-2.2/_modules/networkx/algorithms/community/label_propagation.html#label_propagation_communities">Networkx_label_propagation</a></p>
+</dd>
+</dl>
+<p>Finds communities in <cite>G</cite> using a semi-synchronous label propagation</p>
+</div></blockquote>
+<p>method[1]_. This method combines the advantages of both the synchronous
+and asynchronous models. Not implemented for directed graphs.</p>
+<blockquote>
+<div><dl class="footnote brackets">
+<dt class="label" id="id8"><span class="brackets">1</span></dt>
+<dd><p>Cordasco, G., &amp; Gargano, L. (2010, December). Community detection
+via semi-synchronous label propagation algorithms. In Business
+Applications of Social Network Analysis (BASNA), 2010 IEEE International
+Workshop on (pp. 1-8). IEEE.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-hcga.Operations.communities_modularity">
 <span id="the-modularity-communities-module"></span><h2>The modularity communities module<a class="headerlink" href="#module-hcga.Operations.communities_modularity" title="Permalink to this headline">¶</a></h2>
-<p>Created on Sun Mar  3 18:30:46 2019</p>
-<p>&#64;author: Rob</p>
+<dl class="class">
+<dt id="hcga.Operations.communities_modularity.ModularityCommunities">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.communities_modularity.</code><code class="sig-name descname">ModularityCommunities</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/communities_modularity.html#ModularityCommunities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.communities_modularity.ModularityCommunities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modularity communities class</p>
+<dl class="method">
+<dt id="hcga.Operations.communities_modularity.ModularityCommunities.feature_extraction">
+<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/communities_modularity.html#ModularityCommunities.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.communities_modularity.ModularityCommunities.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find communities in graph using Clauset-Newman-Moore greedy modularity
+maximization <a href="#id17"><span class="problematic" id="id9">[1]_</span></a> <a class="footnote-reference brackets" href="#id12" id="id10">2</a>. This method currently supports the Graph class and does not
+consider edge weights.</p>
+<p>Greedy modularity maximization begins with each node in its own community
+and joins the pair of communities that most increases modularity until no
+such pair exists.</p>
+<p>G : NetworkX graph</p>
+<dl class="simple">
+<dt>feature_list:  dict</dt><dd><p>Dictionary of features related to modularity</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Greedy modularity implemented using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/community/modularity_max.html#greedy_modularity_communities">Networkx_communities</a></p>
+</dd>
+</dl>
+<dl class="footnote brackets">
+<dt class="label" id="id11"><span class="brackets">1</span></dt>
+<dd><p>M. E. J Newman ‘Networks: An Introduction’, page 224
+Oxford University Press 2011.</p>
+</dd>
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id10">2</a></span></dt>
+<dd><p>Clauset, A., Newman, M. E., &amp; Moore, C.
+“Finding community structure in very large networks.”
+Physical Review E 70(6), 2004.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 
@@ -175,8 +312,7 @@ Competitive and Highly Scalable Community Detection Algorithm”.
           <a href="clustering.html" title="The clustering module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">hcga 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../api.html" >API</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../Features.html" >Features</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../Features.html" >Features</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

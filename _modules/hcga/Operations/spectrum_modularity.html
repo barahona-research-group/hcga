@@ -38,14 +38,7 @@
           <div class="body" role="main">
             
   <h1>Source code for hcga.Operations.spectrum_modularity</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/env python3</span>
-<span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Created on Tue May  7 10:41:52 2019</span>
-
-<span class="sd">@author: robert</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
+<span></span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
@@ -53,7 +46,7 @@
 
 <div class="viewcode-block" id="SpectrumModularity"><a class="viewcode-back" href="../../../Features/spectrum.html#hcga.Operations.spectrum_modularity.SpectrumModularity">[docs]</a><span class="k">class</span> <span class="nc">SpectrumModularity</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Force centrality class</span>
+<span class="sd">    Spectrum modularity class</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">G</span>
@@ -62,7 +55,7 @@
 
 <div class="viewcode-block" id="SpectrumModularity.feature_extraction"><a class="viewcode-back" href="../../../Features/spectrum.html#hcga.Operations.spectrum_modularity.SpectrumModularity.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Compute ...</span>
+        <span class="sd">&quot;&quot;&quot;Compute measures of the spectrum of the modularity matrix</span>
 
 
 
@@ -76,26 +69,24 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-
+<span class="sd">        feature_list : dict</span>
+<span class="sd">           Dictionary of features related to spectrum of the modularity matrix</span>
 
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-
+<span class="sd">        Spectral modularity calculations using networkx:</span>
+<span class="sd">            `Networkx_spectrum_modularity &lt;https://networkx.github.io/documentation/stable/reference/generated/networkx.linalg.spectrum.modularity_spectrum.html&gt;`_</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
-
         
         
         <span class="n">G</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span>
 
         <span class="n">feature_list</span> <span class="o">=</span> <span class="p">{}</span>         
         
-        
-        
-        
-        
+
         <span class="c1"># laplacian spectrum</span>
         <span class="n">eigenvals_M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">modularity_spectrum</span><span class="p">(</span><span class="n">G</span><span class="p">))</span>
         

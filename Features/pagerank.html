@@ -18,7 +18,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="The rich club module" href="rich_club.html" />
-    <link rel="prev" title="The node connectivity module" href="node_connectivity.html" /> 
+    <link rel="prev" title="The node number of cliques module" href="node_number_of_cliques.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -33,11 +33,10 @@
           <a href="rich_club.html" title="The rich club module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="node_connectivity.html" title="The node connectivity module"
+          <a href="node_number_of_cliques.html" title="The node number of cliques module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">hcga 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../api.html" >API</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../Features.html" accesskey="U">Features</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../Features.html" accesskey="U">Features</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -48,6 +47,48 @@
             
   <div class="section" id="module-hcga.Operations.pagerank">
 <span id="the-pagerank-module"></span><h1>The PageRank module<a class="headerlink" href="#module-hcga.Operations.pagerank" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="hcga.Operations.pagerank.PageRank">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.pagerank.</code><code class="sig-name descname">PageRank</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/pagerank.html#PageRank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.pagerank.PageRank" title="Permalink to this definition">¶</a></dt>
+<dd><p>Page rank class</p>
+<dl class="method">
+<dt id="hcga.Operations.pagerank.PageRank.feature_extraction">
+<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/pagerank.html#PageRank.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.pagerank.PageRank.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the PageRank of a network.</p>
+<p>The PageRank ranks the nodes in a network based on the number of
+incoming links to that node. in undirected graphs, each edge is 
+as an edge going in both directions.</p>
+<dl class="simple">
+<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>feature_list :list</dt><dd><p>List of features related to PageRank.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Implementation of networkx code:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.link_analysis.pagerank_alg.pagerank.html">Networkx_pagerank</a></p>
+</dd>
+</dl>
+<p>PageRank computes a ranking of the nodes in the graph G based on
+the structure of the incoming links. It was originally designed as
+an algorithm to rank web pages.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id1"><span class="brackets">1</span></dt>
+<dd><p>A. Langville and C. Meyer,
+“A survey of eigenvector methods of web information retrieval.”
+<a class="reference external" href="http://citeseer.ist.psu.edu/713792.html">http://citeseer.ist.psu.edu/713792.html</a></p>
+</dd>
+<dt class="label" id="id2"><span class="brackets">2</span></dt>
+<dd><p>Page, Lawrence; Brin, Sergey; Motwani, Rajeev and Winograd, Terry,
+The PageRank citation ranking: Bringing order to the Web. 1999
+<a class="reference external" href="http://dbpubs.stanford.edu:8090/pub/showDoc.Fulltext?lang=en&amp;doc=1999-66&amp;format=pdf">http://dbpubs.stanford.edu:8090/pub/showDoc.Fulltext?lang=en&amp;doc=1999-66&amp;format=pdf</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -57,8 +98,8 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="node_connectivity.html"
-                        title="previous chapter">The node connectivity module</a></p>
+  <p class="topless"><a href="node_number_of_cliques.html"
+                        title="previous chapter">The node number of cliques module</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="rich_club.html"
                         title="next chapter">The rich club module</a></p>
@@ -96,11 +137,10 @@
           <a href="rich_club.html" title="The rich club module"
              >next</a> |</li>
         <li class="right" >
-          <a href="node_connectivity.html" title="The node connectivity module"
+          <a href="node_number_of_cliques.html" title="The node number of cliques module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">hcga 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../api.html" >API</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../Features.html" >Features</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../Features.html" >Features</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

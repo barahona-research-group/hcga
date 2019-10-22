@@ -47,6 +47,56 @@
             
   <div class="section" id="module-hcga.Operations.link_analysis_hits">
 <span id="the-link-analysis-hits-module"></span><h1>The link analysis hits module<a class="headerlink" href="#module-hcga.Operations.link_analysis_hits" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="hcga.Operations.link_analysis_hits.Hits">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.link_analysis_hits.</code><code class="sig-name descname">Hits</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/link_analysis_hits.html#Hits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.link_analysis_hits.Hits" title="Permalink to this definition">¶</a></dt>
+<dd><p>HITS hubs class</p>
+<dl class="method">
+<dt id="hcga.Operations.link_analysis_hits.Hits.feature_extraction">
+<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/link_analysis_hits.html#Hits.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.link_analysis_hits.Hits.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes measures based on the HITS hubs</p>
+<p>The HITS algorithm computes two numbers for a node <a class="footnote-reference brackets" href="#id3" id="id1">1</a> <a class="footnote-reference brackets" href="#id4" id="id2">2</a>.
+Authorities estimates the node value based on the incoming links.
+Hubs estimates the node value based on outgoing links.</p>
+<dl class="simple">
+<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>feature_list :list</dt><dd><p>List of features related to</p>
+</dd>
+</dl>
+<blockquote>
+<div><blockquote>
+<div><p>Hits calculations using networkx:</p>
+</div></blockquote>
+<p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.link_analysis.hits_alg.hits.html#networkx.algorithms.link_analysis.hits_alg.hits">Networkx_hits</a></p>
+</div></blockquote>
+<p>The eigenvector calculation is done by the power iteration method
+and has no guarantee of convergence.  The iteration will stop
+after max_iter iterations or an error tolerance of
+number_of_nodes(G)*tol has been reached.</p>
+<p>The HITS algorithm was designed for directed graphs but this
+algorithm does not check if the input graph is directed and will
+execute on undirected graphs.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>A. Langville and C. Meyer,
+“A survey of eigenvector methods of web information retrieval.”
+<a class="reference external" href="http://citeseer.ist.psu.edu/713792.html">http://citeseer.ist.psu.edu/713792.html</a></p>
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Jon Kleinberg,
+Authoritative sources in a hyperlinked environment
+Journal of the ACM 46 (5): 604-32, 1999.
+doi:10.1145/324133.324140.
+http://www.cs.cornell.edu/home/kleinber/auth.pdf.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 

@@ -68,8 +68,8 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        feature_list : list</span>
-<span class="sd">           List of features related to the maximal matching.</span>
+<span class="sd">        feature_list : dict</span>
+<span class="sd">           Dictionary of features related to the maximal matching.</span>
 <span class="sd">           </span>
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -79,9 +79,6 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        feature_names = [&#39;num_edges&#39;,&#39;ratio&#39;]</span>
-<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">G</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span>
 
@@ -94,9 +91,7 @@
         <span class="c1">#in the network</span>
         <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;ratio&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">maximal_matching</span><span class="p">(</span><span class="n">G</span><span class="p">))</span><span class="o">/</span><span class="n">E</span>
         
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        self.feature_names=feature_names</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">feature_list</span></div></div>
 </pre></div>
 

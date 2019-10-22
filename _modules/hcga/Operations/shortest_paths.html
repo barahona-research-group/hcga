@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>hcga.Operations.components &#8212; hcga 0.1 documentation</title>
+    <title>hcga.Operations.shortest_paths &#8212; hcga 0.1 documentation</title>
     <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
@@ -37,61 +37,72 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for hcga.Operations.components</h1><div class="highlight"><pre>
+  <h1>Source code for hcga.Operations.shortest_paths</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
-<div class="viewcode-block" id="Components"><a class="viewcode-back" href="../../../Features/components.html#hcga.Operations.components.Components">[docs]</a><span class="k">class</span> <span class="nc">Components</span><span class="p">():</span>
+<div class="viewcode-block" id="ShortestPaths"><a class="viewcode-back" href="../../../Features/shortest_paths.html#hcga.Operations.shortest_paths.ShortestPaths">[docs]</a><span class="k">class</span> <span class="nc">ShortestPaths</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Components class</span>
+<span class="sd">    Shortest path class</span>
 <span class="sd">    &quot;&quot;&quot;</span>
- 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">G</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
 
-<div class="viewcode-block" id="Components.feature_extraction"><a class="viewcode-back" href="../../../Features/components.html#hcga.Operations.components.Components.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compute the component features for the network</span>
+<div class="viewcode-block" id="ShortestPaths.feature_extraction"><a class="viewcode-back" href="../../../Features/shortest_paths.html#hcga.Operations.shortest_paths.ShortestPaths.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
+        <span class="sd">&quot;&quot;&quot;Compute the various shortest path measures.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        G : graph</span>
-<span class="sd">          A networkx graph</span>
+<span class="sd">           A networkx graph</span>
 
-<span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        feature_list : dict</span>
-<span class="sd">           Dictionary of features related to components.</span>
+<span class="sd">        feature_list :list</span>
+<span class="sd">           List of features related to shortest paths.</span>
 
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        Components calculations using networkx:</span>
-<span class="sd">            `Networkx_components &lt;https://networkx.github.io/documentation/stable/reference/algorithms/component.html&gt;`_</span>
+<span class="sd">        Shortest path calculations using networkx:</span>
+<span class="sd">            `Networkx_shortestpaths &lt;https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.shortest_paths.generic.shortest_path.html#networkx.algorithms.shortest_paths.generic.shortest_path&gt;`_</span>
+<span class="sd">        </span>
+<span class="sd">        There may be more than one shortest path between a source and target.</span>
+<span class="sd">        This computes features on one of them.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         
 
+        
         <span class="n">G</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span>
 
         <span class="n">feature_list</span> <span class="o">=</span> <span class="p">{}</span>
-        
-        <span class="k">if</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+
+        <span class="c1"># Calculating the shortest paths stats</span>
+        <span class="n">shortest_paths</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">shortest_path</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+
+        <span class="c1"># finding the mean and max shortest paths        </span>
+        <span class="n">shortest_path_length_mean</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">shortest_path_length_max</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">():</span>
+            <span class="n">shortest_path_length</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">sp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">shortest_paths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
             
-            <span class="c1"># Compute component features</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_strongly_conn_comps&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">number_strongly_connected_components</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_weak_conn_comps&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">number_weakly_connected_components</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_attracting_comps&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">number_attracting_components</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
-            
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_strongly_conn_comps&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_weak_conn_comps&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_attracting_comps&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    
-        
-        
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sp</span><span class="p">)):</span>
+                <span class="n">shortest_path_length</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sp</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
+                
+            <span class="n">shortest_path_length_mean</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">shortest_path_length</span><span class="p">))</span>
+            <span class="n">shortest_path_length_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">shortest_path_length</span><span class="p">))</span>
+
+        <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;path_length_mean&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">shortest_path_length_mean</span><span class="p">)</span>
+        <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;path_length_mean_max&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">shortest_path_length_max</span><span class="p">)</span>        
+        <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;path_length_max&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">shortest_path_length_max</span><span class="p">)</span>       
+
+
         <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">feature_list</span></div></div>
 </pre></div>
 

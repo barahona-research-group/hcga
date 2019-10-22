@@ -38,18 +38,10 @@
           <div class="body" role="main">
             
   <h1>Source code for hcga.Operations.centrality_force</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/env python3</span>
-<span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Created on Tue May  7 10:41:52 2019</span>
-
-<span class="sd">@author: robert</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
+<span></span>
 <span class="kn">from</span> <span class="nn">fa2</span> <span class="k">import</span> <span class="n">ForceAtlas2</span>
 <span class="kn">from</span> <span class="nn">hcga.Operations</span> <span class="k">import</span> <span class="n">utils</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
 
 
 <div class="viewcode-block" id="ForceCentrality"><a class="viewcode-back" href="../../../Features/centrality.html#hcga.Operations.centrality_force.ForceCentrality">[docs]</a><span class="k">class</span> <span class="nc">ForceCentrality</span><span class="p">():</span>
@@ -72,32 +64,26 @@
 <span class="sd">        G : graph</span>
 <span class="sd">          A networkx graph</span>
 
-<span class="sd">        bins:</span>
-<span class="sd">            Number of bins for calculating pdf of chosen distribution</span>
-<span class="sd">            for SSE calculation</span>
-
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        feature_list :list</span>
-<span class="sd">           List of features related to force centrality.</span>
+<span class="sd">        feature_list : Dict</span>
+<span class="sd">           Dictionary of features related to force centrality.</span>
 
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-
-
+<span class="sd">        This feature uses the force atlas package to create a force-directed graph.</span>
+<span class="sd">        </span>
+<span class="sd">        Force atlas computed using:</span>
+<span class="sd">            `Force Atlas &lt;https://github.com/bhargavchippada/forceatlas2&gt;`_</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Defining the input arguments</span>
         <span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span>
         
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        # Defining featurenames</span>
-<span class="sd">        self.feature_names = [&#39;mean&#39;,&#39;std&#39;,&#39;max&#39;,&#39;min&#39;]</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        
+
         <span class="n">G</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span>
         
         <span class="n">feature_list</span> <span class="o">=</span> <span class="p">{}</span>
@@ -114,15 +100,15 @@
                 <span class="c1"># Log</span>
                 <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         
-        <span class="c1">#producing a zero array in case force atlas fails.</span>
-        
+        <span class="c1">#producing a zero array in case force atlas fails.        </span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">())</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">pos</span> <span class="o">=</span> <span class="n">forceatlas2</span><span class="o">.</span><span class="n">forceatlas2_networkx_layout</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
             <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">values</span><span class="p">())),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>        
-        <span class="k">except</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;An exception occurred in ForceAtlas2&#39;</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Exception for centrality_force&#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
             
             
         <span class="c1"># this changes each time so we must average of n_force times</span>
@@ -131,8 +117,9 @@
                 <span class="n">pos</span> <span class="o">=</span> <span class="n">forceatlas2</span><span class="o">.</span><span class="n">forceatlas2_networkx_layout</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
                 <span class="n">c</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">values</span><span class="p">())),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>                    
                 <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="n">c</span><span class="o">/</span><span class="n">n_force</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;An exception occurred in ForceAtlas2&#39;</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Exception for centrality_force (2nd)&#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
 
 
         <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
@@ -143,11 +130,7 @@
 
         
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bins</span><span class="p">)):</span>
-            <span class="sd">&quot;&quot;&quot;# Adding to feature names</span>
-<span class="sd">            feature_names.append(&#39;opt_model_{}&#39;.format(bins[i]))</span>
-<span class="sd">            feature_names.append(&#39;powerlaw_a_{}&#39;.format(bins[i]))</span>
-<span class="sd">            feature_names.append(&#39;powerlaw_SSE_{}&#39;.format(bins[i]))&quot;&quot;&quot;</span>
-            
+
             <span class="c1"># Fitting the c distribution and finding the optimal</span>
             <span class="c1"># distribution according to SSE</span>
             <span class="n">opt_mod</span><span class="p">,</span><span class="n">opt_mod_sse</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">best_fit_distribution</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>

@@ -38,22 +38,14 @@
           <div class="body" role="main">
             
   <h1>Source code for hcga.Operations.spectrum_laplacian</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/env python3</span>
-<span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Created on Tue May  7 10:41:52 2019</span>
-
-<span class="sd">@author: robert</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-
+<span></span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
 
 <div class="viewcode-block" id="SpectrumLaplacian"><a class="viewcode-back" href="../../../Features/spectrum.html#hcga.Operations.spectrum_laplacian.SpectrumLaplacian">[docs]</a><span class="k">class</span> <span class="nc">SpectrumLaplacian</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Force centrality class</span>
+<span class="sd">    Spectrum Laplacian class</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">G</span>
@@ -62,7 +54,7 @@
 
 <div class="viewcode-block" id="SpectrumLaplacian.feature_extraction"><a class="viewcode-back" href="../../../Features/spectrum.html#hcga.Operations.spectrum_laplacian.SpectrumLaplacian.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Compute ...</span>
+        <span class="sd">&quot;&quot;&quot;Compute measures of the spectrum of the Laplacian matrix</span>
 
 
 
@@ -76,12 +68,14 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-
+<span class="sd">        feature_list : dict</span>
+<span class="sd">           Dictionary of features related to spectrum of the adjacency matrix</span>
 
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-
+<span class="sd">        Spectral Laplacian calculations using networkx:</span>
+<span class="sd">            `Networkx_spectrum_Laplacian &lt;https://networkx.github.io/documentation/stable/reference/generated/networkx.linalg.spectrum.laplacian_spectrum.html&gt;`_</span>
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -110,7 +104,10 @@
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;fiedler_vector_neg&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">fiedler_vector</span> <span class="k">if</span> <span class="n">number</span> <span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;fiedler_vector_pos&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">fiedler_vector</span> <span class="k">if</span> <span class="n">number</span> <span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;fiedler_vector_ratio_neg_pos&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">fiedler_vector</span> <span class="k">if</span> <span class="n">number</span> <span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span><span class="o">/</span><span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">fiedler_vector</span> <span class="k">if</span> <span class="n">number</span> <span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Exception for spectrum_laplacian&#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+
                     <span class="c1"># nodes in spectral partition by fiedler vector</span>
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;fiedler_vector_neg&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;fiedler_vector_pos&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
@@ -125,7 +122,8 @@
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;L_eigvals_ratio_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">)]</span> <span class="o">=</span> <span class="n">eigenvals_L</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">eigenvals_L</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-                <span class="k">except</span><span class="p">:</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Exception for spectrum_laplacian (second try)&#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
                     <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;L_eigvals_ratio_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
                 
         <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;L_eigvals_min&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">eigenvals_L</span><span class="p">)</span>

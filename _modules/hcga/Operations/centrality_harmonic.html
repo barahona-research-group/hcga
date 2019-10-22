@@ -38,18 +38,9 @@
           <div class="body" role="main">
             
   <h1>Source code for hcga.Operations.centrality_harmonic</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/env python3</span>
-<span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Created on Sat Jul 27 20:13:58 2019</span>
-
-<span class="sd">@author: Henry</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">from</span> <span class="nn">networkx.algorithms</span> <span class="k">import</span> <span class="n">centrality</span>
+<span></span><span class="kn">from</span> <span class="nn">networkx.algorithms</span> <span class="k">import</span> <span class="n">centrality</span>
 <span class="kn">from</span> <span class="nn">hcga.Operations</span> <span class="k">import</span> <span class="n">utils</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
 
 
@@ -78,8 +69,8 @@
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        feature_list :list</span>
-<span class="sd">           List of features related to harmonic centrality.</span>
+<span class="sd">        feature_list : Dict</span>
+<span class="sd">           Dictionary of features related to harmonic centrality.</span>
 
 
 <span class="sd">        Notes</span>
@@ -106,10 +97,6 @@
             
             
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bins</span><span class="p">)):</span>
-            <span class="sd">&quot;&quot;&quot;# Adding to feature names</span>
-<span class="sd">            feature_names.append(&#39;opt_model_{}&#39;.format(bins[i]))</span>
-<span class="sd">            feature_names.append(&#39;powerlaw_a_{}&#39;.format(bins[i]))</span>
-<span class="sd">            feature_names.append(&#39;powerlaw_SSE_{}&#39;.format(bins[i]))&quot;&quot;&quot;</span>
                 
             <span class="c1"># Fitting the harmonic centrality distribution and finding the optimal</span>
             <span class="c1"># distribution according to SSE</span>

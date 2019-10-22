@@ -36,8 +36,7 @@
           <a href="rich_club.html" title="The rich club module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">hcga 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../api.html" >API</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../Features.html" accesskey="U">Features</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../Features.html" accesskey="U">Features</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -48,8 +47,44 @@
             
   <div class="section" id="module-hcga.Operations.scale_free">
 <span id="the-scale-free-module"></span><h1>The scale free module<a class="headerlink" href="#module-hcga.Operations.scale_free" title="Permalink to this headline">¶</a></h1>
-<p>Created on Sun Mar  3 18:30:46 2019</p>
-<p>&#64;author: Rob</p>
+<dl class="class">
+<dt id="hcga.Operations.scale_free.ScaleFree">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.scale_free.</code><code class="sig-name descname">ScaleFree</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/scale_free.html#ScaleFree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.scale_free.ScaleFree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale free class</p>
+<dl class="method">
+<dt id="hcga.Operations.scale_free.ScaleFree.feature_extraction">
+<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/scale_free.html#ScaleFree.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.scale_free.ScaleFree.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculating metrics about scale-free networks</p>
+<dl class="simple">
+<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to scale freeness.</p>
+</dd>
+</dl>
+<blockquote>
+<div><blockquote>
+<div><p>Scale free calculations using networkx:</p>
+</div></blockquote>
+<p><a class="reference external" href="https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/smetric.html#s_metric">Networkx_scale free</a></p>
+</div></blockquote>
+<p>The s-metric is defined as the sum of the products deg(u)*deg(v)
+for every edge (u,v) in G. If norm is provided construct the
+s-max graph and compute it’s s_metric, and return the normalized
+s value</p>
+<dl class="footnote brackets">
+<dt class="label" id="id1"><span class="brackets">1</span></dt>
+<dd><p>Lun Li, David Alderson, John C. Doyle, and Walter Willinger,
+Towards a Theory of Scale-Free Graphs:
+Definition, Properties, and  Implications (Extended Version), 2005.
+<a class="reference external" href="https://arxiv.org/abs/cond-mat/0501169">https://arxiv.org/abs/cond-mat/0501169</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -101,8 +136,7 @@
           <a href="rich_club.html" title="The rich club module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">hcga 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../api.html" >API</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../Features.html" >Features</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../Features.html" >Features</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

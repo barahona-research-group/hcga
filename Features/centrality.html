@@ -18,7 +18,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="The chemical theory module" href="chemical_theory.html" />
-    <link rel="prev" title="Basic features" href="basic_features.html" /> 
+    <link rel="prev" title="The average neighbour degree module" href="average_neighbor_degree.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -33,11 +33,10 @@
           <a href="chemical_theory.html" title="The chemical theory module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="basic_features.html" title="Basic features"
+          <a href="average_neighbor_degree.html" title="The average neighbour degree module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">hcga 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../api.html" >API</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../Features.html" accesskey="U">Features</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../Features.html" accesskey="U">Features</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -63,8 +62,6 @@ is connected to.</p>
 <dl class="simple">
 <dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
 </dd>
-<dt>bins :</dt><dd><p>Number of bins for calculating pdf of chosen distribution for SSE calculation</p>
-</dd>
 </dl>
 <dl class="simple">
 <dt>feature_list :list</dt><dd><p>List of features related to degree centrality.</p>
@@ -87,8 +84,6 @@ are possible.</p>
 </div>
 <div class="section" id="module-hcga.Operations.centrality_eigenvector">
 <span id="the-eigenvector-centrality-module"></span><h2>The eigenvector centrality module<a class="headerlink" href="#module-hcga.Operations.centrality_eigenvector" title="Permalink to this headline">¶</a></h2>
-<p>Created on Tue May  7 10:41:52 2019</p>
-<p>&#64;author: robert</p>
 <dl class="class">
 <dt id="hcga.Operations.centrality_eigenvector.EigenCentrality">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.centrality_eigenvector.</code><code class="sig-name descname">EigenCentrality</code><span class="sig-paren">(</span><em class="sig-param">G</em>, <em class="sig-param">eigens</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_eigenvector.html#EigenCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_eigenvector.EigenCentrality" title="Permalink to this definition">¶</a></dt>
@@ -109,14 +104,11 @@ largest eigenvalue of the adjacency matrix $A$ (<a class="footnote-reference bra
 <dl class="simple">
 <dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
 </dd>
-<dt>args: list</dt><dd><p>Parameters for calculating feature_list</p>
-</dd>
-<dt>bins:</dt><dd><p>Number of bins for calculating pdf of chosen distribution
-for SSE calculation</p>
+<dt>eigens: numpy array</dt><dd><p>Numpy array 1 x N vector of eigenvectors</p>
 </dd>
 </dl>
 <dl class="simple">
-<dt>feature_list :list</dt><dd><p>List of features related to eigenvector centrality.</p>
+<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to eigenvector centrality.</p>
 </dd>
 </dl>
 <dl class="simple">
@@ -157,11 +149,9 @@ difference being that each node is given a base value of centrality.</p>
 <dl class="simple">
 <dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
 </dd>
-<dt>args :</dt><dd><p>arg[0] Number of bins for calculating pdf of chosen distribution for SSE calculation</p>
-</dd>
 </dl>
 <dl class="simple">
-<dt>feature_list :list</dt><dd><p>List of features related to Katz centrality.</p>
+<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to Katz centrality.</p>
 </dd>
 </dl>
 <dl class="simple">
@@ -227,19 +217,13 @@ each edge is calculated.</p>
 <dl class="simple">
 <dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
 </dd>
-<dt>bins :</dt><dd><p>Number of bins for calculating pdf of chosen distribution
-for SSE calculation</p>
-</dd>
 </dl>
-<dl>
-<dt>feature_list :list</dt><dd><blockquote>
-<div><p>List of features related to betweenness centrality.</p>
-</div></blockquote>
-<p>Notes</p>
+<dl class="simple">
+<dt>feature_list :list</dt><dd><p>List of features related to betweenness centrality.</p>
 </dd>
 </dl>
 <dl class="simple">
-<dt>Betweenness centrality calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html">Networkx_centrality</a></p>
+<dt>Edge Betweenness centrality calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/networkx-1.10/reference/generated/networkx.algorithms.centrality.edge_betweenness_centrality.html">Networkx_centrality</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -249,8 +233,6 @@ for SSE calculation</p>
 </div>
 <div class="section" id="module-hcga.Operations.centrality_subgraph">
 <span id="the-subgraph-centrality-module"></span><h2>The subgraph centrality module<a class="headerlink" href="#module-hcga.Operations.centrality_subgraph" title="Permalink to this headline">¶</a></h2>
-<p>Created on Sat Jul 27 19:56:02 2019</p>
-<p>&#64;author: Henry</p>
 <dl class="class">
 <dt id="hcga.Operations.centrality_subgraph.SubgraphCentrality">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.centrality_subgraph.</code><code class="sig-name descname">SubgraphCentrality</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_subgraph.html#SubgraphCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_subgraph.SubgraphCentrality" title="Permalink to this definition">¶</a></dt>
@@ -260,17 +242,17 @@ for SSE calculation</p>
 <code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_subgraph.html#SubgraphCentrality.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_subgraph.SubgraphCentrality.feature_extraction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the subgraph centrality for nodes.</p>
 <p>The subgraph centrality for a node is the sum of weighted closed walks
-of all lenghts starting and ending st that node.</p>
+of all lengths starting and ending at that node.</p>
 <dl class="simple">
 <dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
 </dd>
 </dl>
 <dl class="simple">
-<dt>feature_list :list</dt><dd><p>List of features related to subgraph centrality.</p>
+<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dcitionary of features related to subgraph centrality.</p>
 </dd>
 </dl>
 <dl class="simple">
-<dt>Subgraph centrality calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html">Networkx_centrality</a></p>
+<dt>Subgraph centrality calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html#subgraph">Networkx_subgraph_centrality</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -311,8 +293,6 @@ distance to all other reachable nodes.</p>
 </div>
 <div class="section" id="module-hcga.Operations.centrality_harmonic">
 <span id="the-harmonic-centrality-module"></span><h2>The harmonic centrality module<a class="headerlink" href="#module-hcga.Operations.centrality_harmonic" title="Permalink to this headline">¶</a></h2>
-<p>Created on Sat Jul 27 20:13:58 2019</p>
-<p>&#64;author: Henry</p>
 <dl class="class">
 <dt id="hcga.Operations.centrality_harmonic.HarmonicCentrality">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.centrality_harmonic.</code><code class="sig-name descname">HarmonicCentrality</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_harmonic.html#HarmonicCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_harmonic.HarmonicCentrality" title="Permalink to this definition">¶</a></dt>
@@ -328,7 +308,7 @@ of the shortest paths from all other nodes in the graph</p>
 </dd>
 </dl>
 <dl class="simple">
-<dt>feature_list :list</dt><dd><p>List of features related to harmonic centrality.</p>
+<dt>feature_list<span class="classifier">Dict</span></dt><dd><p>Dictionary of features related to harmonic centrality.</p>
 </dd>
 </dl>
 <dl class="simple">
@@ -342,8 +322,6 @@ of the shortest paths from all other nodes in the graph</p>
 </div>
 <div class="section" id="module-hcga.Operations.centrality_second_order">
 <span id="the-second-order-centrality-module"></span><h2>The second order centrality module<a class="headerlink" href="#module-hcga.Operations.centrality_second_order" title="Permalink to this headline">¶</a></h2>
-<p>Created on Sat Jul 27 20:24:06 2019</p>
-<p>&#64;author: Henry</p>
 <dl class="class">
 <dt id="hcga.Operations.centrality_second_order.SecondOrderCentrality">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.centrality_second_order.</code><code class="sig-name descname">SecondOrderCentrality</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_second_order.html#SecondOrderCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_second_order.SecondOrderCentrality" title="Permalink to this definition">¶</a></dt>
@@ -363,7 +341,7 @@ the return time to that node via a perpetual random walk.</p>
 </dd>
 </dl>
 <dl class="simple">
-<dt>Second order centrality calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html">Networkx_centrality</a></p>
+<dt>Second order centrality calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html#second-order-centrality">Networkx_centrality</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -373,8 +351,6 @@ the return time to that node via a perpetual random walk.</p>
 </div>
 <div class="section" id="module-hcga.Operations.centrality_force">
 <span id="the-force-centrality-module"></span><h2>The force centrality module<a class="headerlink" href="#module-hcga.Operations.centrality_force" title="Permalink to this headline">¶</a></h2>
-<p>Created on Tue May  7 10:41:52 2019</p>
-<p>&#64;author: robert</p>
 <dl class="class">
 <dt id="hcga.Operations.centrality_force.ForceCentrality">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.centrality_force.</code><code class="sig-name descname">ForceCentrality</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/centrality_force.html#ForceCentrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.centrality_force.ForceCentrality" title="Permalink to this definition">¶</a></dt>
@@ -386,12 +362,14 @@ the return time to that node via a perpetual random walk.</p>
 <dl class="simple">
 <dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
 </dd>
-<dt>bins:</dt><dd><p>Number of bins for calculating pdf of chosen distribution
-for SSE calculation</p>
-</dd>
 </dl>
 <dl class="simple">
-<dt>feature_list :list</dt><dd><p>List of features related to force centrality.</p>
+<dt>feature_list<span class="classifier">Dict</span></dt><dd><p>Dictionary of features related to force centrality.</p>
+</dd>
+</dl>
+<p>This feature uses the force atlas package to create a force-directed graph.</p>
+<dl class="simple">
+<dt>Force atlas computed using:</dt><dd><p><a class="reference external" href="https://github.com/bhargavchippada/forceatlas2">Force Atlas</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -425,8 +403,8 @@ for SSE calculation</p>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="basic_features.html"
-                        title="previous chapter">Basic features</a></p>
+  <p class="topless"><a href="average_neighbor_degree.html"
+                        title="previous chapter">The average neighbour degree module</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="chemical_theory.html"
                         title="next chapter">The chemical theory module</a></p>
@@ -464,11 +442,10 @@ for SSE calculation</p>
           <a href="chemical_theory.html" title="The chemical theory module"
              >next</a> |</li>
         <li class="right" >
-          <a href="basic_features.html" title="Basic features"
+          <a href="average_neighbor_degree.html" title="The average neighbour degree module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">hcga 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../api.html" >API</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../Features.html" >Features</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../Features.html" >Features</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

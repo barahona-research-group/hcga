@@ -38,27 +38,27 @@
           <div class="body" role="main">
             
   <h1>Source code for hcga.Operations.dominating_sets</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Created on Sun Mar  3 18:30:46 2019</span>
-
-<span class="sd">@author: Rob</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
+<span></span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-<span class="kn">from</span> <span class="nn">hcga.Operations</span> <span class="k">import</span> <span class="n">utils</span>
 
 
-<span class="k">class</span> <span class="nc">DominatingSets</span><span class="p">():</span>
+<div class="viewcode-block" id="DominatingSets"><a class="viewcode-back" href="../../../Features/dominating_sets.html#hcga.Operations.dominating_sets.DominatingSets">[docs]</a><span class="k">class</span> <span class="nc">DominatingSets</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Dominating set class</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">G</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DominatingSets.feature_extraction"><a class="viewcode-back" href="../../../Features/dominating_sets.html#hcga.Operations.dominating_sets.DominatingSets.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;Compute dominating set measures.</span>
+<span class="sd">        </span>
+<span class="sd">        A *dominating set* for a graph with node set *V* is a subset *D* of</span>
+<span class="sd">    *V* such that every node not in *D* is adjacent to at least one</span>
+<span class="sd">    member of *D* [1]_.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -73,13 +73,20 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
+<span class="sd">        Core number calculations using networkx:</span>
+<span class="sd">            `Networkx_dominating_set &lt;https://networkx.github.io/documentation/stable/reference/algorithms/dominating.html&gt;`_</span>
+<span class="sd">            </span>
 
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        .. [1] https://en.wikipedia.org/wiki/Dominating_set</span>
+<span class="sd">    </span>
+<span class="sd">        .. [2] Abdol-Hossein Esfahanian. Connectivity Algorithms.</span>
+<span class="sd">            http://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf</span>
+<span class="sd">    </span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        self.feature_names = [&#39;num_ind_nodes_norm&#39;,&#39;ratio__ind_nodes_norm&#39;]</span>
-<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">G</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span>
 
@@ -96,10 +103,6 @@
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;len_min_domset&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">dom_set_min</span><span class="p">)</span>            
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;len_edge_domset&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">edges_dom</span><span class="p">)</span>
             
-            <span class="c1">#ramsey_split = nx.algorithms.approximation.ramsey.ramsey_R2(G)</span>
-            <span class="c1">#feature_list[&#39;ramsey_number_1&#39;]=len(list(ramsey_split)[0])</span>
-            <span class="c1">#feature_list[&#39;ramsey_number_2&#39;]=len(list(ramsey_split)[1])</span>
-            <span class="c1">#feature_list[&#39;ramsey_ratio&#39;]=len(list(ramsey_split)[0])/len(list(ramsey_split)[1])</span>
 
 
         <span class="k">else</span><span class="p">:</span>
@@ -107,12 +110,9 @@
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;len_min_domset&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>          
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;len_edge_domset&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>      
             
-            <span class="c1">#ramsey_split = nx.algorithms.approximation.ramsey.ramsey_R2(G)</span>
-            <span class="c1">#feature_list[&#39;ramsey_number_1&#39;]=np.nan      </span>
-            <span class="c1">#feature_list[&#39;ramsey_number_2&#39;]=np.nan      </span>
-            <span class="c1">#feature_list[&#39;ramsey_ratio&#39;]=np.nan      </span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">feature_list</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">feature_list</span></div></div>
 
 
 <div class="viewcode-block" id="min_weighted_dominating_set"><a class="viewcode-back" href="../../../Features/dominating_sets.html#hcga.Operations.dominating_sets.min_weighted_dominating_set">[docs]</a><span class="k">def</span> <span class="nf">min_weighted_dominating_set</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>

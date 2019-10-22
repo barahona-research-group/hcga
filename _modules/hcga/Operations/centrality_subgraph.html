@@ -38,15 +38,7 @@
           <div class="body" role="main">
             
   <h1>Source code for hcga.Operations.centrality_subgraph</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/env python3</span>
-<span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Created on Sat Jul 27 19:56:02 2019</span>
-
-<span class="sd">@author: Henry</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">from</span> <span class="nn">networkx.algorithms</span> <span class="k">import</span> <span class="n">centrality</span>
+<span></span><span class="kn">from</span> <span class="nn">networkx.algorithms</span> <span class="k">import</span> <span class="n">centrality</span>
 <span class="kn">from</span> <span class="nn">hcga.Operations</span> <span class="k">import</span> <span class="n">utils</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
@@ -67,7 +59,7 @@
         <span class="sd">&quot;&quot;&quot;Compute the subgraph centrality for nodes.</span>
 
 <span class="sd">        The subgraph centrality for a node is the sum of weighted closed walks</span>
-<span class="sd">        of all lenghts starting and ending st that node.</span>
+<span class="sd">        of all lengths starting and ending at that node.</span>
 
 
 <span class="sd">        Parameters</span>
@@ -78,14 +70,14 @@
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        feature_list :list</span>
-<span class="sd">           List of features related to subgraph centrality.</span>
+<span class="sd">        feature_list : dict</span>
+<span class="sd">           Dcitionary of features related to subgraph centrality.</span>
 
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        Subgraph centrality calculations using networkx:</span>
-<span class="sd">            `Networkx_centrality &lt;https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html&gt;`_ </span>
+<span class="sd">            `Networkx_subgraph_centrality &lt;https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html#subgraph&gt;`_ </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="c1"># Defining the input arguments</span>

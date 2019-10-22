@@ -38,8 +38,46 @@
             
   <div class="section" id="module-hcga.Operations.dominating_sets">
 <span id="the-cycles-module"></span><h1>The cycles module<a class="headerlink" href="#module-hcga.Operations.dominating_sets" title="Permalink to this headline">¶</a></h1>
-<p>Created on Sun Mar  3 18:30:46 2019</p>
-<p>&#64;author: Rob</p>
+<dl class="class">
+<dt id="hcga.Operations.dominating_sets.DominatingSets">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.dominating_sets.</code><code class="sig-name descname">DominatingSets</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/dominating_sets.html#DominatingSets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.dominating_sets.DominatingSets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dominating set class</p>
+<dl class="method">
+<dt id="hcga.Operations.dominating_sets.DominatingSets.feature_extraction">
+<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/dominating_sets.html#DominatingSets.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.dominating_sets.DominatingSets.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute dominating set measures.</p>
+<blockquote>
+<div><p>A <em>dominating set</em> for a graph with node set <em>V</em> is a subset <em>D</em> of</p>
+</div></blockquote>
+<p><em>V</em> such that every node not in <em>D</em> is adjacent to at least one
+member of <em>D</em> <a href="#id9"><span class="problematic" id="id1">[1]_</span></a>.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>feature_list :list</dt><dd><p>List of features related to dominating sets.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Core number calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/dominating.html">Networkx_dominating_set</a></p>
+</dd>
+</dl>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets">1</span></dt>
+<dd><p><a class="reference external" href="https://en.wikipedia.org/wiki/Dominating_set">https://en.wikipedia.org/wiki/Dominating_set</a></p>
+</dd>
+<dt class="label" id="id3"><span class="brackets">2</span></dt>
+<dd><p>Abdol-Hossein Esfahanian. Connectivity Algorithms.
+<a class="reference external" href="http://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf">http://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf</a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="hcga.Operations.dominating_sets.maximal_matching">
 <code class="sig-prename descclassname">hcga.Operations.dominating_sets.</code><code class="sig-name descname">maximal_matching</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/dominating_sets.html#maximal_matching"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.dominating_sets.maximal_matching" title="Permalink to this definition">¶</a></dt>
@@ -55,7 +93,7 @@ A maximal matching cannot add more edges and still be a matching.</p>
 </dd>
 </dl>
 <p>The algorithm greedily selects a maximal matching M of the graph G
-(i.e. no superset of M exists). It runs in $O(<a href="#id2"><span class="problematic" id="id3">|E|</span></a>)$ time.</p>
+(i.e. no superset of M exists). It runs in $O(<a href="#id5"><span class="problematic" id="id6">|E|</span></a>)$ time.</p>
 </dd></dl>
 
 <dl class="function">
@@ -72,7 +110,7 @@ A maximal matching cannot add more edges and still be a matching.</p>
 </dl>
 <p>The algorithm computes an approximate solution to the edge dominating set
 problem. The result is no more than 2 * OPT in terms of size of the set.
-Runtime of the algorithm is $O(<a href="#id4"><span class="problematic" id="id5">|E|</span></a>)$.</p>
+Runtime of the algorithm is $O(<a href="#id7"><span class="problematic" id="id8">|E|</span></a>)$.</p>
 </dd></dl>
 
 <dl class="function">
@@ -103,7 +141,7 @@ each node in the minimum weight dominating set for the graph.</p>
 <p>This implementation of the algorithm runs in $O(m)$ time, where $m$
 is the number of edges in the graph.</p>
 <dl class="footnote brackets">
-<dt class="label" id="id1"><span class="brackets">1</span></dt>
+<dt class="label" id="id4"><span class="brackets">1</span></dt>
 <dd><p>Vazirani, Vijay V.
 <em>Approximation Algorithms</em>.
 Springer Science &amp; Business Media, 2001.</p>

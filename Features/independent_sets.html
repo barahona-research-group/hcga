@@ -17,7 +17,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="The maximal matching module" href="maximal_matching.html" />
+    <link rel="next" title="The k-components module" href="k_components.html" />
     <link rel="prev" title="The efficiency module" href="efficiency.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -30,14 +30,13 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="maximal_matching.html" title="The maximal matching module"
+          <a href="k_components.html" title="The k-components module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="efficiency.html" title="The efficiency module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">hcga 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../api.html" >API</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../Features.html" accesskey="U">Features</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../Features.html" accesskey="U">Features</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -48,8 +47,34 @@
             
   <div class="section" id="module-hcga.Operations.independent_sets">
 <span id="the-independent-sets-module"></span><h1>The independent sets module<a class="headerlink" href="#module-hcga.Operations.independent_sets" title="Permalink to this headline">¶</a></h1>
-<p>Created on Sun Mar  3 18:30:46 2019</p>
-<p>&#64;author: Rob</p>
+<dl class="class">
+<dt id="hcga.Operations.independent_sets.IndependentSets">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.independent_sets.</code><code class="sig-name descname">IndependentSets</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/independent_sets.html#IndependentSets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.independent_sets.IndependentSets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Independent sets class</p>
+<dl class="method">
+<dt id="hcga.Operations.independent_sets.IndependentSets.feature_extraction">
+<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/independent_sets.html#IndependentSets.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.independent_sets.IndependentSets.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute independent set measures.</p>
+<p>An independent set is a set of nodes such that the subgraph
+of G induced by these nodes contains no edges. A maximal
+independent set is an independent set such that it is not possible
+to add a new node and still get an independent set.</p>
+<dl class="simple">
+<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>feature_list :list</dt><dd><p>List of features related to independent sets.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Eccentricity using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.mis.maximal_independent_set.html#networkx.algorithms.mis.maximal_independent_set">Networkx_maximal_indpendent_sets</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -62,8 +87,8 @@
   <p class="topless"><a href="efficiency.html"
                         title="previous chapter">The efficiency module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="maximal_matching.html"
-                        title="next chapter">The maximal matching module</a></p>
+  <p class="topless"><a href="k_components.html"
+                        title="next chapter">The k-components module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -95,14 +120,13 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="maximal_matching.html" title="The maximal matching module"
+          <a href="k_components.html" title="The k-components module"
              >next</a> |</li>
         <li class="right" >
           <a href="efficiency.html" title="The efficiency module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">hcga 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../api.html" >API</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../Features.html" >Features</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../Features.html" >Features</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

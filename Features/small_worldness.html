@@ -36,8 +36,7 @@
           <a href="shortest_paths.html" title="The shortest paths module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">hcga 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../api.html" >API</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../Features.html" accesskey="U">Features</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../Features.html" accesskey="U">Features</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -48,8 +47,50 @@
             
   <div class="section" id="module-hcga.Operations.small_worldness">
 <span id="the-small-worldness-module"></span><h1>The small worldness module<a class="headerlink" href="#module-hcga.Operations.small_worldness" title="Permalink to this headline">¶</a></h1>
-<p>Created on Sun Mar  3 18:30:46 2019</p>
-<p>&#64;author: Rob</p>
+<dl class="class">
+<dt id="hcga.Operations.small_worldness.SmallWorld">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.small_worldness.</code><code class="sig-name descname">SmallWorld</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/small_worldness.html#SmallWorld"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.small_worldness.SmallWorld" title="Permalink to this definition">¶</a></dt>
+<dd><p>Small world class</p>
+<dl class="method">
+<dt id="hcga.Operations.small_worldness.SmallWorld.feature_extraction">
+<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/small_worldness.html#SmallWorld.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.small_worldness.SmallWorld.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>The small-world coefficient of a graph G is:</p>
+<blockquote>
+<div><p>omega = Lr/L - C/Cl</p>
+<p>where C and L are respectively the average clustering coefficient and
+average shortest path length of G. Lr is the average shortest path length
+of an equivalent random graph and Cl is the average clustering coefficient
+of an equivalent lattice graph.</p>
+<p>The small-world coefficient (omega) ranges between -1 and 1. Values close
+to 0 means the G features small-world characteristics. Values close to -1
+means G has a lattice shape whereas values close to 1 means G is a random
+graph.</p>
+<dl class="simple">
+<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to small worldness</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Small world calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/latest/_modules/networkx/algorithms/smallworld.html#omega">Networkx_omega</a></p>
+</dd>
+</dl>
+<p>The implementation is adapted from the algorithm by Telesford et al. <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Telesford, Joyce, Hayasaka, Burdette, and Laurienti (2011).
+“The Ubiquity of Small-World Networks”.
+Brain Connectivity. 1 (0038): 367-75.  PMC 3604768. PMID 22432451.
+doi:10.1089/brain.2011.0038.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -101,8 +142,7 @@
           <a href="shortest_paths.html" title="The shortest paths module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">hcga 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../api.html" >API</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../Features.html" >Features</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../Features.html" >Features</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -49,18 +49,24 @@
 <h1>The spectrum module<a class="headerlink" href="#the-spectrum-module" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-hcga.Operations.spectrum_adjacency">
 <span id="the-spectrum-adjacency-module"></span><h2>The spectrum adjacency module<a class="headerlink" href="#module-hcga.Operations.spectrum_adjacency" title="Permalink to this headline">¶</a></h2>
-<p>Created on Tue May  7 10:41:52 2019</p>
-<p>&#64;author: robert</p>
 <dl class="class">
 <dt id="hcga.Operations.spectrum_adjacency.SpectrumAdjacency">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.spectrum_adjacency.</code><code class="sig-name descname">SpectrumAdjacency</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/spectrum_adjacency.html#SpectrumAdjacency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.spectrum_adjacency.SpectrumAdjacency" title="Permalink to this definition">¶</a></dt>
-<dd><p>Force centrality class</p>
+<dd><p>Spectral adjacency class</p>
 <dl class="method">
 <dt id="hcga.Operations.spectrum_adjacency.SpectrumAdjacency.feature_extraction">
 <code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/spectrum_adjacency.html#SpectrumAdjacency.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.spectrum_adjacency.SpectrumAdjacency.feature_extraction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute …</p>
+<dd><p>Compute measures of the spectrum of the adjacency matrix</p>
 <dl class="simple">
 <dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to spectrum of the adjacency matrix</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Spectral adjacency calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/generated/networkx.linalg.spectrum.adjacency_spectrum.html#networkx.linalg.spectrum.adjacency_spectrum">Networkx_spectrum_adjacency</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -70,18 +76,24 @@
 </div>
 <div class="section" id="module-hcga.Operations.spectrum_laplacian">
 <span id="the-spectrum-laplacian-module"></span><h2>The spectrum laplacian module<a class="headerlink" href="#module-hcga.Operations.spectrum_laplacian" title="Permalink to this headline">¶</a></h2>
-<p>Created on Tue May  7 10:41:52 2019</p>
-<p>&#64;author: robert</p>
 <dl class="class">
 <dt id="hcga.Operations.spectrum_laplacian.SpectrumLaplacian">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.spectrum_laplacian.</code><code class="sig-name descname">SpectrumLaplacian</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/spectrum_laplacian.html#SpectrumLaplacian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.spectrum_laplacian.SpectrumLaplacian" title="Permalink to this definition">¶</a></dt>
-<dd><p>Force centrality class</p>
+<dd><p>Spectrum Laplacian class</p>
 <dl class="method">
 <dt id="hcga.Operations.spectrum_laplacian.SpectrumLaplacian.feature_extraction">
 <code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/spectrum_laplacian.html#SpectrumLaplacian.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.spectrum_laplacian.SpectrumLaplacian.feature_extraction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute …</p>
+<dd><p>Compute measures of the spectrum of the Laplacian matrix</p>
 <dl class="simple">
 <dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to spectrum of the adjacency matrix</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Spectral Laplacian calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/generated/networkx.linalg.spectrum.laplacian_spectrum.html">Networkx_spectrum_Laplacian</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -91,18 +103,24 @@
 </div>
 <div class="section" id="module-hcga.Operations.spectrum_modularity">
 <span id="the-spectrum-modularity-module"></span><h2>The spectrum modularity module<a class="headerlink" href="#module-hcga.Operations.spectrum_modularity" title="Permalink to this headline">¶</a></h2>
-<p>Created on Tue May  7 10:41:52 2019</p>
-<p>&#64;author: robert</p>
 <dl class="class">
 <dt id="hcga.Operations.spectrum_modularity.SpectrumModularity">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.spectrum_modularity.</code><code class="sig-name descname">SpectrumModularity</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/spectrum_modularity.html#SpectrumModularity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.spectrum_modularity.SpectrumModularity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Force centrality class</p>
+<dd><p>Spectrum modularity class</p>
 <dl class="method">
 <dt id="hcga.Operations.spectrum_modularity.SpectrumModularity.feature_extraction">
 <code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/spectrum_modularity.html#SpectrumModularity.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.spectrum_modularity.SpectrumModularity.feature_extraction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute …</p>
+<dd><p>Compute measures of the spectrum of the modularity matrix</p>
 <dl class="simple">
 <dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to spectrum of the modularity matrix</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Spectral modularity calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/generated/networkx.linalg.spectrum.modularity_spectrum.html">Networkx_spectrum_modularity</a></p>
 </dd>
 </dl>
 </dd></dl>

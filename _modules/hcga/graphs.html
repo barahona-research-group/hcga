@@ -57,7 +57,6 @@
 <span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="k">import</span> <span class="n">Pool</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">normalize</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib</span>
 <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;agg&quot;</span><span class="p">)</span>
@@ -114,7 +113,7 @@
 <span class="sd">                * PROTEINS: benchmark </span>
 <span class="sd">                * REDDIT-MULTI-12K: benchmark</span>
 <span class="sd">                * synthetic: contains several variants of synthetics </span>
-<span class="sd">                * HELICENES: Julia Schneider&#39;s dataset</span>
+<span class="sd">                * HELICENES: Julia Schmidt&#39;s dataset</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -270,7 +269,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">graph_feature_matrix</span> <span class="o">=</span> <span class="n">feature_matrix_clean</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of features computed:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">feature_matrix_clean</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">save_feature_set</span><span class="p">()</span></div>
+        
+        
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_feature_set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_feature_matrix</span><span class="p">()</span></div>
+
         
 <div class="viewcode-block" id="Graphs.extract_feature"><a class="viewcode-back" href="../../graph.html#hcga.graphs.Graphs.extract_feature">[docs]</a>    <span class="k">def</span> <span class="nf">extract_feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -658,7 +662,30 @@
 
 
         
-<div class="viewcode-block" id="Graphs.save_feature_set"><a class="viewcode-back" href="../../graph.html#hcga.graphs.Graphs.save_feature_set">[docs]</a>    <span class="k">def</span> <span class="nf">save_feature_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;TestData/feature_set.pkl&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Graphs.save_feature_set"><a class="viewcode-back" href="../../graph.html#hcga.graphs.Graphs.save_feature_set">[docs]</a>    <span class="k">def</span> <span class="nf">save_feature_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;Outputs/feature_set.pkl&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save the features in a pickle</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">import</span> <span class="nn">pickle</span> <span class="k">as</span> <span class="nn">pkl</span>        
+        <span class="n">feature_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph_feature_set</span>
+        
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output</span><span class="p">:</span>
+            <span class="n">pkl</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">feature_set</span><span class="p">,</span><span class="n">output</span><span class="p">,</span><span class="n">pkl</span><span class="o">.</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Graphs.load_feature_set"><a class="viewcode-back" href="../../graph.html#hcga.graphs.Graphs.load_feature_set">[docs]</a>    <span class="k">def</span> <span class="nf">load_feature_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;Outputs/feature_set.pkl&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the features from a pickle</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">import</span> <span class="nn">pickle</span> <span class="k">as</span> <span class="nn">pkl</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output</span><span class="p">:</span>
+            <span class="n">feature_set</span> <span class="o">=</span> <span class="n">pkl</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph_feature_set</span> <span class="o">=</span> <span class="n">feature_set</span></div>
+            
+<div class="viewcode-block" id="Graphs.save_feature_matrix"><a class="viewcode-back" href="../../graph.html#hcga.graphs.Graphs.save_feature_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">save_feature_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;Outputs/feature_matrix.pkl&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save the features in a pickle</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -667,12 +694,10 @@
         <span class="n">feature_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph_feature_matrix</span>
         
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output</span><span class="p">:</span>
-            <span class="n">pkl</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">feature_matrix</span><span class="p">,</span><span class="n">output</span><span class="p">,</span><span class="n">pkl</span><span class="o">.</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span></div>
-            
- 
+            <span class="n">pkl</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">feature_matrix</span><span class="p">,</span><span class="n">output</span><span class="p">,</span><span class="n">pkl</span><span class="o">.</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span> </div>
         
     
-<div class="viewcode-block" id="Graphs.load_feature_set"><a class="viewcode-back" href="../../graph.html#hcga.graphs.Graphs.load_feature_set">[docs]</a>    <span class="k">def</span> <span class="nf">load_feature_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;TestData/feature_set.pkl&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Graphs.load_feature_matrix"><a class="viewcode-back" href="../../graph.html#hcga.graphs.Graphs.load_feature_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">load_feature_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;Outputs/feature_matrix.pkl&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load the features from a pickle</span>
 <span class="sd">        &quot;&quot;&quot;</span>

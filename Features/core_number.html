@@ -36,8 +36,7 @@
           <a href="components.html" title="Components modules"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">hcga 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../api.html" >API</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../Features.html" accesskey="U">Features</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../Features.html" accesskey="U">Features</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -59,22 +58,27 @@
 <p>A k-core is the maximal subgraph that contains nodes of degree k or 
 higher. 
 The core number for a node is the largest value of k such that a 
-k-core containing that node exists.</p>
+k-core containing that node exists <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
 <blockquote>
 <div><p>Parameters</p>
 </div></blockquote>
 <dl class="simple">
 <dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
 </dd>
-<dt>args :</dt><dd><p>arg[0] Number of bins for calculating pdf of chosen distribution for SSE calculation</p>
+</dl>
+<dl class="simple">
+<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to core number.</p>
 </dd>
 </dl>
 <dl class="simple">
-<dt>feature_list :list</dt><dd><p>List of features related to core number.</p>
+<dt>Core number calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/core.html">Networkx_core_number</a></p>
 </dd>
 </dl>
-<dl class="simple">
-<dt>Core number calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/core.html">Networkx_cycles</a></p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>An O(m) Algorithm for Cores Decomposition of Networks
+Vladimir Batagelj and Matjaz Zaversnik,  2003.
+<a class="reference external" href="http://arxiv.org/abs/cs.DS/0310049">http://arxiv.org/abs/cs.DS/0310049</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -132,8 +136,7 @@ k-core containing that node exists.</p>
           <a href="components.html" title="Components modules"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">hcga 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../api.html" >API</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../Features.html" >Features</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../Features.html" >Features</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

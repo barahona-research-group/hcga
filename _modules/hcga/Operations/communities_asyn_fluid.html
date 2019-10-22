@@ -38,58 +38,73 @@
           <div class="body" role="main">
             
   <h1>Source code for hcga.Operations.communities_asyn_fluid</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Created on Sun Mar  3 18:30:46 2019</span>
-
-<span class="sd">@author: Rob</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span></span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
-<span class="c1">#from networkx.algorithms.community import asyn_fluidc</span>
-<span class="kn">from</span> <span class="nn">networkx.algorithms.community</span> <span class="k">import</span> <span class="n">quality</span>
 <span class="kn">from</span> <span class="nn">hcga.Operations.utils</span> <span class="k">import</span> <span class="n">clustering_quality</span>
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
 <span class="kn">from</span> <span class="nn">networkx.exception</span> <span class="k">import</span> <span class="n">NetworkXError</span>
 <span class="kn">from</span> <span class="nn">networkx.algorithms.components</span> <span class="k">import</span> <span class="n">is_connected</span>
 <span class="kn">from</span> <span class="nn">networkx.utils</span> <span class="k">import</span> <span class="n">groups</span>
-<span class="kn">from</span> <span class="nn">networkx.utils</span> <span class="k">import</span> <span class="n">not_implemented_for</span>
 <span class="kn">from</span> <span class="nn">networkx.utils</span> <span class="k">import</span> <span class="n">py_random_state</span>
 
 
-<span class="k">class</span> <span class="nc">AsynfluidCommunities</span><span class="p">():</span>
+<div class="viewcode-block" id="AsynfluidCommunities"><a class="viewcode-back" href="../../../Features/communities.html#hcga.Operations.communities_asyn_fluid.AsynfluidCommunities">[docs]</a><span class="k">class</span> <span class="nc">AsynfluidCommunities</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Asyn fluid communities class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">G</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="AsynfluidCommunities.feature_extraction"><a class="viewcode-back" href="../../../Features/communities.html#hcga.Operations.communities_asyn_fluid.AsynfluidCommunities.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        </span>
+        <span class="sd">&quot;&quot;&quot;Compute the measures based on the Fluid communities algorithm.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        G : graph</span>
+<span class="sd">           A networkx graph</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        feature_list : dict</span>
+<span class="sd">           Dictionary of features related to the fluid communities algorithm.</span>
+
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Implementation of networkx code:</span>
+<span class="sd">            `Networkx_communities_asyn &lt;https://networkx.github.io/documentation/networkx-2.2/reference/algorithms/generated/networkx.algorithms.community.asyn_fluid.asyn_fluidc.html#networkx.algorithms.community.asyn_fluid.asyn_fluidc&gt;`_</span>
+<span class="sd">    </span>
+<span class="sd">        The asynchronous fluid communities algorithm is described in</span>
+<span class="sd">        [1]_. The algorithm is based on the simple idea of fluids interacting</span>
+<span class="sd">        in an environment, expanding and pushing each other. It&#39;s initialization is</span>
+<span class="sd">        random, so found communities may vary on different executions.</span>
+
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        .. [1] Parés F., Garcia-Gasulla D. et al. &quot;Fluid Communities: A</span>
+<span class="sd">           Competitive and Highly Scalable Community Detection Algorithm&quot;.</span>
+<span class="sd">           [https://arxiv.org/pdf/1703.09307.pdf].</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-
         
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        feature_names = []</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">G</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span>
 
         <span class="n">feature_list</span> <span class="o">=</span> <span class="p">{}</span>
         
+        <span class="n">kmax</span> <span class="o">=</span> <span class="mi">10</span>
+        
         <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
             <span class="c1"># basic normalisation parameters</span>
-            <span class="n">N</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
-            <span class="n">E</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
 
-            <span class="c1"># Defining the input arguments</span>
-            <span class="n">kmax</span> <span class="o">=</span> <span class="mi">10</span>
+            <span class="n">qual_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mod&#39;</span><span class="p">,</span><span class="s1">&#39;coverage&#39;</span><span class="p">,</span><span class="s1">&#39;performance&#39;</span><span class="p">,</span><span class="s1">&#39;inter_comm_edge&#39;</span><span class="p">,</span><span class="s1">&#39;inter_comm_nedge&#39;</span><span class="p">,</span><span class="s1">&#39;intra_comm_edge&#39;</span><span class="p">]</span>
 
+        
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">kmax</span><span class="p">):</span>    
                  
                 <span class="c1">#if not enough nodes, last elements are the max ones</span>
@@ -100,38 +115,23 @@
                 
                 <span class="c1">#total density</span>
                 <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;total_density_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">density</span><span class="p">)</span>
-                <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">                feature_names.append(&#39;total_density_&#39;+str(i))</span>
-<span class="sd">                &quot;&quot;&quot;</span>
+
                 
                 <span class="c1"># ratio density</span>
                 <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;ratio_density_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">density</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">density</span><span class="p">)</span>
-                <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">                feature_names.append(&#39;ratio_density_&#39;+str(i))</span>
-<span class="sd">                &quot;&quot;&quot;</span>
+
 
                 <span class="c1"># length of most dense community</span>
                 <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;most_dense_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">density</span><span class="p">)])</span>
-                <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">                feature_names.append(&#39;most_dense_&#39;+str(i))</span>
-<span class="sd">                &quot;&quot;&quot;</span>
+
                 
                 <span class="c1"># length of least dense community</span>
                 <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;least_dense_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">density</span><span class="p">)])</span>
-                <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">                feature_names.append(&#39;least_dense_&#39;+str(i))</span>
-<span class="sd">                &quot;&quot;&quot;</span>
+
 
                 <span class="c1"># clustering quality functions       </span>
                 <span class="n">qual_names</span><span class="p">,</span><span class="n">qual_vals</span> <span class="o">=</span> <span class="n">clustering_quality</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
-                
-                <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">                # adding arguments to names</span>
-<span class="sd">                [name+&#39;_&#39;+str(i) for name in qual_names]</span>
-<span class="sd">                </span>
-<span class="sd">                feature_list = feature_list + qual_vals</span>
-<span class="sd">                feature_names = feature_names + qual_names    </span>
-<span class="sd">                &quot;&quot;&quot;</span>
+
                 
                 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">qual_names</span><span class="p">)):</span>
                     <span class="n">feature_list</span><span class="p">[</span><span class="n">qual_names</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">=</span><span class="n">qual_vals</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
@@ -139,13 +139,11 @@
                     
                 <span class="c1"># calculate size ratio of the top 2 largest communities</span>
                 <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_nodes_ratio_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-                <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">                feature_names.append(&#39;num_nodes_ratio_&#39;+str(i))</span>
-<span class="sd">                </span>
-<span class="sd">                &quot;&quot;&quot;</span>
+
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">qual_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mod&#39;</span><span class="p">,</span><span class="s1">&#39;coverage&#39;</span><span class="p">,</span><span class="s1">&#39;performance&#39;</span><span class="p">,</span><span class="s1">&#39;inter_comm_edge&#39;</span><span class="p">,</span><span class="s1">&#39;inter_comm_nedge&#39;</span><span class="p">,</span><span class="s1">&#39;intra_comm_edge&#39;</span><span class="p">]</span>
             
+            <span class="n">qual_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mod&#39;</span><span class="p">,</span><span class="s1">&#39;coverage&#39;</span><span class="p">,</span><span class="s1">&#39;performance&#39;</span><span class="p">,</span><span class="s1">&#39;inter_comm_edge&#39;</span><span class="p">,</span><span class="s1">&#39;inter_comm_nedge&#39;</span><span class="p">,</span><span class="s1">&#39;intra_comm_edge&#39;</span><span class="p">]</span>
+
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">kmax</span><span class="p">):</span>
                 <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;total_density_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
                 <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;ratio_density_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
@@ -163,7 +161,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        self.feature_names = feature_names</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">feature_list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">feature_list</span></div></div>
 
 
 

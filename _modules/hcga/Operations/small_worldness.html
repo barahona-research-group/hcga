@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>hcga.Operations.components &#8212; hcga 0.1 documentation</title>
+    <title>hcga.Operations.small_worldness &#8212; hcga 0.1 documentation</title>
     <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
@@ -37,61 +37,98 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for hcga.Operations.components</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+  <h1>Source code for hcga.Operations.small_worldness</h1><div class="highlight"><pre>
+<span></span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
-<div class="viewcode-block" id="Components"><a class="viewcode-back" href="../../../Features/components.html#hcga.Operations.components.Components">[docs]</a><span class="k">class</span> <span class="nc">Components</span><span class="p">():</span>
+<div class="viewcode-block" id="SmallWorld"><a class="viewcode-back" href="../../../Features/small_worldness.html#hcga.Operations.small_worldness.SmallWorld">[docs]</a><span class="k">class</span> <span class="nc">SmallWorld</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Components class</span>
+<span class="sd">    Small world class</span>
 <span class="sd">    &quot;&quot;&quot;</span>
- 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">G</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
 
-<div class="viewcode-block" id="Components.feature_extraction"><a class="viewcode-back" href="../../../Features/components.html#hcga.Operations.components.Components.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compute the component features for the network</span>
+<div class="viewcode-block" id="SmallWorld.feature_extraction"><a class="viewcode-back" href="../../../Features/small_worldness.html#hcga.Operations.small_worldness.SmallWorld.feature_extraction">[docs]</a>    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    The small-world coefficient of a graph G is:</span>
+<span class="sd">    </span>
+<span class="sd">        omega = Lr/L - C/Cl</span>
+<span class="sd">    </span>
+<span class="sd">        where C and L are respectively the average clustering coefficient and</span>
+<span class="sd">        average shortest path length of G. Lr is the average shortest path length</span>
+<span class="sd">        of an equivalent random graph and Cl is the average clustering coefficient</span>
+<span class="sd">        of an equivalent lattice graph.</span>
+<span class="sd">    </span>
+<span class="sd">        The small-world coefficient (omega) ranges between -1 and 1. Values close</span>
+<span class="sd">        to 0 means the G features small-world characteristics. Values close to -1</span>
+<span class="sd">        means G has a lattice shape whereas values close to 1 means G is a random</span>
+<span class="sd">        graph.</span>
+<span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        G : graph</span>
-<span class="sd">          A networkx graph</span>
+<span class="sd">           A networkx graph</span>
 
-<span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        feature_list : dict</span>
-<span class="sd">           Dictionary of features related to components.</span>
+<span class="sd">           Dictionary of features related to small worldness</span>
 
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        Components calculations using networkx:</span>
-<span class="sd">            `Networkx_components &lt;https://networkx.github.io/documentation/stable/reference/algorithms/component.html&gt;`_</span>
+<span class="sd">        Small world calculations using networkx:</span>
+<span class="sd">            `Networkx_omega &lt;https://networkx.github.io/documentation/latest/_modules/networkx/algorithms/smallworld.html#omega&gt;`_</span>
+<span class="sd">        </span>
+<span class="sd">        The implementation is adapted from the algorithm by Telesford et al. [1]_.</span>
+<span class="sd">    </span>
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        .. [1] Telesford, Joyce, Hayasaka, Burdette, and Laurienti (2011).</span>
+<span class="sd">               &quot;The Ubiquity of Small-World Networks&quot;.</span>
+<span class="sd">               Brain Connectivity. 1 (0038): 367-75.  PMC 3604768. PMID 22432451.</span>
+<span class="sd">               doi:10.1089/brain.2011.0038.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        
+
 
         <span class="n">G</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span>
 
         <span class="n">feature_list</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1">#C = nx.transitivity(G)</span>
+        <span class="c1">#L = nx.average_shortest_path_length(G)</span>
         
-        <span class="k">if</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
-            
-            <span class="c1"># Compute component features</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_strongly_conn_comps&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">number_strongly_connected_components</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_weak_conn_comps&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">number_weakly_connected_components</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_attracting_comps&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">number_attracting_components</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
-            
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_strongly_conn_comps&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_weak_conn_comps&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_attracting_comps&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    
+        <span class="c1"># sigma requires recalculating the average clustering effiient </span>
+        <span class="c1"># and the average shortest path length. These can be reused from</span>
+        <span class="c1"># other features.</span>
+
+        <span class="c1">#feature_list.append(nx.sigma(G))</span>
+        <span class="c1">#feature_list.append(nx.omega(G))</span>
+        <span class="c1"># small worldness sigma</span>
+<span class="c1">#        nrand=20</span>
+<span class="c1">#        </span>
+<span class="c1">#        randMetrics = {&quot;C&quot;: [], &quot;L&quot;: []}</span>
+<span class="c1">#        for i in range(nrand):</span>
+<span class="c1">#            Gr = nx.dense_gnm_random_graph(N,E)</span>
+<span class="c1">#            if nx.is_connected(Gr):</span>
+<span class="c1">#                randMetrics[&quot;C&quot;].append(nx.transitivity(Gr))</span>
+<span class="c1">#                randMetrics[&quot;L&quot;].append(nx.average_shortest_path_length(Gr))</span>
+<span class="c1">#            </span>
+<span class="c1">#        Cr = np.mean(randMetrics[&quot;C&quot;])</span>
+<span class="c1">#        Lr = np.mean(randMetrics[&quot;L&quot;])</span>
+<span class="c1">#        </span>
+<span class="c1">#        sigma = (C / Cr) / (L / Lr)</span>
         
-        
+        <span class="c1">#feature_list[&#39;sigma&#39;]=nx.sigma(G)</span>
+
+
+        <span class="c1">#omega = 0</span>
+        <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;omega&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">omega</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">feature_list</span></div></div>
 </pre></div>
 
