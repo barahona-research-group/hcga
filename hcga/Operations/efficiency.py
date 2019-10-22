@@ -28,8 +28,8 @@ class Efficiency():
 
         Returns
         -------
-        feature_list : list
-           List of features related to efficiency.
+        feature_list : dict
+           Dictionary of features related to efficiency.
         
         Notes
         -----
@@ -38,9 +38,6 @@ class Efficiency():
         
         """
 
-        """
-        feature_names = ['local_efficiency','global_efficiency']
-        """
 
         G = self.G
 
@@ -54,7 +51,5 @@ class Efficiency():
             feature_list['local_efficiency']=np.nan
             feature_list['global_efficiency']=np.nan
             
-        """
-        self.feature_names = feature_names
-        """
+
         self.features = feature_list

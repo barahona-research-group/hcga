@@ -1,11 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Mar  3 18:30:46 2019
 
-@author: Rob
-"""
-
-import pandas as pd
 import numpy as np
 from hcga.Operations.utils import clustering_quality
 import networkx as nx
@@ -13,19 +6,46 @@ import networkx as nx
 from networkx.algorithms.community import kernighan_lin_bisection
 
 class BisectionCommunities():
+    """
+    Bisection communities class
+    """
     def __init__(self, G):
         self.G = G
         self.feature_names = []
         self.features = {}
 
     def feature_extraction(self):
+        
+        """Compute the measures based on the Kernighan–Lin Bisection communities algorithm.
 
-        """
+        Parameters
+        ----------
+        G : graph
+           A networkx graph
+
+        Returns
+        -------
+        feature_list : dict
+           Dictionary of features related to the Kernighan–Lin communities algorithm.
+
+
+        Notes
+        -----
+        Implementation of networkx code:
+            `Networkx_kernighan_lin_bisection <https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.community.kernighan_lin.kernighan_lin_bisection.html>`_
+    
+        Partition a graph into two blocks using the Kernighan–Lin algorithm described in
+        [1]_.
         
-        """
-        
-        """
-        feature_names = ['node_ratio']
+        This algorithm paritions a network into two sets by iteratively swapping pairs of nodes to reduce the edge cut between the two sets.
+
+        References
+        ----------
+        .. [1] Kernighan, B. W.; Lin, Shen (1970).
+           "An efficient heuristic procedure for partitioning graphs."
+           *Bell Systems Technical Journal* 49: 291--307.
+           Oxford University Press 2011.
+
         """
 
         G = self.G
@@ -33,9 +53,7 @@ class BisectionCommunities():
         feature_list = {}
         
         if not nx.is_directed(G):
-            # basic normalisation parameters
-            N = G.number_of_nodes()
-            E = G.number_of_edges()
+
 
             c = list(kernighan_lin_bisection(G))        
         
@@ -50,10 +68,7 @@ class BisectionCommunities():
             for i in range(len(qual_names)):
                 feature_list[qual_names[i]]=qual_vals[i]
             
-            """
-            feature_list = feature_list + qual_vals
-            feature_names = feature_names + qual_names     
-            """
+
         else:
             feature_list['node_ratio']=np.nan
             feature_list['mod']=np.nan
@@ -63,7 +78,5 @@ class BisectionCommunities():
             feature_list['inter_comm_nedge']=np.nan
             feature_list['intra_comm_edge']=np.nan
 
-        """
-        self.feature_names = feature_names
-        """
+
         self.features = feature_list

@@ -1,15 +1,6 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Jul 27 20:13:58 2019
-
-@author: Henry
-"""
-
 from networkx.algorithms import centrality
 from hcga.Operations import utils
 import numpy as np
-import networkx as nx
 
 
 
@@ -38,8 +29,8 @@ class HarmonicCentrality():
         
         Returns
         -------
-        feature_list :list
-           List of features related to harmonic centrality.
+        feature_list : Dict
+           Dictionary of features related to harmonic centrality.
 
 
         Notes
@@ -66,10 +57,6 @@ class HarmonicCentrality():
             
             
         for i in range(len(bins)):
-            """# Adding to feature names
-            feature_names.append('opt_model_{}'.format(bins[i]))
-            feature_names.append('powerlaw_a_{}'.format(bins[i]))
-            feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
                 
             # Fitting the harmonic centrality distribution and finding the optimal
             # distribution according to SSE

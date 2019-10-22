@@ -17,7 +17,6 @@ import time
 from multiprocessing import Pool
 from functools import partial
 
-from sklearn.preprocessing import normalize
 
 import matplotlib
 matplotlib.use("agg")
@@ -74,7 +73,7 @@ class Graphs():
                 * PROTEINS: benchmark 
                 * REDDIT-MULTI-12K: benchmark
                 * synthetic: contains several variants of synthetics 
-                * HELICENES: Julia Schneider's dataset
+                * HELICENES: Julia Schmidt's dataset
         
         """
 
@@ -230,7 +229,12 @@ class Graphs():
         self.graph_feature_matrix = feature_matrix_clean
         print("Number of features computed:", np.shape(feature_matrix_clean)[1])
 
+        
+        
+        
         self.save_feature_set()
+        self.save_feature_matrix()
+
         
     def extract_feature(self,n):
         """
@@ -618,7 +622,30 @@ class Graphs():
 
 
         
-    def save_feature_set(self,filename = 'TestData/feature_set.pkl'):
+    def save_feature_set(self,filename = 'Outputs/feature_set.pkl'):
+        """
+        Save the features in a pickle
+        """
+
+        import pickle as pkl        
+        feature_set = self.graph_feature_set
+        
+        with open(filename,'wb') as output:
+            pkl.dump(feature_set,output,pkl.HIGHEST_PROTOCOL)
+
+
+    def load_feature_set(self,filename = 'Outputs/feature_set.pkl'):
+        """
+        Load the features from a pickle
+        """
+
+        import pickle as pkl
+        with open(filename,'rb') as output:
+            feature_set = pkl.load(output)
+        
+        self.graph_feature_set = feature_set
+            
+    def save_feature_matrix(self,filename = 'Outputs/feature_matrix.pkl'):
         """
         Save the features in a pickle
         """
@@ -627,12 +654,10 @@ class Graphs():
         feature_matrix = self.graph_feature_matrix
         
         with open(filename,'wb') as output:
-            pkl.dump(feature_matrix,output,pkl.HIGHEST_PROTOCOL)
-            
- 
+            pkl.dump(feature_matrix,output,pkl.HIGHEST_PROTOCOL) 
         
     
-    def load_feature_set(self,filename = 'TestData/feature_set.pkl'):
+    def load_feature_matrix(self,filename = 'Outputs/feature_matrix.pkl'):
         """
         Load the features from a pickle
         """

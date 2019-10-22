@@ -1,16 +1,12 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Mar  3 18:30:46 2019
-
-@author: Rob
-"""
 
 import numpy as np
 import networkx as nx
-from hcga.Operations import utils
 
 
 class DominatingSets():
+    """
+    Dominating set class
+    """    
     def __init__(self, G):
         self.G = G
         self.feature_names = []
@@ -19,6 +15,10 @@ class DominatingSets():
     def feature_extraction(self):
 
         """Compute dominating set measures.
+        
+        A *dominating set* for a graph with node set *V* is a subset *D* of
+    *V* such that every node not in *D* is adjacent to at least one
+    member of *D* [1]_.
 
         Parameters
         ----------
@@ -33,13 +33,20 @@ class DominatingSets():
 
         Notes
         -----
+        Core number calculations using networkx:
+            `Networkx_dominating_set <https://networkx.github.io/documentation/stable/reference/algorithms/dominating.html>`_
+            
 
+        References
+        ----------
+        .. [1] https://en.wikipedia.org/wiki/Dominating_set
+    
+        .. [2] Abdol-Hossein Esfahanian. Connectivity Algorithms.
+            http://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf
+    
 
         """
         
-        """
-        self.feature_names = ['num_ind_nodes_norm','ratio__ind_nodes_norm']
-        """
 
         G = self.G
 
@@ -56,10 +63,6 @@ class DominatingSets():
             feature_list['len_min_domset']=len(dom_set_min)            
             feature_list['len_edge_domset']=len(edges_dom)
             
-            #ramsey_split = nx.algorithms.approximation.ramsey.ramsey_R2(G)
-            #feature_list['ramsey_number_1']=len(list(ramsey_split)[0])
-            #feature_list['ramsey_number_2']=len(list(ramsey_split)[1])
-            #feature_list['ramsey_ratio']=len(list(ramsey_split)[0])/len(list(ramsey_split)[1])
 
 
         else:
@@ -67,10 +70,7 @@ class DominatingSets():
             feature_list['len_min_domset']=np.nan          
             feature_list['len_edge_domset']=np.nan      
             
-            #ramsey_split = nx.algorithms.approximation.ramsey.ramsey_R2(G)
-            #feature_list['ramsey_number_1']=np.nan      
-            #feature_list['ramsey_number_2']=np.nan      
-            #feature_list['ramsey_ratio']=np.nan      
+
 
         self.features = feature_list
 

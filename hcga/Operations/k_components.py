@@ -33,12 +33,9 @@ class kComponents():
         Notes
         -----
         K components calculations using networkx:
-            `Networkx_kcomponents <https://networkx.github.io/documentation/stable/reference/algorithms/approximation.html>`_            
+            `Networkx_kcomponents <https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.connectivity.kcomponents.k_components.html#networkx.algorithms.connectivity.kcomponents.k_components>`_            
         """
         
-        """
-        feature_names = ['num_k_components','max_k']
-        """
 
         G = self.G
         
@@ -76,7 +73,5 @@ class kComponents():
             feature_list['largest_max_k_component']=np.nan
             feature_list['smallest_max_k_component']=np.nan
             
-        """
-        self.feature_names = feature_names
-        """
+
         self.features = feature_list

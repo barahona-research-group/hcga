@@ -1,19 +1,13 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Mar  3 18:30:46 2019
-
-@author: Rob
-"""
-
-import pandas as pd
 import numpy as np
 from hcga.Operations.utils import clustering_quality
 import networkx as nx
 
 from networkx.algorithms.community import greedy_modularity_communities
-from networkx.algorithms.community.quality import modularity
 
 class ModularityCommunities():
+    """
+    Modularity communities class
+    """
     def __init__(self, G):
         self.G = G
         self.feature_names = []
@@ -21,8 +15,10 @@ class ModularityCommunities():
 
     def feature_extraction(self):
 
-        """Find communities in graph using Clauset-Newman-Moore greedy modularity
-        maximization. This method currently supports the Graph class and does not
+        """
+        
+        Find communities in graph using Clauset-Newman-Moore greedy modularity
+        maximization [1]_ [2]_. This method currently supports the Graph class and does not
         consider edge weights.
 
         Greedy modularity maximization begins with each node in its own community
@@ -35,8 +31,8 @@ class ModularityCommunities():
 
         Returns
         -------
-        feature_list:  list
-            List of features related to modularity
+        feature_list:  dict
+            Dictionary of features related to modularity
 
         Notes
         -----
@@ -52,18 +48,13 @@ class ModularityCommunities():
            Physical Review E 70(6), 2004.
         """
         
-        """
-        feature_names = ['num_comms_greedy_mod','ratio_max_min_num_nodes','ratio_max_2max_num_nodes']
-        """
         
         G = self.G
 
         feature_list = {}
         
         if not nx.is_directed(G):
-            # basic normalisation parameters
-            N = G.number_of_nodes()
-            E = G.number_of_edges()
+
     
             # The optimised number of communities using greedy modularity
             c = list(greedy_modularity_communities(G))
@@ -97,13 +88,5 @@ class ModularityCommunities():
             feature_list['inter_comm_nedge']=np.nan
             feature_list['intra_comm_edge']=np.nan
 
-            
-        """
-        feature_list = feature_list + qual_vals
-        feature_names = feature_names + qual_names    
-        """
-        
-        """
-        self.feature_names = feature_names
-        """
+
         self.features = feature_list

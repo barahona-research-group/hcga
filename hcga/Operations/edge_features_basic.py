@@ -1,17 +1,12 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Aug  9 14:43:56 2019
-
-@author: Henry
-"""
 
 import networkx as nx
 
 from hcga.Operations.utils import summary_statistics
 
 class EdgeFeaturesBasic():
-    
+    """
+    Edge features class
+    """    
     
     def __init__(self, G):
         self.G = G
@@ -19,7 +14,31 @@ class EdgeFeaturesBasic():
         self.features = {}
         
     def feature_extraction(self):
+        """
+        Compute basic statistics of the edge features.
         
+        The edge features (usually just edge weights) provide an additional dimension to describe our graph/
+        
+        Parameters
+        ----------
+        G : graph
+          A networkx graph
+
+
+        Returns
+        -------
+        feature_list : dict
+           Dictionary of features related to edge features.
+
+
+        Notes
+        -----
+       
+            
+        
+
+        
+        """        
         G = self.G
         
         

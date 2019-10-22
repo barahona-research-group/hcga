@@ -1,5 +1,4 @@
 
-import pandas as pd
 import numpy as np
 import networkx as nx
 
@@ -24,8 +23,8 @@ class Cycles():
 
         Returns
         -------
-        feature_list : list
-           List of features related to cycles.
+        feature_list : dict
+           Dictionary of features related to cycles.
            
            
         Notes
@@ -34,10 +33,7 @@ class Cycles():
             `Networkx_cycles <https://networkx.github.io/documentation/stable/reference/algorithms/cycles.html>`_
         """
         
-        """
-        feature_names=['num_cycles','mean_cycle_length','shortest_cycle','longest_cycle']
-        """
-        
+
         G=self.G
         feature_list={}
         if not nx.is_directed(G) and nx.cycle_basis(G):
@@ -55,9 +51,6 @@ class Cycles():
             feature_list['shortest_cycle']=np.nan
             feature_list['longest_cycle']=np.nan
             
-        """
-        self.feature_names = feature_names
-        """
-        
+
         self.features = feature_list
         

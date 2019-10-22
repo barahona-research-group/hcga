@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Jul 28 16:51:19 2019
-
-@author: Henry
-"""
-
 import numpy as np
 import networkx as nx
 
@@ -31,8 +23,8 @@ class Components():
         
         Returns
         -------
-        feature_list :list
-           List of features related to components.
+        feature_list : dict
+           Dictionary of features related to components.
 
 
         Notes

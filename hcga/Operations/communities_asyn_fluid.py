@@ -1,27 +1,20 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Mar  3 18:30:46 2019
 
-@author: Rob
-"""
-
-import pandas as pd
 import numpy as np
 import networkx as nx
 
-#from networkx.algorithms.community import asyn_fluidc
-from networkx.algorithms.community import quality
 from hcga.Operations.utils import clustering_quality
 
 from collections import Counter
 from networkx.exception import NetworkXError
 from networkx.algorithms.components import is_connected
 from networkx.utils import groups
-from networkx.utils import not_implemented_for
 from networkx.utils import py_random_state
 
 
 class AsynfluidCommunities():
+    """
+    Asyn fluid communities class
+    """
     def __init__(self, G):
         self.G = G
         self.feature_names = []
@@ -29,27 +22,49 @@ class AsynfluidCommunities():
 
     def feature_extraction(self):
 
+        """Compute the measures based on the Fluid communities algorithm.
+
+        Parameters
+        ----------
+        G : graph
+           A networkx graph
+
+        Returns
+        -------
+        feature_list : dict
+           Dictionary of features related to the fluid communities algorithm.
+
+
+        Notes
+        -----
+        Implementation of networkx code:
+            `Networkx_communities_asyn <https://networkx.github.io/documentation/networkx-2.2/reference/algorithms/generated/networkx.algorithms.community.asyn_fluid.asyn_fluidc.html#networkx.algorithms.community.asyn_fluid.asyn_fluidc>`_
+    
+        The asynchronous fluid communities algorithm is described in
+        [1]_. The algorithm is based on the simple idea of fluids interacting
+        in an environment, expanding and pushing each other. It's initialization is
+        random, so found communities may vary on different executions.
+
+        References
+        ----------
+        .. [1] Parés F., Garcia-Gasulla D. et al. "Fluid Communities: A
+           Competitive and Highly Scalable Community Detection Algorithm".
+           [https://arxiv.org/pdf/1703.09307.pdf].
+
         """
         
-        """
-
-        
-        """
-        feature_names = []
-        """
-
         G = self.G
 
         feature_list = {}
         
+        kmax = 10
+        
         if not nx.is_directed(G):
             # basic normalisation parameters
-            N = G.number_of_nodes()
-            E = G.number_of_edges()
 
-            # Defining the input arguments
-            kmax = 10
+            qual_names = ['mod','coverage','performance','inter_comm_edge','inter_comm_nedge','intra_comm_edge']
 
+        
             for i in range(2,kmax):    
                  
                 #if not enough nodes, last elements are the max ones
@@ -60,38 +75,23 @@ class AsynfluidCommunities():
                 
                 #total density
                 feature_list['total_density_'+str(i)]=sum(density)
-                """
-                feature_names.append('total_density_'+str(i))
-                """
+
                 
                 # ratio density
                 feature_list['ratio_density_'+str(i)]=np.min(density)/np.max(density)
-                """
-                feature_names.append('ratio_density_'+str(i))
-                """
+
 
                 # length of most dense community
                 feature_list['most_dense_'+str(i)]=len(c[np.argmax(density)])
-                """
-                feature_names.append('most_dense_'+str(i))
-                """
+
                 
                 # length of least dense community
                 feature_list['least_dense_'+str(i)]=len(c[np.argmin(density)])
-                """
-                feature_names.append('least_dense_'+str(i))
-                """
+
 
                 # clustering quality functions       
                 qual_names,qual_vals = clustering_quality(G,c)
-                
-                """
-                # adding arguments to names
-                [name+'_'+str(i) for name in qual_names]
-                
-                feature_list = feature_list + qual_vals
-                feature_names = feature_names + qual_names    
-                """
+
                 
                 for j in range(len(qual_names)):
                     feature_list[qual_names[j]+'_'+str(i)]=qual_vals[j]
@@ -99,13 +99,11 @@ class AsynfluidCommunities():
                     
                 # calculate size ratio of the top 2 largest communities
                 feature_list['num_nodes_ratio_'+str(i)]=(len(c[0])/len(c[1]))
-                """
-                feature_names.append('num_nodes_ratio_'+str(i))
-                
-                """
+
         else:
-            qual_names = ['mod','coverage','performance','inter_comm_edge','inter_comm_nedge','intra_comm_edge']
             
+            qual_names = ['mod','coverage','performance','inter_comm_edge','inter_comm_nedge','intra_comm_edge']
+
             for i in range(2,kmax):
                 feature_list['total_density_'+str(i)]=np.nan
                 feature_list['ratio_density_'+str(i)]=np.nan

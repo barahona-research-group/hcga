@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Jul 27 19:56:02 2019
-
-@author: Henry
-"""
-
 from networkx.algorithms import centrality
 from hcga.Operations import utils
 import numpy as np
@@ -27,7 +19,7 @@ class SubgraphCentrality():
         """Compute the subgraph centrality for nodes.
 
         The subgraph centrality for a node is the sum of weighted closed walks
-        of all lenghts starting and ending st that node.
+        of all lengths starting and ending at that node.
 
 
         Parameters
@@ -38,14 +30,14 @@ class SubgraphCentrality():
         
         Returns
         -------
-        feature_list :list
-           List of features related to subgraph centrality.
+        feature_list : dict
+           Dcitionary of features related to subgraph centrality.
 
 
         Notes
         -----
         Subgraph centrality calculations using networkx:
-            `Networkx_centrality <https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html>`_ 
+            `Networkx_subgraph_centrality <https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html#subgraph>`_ 
         """
         
         # Defining the input arguments

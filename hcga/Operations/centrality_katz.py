@@ -24,13 +24,11 @@ class KatzCentrality():
         G : graph
           A networkx graph
 
-        args :
-            arg[0] Number of bins for calculating pdf of chosen distribution for SSE calculation
 
         Returns
         -------
-        feature_list :list
-           List of features related to Katz centrality.
+        feature_list : dict
+           Dictionary of features related to Katz centrality.
 
 
         Notes
@@ -42,10 +40,7 @@ class KatzCentrality():
         # Defining the input arguments
         bins = [10,20,50]
         
-        """
-        # Defining featurenames
-        feature_names = ['mean','std','max','min']
-        """
+
         
         G = self.G
         feature_list = {}
@@ -60,11 +55,7 @@ class KatzCentrality():
             feature_list['min'] = katz_centrality.min()
         
             for i in range(len(bins)):
-                """# Adding to feature names
-                feature_names.append('opt_model_{}'.format(bins[i]))
-                feature_names.append('powerlaw_a_{}'.format(bins[i]))
-                feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
-                
+
                 # Fitting the katz centrality distribution and finding the optimal
                 # distribution according to SSE
                 opt_mod,opt_mod_sse = utils.best_fit_distribution(katz_centrality,bins=bins[i])
@@ -83,10 +74,6 @@ class KatzCentrality():
                 feature_list['opt_model_{}'.format(bins[i])] = np.nan
                 feature_list['powerlaw_a_{}'.format(bins[i])] = np.nan
                 feature_list['powerlaw_SSE_{}'.format(bins[i])] = np.nan
-            
-        """
-        self.feature_names=feature_names
-        """
-        
+
         self.features = feature_list
        

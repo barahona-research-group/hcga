@@ -1,15 +1,13 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Mar  3 18:30:46 2019
-
-@author: Rob
-"""
 
 import pandas as pd
 import numpy as np
 import networkx as nx
 
 class Clustering():
+    """
+    Clustering class
+    """    
+    
     def __init__(self, G):
         self.G = G
         self.feature_names = []
@@ -26,8 +24,8 @@ class Clustering():
 
         Returns
         -------
-        feature_list :list
-           List of features related to node clustering.
+        feature_list : dict
+           Dictionary of features related to node clustering.
 
 
         Notes
@@ -39,11 +37,7 @@ class Clustering():
 
         """
         
-        """
-        self.feature_names = ['num_triangles','transitivity','clustering_mean',
-                        'clustering_std','clustering_median','square_clustering_mean',
-                        'square_clustering_std','square_clustering_median']
-        """
+
 
         G = self.G
 
@@ -66,7 +60,6 @@ class Clustering():
         feature_list['clustering_mean']=nx.average_clustering(G)
         feature_list['clustering_std']=np.asarray(list(nx.clustering(G).values())).std()
         feature_list['clustering_median']=np.median(np.asarray(list(nx.clustering(G).values())))
-
 
 
         # generalised degree

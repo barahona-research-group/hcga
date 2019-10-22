@@ -1,14 +1,11 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Mar  3 18:30:46 2019
-
-@author: Rob
-"""
-
-import numpy as np
 import networkx as nx
 
 class ChemicalTheory():
+    """
+    Chemical theory class
+    """
+ 
+
     def __init__(self, G):
         self.G = G
         self.feature_names = []
@@ -16,7 +13,7 @@ class ChemicalTheory():
 
     def feature_extraction(self):
 
-        """Compute node connectivity measures.
+        """Compute measures related to chemical theory.
 
         Parameters
         ----------
@@ -25,8 +22,8 @@ class ChemicalTheory():
 
         Returns
         -------
-        feature_list :list
-           List of features related to node connectivity.
+        feature_list : dict
+           Dictionary of features related to node connectivity.
 
 
         Notes
@@ -34,21 +31,14 @@ class ChemicalTheory():
 
 
         """
-        
-        """
-        self.feature_names = ['wiener_index']
-        """
+
 
         G = self.G
 
-        feature_list = {}
-
-        N = G.number_of_nodes()
-        
+        feature_list = {}      
 
         # calculate wiener index using networkx
-        feature_list['wiener_index'] = nx.wiener_index(G)
-        
+        feature_list['wiener_index'] = nx.wiener_index(G)   
         
         
 

@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue May  7 10:41:52 2019
-
-@author: robert
-"""
-
 from networkx.algorithms import centrality
 from hcga.Operations import utils
 import numpy as np
@@ -47,18 +39,16 @@ class EigenCentrality():
         G : graph
           A networkx graph
 
-        args: list
-            Parameters for calculating feature_list
+        eigens: numpy array
+            Numpy array 1 x N vector of eigenvectors
         
-        bins:
-            Number of bins for calculating pdf of chosen distribution
-            for SSE calculation
+
 
 
         Returns
         -------
-        feature_list :list
-           List of features related to eigenvector centrality.
+        feature_list : dict
+           Dictionary of features related to eigenvector centrality.
 
 
         Notes
@@ -81,15 +71,8 @@ class EigenCentrality():
         """
 
         # Defining the input arguments
-        bins = [10,20,50]
-        
-        """
-        # Defining featurenames
-        feature_names = ['mean','std','max','min']
-        """
+        bins = [10,20,50]        
 
-        #G = self.G
-        #op_obj = self.op_obj
 
         feature_list = {}
 
@@ -99,7 +82,6 @@ class EigenCentrality():
         # extract the precomputed eigenvectors from the operations object
         eigenvector = self.eigenvectors[:,np.argmax(eigenvalues.real)]
             
-        #eigenvector = eigenvectors[:,0]
         
         largest = eigenvector.flatten().real
         norm = sp.sign(largest.sum()) * sp.linalg.norm(largest)
@@ -112,10 +94,6 @@ class EigenCentrality():
         feature_list['min'] = eigenvector_centrality.min()
         
         for i in range(len(bins)):
-            """# Adding to feature names
-            feature_names.append('opt_model_{}'.format(bins[i]))
-            feature_names.append('powerlaw_a_{}'.format(bins[i]))
-            feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
             
             # Fitting the eigenvector centrality distribution and finding the optimal
             # distribution according to SSE
@@ -126,36 +104,7 @@ class EigenCentrality():
             feature_list['powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(eigenvector_centrality,bins=bins[i])[0][-2]# value 'a' in power law
             feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(eigenvector_centrality,bins=bins[i])[1] # value sse in power law
 
-        #Calculate the degree centrality of each node
-#        try:
-#            eigenvector_centrality = np.asarray(list(centrality.eigenvector_centrality(G).values()))
-#
-#            # Basic stats regarding the degree centrality distribution
-#            feature_list.append(eigenvector_centrality.mean())
-#            feature_list.append(eigenvector_centrality.std())
-#
-#            # Fitting the degree centrality distribution and finding the optimal
-#            # distribution according to SSE
-#            opt_mod,opt_mod_sse = utils.best_fit_distribution(eigenvector_centrality,bins=bins)
-#            feature_list.append(opt_mod)
-#
-#            # Fitting power law and finding 'a' and the SSE of fit.
-#            feature_list.append(utils.power_law_fit(eigenvector_centrality,bins=bins)[0][-2]) # value 'a' in power law
-#            feature_list.append(utils.power_law_fit(eigenvector_centrality,bins=bins)[1]) # value sse in power law
-#        except:
-#            feature_list = np.empty(len(self.feature_names))
-#            feature_list.fill(np.nan)
-#            feature_list = feature_list.tolist()
-#            pass
 
 
 
-        # Fitting normal distribution and finding...
-
-
-        # Fitting exponential and finding ...
-
-        """
-        self.feature_names=feature_names
-        """
         self.features = feature_list

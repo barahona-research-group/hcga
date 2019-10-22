@@ -1,14 +1,10 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Mar  3 18:30:46 2019
-
-@author: Rob
-"""
-
 import numpy as np
 import networkx as nx
 
 class ConnectedComponents():
+    """
+    Connected Components class
+    """
     def __init__(self, G):
         self.G = G
         self.feature_names = []
@@ -25,20 +21,19 @@ class ConnectedComponents():
 
         Returns
         -------
-        feature_list :list
-           List of features related to node connectivity.
+        feature_list : dict
+           Dictionary of features related to node connectivity.
 
 
         Notes
         -----
+        Components calculations using networkx:
+            `Networkx_connected_components <https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.components.connected_components.html#networkx.algorithms.components.connected_components>`_
 
 
         """
         
-        
-        """
-        self.feature_names = ['s_metric']
-        """
+
 
         G = self.G
 

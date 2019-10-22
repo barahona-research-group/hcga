@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Jul 27 20:24:06 2019
-
-@author: Henry
-"""
 
 from networkx.algorithms import centrality
 from hcga.Operations import utils
@@ -45,7 +38,7 @@ class SecondOrderCentrality():
         Notes
         -----
         Second order centrality calculations using networkx:
-            `Networkx_centrality <https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html>`_ 
+            `Networkx_centrality <https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html#second-order-centrality>`_ 
         """
         
         # Defining the input arguments
@@ -67,10 +60,7 @@ class SecondOrderCentrality():
                 
                 
             for i in range(len(bins)):
-                """# Adding to feature names
-                feature_names.append('opt_model_{}'.format(bins[i]))
-                feature_names.append('powerlaw_a_{}'.format(bins[i]))
-                feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
+
                     
                 # Fitting the second order centrality distribution and finding the optimal
                 # distribution according to SSE

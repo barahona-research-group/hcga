@@ -1,11 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Mar  3 18:30:46 2019
 
-@author: Rob
-"""
 
-import pandas as pd
 import numpy as np
 from hcga.Operations.utils import clustering_quality
 import networkx as nx
@@ -13,6 +7,9 @@ import networkx as nx
 from networkx.algorithms.community import label_propagation_communities
 
 class LabelpropagationCommunities():
+    """
+    Label propagation communities class
+    """
     def __init__(self, G):
         self.G = G
         self.feature_names = []
@@ -20,22 +17,45 @@ class LabelpropagationCommunities():
 
     def feature_extraction(self):
 
-        """
-        Identifies community sets determined by label propagation.
-        """
+        """Compute the measures based on the Label propagation communities algorithm.
+
+        Parameters
+        ----------
+        G : graph
+           A networkx graph
+
+        Returns
+        -------
+        feature_list : dict
+           Dictionary of features related to the label propagation communities algorithm.
+
+
+        Notes
+        -----
+        Implementation of networkx code:
+            `Networkx_label_propagation <https://networkx.github.io/documentation/networkx-2.2/_modules/networkx/algorithms/community/label_propagation.html#label_propagation_communities>`_
+    
+
         
+        Finds communities in `G` using a semi-synchronous label propagation
+    method[1]_. This method combines the advantages of both the synchronous
+    and asynchronous models. Not implemented for directed graphs.
+
+        References
+        ----------
+        .. [1] Cordasco, G., & Gargano, L. (2010, December). Community detection
+           via semi-synchronous label propagation algorithms. In Business
+           Applications of Social Network Analysis (BASNA), 2010 IEEE International
+           Workshop on (pp. 1-8). IEEE.
+
         """
-        feature_names = ['node_ratio']
-        """
+
 
         G = self.G
 
         feature_list = {}
         
         if not nx.is_directed(G):
-            # basic normalisation parameters
-            N = G.number_of_nodes()
-            E = G.number_of_edges()
     
             c = list(label_propagation_communities(G))              
     
@@ -52,10 +72,7 @@ class LabelpropagationCommunities():
             for i in range(len(qual_names)):
                 feature_list[qual_names[i]]=qual_vals[i]         
     
-            """ 
-            feature_list = feature_list + qual_vals
-            feature_names = feature_names + qual_names 
-            """
+
         else:
             feature_list['node_ratio']=np.nan
             feature_list['node_ratio']=np.nan
@@ -67,7 +84,5 @@ class LabelpropagationCommunities():
             feature_list['intra_comm_edge']=np.nan
             
             
-        """
-        self.feature_names = feature_names
-        """
+
         self.features = feature_list

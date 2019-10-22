@@ -1,15 +1,7 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue May  7 10:41:52 2019
-
-@author: robert
-"""
 
 from fa2 import ForceAtlas2
 from hcga.Operations import utils
 import numpy as np
-import scipy as sp
 
 
 class ForceCentrality():
@@ -32,32 +24,26 @@ class ForceCentrality():
         G : graph
           A networkx graph
 
-        bins:
-            Number of bins for calculating pdf of chosen distribution
-            for SSE calculation
-
 
         Returns
         -------
-        feature_list :list
-           List of features related to force centrality.
+        feature_list : Dict
+           Dictionary of features related to force centrality.
 
 
         Notes
         -----
-
-
+        This feature uses the force atlas package to create a force-directed graph.
+        
+        Force atlas computed using:
+            `Force Atlas <https://github.com/bhargavchippada/forceatlas2>`_
 
         """
 
         # Defining the input arguments
         bins = [10]
         
-        """
-        # Defining featurenames
-        self.feature_names = ['mean','std','max','min']
-        """
-        
+
         G = self.G
         
         feature_list = {}
@@ -74,8 +60,7 @@ class ForceCentrality():
                 # Log
                 verbose=False)
         
-        #producing a zero array in case force atlas fails.
-        
+        #producing a zero array in case force atlas fails.        
         c = np.zeros(G.number_of_nodes())
 
         try:
@@ -103,11 +88,7 @@ class ForceCentrality():
 
         
         for i in range(len(bins)):
-            """# Adding to feature names
-            feature_names.append('opt_model_{}'.format(bins[i]))
-            feature_names.append('powerlaw_a_{}'.format(bins[i]))
-            feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
-            
+
             # Fitting the c distribution and finding the optimal
             # distribution according to SSE
             opt_mod,opt_mod_sse = utils.best_fit_distribution(c,bins=bins[i])

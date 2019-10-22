@@ -22,8 +22,8 @@ class Diameter():
 
         Returns
         -------
-        feature_list : list
-           List containing diameter and radius of graph.
+        feature_list : dict
+           dictionary containing diameter and radius of graph.
            
         Notes
         -----
@@ -31,9 +31,7 @@ class Diameter():
             `Networkx_diameter/radius <https://networkx.github.io/documentation/stable/reference/algorithms/distance_measures.html>`_
         """
         
-        """
-        feature_names = ['diameter','radius']
-        """
+
         
         G = self.G
         feature_list = {}
@@ -44,9 +42,7 @@ class Diameter():
         else:
             feature_list['diameter']=np.nan
             feature_list['radius']=np.nan
-        """
-        self.feature_names = feature_names
-        """
+
         self.features = feature_list
         
         

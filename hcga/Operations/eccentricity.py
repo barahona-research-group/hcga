@@ -14,38 +14,44 @@ class Eccentricity():
         
     def feature_extraction(self):
         """
-        Compute eccentricity for each node
+        Compute eccentricity for each node.
         
         The eccentricity of a node is the maximum distance of the node from 
-        any other node in the graph.
+        any other node in the graph [1]_.
         
         Parameters
         ----------
         G : graph
           A networkx graph
 
-        args :
-            arg[0] Number of bins for calculating pdf of chosen distribution for SSE calculation
 
         Returns
         -------
-        feature_list :list
-           List of features related to eccentricity.
+        feature_list : dict
+           Dictionary of features related to eccentricity.
 
 
         Notes
         -----
         Eccentricity using networkx:
-            `Networx_eccentricity <https://networkx.github.io/documentation/stable/reference/algorithms/distance_measures.html>`_   
+            `Networkx_eccentricity <https://networkx.github.io/documentation/stable/reference/algorithms/distance_measures.html>`_   
+        
+        
+        References
+        ----------
+        .. [1] F.W. Takes and W.A. Kosters, Computing the Eccentricity Distribution of
+    Large Graphs, Algorithms 6(1): 100-118, 2013.
+    doi: https://doi.org/10.3390/a6010100          
+            
+        
+
+        
         """
         
         # Defining the input arguments
         bins = [10,20,50]
         
-        """
-        # Defining featurenames
-        feature_names = ['mean','std','max','min']
-        """
+
         
         G = self.G
         feature_list = {}
@@ -59,10 +65,7 @@ class Eccentricity():
             feature_list['min'] = eccentricity.min()
             
             for i in range(len(bins)):
-                """# Adding to feature names
-                feature_names.append('opt_model_{}'.format(bins[i]))
-                feature_names.append('powerlaw_a_{}'.format(bins[i]))
-                feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
+
                 
                 # Fitting the eccentricity distribution and finding the optimal
                 # distribution according to SSE
@@ -82,8 +85,6 @@ class Eccentricity():
                 feature_list['powerlaw_a_{}'.format(bins[i])] = np.nan
                 feature_list['powerlaw_SSE_{}'.format(bins[i])] = np.nan
 
-        """
-        self.feature_names=feature_names
-        """
+
         self.features = feature_list
        

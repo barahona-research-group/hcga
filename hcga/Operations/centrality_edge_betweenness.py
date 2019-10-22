@@ -29,28 +29,22 @@ class EdgeBetweennessCentrality():
         G : graph
           A networkx graph
 
-        bins :
-            Number of bins for calculating pdf of chosen distribution
-            for SSE calculation
 
         Returns
         -------
         feature_list :list
            List of features related to betweenness centrality.
            
-         Notes
+           
+        Notes
         -----
-        Betweenness centrality calculations using networkx:
-            `Networkx_centrality <https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html>`_
+        Edge Betweenness centrality calculations using networkx:
+            `Networkx_centrality <https://networkx.github.io/documentation/networkx-1.10/reference/generated/networkx.algorithms.centrality.edge_betweenness_centrality.html>`_
         """     
                 
         # Defining the input arguments
         bins = [10,20,50]
         
-        """
-        # Defining featurenames
-        feature_names = ['mean','std','max','min']
-        """
 
         G = self.G
 
@@ -66,10 +60,7 @@ class EdgeBetweennessCentrality():
         feature_list['min'] = edge_betweenness_centrality.min()
         
         for i in range(len(bins)):
-            """# Adding to feature names
-            feature_names.append('opt_model_{}'.format(bins[i]))
-            feature_names.append('powerlaw_a_{}'.format(bins[i]))
-            feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
+
             
             # Fitting the edge betweenness centrality distribution and finding the optimal
             # distribution according to SSE
@@ -80,13 +71,7 @@ class EdgeBetweennessCentrality():
             feature_list['powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(edge_betweenness_centrality,bins=bins[i])[0][-2]# value 'a' in power law
             feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(edge_betweenness_centrality,bins=bins[i])[1] # value sse in power law
 
-        # Fitting normal distribution and finding...
 
 
-        # Fitting exponential and finding ...
-        
-        """
-        self.feature_names=feature_names
-        """
         
         self.features = feature_list
