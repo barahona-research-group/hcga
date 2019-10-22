@@ -67,11 +67,11 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 
-<span class="sd">        graphs : list </span>
+<span class="sd">        graphs: list </span>
 <span class="sd">            list of graphs</span>
-<span class="sd">        directory : folder</span>
+<span class="sd">        directory: folder</span>
 <span class="sd">            directory with graphs</span>
-<span class="sd">        dataset : string</span>
+<span class="sd">        dataset: string</span>
 <span class="sd">            name of the dataset to load the graphs</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -102,13 +102,13 @@
 <span class="sd">            directory path with graphs</span>
 <span class="sd">        dataset: string</span>
 <span class="sd">            Name of the dataset, the following are allowed: </span>
-<span class="sd">            * ENZYMES -- benchmark </span>
-<span class="sd">            * DD -- benchmark </span>
-<span class="sd">            * COLLAB -- benchmark</span>
-<span class="sd">            * PROTEINS -- benchmark </span>
-<span class="sd">            * REDDIT-MULTI-12K -- benchmark</span>
-<span class="sd">            * synthetic -- contains several variants of synthetics </span>
-<span class="sd">            * HELICENES -- Julia Schneider&#39;s dataset</span>
+<span class="sd">                * ENZYMES: benchmark </span>
+<span class="sd">                * DD: benchmark </span>
+<span class="sd">                * COLLAB: benchmark</span>
+<span class="sd">                * PROTEINS: benchmark </span>
+<span class="sd">                * REDDIT-MULTI-12K: benchmark</span>
+<span class="sd">                * synthetic: contains several variants of synthetics </span>
+<span class="sd">                * HELICENES: Julia Schneider&#39;s dataset</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -177,9 +177,9 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 
-<span class="sd">        calc_speed : string</span>
+<span class="sd">        calc_speed: string</span>
 <span class="sd">            set of features to consider (from the operations.csv file). Can take &#39;slow&#39;, &#39;medium&#39; or &#39;fast&#39;. </span>
-<span class="sd">        parallel : bool</span>
+<span class="sd">        parallel: bool</span>
 <span class="sd">            True to run with multiprocessing </span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -272,8 +272,9 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        n : int/string:</span>
+<span class="sd">        n: int/string</span>
 <span class="sd">            Either the feature number of its name</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        feature: list</span>
@@ -316,9 +317,9 @@
 
 <span class="sd">        data: string</span>
 <span class="sd">            the type of features to classify</span>
-<span class="sd">                * &#39;all&#39; - all the features calculated</span>
-<span class="sd">                * &#39;feats&#39; - features based on node features and node labels only</span>
-<span class="sd">                * &#39;topology&#39; - features based only on the graph topology features</span>
+<span class="sd">                * &#39;all&#39; : all the features calculated</span>
+<span class="sd">                * &#39;feats&#39; : features based on node features and node labels only</span>
+<span class="sd">                * &#39;topology&#39; : features based only on the graph topology features</span>
 <span class="sd">        ml_model: string</span>
 <span class="sd">            ML method to use, can be:</span>
 <span class="sd">                * xgboost</span>
@@ -716,17 +717,6 @@
         
         <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
         <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
-        <span class="c1">#X_train, y_train, X_test, y_test = load_dataset(X,y)</span>
-        
-        <span class="c1">## Changing labels to one-hot encoded vector</span>
-        <span class="c1">#lb = LabelBinarizer()</span>
-        <span class="c1">#y_train = lb.fit_transform(y_train)</span>
-        <span class="c1">#y_test = lb.transform(y_test)</span>
-
-        <span class="c1">#print(&#39;Train labels dimension:&#39;);print(y_train.shape)</span>
-        <span class="c1">#print(&#39;Test labels dimension:&#39;);print(y_test.shape)   </span>
-        
-        <span class="c1">#rf = RandomForestClassifier(n_estimators=100,max_depth=100,max_features=None)</span>
         <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
         
         <span class="n">acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">y_pred</span><span class="p">)</span>

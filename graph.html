@@ -41,11 +41,11 @@
 <dd><p>Main class of hcga, with all the construction ana analysis functions. 
 The constructor takes either a list of networkx graphs, or a directory with a list of graph, and the name of the dataset (if it exists).</p>
 <dl class="simple">
-<dt>graphs<span class="classifier">list </span></dt><dd><p>list of graphs</p>
+<dt>graphs: list </dt><dd><p>list of graphs</p>
 </dd>
-<dt>directory<span class="classifier">folder</span></dt><dd><p>directory with graphs</p>
+<dt>directory: folder</dt><dd><p>directory with graphs</p>
 </dd>
-<dt>dataset<span class="classifier">string</span></dt><dd><p>name of the dataset to load the graphs</p>
+<dt>dataset: string</dt><dd><p>name of the dataset to load the graphs</p>
 </dd>
 </dl>
 <dl class="method">
@@ -53,9 +53,9 @@ The constructor takes either a list of networkx graphs, or a directory with a li
 <code class="sig-name descname">calculate_features</code><span class="sig-paren">(</span><em class="sig-param">calc_speed='slow'</em>, <em class="sig-param">parallel=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.calculate_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.calculate_features" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract the features from each graph in the set of graphs</p>
 <dl class="simple">
-<dt>calc_speed<span class="classifier">string</span></dt><dd><p>set of features to consider (from the operations.csv file). Can take ‘slow’, ‘medium’ or ‘fast’.</p>
+<dt>calc_speed: string</dt><dd><p>set of features to consider (from the operations.csv file). Can take ‘slow’, ‘medium’ or ‘fast’.</p>
 </dd>
-<dt>parallel<span class="classifier">bool</span></dt><dd><p>True to run with multiprocessing</p>
+<dt>parallel: bool</dt><dd><p>True to run with multiprocessing</p>
 </dd>
 </dl>
 </dd></dl>
@@ -65,7 +65,7 @@ The constructor takes either a list of networkx graphs, or a directory with a li
 <code class="sig-name descname">extract_feature</code><span class="sig-paren">(</span><em class="sig-param">n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.extract_feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.extract_feature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract a feature from the feature matrix</p>
 <dl class="simple">
-<dt>n<span class="classifier">int/string:</span></dt><dd><p>Either the feature number of its name</p>
+<dt>n: int/string</dt><dd><p>Either the feature number of its name</p>
 </dd>
 </dl>
 <dl class="simple">
@@ -81,9 +81,9 @@ The constructor takes either a list of networkx graphs, or a directory with a li
 <dl class="simple">
 <dt>data: string</dt><dd><dl class="simple">
 <dt>the type of features to classify</dt><dd><ul class="simple">
-<li><p>‘all’ - all the features calculated</p></li>
-<li><p>‘feats’ - features based on node features and node labels only</p></li>
-<li><p>‘topology’ - features based only on the graph topology features</p></li>
+<li><p>‘all’ : all the features calculated</p></li>
+<li><p>‘feats’ : features based on node features and node labels only</p></li>
+<li><p>‘topology’ : features based only on the graph topology features</p></li>
 </ul>
 </dd>
 </dl>
@@ -124,14 +124,18 @@ The constructor takes either a list of networkx graphs, or a directory with a li
 <dl class="simple">
 <dt>directory: string</dt><dd><p>directory path with graphs</p>
 </dd>
-<dt>dataset: string</dt><dd><p>Name of the dataset, the following are allowed: 
-* ENZYMES – benchmark 
-* DD – benchmark 
-* COLLAB – benchmark
-* PROTEINS – benchmark 
-* REDDIT-MULTI-12K – benchmark
-* synthetic – contains several variants of synthetics 
-* HELICENES – Julia Schneider’s dataset</p>
+<dt>dataset: string</dt><dd><dl class="simple">
+<dt>Name of the dataset, the following are allowed: </dt><dd><ul class="simple">
+<li><p>ENZYMES: benchmark</p></li>
+<li><p>DD: benchmark</p></li>
+<li><p>COLLAB: benchmark</p></li>
+<li><p>PROTEINS: benchmark</p></li>
+<li><p>REDDIT-MULTI-12K: benchmark</p></li>
+<li><p>synthetic: contains several variants of synthetics</p></li>
+<li><p>HELICENES: Julia Schneider’s dataset</p></li>
+</ul>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
