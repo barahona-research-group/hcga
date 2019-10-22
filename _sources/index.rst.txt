@@ -11,21 +11,23 @@ This code comes with the companion paper [Hcga]_  containing more details and ex
 How to install HCGA
 -------------------
 
-To install the dev version:
-    
-    $ git clone https://github.com/ImperialCollegeLondon/hcga.git
-    $ cd hcga
-    $ pip install -e .
+To install the dev version::
+
+       $ git clone https://github.com/ImperialCollegeLondon/hcga.git
+       $ cd hcga
+       $ pip install -e .
 
 There is no release version yet, but stay tuned!
 
 Citing
 ------
 
-To cite *hcga*, please use [Hcga]_ 
+To cite *hcga*, please use [Hcga]_. 
 
 Credits
 -------
+
+The code is still a preliminary version, and written by us.
 
 Original authors:
 ^^^^^^^^^^^^^^^^^
