@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue May  7 10:41:52 2019
-
-@author: robert
-"""
 
 
 import numpy as np
@@ -13,7 +6,7 @@ import networkx as nx
 
 class SpectrumAdjacency():
     """
-    Force centrality class
+    Spectral adjacency class
     """
     def __init__(self, G):
         self.G = G
@@ -22,7 +15,7 @@ class SpectrumAdjacency():
 
     def feature_extraction(self):
 
-        """Compute ...
+        """Compute measures of the spectrum of the adjacency matrix
 
 
 
@@ -33,15 +26,16 @@ class SpectrumAdjacency():
 
 
 
-
         Returns
         -------
-
+        feature_list : dict
+           Dictionary of features related to spectrum of the adjacency matrix
 
 
         Notes
         -----
-
+        Spectral adjacency calculations using networkx:
+            `Networkx_spectrum_adjacency <https://networkx.github.io/documentation/stable/reference/generated/networkx.linalg.spectrum.adjacency_spectrum.html#networkx.linalg.spectrum.adjacency_spectrum>`_
 
 
         """

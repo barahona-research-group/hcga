@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue May  7 10:41:52 2019
-
-@author: robert
-"""
-
 
 import numpy as np
 import networkx as nx
@@ -13,7 +5,7 @@ import networkx as nx
 
 class SpectrumLaplacian():
     """
-    Force centrality class
+    Spectrum Laplacian class
     """
     def __init__(self, G):
         self.G = G
@@ -22,7 +14,7 @@ class SpectrumLaplacian():
 
     def feature_extraction(self):
 
-        """Compute ...
+        """Compute measures of the spectrum of the Laplacian matrix
 
 
 
@@ -36,12 +28,14 @@ class SpectrumLaplacian():
 
         Returns
         -------
-
+        feature_list : dict
+           Dictionary of features related to spectrum of the adjacency matrix
 
 
         Notes
         -----
-
+        Spectral Laplacian calculations using networkx:
+            `Networkx_spectrum_Laplacian <https://networkx.github.io/documentation/stable/reference/generated/networkx.linalg.spectrum.laplacian_spectrum.html>`_
 
 
         """

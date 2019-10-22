@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue May  7 10:41:52 2019
-
-@author: robert
-"""
 
 
 import numpy as np
@@ -13,7 +6,7 @@ import networkx as nx
 
 class SpectrumModularity():
     """
-    Force centrality class
+    Spectrum modularity class
     """
     def __init__(self, G):
         self.G = G
@@ -22,7 +15,7 @@ class SpectrumModularity():
 
     def feature_extraction(self):
 
-        """Compute ...
+        """Compute measures of the spectrum of the modularity matrix
 
 
 
@@ -36,26 +29,24 @@ class SpectrumModularity():
 
         Returns
         -------
-
+        feature_list : dict
+           Dictionary of features related to spectrum of the modularity matrix
 
 
         Notes
         -----
-
+        Spectral modularity calculations using networkx:
+            `Networkx_spectrum_modularity <https://networkx.github.io/documentation/stable/reference/generated/networkx.linalg.spectrum.modularity_spectrum.html>`_
 
 
         """
-
         
         
         G = self.G
 
         feature_list = {}         
         
-        
-        
-        
-        
+
         # laplacian spectrum
         eigenvals_M = np.real(nx.linalg.spectrum.modularity_spectrum(G))
         

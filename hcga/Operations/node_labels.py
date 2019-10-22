@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Aug  9 14:43:56 2019
-
-@author: Henry
-"""
 
 import networkx as nx
 import numpy as np
@@ -12,15 +5,41 @@ from hcga.Operations import utils
 
 
 class NodeLabels():
+    """
+    Node labels class
     
-    
+    """    
     def __init__(self, G):
         self.G = G
         self.feature_names = []
         self.features = {}
         
     def feature_extraction(self):
+        """
+        Computes measures based on the node labels
         
+
+
+        Parameters
+        ----------
+        G : graph
+           A networkx graph
+
+
+        Returns
+        -------
+        feature_list : dict
+           Dictionary of features related to node labels
+
+
+        Notes
+        -----
+
+        Summary statistics for the node labels. 
+    
+
+
+        """           
         G = self.G
         
         # Define number of bins

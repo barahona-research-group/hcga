@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Jul 27 19:07:39 2019
-
-@author: Henry
-"""
 
 import networkx as nx
 
@@ -21,9 +14,6 @@ class MinimumCuts():
 
         """Compute the minimum cuts for the network
         
-        
-        
-
 
         Parameters
         ----------

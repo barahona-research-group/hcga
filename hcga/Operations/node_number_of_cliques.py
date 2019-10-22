@@ -25,13 +25,11 @@ class NodeNumberOfCliques():
         G : graph
           A networkx graph
 
-        bins :
-            Number of bins for calculating pdf of chosen distribution for SSE calculation
 
         Returns
         -------
-        feature_list :list
-           List of features related to the number of maximal cliques for
+        feature_list : dict
+           Dictionary of features related to the number of maximal cliques for
            each node.
 
 
@@ -44,10 +42,7 @@ class NodeNumberOfCliques():
         # Defining the input arguments
         bins = [10,20,50]
         
-        """
-        # Defining featurenames
-        feature_names = ['mean','std','max','min','median']
-        """
+
 
         G = self.G
 
@@ -64,10 +59,7 @@ class NodeNumberOfCliques():
             feature_list['min'] = number_of_cliques.min()
             
             for i in range(len(bins)):
-                """# Adding to feature names
-                feature_names.append('opt_model_{}'.format(bins[i]))
-                feature_names.append('powerlaw_a_{}'.format(bins[i]))
-                feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
+
                 
                 # Fitting the number of cliques distribution and finding the optimal
                 # distribution according to SSE
@@ -88,12 +80,5 @@ class NodeNumberOfCliques():
                 feature_list['powerlaw_SSE_{}'.format(bins[i])] = np.nan
 
 
-        # Fitting normal distribution and finding...
 
-
-        # Fitting exponential and finding ...
-        
-        """
-        self.feature_names=feature_names
-        """
         self.features = feature_list

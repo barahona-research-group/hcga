@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Aug  9 14:43:56 2019
-
-@author: Henry
-"""
 
 import networkx as nx
 import numpy as np
@@ -12,7 +5,9 @@ from hcga.Operations import utils
 
 
 class NodeFeaturesConv():
-    
+    """
+    Node features convoluted class    
+    """
     
     def __init__(self, G):
         self.G = G
@@ -20,7 +15,31 @@ class NodeFeaturesConv():
         self.features = {}
         
     def feature_extraction(self):
-        
+        """
+        Computes measures based on the node features/attributes convoluted over the graph structure.
+        We implement a message passing system using the discrete adjacency matrix.        
+
+
+        Parameters
+        ----------
+        G : graph
+           A networkx graph
+
+
+        Returns
+        -------
+        feature_list : dict
+           Dictionary of features related to node features convoluted
+
+
+        Notes
+        -----
+
+        Summary statistics of convoluted node features.
+    
+
+
+        """                
         G = self.G
         
         # Define number of bins

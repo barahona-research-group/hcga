@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Mar  3 18:30:46 2019
 
-@author: Rob
-"""
 
 import numpy as np
 import networkx as nx
@@ -11,6 +6,9 @@ from hcga.Operations import utils
 
 
 class Sparsification():
+    """
+    Sparsification class
+    """
     def __init__(self, G):
         self.G = G
         self.feature_names = []
@@ -27,8 +25,8 @@ class Sparsification():
 
         Returns
         -------
-        feature_list :list
-           List of features related to sparsification.
+        feature_list : dict
+           Dictionary of features related to sparsification.
 
 
         Notes
@@ -36,22 +34,15 @@ class Sparsification():
 
         References
         ----------
-        .. [1] Burt, Ronald S.
-               "Structural holes and good ideas".
-               American Journal of Sociology (110): 349–399.
 
 
         """
 
-        """
-        self.feature_names = ['']
-        """
         
         G = self.G
 
         feature_list = {}
 
-        N = G.number_of_nodes()       
 
        
         self.features = feature_list

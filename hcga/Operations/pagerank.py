@@ -5,6 +5,9 @@ from hcga.Operations import utils
 import numpy as np
 
 class PageRank():
+    """
+    Page rank class    
+    """
     def __init__(self, G):
         self.G = G
         self.feature_names = []
@@ -23,8 +26,6 @@ class PageRank():
         ----------
         G : graph
            A networkx graph
-        args :
-            arg[0] Number of bins for calculating pdf of chosen distribution for SSE calculation
 
         Returns
         -------
@@ -35,14 +36,25 @@ class PageRank():
         Notes
         -----
         Implementation of networkx code:
-            `Networkx_pagerank <https://networkx.github.io/documentation/stable/reference/algorithms/link_analysis.html>`_        
+            `Networkx_pagerank <https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.link_analysis.pagerank_alg.pagerank.html>`_        
+
+        PageRank computes a ranking of the nodes in the graph G based on
+        the structure of the incoming links. It was originally designed as
+        an algorithm to rank web pages.
+
+        References
+        ----------
+        .. [1] A. Langville and C. Meyer,
+           "A survey of eigenvector methods of web information retrieval."
+           http://citeseer.ist.psu.edu/713792.html
+        .. [2] Page, Lawrence; Brin, Sergey; Motwani, Rajeev and Winograd, Terry,
+           The PageRank citation ranking: Bringing order to the Web. 1999
+           http://dbpubs.stanford.edu:8090/pub/showDoc.Fulltext?lang=en&doc=1999-66&format=pdf
+    
 
         """
         bins = [10,20,50]
         
-        """
-        feature_names = ['mean','std','max','min']
-        """
 
         G = self.G
 
@@ -57,10 +69,7 @@ class PageRank():
         feature_list['min'] = pagerank.min()
             
         for i in range(len(bins)):
-            """# Adding to feature names
-            feature_names.append('opt_model_{}'.format(bins[i]))
-            feature_names.append('powerlaw_a_{}'.format(bins[i]))
-            feature_names.append('powerlaw_SSE_{}'.format(bins[i]))"""
+
                 
             # Fitting the PageRank distribution and finding the optimal
             # distribution according to SSE
@@ -72,6 +81,4 @@ class PageRank():
             feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(pagerank,bins=bins[i])[1] # value sse in power law
         
         self.features = feature_list
-        """
-        self.feature_names=feature_names
-        """
+

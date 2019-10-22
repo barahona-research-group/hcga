@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Aug  9 14:43:56 2019
-
-@author: Henry
-"""
 
 import networkx as nx
 import numpy as np
@@ -12,7 +5,9 @@ from hcga.Operations import utils
 
 
 class NodeFeaturesBasic():
-    
+    """
+    Node features class
+    """
     
     def __init__(self, G):
         self.G = G
@@ -20,7 +15,31 @@ class NodeFeaturesBasic():
         self.features = {}
         
     def feature_extraction(self):
+        """
+        Computes measures based on the node features/attributes
         
+
+
+        Parameters
+        ----------
+        G : graph
+           A networkx graph
+
+
+        Returns
+        -------
+        feature_list : dict
+           Dictionary of features related to 
+
+
+        Notes
+        -----
+
+        Summary statistics for the node features. 
+    
+
+
+        """        
         G = self.G
         
         # Define number of bins

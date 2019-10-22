@@ -28,8 +28,8 @@ class MaximalMatching():
 
         Returns
         -------
-        feature_list : list
-           List of features related to the maximal matching.
+        feature_list : dict
+           Dictionary of features related to the maximal matching.
            
         Notes
         -----
@@ -39,9 +39,6 @@ class MaximalMatching():
 
         """
 
-        """
-        feature_names = ['num_edges','ratio']
-        """
 
         G = self.G
 
@@ -54,7 +51,5 @@ class MaximalMatching():
         #in the network
         feature_list['ratio']=len(nx.maximal_matching(G))/E
         
-        """
-        self.feature_names=feature_names
-        """
+
         self.features = feature_list

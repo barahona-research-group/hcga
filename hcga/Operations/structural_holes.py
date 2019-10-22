@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Mar  3 18:30:46 2019
 
-@author: Rob
-"""
 
 import numpy as np
 import networkx as nx
@@ -57,16 +52,12 @@ class StructuralHoles():
 
         """
         
-        """
-        self.feature_names = ['constraint_mean','constraint_std','constraint_median','constraint_max','constraint_min','constraint_opt_model',
-                              'effective_size_mean','effective_size_std','effective_size_median','effective_size_max','effective_size_min','effective_size_opt_model']
-        """
+
         
         G = self.G
 
         feature_list = {}
 
-        N = G.number_of_nodes()
         
         constraint = list(nx.structuralholes.constraint(G).values())      
         

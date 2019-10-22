@@ -1,14 +1,10 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Mar  3 18:30:46 2019
 
-@author: Rob
-"""
-
-import numpy as np
 import networkx as nx
 
 class SmallWorld():
+    """
+    Small world class
+    """
     def __init__(self, G):
         self.G = G
         self.feature_names = []
@@ -17,8 +13,20 @@ class SmallWorld():
     def feature_extraction(self):
 
         """ 
-        Calculating metrics about small-world networks
-
+    The small-world coefficient of a graph G is:
+    
+        omega = Lr/L - C/Cl
+    
+        where C and L are respectively the average clustering coefficient and
+        average shortest path length of G. Lr is the average shortest path length
+        of an equivalent random graph and Cl is the average clustering coefficient
+        of an equivalent lattice graph.
+    
+        The small-world coefficient (omega) ranges between -1 and 1. Values close
+        to 0 means the G features small-world characteristics. Values close to -1
+        means G has a lattice shape whereas values close to 1 means G is a random
+        graph.
+        
         Parameters
         ----------
         G : graph
@@ -26,28 +34,31 @@ class SmallWorld():
 
         Returns
         -------
-        feature_list :list
-           List of features related to small worldness
+        feature_list : dict
+           Dictionary of features related to small worldness
 
 
         Notes
         -----
-
-
-        """
+        Small world calculations using networkx:
+            `Networkx_omega <https://networkx.github.io/documentation/latest/_modules/networkx/algorithms/smallworld.html#omega>`_
         
+        The implementation is adapted from the algorithm by Telesford et al. [1]_.
+    
+        References
+        ----------
+        .. [1] Telesford, Joyce, Hayasaka, Burdette, and Laurienti (2011).
+               "The Ubiquity of Small-World Networks".
+               Brain Connectivity. 1 (0038): 367-75.  PMC 3604768. PMID 22432451.
+               doi:10.1089/brain.2011.0038.
+
         """
-        self.feature_names = ['sigma','omega']
-        """
+
 
         G = self.G
 
         feature_list = {}
 
-        N = G.number_of_nodes()
-        E = G.number_of_edges()
-
-        
         #C = nx.transitivity(G)
         #L = nx.average_shortest_path_length(G)
         

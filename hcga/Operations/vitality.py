@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Mar  3 18:30:46 2019
-
-@author: Rob
-"""
 
 import numpy as np
 import networkx as nx
@@ -37,18 +31,13 @@ class Vitality():
 
         """
         
-        """
-        self.feature_names = ['ratio_finite','closeness_mean','closeness_std',
-                              'closeness_median','closeness_max',
-                              'closeness_min']
-        """
+
         
 
         G = self.G
 
         feature_list = {}
 
-        N = G.number_of_nodes() 
 
 
         

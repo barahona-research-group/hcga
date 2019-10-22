@@ -1,15 +1,10 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Mar  3 18:30:46 2019
-
-@author: Rob
-"""
-
-import pandas as pd
 import numpy as np
 import networkx as nx
 
 class ShortestPaths():
+    """
+    Shortest path class
+    """
     def __init__(self, G):
         self.G = G
         self.feature_names = []
@@ -32,14 +27,15 @@ class ShortestPaths():
 
         Notes
         -----
-
+        Shortest path calculations using networkx:
+            `Networkx_shortestpaths <https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.shortest_paths.generic.shortest_path.html#networkx.algorithms.shortest_paths.generic.shortest_path>`_
+        
+        There may be more than one shortest path between a source and target.
+        This computes features on one of them.
 
         """
         
-        
-        """
-        self.feature_names = ['path_length_mean','path_length_mean_max','path_length_max']
-        """
+
         
         G = self.G
 

@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Mar  3 18:30:46 2019
-
-@author: Rob
-"""
 
 import numpy as np
 import networkx as nx
@@ -20,6 +14,12 @@ class NodeConnectivity():
 
         """Compute node connectivity measures.
 
+        Node connectivity is equal to the minimum number of nodes that
+            must be removed to disconnect G or render it trivial. If source
+            and target nodes are provided, this function returns the local node
+            connectivity: the minimum number of nodes that must be removed to break
+            all paths from source to target in G.
+
         Parameters
         ----------
         G : graph
@@ -34,8 +34,15 @@ class NodeConnectivity():
         Notes
         -----
         Implementation of networkx code:
-            `Networkx_node_connectivity <https://networkx.github.io/documentation/latest/_modules/networkx/algorithms/approximation/connectivity.html#all_pairs_node_connectivity>`_
+            `Networkx_node_connectivity <https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/connectivity/connectivity.html#node_connectivity>`_
 
+        This is a flow based implementation of node connectivity. The
+        algorithm works by solving $O((n-\delta-1+\delta(\delta-1)/2))$
+        maximum flow problems on an auxiliary digraph. Where $\delta$
+        is the minimum degree of G. For details about the auxiliary
+        digraph and the computation of local node connectivity see
+        :meth:`local_node_connectivity`. This implementation is based
+        on algorithm 11 in [1]_.
         
         References
         ----------
@@ -45,9 +52,7 @@ class NodeConnectivity():
 
         """
         
-        """
-        self.feature_names = ['mean','std','median','max','min','opt_model_mean','opt_model_std','opt_model_max','wiener_index']
-        """
+
         # Defining the input arguments
         bins=[10]
         
