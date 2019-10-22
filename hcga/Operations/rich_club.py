@@ -69,7 +69,9 @@ class RichClub():
         feature_list = {}
         if not nx.is_directed(G) and len(G)>5:            
             # Calculating the shortest paths stats
-            for attempts in range(10):
+            attempt = 0
+            attempt_max = 20
+            while attempt < attempt_max :
                 try:
                     
                     rich_club = list(nx.rich_club_coefficient(G).values())       
@@ -104,13 +106,16 @@ class RichClub():
                     break
                 
                 except Exception as e:
-                    print('Exception for rich_club:', e)
-    
-                    feature_names = ['num_rich','mean_rich_coef','std_rich_coef','max_rich_coef','ratio_rich_coef','ratio_top2_coef',
-                                      'top10_10','top10_9','top10_8','top10_7','top10_6','top10_5','top10_4','top10_3',
-                                      'top10_2','top10_1']
-                    for j in range(len(feature_names)):
-                        feature_list[feature_names[j]]=0
+                    attempt += 1   
+
+            if attempt == attempt_max:
+                print('Number of attempts ('+str(attempt_max)+') to compute rich_club exceded')
+
+                feature_names = ['num_rich','mean_rich_coef','std_rich_coef','max_rich_coef','ratio_rich_coef','ratio_top2_coef',
+                                  'top10_10','top10_9','top10_8','top10_7','top10_6','top10_5','top10_4','top10_3',
+                                  'top10_2','top10_1']
+                for j in range(len(feature_names)):
+                    feature_list[feature_names[j]]=0
         else:
             feature_names = ['num_rich','mean_rich_coef','std_rich_coef','max_rich_coef','ratio_rich_coef','ratio_top2_coef',
                                   'top10_10','top10_9','top10_8','top10_7','top10_6','top10_5','top10_4','top10_3',
@@ -118,6 +123,4 @@ class RichClub():
             for j in range(len(feature_names)):
                     feature_list[feature_names[j]]=np.nan
             
-            
-
         self.features = feature_list

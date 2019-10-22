@@ -157,6 +157,11 @@ def summary_statistics(feature_list,dist,feat_name):
     #feature_list[feat_name + '_max_repeat'] = np.max(st.find_repeats(dist)[0])
     feature_list[feat_name + '_entropy'] = st.entropy(dist)   
     feature_list[feat_name + '_sem'] = st.sem(dist)
-    feature_list[feat_name + '_bayes_confint'] = st.bayes_mvs(dist)[0][1][1] - st.bayes_mvs(dist)[0][1][0]
+    try:
+        feature_list[feat_name + '_bayes_confint'] = st.bayes_mvs(dist)[0][1][1] - st.bayes_mvs(dist)[0][1][0]
+
+    except Exception as e:
+        print('Exception for utils, bayes_confing:', e)
+        feature_list[feat_name + '_bayes_confint'] = np.nan 
 
     return feature_list

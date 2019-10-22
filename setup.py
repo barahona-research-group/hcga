@@ -9,7 +9,6 @@ setup(
    packages=['hcga'],  #same as name
    install_requires=['numpy',
                      'scipy',
-                     'pickle',
                      'tqdm', 
                      'networkx',
                      'statsmodels', 
