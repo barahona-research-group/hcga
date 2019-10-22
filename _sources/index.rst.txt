@@ -31,8 +31,8 @@ Original authors:
 ^^^^^^^^^^^^^^^^^
 
 - Robert Peach, GitHub: `peach-lucien <https://github.com/peach-lucien>`_
-- Alexis Arnaudon, GitHub: `arnaudon <https://github.com/arnaudon`_
-- Henry Palasciano, GitHub: `henrypalasciano <https://github.com/henrypalasciano`_
+- Alexis Arnaudon, GitHub: `arnaudon <https://github.com/arnaudon>`_
+- Henry Palasciano, GitHub: `henrypalasciano <https://github.com/henrypalasciano>`_
 
 Contributors:
 ^^^^^^^^^^^^^
