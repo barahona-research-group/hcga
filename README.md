@@ -21,7 +21,7 @@ R. Peach, H. Palasciano, A. Arnaudon, M. Brahona, “hcga: Highly Comparative Gr
 
 ```
 
-### Run test file
+## Run test file
 
 In the example folder, the script ``test.py`` demonstrates how to run the code on the ENZYMES dataset. 
 
