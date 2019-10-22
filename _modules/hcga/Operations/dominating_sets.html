@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>hcga.Operations.dominating_sets &#8212; hcga 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">hcga 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcga.Operations.dominating_sets</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Sun Mar  3 18:30:46 2019</span>
+
+<span class="sd">@author: Rob</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">from</span> <span class="nn">hcga.Operations</span> <span class="k">import</span> <span class="n">utils</span>
+
+
+<span class="k">class</span> <span class="nc">DominatingSets</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">G</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Compute dominating set measures.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        G : graph</span>
+<span class="sd">           A networkx graph</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        feature_list :list</span>
+<span class="sd">           List of features related to dominating sets.</span>
+
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        self.feature_names = [&#39;num_ind_nodes_norm&#39;,&#39;ratio__ind_nodes_norm&#39;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">G</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span>
+
+        <span class="n">feature_list</span> <span class="o">=</span> <span class="p">{}</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>            
+    
+    
+            <span class="n">dom_set</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">dominating_set</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+            <span class="n">dom_set_min</span> <span class="o">=</span> <span class="n">min_weighted_dominating_set</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+            <span class="n">edges_dom</span> <span class="o">=</span> <span class="n">min_edge_dominating_set</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+            
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;len_domset&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">dom_set</span><span class="p">)</span>             
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;len_min_domset&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">dom_set_min</span><span class="p">)</span>            
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;len_edge_domset&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">edges_dom</span><span class="p">)</span>
+            
+            <span class="c1">#ramsey_split = nx.algorithms.approximation.ramsey.ramsey_R2(G)</span>
+            <span class="c1">#feature_list[&#39;ramsey_number_1&#39;]=len(list(ramsey_split)[0])</span>
+            <span class="c1">#feature_list[&#39;ramsey_number_2&#39;]=len(list(ramsey_split)[1])</span>
+            <span class="c1">#feature_list[&#39;ramsey_ratio&#39;]=len(list(ramsey_split)[0])/len(list(ramsey_split)[1])</span>
+
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;len_domset&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>             
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;len_min_domset&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>          
+            <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;len_edge_domset&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>      
+            
+            <span class="c1">#ramsey_split = nx.algorithms.approximation.ramsey.ramsey_R2(G)</span>
+            <span class="c1">#feature_list[&#39;ramsey_number_1&#39;]=np.nan      </span>
+            <span class="c1">#feature_list[&#39;ramsey_number_2&#39;]=np.nan      </span>
+            <span class="c1">#feature_list[&#39;ramsey_ratio&#39;]=np.nan      </span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">feature_list</span>
+
+
+<div class="viewcode-block" id="min_weighted_dominating_set"><a class="viewcode-back" href="../../../Features/dominating_sets.html#hcga.Operations.dominating_sets.min_weighted_dominating_set">[docs]</a><span class="k">def</span> <span class="nf">min_weighted_dominating_set</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns a dominating set that approximates the minimum weight node</span>
+<span class="sd">    dominating set.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : NetworkX graph</span>
+<span class="sd">        Undirected graph.</span>
+
+<span class="sd">    weight : string</span>
+<span class="sd">        The node attribute storing the weight of an node. If provided,</span>
+<span class="sd">        the node attribute with this key must be a number for each</span>
+<span class="sd">        node. If not provided, each node is assumed to have weight one.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    min_weight_dominating_set : set</span>
+<span class="sd">        A set of nodes, the sum of whose weights is no more than `(\log</span>
+<span class="sd">        w(V)) w(V^*)`, where `w(V)` denotes the sum of the weights of</span>
+<span class="sd">        each node in the graph and `w(V^*)` denotes the sum of the</span>
+<span class="sd">        weights of each node in the minimum weight dominating set.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This algorithm computes an approximate minimum weighted dominating</span>
+<span class="sd">    set for the graph `G`. The returned solution has weight `(\log</span>
+<span class="sd">    w(V)) w(V^*)`, where `w(V)` denotes the sum of the weights of each</span>
+<span class="sd">    node in the graph and `w(V^*)` denotes the sum of the weights of</span>
+<span class="sd">    each node in the minimum weight dominating set for the graph.</span>
+
+<span class="sd">    This implementation of the algorithm runs in $O(m)$ time, where $m$</span>
+<span class="sd">    is the number of edges in the graph.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Vazirani, Vijay V.</span>
+<span class="sd">           *Approximation Algorithms*.</span>
+<span class="sd">           Springer Science &amp; Business Media, 2001.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># The unique dominating set for the null graph is the empty set.</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="c1"># This is the dominating set that will eventually be returned.</span>
+    <span class="n">dom_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_cost</span><span class="p">(</span><span class="n">node_and_neighborhood</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the cost-effectiveness of greedily choosing the given</span>
+<span class="sd">        node.</span>
+
+<span class="sd">        `node_and_neighborhood` is a two-tuple comprising a node and its</span>
+<span class="sd">        closed neighborhood.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">v</span><span class="p">,</span> <span class="n">neighborhood</span> <span class="o">=</span> <span class="n">node_and_neighborhood</span>
+        <span class="k">return</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">neighborhood</span> <span class="o">-</span> <span class="n">dom_set</span><span class="p">)</span>
+
+    <span class="c1"># This is a set of all vertices not already covered by the</span>
+    <span class="c1"># dominating set.</span>
+    <span class="n">vertices</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+    <span class="c1"># This is a dictionary mapping each node to the closed neighborhood</span>
+    <span class="c1"># of that node.</span>
+    <span class="n">neighborhoods</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="p">{</span><span class="n">v</span><span class="p">}</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">G</span><span class="p">}</span>
+
+    <span class="c1"># Continue until all vertices are adjacent to some node in the</span>
+    <span class="c1"># dominating set.</span>
+    <span class="k">while</span> <span class="n">vertices</span><span class="p">:</span>
+        <span class="c1"># Find the most cost-effective node to add, along with its</span>
+        <span class="c1"># closed neighborhood.</span>
+        <span class="n">dom_node</span><span class="p">,</span> <span class="n">min_set</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">neighborhoods</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">_cost</span><span class="p">)</span>
+        <span class="c1"># Add the node to the dominating set and reduce the remaining</span>
+        <span class="c1"># set of nodes to cover.</span>
+        <span class="n">dom_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dom_node</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">neighborhoods</span><span class="p">[</span><span class="n">dom_node</span><span class="p">]</span>
+        <span class="n">vertices</span> <span class="o">-=</span> <span class="n">min_set</span>
+
+    <span class="k">return</span> <span class="n">dom_set</span></div>
+
+<div class="viewcode-block" id="min_edge_dominating_set"><a class="viewcode-back" href="../../../Features/dominating_sets.html#hcga.Operations.dominating_sets.min_edge_dominating_set">[docs]</a><span class="k">def</span> <span class="nf">min_edge_dominating_set</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns minimum cardinality edge dominating set.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : NetworkX graph</span>
+<span class="sd">      Undirected graph</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    min_edge_dominating_set : set</span>
+<span class="sd">      Returns a set of dominating edges whose size is no more than 2 * OPT.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The algorithm computes an approximate solution to the edge dominating set</span>
+<span class="sd">    problem. The result is no more than 2 * OPT in terms of size of the set.</span>
+<span class="sd">    Runtime of the algorithm is $O(|E|)$.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">G</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Expected non-empty NetworkX graph!&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">maximal_matching</span><span class="p">(</span><span class="n">G</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="maximal_matching"><a class="viewcode-back" href="../../../Features/dominating_sets.html#hcga.Operations.dominating_sets.maximal_matching">[docs]</a><span class="k">def</span> <span class="nf">maximal_matching</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Find a maximal matching in the graph.</span>
+
+<span class="sd">    A matching is a subset of edges in which no node occurs more than once.</span>
+<span class="sd">    A maximal matching cannot add more edges and still be a matching.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : NetworkX graph</span>
+<span class="sd">        Undirected graph</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    matching : set</span>
+<span class="sd">        A maximal matching of the graph.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The algorithm greedily selects a maximal matching M of the graph G</span>
+<span class="sd">    (i.e. no superset of M exists). It runs in $O(|E|)$ time.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">matching</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+        <span class="c1"># If the edge isn&#39;t covered, add it to the matching</span>
+        <span class="c1"># then remove neighborhood of u and v from consideration.</span>
+        <span class="k">if</span> <span class="n">u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nodes</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nodes</span> <span class="ow">and</span> <span class="n">u</span> <span class="o">!=</span> <span class="n">v</span><span class="p">:</span>
+            <span class="n">matching</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+            <span class="n">nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+            <span class="n">nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">matching</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">hcga 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, R. Peach, H. Palasciano and A. Arnaudon,.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+    </div>
+  </body>
+</html>

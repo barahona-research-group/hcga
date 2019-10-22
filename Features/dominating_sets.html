@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>The cycles module &#8212; hcga 0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">hcga 0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-hcga.Operations.dominating_sets">
+<span id="the-cycles-module"></span><h1>The cycles module<a class="headerlink" href="#module-hcga.Operations.dominating_sets" title="Permalink to this headline">¶</a></h1>
+<p>Created on Sun Mar  3 18:30:46 2019</p>
+<p>&#64;author: Rob</p>
+<dl class="function">
+<dt id="hcga.Operations.dominating_sets.maximal_matching">
+<code class="sig-prename descclassname">hcga.Operations.dominating_sets.</code><code class="sig-name descname">maximal_matching</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/dominating_sets.html#maximal_matching"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.dominating_sets.maximal_matching" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find a maximal matching in the graph.</p>
+<p>A matching is a subset of edges in which no node occurs more than once.
+A maximal matching cannot add more edges and still be a matching.</p>
+<dl class="simple">
+<dt>G<span class="classifier">NetworkX graph</span></dt><dd><p>Undirected graph</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>matching<span class="classifier">set</span></dt><dd><p>A maximal matching of the graph.</p>
+</dd>
+</dl>
+<p>The algorithm greedily selects a maximal matching M of the graph G
+(i.e. no superset of M exists). It runs in $O(<a href="#id2"><span class="problematic" id="id3">|E|</span></a>)$ time.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcga.Operations.dominating_sets.min_edge_dominating_set">
+<code class="sig-prename descclassname">hcga.Operations.dominating_sets.</code><code class="sig-name descname">min_edge_dominating_set</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/dominating_sets.html#min_edge_dominating_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.dominating_sets.min_edge_dominating_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns minimum cardinality edge dominating set.</p>
+<dl class="simple">
+<dt>G<span class="classifier">NetworkX graph</span></dt><dd><p>Undirected graph</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>min_edge_dominating_set<span class="classifier">set</span></dt><dd><p>Returns a set of dominating edges whose size is no more than 2 * OPT.</p>
+</dd>
+</dl>
+<p>The algorithm computes an approximate solution to the edge dominating set
+problem. The result is no more than 2 * OPT in terms of size of the set.
+Runtime of the algorithm is $O(<a href="#id4"><span class="problematic" id="id5">|E|</span></a>)$.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcga.Operations.dominating_sets.min_weighted_dominating_set">
+<code class="sig-prename descclassname">hcga.Operations.dominating_sets.</code><code class="sig-name descname">min_weighted_dominating_set</code><span class="sig-paren">(</span><em class="sig-param">G</em>, <em class="sig-param">weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/dominating_sets.html#min_weighted_dominating_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.dominating_sets.min_weighted_dominating_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dominating set that approximates the minimum weight node
+dominating set.</p>
+<dl class="simple">
+<dt>G<span class="classifier">NetworkX graph</span></dt><dd><p>Undirected graph.</p>
+</dd>
+<dt>weight<span class="classifier">string</span></dt><dd><p>The node attribute storing the weight of an node. If provided,
+the node attribute with this key must be a number for each
+node. If not provided, each node is assumed to have weight one.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>min_weight_dominating_set<span class="classifier">set</span></dt><dd><p>A set of nodes, the sum of whose weights is no more than <cite>(log
+w(V)) w(V^*)</cite>, where <cite>w(V)</cite> denotes the sum of the weights of
+each node in the graph and <cite>w(V^*)</cite> denotes the sum of the
+weights of each node in the minimum weight dominating set.</p>
+</dd>
+</dl>
+<p>This algorithm computes an approximate minimum weighted dominating
+set for the graph <cite>G</cite>. The returned solution has weight <cite>(log
+w(V)) w(V^*)</cite>, where <cite>w(V)</cite> denotes the sum of the weights of each
+node in the graph and <cite>w(V^*)</cite> denotes the sum of the weights of
+each node in the minimum weight dominating set for the graph.</p>
+<p>This implementation of the algorithm runs in $O(m)$ time, where $m$
+is the number of edges in the graph.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id1"><span class="brackets">1</span></dt>
+<dd><p>Vazirani, Vijay V.
+<em>Approximation Algorithms</em>.
+Springer Science &amp; Business Media, 2001.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/Features/dominating_sets.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">hcga 0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, R. Peach, H. Palasciano and A. Arnaudon,.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+    </div>
+  </body>
+</html>

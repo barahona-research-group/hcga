@@ -1,0 +1,4 @@
+The node feature convolution module
+====================================
+.. automodule:: hcga.Operations.node_feature_convolution
+   :members:
