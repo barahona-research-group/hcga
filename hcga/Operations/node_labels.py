@@ -36,9 +36,9 @@ class NodeLabels():
         try:
             
             # Create a matrix features from each node
-            node_matrix = np.array([G.node[0]['label']])
+            node_matrix = np.array([G.nodes[0]['label']])
             for i in range(N):
-                node_matrix = np.vstack([node_matrix,G.node[i]['label']])
+                node_matrix = np.vstack([node_matrix,G.nodes[i]['label']])
             
             
             
@@ -116,7 +116,8 @@ class NodeLabels():
                 feature_list['norm_powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(mean_node_feat_norm,bins=bins[i])[0][-2]# value 'a' in power law
                 feature_list['norm_powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(mean_node_feat_norm,bins=bins[i])[1] # value sse in power law
                 
-        except:
+        except Exception as e:
+            print('Exception for node_labels', e)
             
             feature_list['mean'] = np.nan
             feature_list['max'] = np.nan

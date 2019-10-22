@@ -70,7 +70,10 @@ class SpectrumLaplacian():
             feature_list['fiedler_vector_neg']=sum(1 for number in fiedler_vector if number <0)
             feature_list['fiedler_vector_pos']=sum(1 for number in fiedler_vector if number >0)
             feature_list['fiedler_vector_ratio_neg_pos']=sum(1 for number in fiedler_vector if number <0)/sum(1 for number in fiedler_vector if number >0)
-        except:
+
+        except Exception as e:
+            print('Exception for spectrum_laplacian', e)
+
                     # nodes in spectral partition by fiedler vector
             feature_list['fiedler_vector_neg']=np.nan
             feature_list['fiedler_vector_pos']=np.nan
@@ -85,7 +88,8 @@ class SpectrumLaplacian():
             for j in range(10):
                 try:
                     feature_list['L_eigvals_ratio_'+str(i)+'_'+str(j)] = eigenvals_L[i]/eigenvals_L[j]
-                except:
+                except Exception as e:
+                    print('Exception for spectrum_laplacian (second try)', e)
                     feature_list['L_eigvals_ratio_'+str(i)+'_'+str(j)] = np.nan
                 
         feature_list['L_eigvals_min'] = min(eigenvals_L)

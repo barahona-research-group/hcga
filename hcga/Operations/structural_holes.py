@@ -82,7 +82,9 @@ class StructuralHoles():
             opt_mod_c,_ = utils.best_fit_distribution(constraint,bins=10)
             feature_list['constraint_opt_model']=opt_mod_c
         
-        except:
+        except Exception as e:
+            print('Exception for structural_holes', e)
+
             feature_list['constraint_mean']=np.nan
             feature_list['constraint_std']=np.nan
             feature_list['constraint_median']=np.nan
@@ -105,7 +107,9 @@ class StructuralHoles():
             opt_mod_es,_ = utils.best_fit_distribution(constraint,bins=10)
             feature_list['effective_size_opt_model']=opt_mod_es
             
-        except:
+        except Exception as e:
+            print('Exception for structural_holes (2nd)', e)
+
             feature_list['effective_size_mean']=np.nan
             feature_list['effective_size_std']=np.nan
             feature_list['effective_size_median']=np.nan

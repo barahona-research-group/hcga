@@ -1,6 +1,7 @@
 *.pyc
 *.svg 
 *.swp
+*.pkl
 
 build/
 

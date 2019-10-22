@@ -73,8 +73,9 @@ class Vitality():
                 # fit distribution
                 opt_mod,opt_mod_sse = utils.best_fit_distribution(closeness_vitality_vals_fin,bins=10)
                 feature_list['opt_mod']=opt_mod  
-                
-            except:
+
+            except Exception as e:
+                print('Exception for vitality', e)
                 feature_list['closeness_mean']=np.nan
                 feature_list['closeness_std']=np.nan
                 feature_list['closeness_median']=np.nan

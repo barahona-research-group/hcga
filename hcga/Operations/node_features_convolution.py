@@ -36,9 +36,9 @@ class NodeFeaturesConv():
         try:
             
             # Create a matrix features from each node
-            node_matrix = np.array([G.node[0]['feat']])
+            node_matrix = np.array([G.nodes[0]['feat']])
             for i in range(1,N):
-                node_matrix = np.vstack([node_matrix,G.node[i]['feat']])
+                node_matrix = np.vstack([node_matrix,G.nodes[i]['feat']])
             
             
             num_feats = node_matrix.shape[1]
@@ -122,8 +122,9 @@ class NodeFeaturesConv():
                     feature_list['norm_powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(mean_node_feat_norm,bins=bins[i])[1] # value sse in power law
 
             
-        except:
-            
+        except Exception as e:
+            print('Exception for node_features_conv:', e)
+
             for conv in range(2):
                 
                 # each loop imposes a one step random walk convolution

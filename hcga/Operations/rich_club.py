@@ -46,7 +46,7 @@ class RichClub():
         G = self.G
 
         feature_list = {}
-        if not nx.is_directed(G):            
+        if not nx.is_directed(G) and len(G)>5:            
             # Calculating the shortest paths stats
             try:
                 rich_club = list(nx.rich_club_coefficient(G).values())       
@@ -59,7 +59,6 @@ class RichClub():
                 feature_list['max_rich_coef']=np.max(rich_club)      
                 
                 feature_list['ratio_rich_coef']=np.min(rich_club)/np.max(rich_club)
-                
                 if rich_club[-2]>0:
                     feature_list['ratio_top2_coef']=rich_club[-1]/rich_club[-2]
                 else:
@@ -79,8 +78,9 @@ class RichClub():
                 for i in range(len(top10)):
                     feature_list['top10_{}'.format(l[i])]=top10[i]
                 
-                    
-            except:
+            except Exception as e:
+                print('Exception for rich_club:', e)
+
                 feature_names = ['num_rich','mean_rich_coef','std_rich_coef','max_rich_coef','ratio_rich_coef','ratio_top2_coef',
                                   'top10_10','top10_9','top10_8','top10_7','top10_6','top10_5','top10_4','top10_3',
                                   'top10_2','top10_1']

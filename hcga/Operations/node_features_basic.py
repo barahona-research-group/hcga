@@ -47,9 +47,9 @@ class NodeFeaturesBasic():
         try:
             
             # Create a matrix features from each node
-            node_matrix = np.array([G.node[0]['feat']])
+            node_matrix = np.array([G.nodes[0]['feat']])
             for i in range(1,N):
-                node_matrix = np.vstack([node_matrix,G.node[i]['feat']])
+                node_matrix = np.vstack([node_matrix,G.nodes[i]['feat']])
             
             
             num_feats = node_matrix.shape[1]
@@ -122,8 +122,9 @@ class NodeFeaturesBasic():
                 feature_list['norm_powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(mean_node_feat_norm,bins=bins[i])[0][-2]# value 'a' in power law
                 feature_list['norm_powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(mean_node_feat_norm,bins=bins[i])[1] # value sse in power law
                 
-        except:
-            
+        except Exception as e:
+            print('Exception for node_features_basic', e)
+
             num_feats = 0
             
             for i in range(0,num_feats):                

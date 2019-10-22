@@ -66,8 +66,9 @@ class ForceCentrality():
         try:
             pos = forceatlas2.forceatlas2_networkx_layout(G, pos=None, iterations=2000)
             c = np.linalg.norm(np.array(list(pos.values())),axis=1)        
-        except:
-            print('An exception occurred in ForceAtlas2')
+
+        except Exception as e:
+            print('Exception for centrality_force', e)
             
             
         # this changes each time so we must average of n_force times
@@ -76,8 +77,9 @@ class ForceCentrality():
                 pos = forceatlas2.forceatlas2_networkx_layout(G, pos=None, iterations=2000)
                 c += np.linalg.norm(np.array(list(pos.values())), axis=1)                    
                 c = -c/n_force
-            except:
-                print('An exception occurred in ForceAtlas2')
+
+            except Exception as e:
+                print('Exception for centrality_force (2nd)', e)
 
 
         feature_list['mean']=np.mean(c)

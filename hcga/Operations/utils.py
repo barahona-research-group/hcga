@@ -135,8 +135,11 @@ def summary_statistics(feature_list,dist,feat_name):
     feature_list[feat_name + '_gmean'] = st.gmean(dist)
     
     try:
-        feature_list[feat_name + '_hmean'] = st.hmean(dist)
-    except:
+        feature_list[feat_name + '_hmean'] = st.hmean(np.abs(dist)+1e-8)
+
+    except Exception as e:
+        print('Exception for utils:', e)
+
         feature_list[feat_name + '_hmean'] = np.nan
         
     feature_list[feat_name + '_kurtosis'] = st.kurtosis(dist)
