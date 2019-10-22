@@ -3,8 +3,12 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to hcga's documentation!
+**hcga**: Highly Comparative Graph Analysis
 ================================
+
+**hcga** is inspired by [htcsa]_
+
+.. [hctsa] B. D. Fulcher and N. S. Jones, “hctsa:  A computational framework for automated time-series phenotyping using massive feature extraction,” Cell systems, vol. 5, no. 5, pp. 527–531, 2017
 
 .. toctree::
    :maxdepth: 2
