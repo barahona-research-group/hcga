@@ -44,8 +44,10 @@ Any contributors are welcome, please contact us if interested.
 Bibliography
 ------------
 
-.. [Hcga]  R. Peach, H. Palasciano, A. Arnaudon, M. Brahona, “hcga: Highly Comparative Graph Analysis for graph phenotyping”, In preparation, 2019
-.. [Hctsa]  B. D. Fulcher and N. S. Jones, “hctsa:  A computational framework for automated time-series phenotyping using massive feature extraction,” Cell systems, vol. 5, no. 5, pp. 527–531, 2017
+.. [Hcga]  R. Peach, H. Palasciano, A. Arnaudon, M. Brahona, 
+                “hcga: Highly Comparative Graph Analysis for graph phenotyping”, In preparation, 2019
+.. [Hctsa]  B. D. Fulcher and N. S. Jones, 
+                “hctsa:  A computational framework for automated time-series phenotyping using massive feature extraction,” Cell systems, vol. 5, no. 5, pp. 527–531, 2017
 
 .. toctree::
    :maxdepth: 2
