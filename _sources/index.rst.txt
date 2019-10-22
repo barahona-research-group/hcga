@@ -11,14 +11,13 @@ This code comes with the companion paper [Hcga]_  containing more details and ex
 How to install HCGA
 -------------------
 
-To install the dev version from github at hcga_ with the commands::
+To install the dev version from `GitHub <https://github.com/imperialcollegelondon/hcga/>`_ with the commands::
 
        $ git clone https://github.com/ImperialCollegeLondon/hcga.git
        $ cd hcga
        $ pip install -e .
 
-.. _hcga: https://github.com/ImperialCollegeLondon/hcga/
-There is no release version yet, but stay tuned!
+There is no release version yet, but stay tuned for more!
 
 Citing
 ------
