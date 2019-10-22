@@ -13,11 +13,19 @@ import numpy as np
 import os
 
 
+if not os.path.isdir('Outputs'):
+    os.mkdir('Outputs')
+
+if not os.path.isdir('Images'):
+    os.mkdir('Images')
+
+
 cwd = os.getcwd()
+
 print("Load graphs...")
 g = Graphs(directory=cwd+'/TestData',dataset='ENZYMES')
 g.n_processes = 80
-graph_subset = np.arange(0,len(g.graphs), 10)
+graph_subset = np.arange(0,len(g.graphs), 1)
 
 g.graphs = [g.graphs[i] for i in graph_subset]
 g.graph_labels = [g.graph_labels[i] for i in graph_subset]
@@ -26,8 +34,5 @@ print("Calculate features...")
 g.calculate_features(calc_speed='slow', parallel = True)
 
 g.normalise_feature_data()
-
-if not os.path.isdir('Images'):
-    os.mkdir('Images')
 
 g.graph_classification()
