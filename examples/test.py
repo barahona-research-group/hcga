@@ -16,8 +16,8 @@ import os
 cwd = os.getcwd()
 print("Load graphs...")
 g = Graphs(directory=cwd+'/TestData',dataset='ENZYMES')
-g.n_processes = 10
-graph_subset = np.arange(0,len(g.graphs),20)
+g.n_processes = 80
+graph_subset = np.arange(0,len(g.graphs), 1)
 
 g.graphs = [g.graphs[i] for i in graph_subset]
 g.graph_labels = [g.graph_labels[i] for i in graph_subset]

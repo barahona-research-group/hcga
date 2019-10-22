@@ -27,7 +27,19 @@ import matplotlib.pyplot as plt
 class Graphs():
 
     """
-        Takes a list of graphs
+        Main class of hcga, with all the construction ana analysis functions. 
+        The constructor takes either a list of networkx graphs, or a directory with a list of graph, and the name of the dataset (if it exists). 
+
+        Parameters
+        ----------
+
+        graphs: list 
+            list of graphs
+        directory: folder
+            directory with graphs
+        dataset: string
+            name of the dataset to load the graphs
+
     """
 
     def __init__(self, graphs = None, graph_meta_data = [], node_meta_data = [], graph_class = [], directory='', dataset = 'synthetic'):
@@ -47,22 +59,29 @@ class Graphs():
 
 
     def load_graphs(self, directory = '', dataset = 'synthetic'):
+        """
+        Function to load graphs from a directory. 
 
-        # node labels are within the graph file
+        Parameters
+        ----------
+        directory: string
+            directory path with graphs
+        dataset: string
+            Name of the dataset, the following are allowed: 
+                * ENZYMES: benchmark 
+                * DD: benchmark 
+                * COLLAB: benchmark
+                * PROTEINS: benchmark 
+                * REDDIT-MULTI-12K: benchmark
+                * synthetic: contains several variants of synthetics 
+                * HELICENES: Julia Schneider's dataset
         
-        # Node features are stored in: G.node[0]['feat'] 
-        # Node labels are stored in: G.node[0]['label']
-        
+        """
+
         if dataset == 'ENZYMES' or dataset == 'DD' or dataset == 'COLLAB' or dataset == 'PROTEINS' or dataset == 'REDDIT-MULTI-12K' :
         
             graphs,graph_labels = read_graphfile(directory,dataset)
     
-            # selected data for testing code from the enzymes dataset...
-            #selected_data = np.arange(0,600,1) 
-            #graphs = [graphs[i] for i in list(selected_data)]
-            #graph_labels = [graph_labels[i] for i in list(selected_data)]
-            
-            
             to_remove = []
             for i,G in enumerate(graphs): 
 
@@ -94,15 +113,19 @@ class Graphs():
         elif dataset == 'synthetic':
             from hcga.TestData.create_synthetic_data import synthetic_data
             graphs,graph_labels = synthetic_data()
+
         elif dataset == 'synthetic_watts_strogatz':
             from hcga.TestData.create_synthetic_data import synthetic_data_watts_strogatz
             graphs,graph_labels = synthetic_data_watts_strogatz(N=1000)
+
         elif dataset == 'synthetic_powerlaw_cluster':
             from hcga.TestData.create_synthetic_data import synthetic_data_powerlaw_cluster
             graphs,graph_labels = synthetic_data_powerlaw_cluster(N=1000)
+
         elif dataset == 'synthetic_sbm':
             from hcga.TestData.create_synthetic_data import synthetic_data_sbm
             graphs,graph_labels = synthetic_data_sbm(N=1000)
+
         elif dataset == 'HELICENES':
             from hcga.TestData.HELICENES.graph_construction import construct_helicene_graphs
             graphs,graph_labels = construct_helicene_graphs()
@@ -115,31 +138,18 @@ class Graphs():
     
     def calculate_features(self,calc_speed='slow',parallel=True):
         """
-        Calculation the features for each graph in the set of graphs
+        Extract the features from each graph in the set of graphs
+
+        Parameters
+        ----------
+
+        calc_speed: string
+            set of features to consider (from the operations.csv file). Can take 'slow', 'medium' or 'fast'. 
+        parallel: bool
+            True to run with multiprocessing 
 
         """
 
-        """
-        graph_feature_set = []
-        cnt = 0
-        for G in tqdm(self.graphs):
-            print("-------------------------------------------------")              
-
-            print("----- Computing features for graph "+str(cnt)+" -----")               
-            start_time = time.time()    
-            print("-------------------------------------------------")               
-
-            G_operations = Operations(G)
-            G_operations.feature_extraction(calc_speed=calc_speed)
-            graph_feature_set.append(G_operations)
-            print("-------------------------------------------------")               
-            print("Time to calculate all features for graph "+ str(cnt) +": --- %s seconds ---" % round(time.time() - start_time,3))               
-            cnt = cnt+1
-            self.graph_feature_set_temp = graph_feature_set
-        self.graph_feature_set = graph_feature_set
-
-        """
-        
         if parallel:
             calculate_features_single_graphf = partial(calculate_features_single_graph, calc_speed)
             
@@ -180,10 +190,6 @@ class Graphs():
                 self.graph_feature_set_temp = graph_feature_set
             self.graph_feature_set = graph_feature_set            
 
-
-        
-
-        
         feature_names = self.graph_feature_set[0]._extract_data()[0]
             
         # Create graph feature matrix
@@ -221,17 +227,27 @@ class Graphs():
         # remove features with constant values
         feature_matrix_clean = feature_matrix_clean.loc[:, (feature_matrix_clean != feature_matrix_clean.iloc[0]).any()]
         
-        
-        # introduce a measure of how many features were removed and their ids and names.
-        
-        
-        
         self.graph_feature_matrix = feature_matrix_clean
-        self.save_feature_set()
+        print("Number of features computed:", np.shape(feature_matrix_clean)[1])
 
+        self.save_feature_set()
         
     def extract_feature(self,n):
-        
+        """
+        Extract a feature from the feature matrix
+
+        Parameters
+        ----------
+        n: int ot string
+            Either the feature number of its name
+
+        Returns
+        -------
+        feature: list
+            Feature values accross graphs
+
+        """ 
+
         graph_feature_matrix = self.graph_feature_matrix
         
         # if n is an int, extract column corresponding to n
@@ -241,13 +257,11 @@ class Graphs():
         else:
             return graph_feature_matrix[n]   
         
-
-
-
-
-
-
     def normalise_feature_data(self):
+        """
+        Normalise the feature matrix usinf sklearn scaler to remove the mean and scale to unit variance
+        """
+
         from sklearn.preprocessing import StandardScaler
         
         graph_feature_matrix = self.graph_feature_matrix
@@ -255,31 +269,30 @@ class Graphs():
         X=graph_feature_matrix.values
         scaler = StandardScaler()
         X_norm = scaler.fit_transform(X)     
-    
         
         self.X_norm = X_norm
         self.y=np.asarray(self.graph_labels)
 
-        return
-
-
-
     def graph_classification(self,plot=True,ml_model='xgboost', data='all'):
 
         """
-        Graph Classification
-        
-        data: the type of features to classify
-            'all' - all the features calculated
-            'feats' - features based on node features and node labels only
-            'topology' - features based only on the graph topology features
+        Graph classification
+       
+        Parameters
+        ----------
+
+        data: string
+            the type of features to classify
+                * 'all' : all the features calculated
+                * 'feats' : features based on node features and node labels only
+                * 'topology' : features based only on the graph topology features
+        ml_model: string
+            ML method to use, can be:
+                * xgboost
+                * random_forest
 
         """
         
-
-
-        
-        """self.organise_feature_data()"""
         self.normalise_feature_data()
 
         X = self.X_norm
@@ -297,6 +310,7 @@ class Graphs():
         if data=='topology':
             X = np.delete(X,matching,axis=1)
             feature_names = [i for j, i in enumerate(feature_names) if j not in matching]
+
         elif data=='feats':
             X = X[:,matching]
             feature_names = [i for j, i in enumerate(feature_names) if j in matching]
@@ -317,14 +331,9 @@ class Graphs():
         testing_accuracy_reduced_set, top_feats_reduced_set = classification(X_reduced,y,ml_model) 
         print("Final mean test accuracy reduced feature set: --- {0:.3f} ---)".format(np.mean(testing_accuracy_reduced_set)))            
         
-        #top_features_list = top_features(X,top_feats_reduced_set,feature_names)  
-
-        
         self.top_features_importance_plot(X,top_feat_indices,feature_names,y)     
         
         self.plot_violin_feature(X,y,top_feat_indices[0],feature_names)
-
-
         
         # univariate classification on top features
         univariate_topfeat_acc = univariate_classification(X_reduced,y)
@@ -335,14 +344,17 @@ class Graphs():
         # violin plot top feature
         self.plot_violin_feature(X_reduced,y,top_feat_index[0],feature_names_reduced)
         
-        
         self.test_accuracy = testing_accuracy_reduced_set 
+
         return np.mean(testing_accuracy_reduced_set)
     
     
     
     def graph_regression(self,plot=True, data='all'):
-        
+        """
+        Perform graph regression
+        """ 
+
         from sklearn.model_selection import StratifiedKFold   
         import xgboost
         from sklearn.metrics import explained_variance_score
@@ -379,11 +391,8 @@ class Graphs():
             explained_variance.append(explained_variance_score(y_test,y_pred))
 
             print("Fold explained variance: --- {0:.3f} ---)".format(explained_variance_score(y_test,y_pred)))            
-
-            
             top_feats.append(xgb.feature_importances_)
 
-        
         print("Final mean explained variance: --- {0:.3f} ---)".format(np.mean(explained_variance)))            
         print("Final .std explained variance: --- {0:.3f} ---)".format(np.std(explained_variance)))           
 
@@ -395,7 +404,10 @@ class Graphs():
             self.top_features_importance_plot(X,top_feats,y)
     
     def graph_classification_mlp(self,X = None, y = None , verbose=True):
-        
+        """
+        Classify graphs with MLP algorithm
+        """
+
         #from sklearn.model_selection import train_test_split
         from sklearn.preprocessing import LabelBinarizer        
         from sklearn.model_selection import StratifiedKFold          
@@ -534,7 +546,10 @@ class Graphs():
         
 
     def univariate_top_features(self):
-        
+        """
+        Compute the univariate classification accuracies
+        """
+
         self.normalise_feature_data()
 
         X = self.X_norm
@@ -544,8 +559,11 @@ class Graphs():
         
         self.univariate_classification_accuracy = classification_accs
         
-        
     def pca_features_plot(self,X,y,indices): 
+        """
+        Compute the PCA of the feature set and plot it
+        """
+
         from sklearn.decomposition import PCA
         import matplotlib.cm as cm  
         pca = PCA(n_components=2)
@@ -562,6 +580,10 @@ class Graphs():
         plt.ylabel('PC2')
         
     def top_features_importance_plot(self,X,top_feat_indices,feature_names,y):        
+        """ 
+        Plot the top feature importances
+        """
+
         import matplotlib.cm as cm  
         import random
         #mean_importance = np.mean(np.asarray(top_feats),0)                  
@@ -575,6 +597,10 @@ class Graphs():
         plt.savefig('Images/scatter_top2_feats_'+self.dataset+str(random.randint(1,101))+'.svg', bbox_inches = 'tight') 
         
     def plot_violin_feature(self,X,y,feature_id,feature_names):   
+        """
+        Plot the violins of a feature
+        """
+
         import random
         feature_data = X[:,feature_id]
         
@@ -593,6 +619,10 @@ class Graphs():
 
         
     def save_feature_set(self,filename = 'TestData/feature_set.pkl'):
+        """
+        Save the features in a pickle
+        """
+
         import pickle as pkl        
         feature_matrix = self.graph_feature_matrix
         
@@ -603,6 +633,10 @@ class Graphs():
         
     
     def load_feature_set(self,filename = 'TestData/feature_set.pkl'):
+        """
+        Load the features from a pickle
+        """
+
         import pickle as pkl
         with open(filename,'rb') as output:
             feature_matrix = pkl.load(output)
@@ -611,6 +645,10 @@ class Graphs():
 
 
 def classification(X,y,ml_model, verbose=True):
+    """
+    Perform classification of a normalized feature fata
+    """
+
     from sklearn.model_selection import StratifiedKFold  
     from sklearn.metrics import accuracy_score
     
@@ -645,17 +683,6 @@ def classification(X,y,ml_model, verbose=True):
         
         X_train, X_test = X[train_index], X[test_index]
         y_train, y_test = y[train_index], y[test_index]
-        #X_train, y_train, X_test, y_test = load_dataset(X,y)
-        
-        ## Changing labels to one-hot encoded vector
-        #lb = LabelBinarizer()
-        #y_train = lb.fit_transform(y_train)
-        #y_test = lb.transform(y_test)
-
-        #print('Train labels dimension:');print(y_train.shape)
-        #print('Test labels dimension:');print(y_test.shape)   
-        
-        #rf = RandomForestClassifier(n_estimators=100,max_depth=100,max_features=None)
         y_pred = model.fit(X_train,y_train).predict(X_test)
         
         acc = accuracy_score(y_test,y_pred)
@@ -672,14 +699,20 @@ def classification(X,y,ml_model, verbose=True):
 
 
 def calculate_features_single_graph(calc_speed, G):
-        
-        G_operations = Operations(G)
-        G_operations.feature_extraction(calc_speed=calc_speed)
-        
-        return G_operations
+    """
+    Calculate the feature of a single graph, for parallel computations
+    """
+
+    G_operations = Operations(G)
+    G_operations.feature_extraction(calc_speed=calc_speed)
+    
+    return G_operations
 
 
 def univariate_classification(X,y):
+    """
+    Apply an univariate classification on each feature
+    """
     
     classification_acc = []
     for i in range(X.shape[1]):
@@ -690,6 +723,10 @@ def univariate_classification(X,y):
     
 
 def top_features(X,top_feats,feature_names):
+    """
+    Select and plot the dendogram, heatmap and importance distribution of top features
+    """
+
     import pandas as pd
     from scipy.cluster.hierarchy import dendrogram, linkage
     import seaborn as sns
@@ -740,6 +777,17 @@ def top_features(X,top_feats,feature_names):
     return top_features_list
 
 def reduce_feature_set(X,top_feats):
+    """
+    Reduce the feature set
+
+
+    Parameters
+    ---------
+    top_feats: list
+        List of features to keep
+        
+    """
+
     mean_importance = np.mean(np.asarray(top_feats),0)   
     sorted_mean_importance = np.sort(mean_importance)[::-1]     
     
