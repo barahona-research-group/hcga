@@ -49,12 +49,16 @@ Bibliography
 .. [Hctsa]  B. D. Fulcher and N. S. Jones, 
                 “hctsa:  A computational framework for automated time-series phenotyping using massive feature extraction,” Cell systems, vol. 5, no. 5, pp. 527–531, 2017
 
-Documentation
+API documentation
 =============
+
 .. toctree::
    :maxdepth: 3
+   :caption: API:
 
-   api
+   graph
+   operations
+   Features
 
 
 Indices and tables
