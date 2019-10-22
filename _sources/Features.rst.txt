@@ -17,7 +17,7 @@ Features
    Features/diameters
    Features/dominatig_sets
    Features/eccentricity
-   Features/edge_features_basic
+   Features/features
    Features/efficiency
    Features/independent_sets
    Features/k_components
@@ -26,9 +26,6 @@ Features
    Features/minimum_cuts
    Features/node_clique_number
    Features/node_connectivity
-   Features/node_features_basic
-   Features/node_features_convolution
-   Features/node_labels
    Features/node_number_of_cliques
    Features/pagerank
    Features/rich_club
