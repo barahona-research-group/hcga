@@ -163,11 +163,15 @@
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
  | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -201,12 +205,16 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="graph.html#hcga.graphs.Graphs.calculate_features">calculate_features() (hcga.graphs.Graphs method)</a>
 </li>
-      <li><a href="Features/cliques.html#hcga.Operations.cliques.Cliques">Cliques (class in hcga.Operations.cliques)</a>
+      <li><a href="graph.html#hcga.graphs.calculate_features_single_graph">calculate_features_single_graph() (in module hcga.graphs)</a>
 </li>
-      <li><a href="Features/centrality.html#hcga.Operations.centrality_closeness.ClosenessCentrality">ClosenessCentrality (class in hcga.Operations.centrality_closeness)</a>
+      <li><a href="graph.html#hcga.graphs.classification">classification() (in module hcga.graphs)</a>
+</li>
+      <li><a href="Features/cliques.html#hcga.Operations.cliques.Cliques">Cliques (class in hcga.Operations.cliques)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="Features/centrality.html#hcga.Operations.centrality_closeness.ClosenessCentrality">ClosenessCentrality (class in hcga.Operations.centrality_closeness)</a>
+</li>
       <li><a href="Features/components.html#hcga.Operations.components.Components">Components (class in hcga.Operations.components)</a>
 </li>
       <li><a href="Features/core_number.html#hcga.Operations.core_number.CoreNumber">CoreNumber (class in hcga.Operations.core_number)</a>
@@ -235,13 +243,15 @@
 </li>
       <li><a href="Features/centrality.html#hcga.Operations.centrality_edge_betweenness.EdgeBetweennessCentrality">EdgeBetweennessCentrality (class in hcga.Operations.centrality_edge_betweenness)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Features/efficiency.html#hcga.Operations.efficiency.Efficiency">Efficiency (class in hcga.Operations.efficiency)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Features/centrality.html#hcga.Operations.centrality_eigenvector.EigenCentrality">EigenCentrality (class in hcga.Operations.centrality_eigenvector)</a>
 </li>
       <li><a href="operations.html#hcga.Operations.operations.Operations.eigenvectors">eigenvectors (hcga.Operations.operations.Operations attribute)</a>
+</li>
+      <li><a href="graph.html#hcga.graphs.Graphs.extract_feature">extract_feature() (hcga.graphs.Graphs method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -313,8 +323,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="graph.html#hcga.graphs.Graphs.graph_classification">graph_classification() (hcga.graphs.Graphs method)</a>
 </li>
+      <li><a href="graph.html#hcga.graphs.Graphs.graph_classification_mlp">graph_classification_mlp() (hcga.graphs.Graphs method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="graph.html#hcga.graphs.Graphs.graph_regression">graph_regression() (hcga.graphs.Graphs method)</a>
+</li>
       <li><a href="graph.html#hcga.graphs.Graphs">Graphs (class in hcga.graphs)</a>
 </li>
   </ul></td>
@@ -426,6 +440,18 @@
   </ul></td>
 </tr></table>
 
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="graph.html#hcga.graphs.Graphs.load_feature_set">load_feature_set() (hcga.graphs.Graphs method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="graph.html#hcga.graphs.Graphs.load_graphs">load_graphs() (hcga.graphs.Graphs method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -447,6 +473,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Features/cliques.html#hcga.Operations.node_number_of_cliques.NodeNumberOfCliques">NodeNumberOfCliques (class in hcga.Operations.node_number_of_cliques)</a>
 </li>
+      <li><a href="graph.html#hcga.graphs.Graphs.normalise_feature_data">normalise_feature_data() (hcga.graphs.Graphs method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -461,7 +489,21 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="graph.html#hcga.graphs.Graphs.pca_features_plot">pca_features_plot() (hcga.graphs.Graphs method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="graph.html#hcga.graphs.Graphs.plot_violin_feature">plot_violin_feature() (hcga.graphs.Graphs method)</a>
+</li>
       <li><a href="operations.html#hcga.Operations.operations.Operations.pre_compute">pre_compute() (hcga.Operations.operations.Operations method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="graph.html#hcga.graphs.reduce_feature_set">reduce_feature_set() (in module hcga.graphs)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -469,11 +511,37 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="Features/centrality.html#hcga.Operations.centrality_second_order.SecondOrderCentrality">SecondOrderCentrality (class in hcga.Operations.centrality_second_order)</a>
+      <li><a href="graph.html#hcga.graphs.Graphs.save_feature_set">save_feature_set() (hcga.graphs.Graphs method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="Features/centrality.html#hcga.Operations.centrality_second_order.SecondOrderCentrality">SecondOrderCentrality (class in hcga.Operations.centrality_second_order)</a>
+</li>
       <li><a href="Features/centrality.html#hcga.Operations.centrality_subgraph.SubgraphCentrality">SubgraphCentrality (class in hcga.Operations.centrality_subgraph)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="graph.html#hcga.graphs.top_features">top_features() (in module hcga.graphs)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="graph.html#hcga.graphs.Graphs.top_features_importance_plot">top_features_importance_plot() (hcga.graphs.Graphs method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="graph.html#hcga.graphs.univariate_classification">univariate_classification() (in module hcga.graphs)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="graph.html#hcga.graphs.Graphs.univariate_top_features">univariate_top_features() (hcga.graphs.Graphs method)</a>
 </li>
   </ul></td>
 </tr></table>

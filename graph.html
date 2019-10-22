@@ -165,11 +165,40 @@
 <dl class="class">
 <dt id="hcga.graphs.Graphs">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.graphs.</code><code class="sig-name descname">Graphs</code><span class="sig-paren">(</span><em class="sig-param">graphs=None</em>, <em class="sig-param">graph_meta_data=[]</em>, <em class="sig-param">node_meta_data=[]</em>, <em class="sig-param">graph_class=[]</em>, <em class="sig-param">directory=''</em>, <em class="sig-param">dataset='synthetic'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Takes a list of graphs</p>
+<dd><p>Main class of hcga, with all the construction ana analysis functions. 
+The constructor takes either a list of networkx graphs, or a directory with a list of graph, and the name of the dataset (if it exists).</p>
+<dl class="simple">
+<dt>graphs<span class="classifier">list </span></dt><dd><p>list of graphs</p>
+</dd>
+<dt>directory<span class="classifier">folder</span></dt><dd><p>directory with graphs</p>
+</dd>
+<dt>dataset<span class="classifier">string</span></dt><dd><p>name of the dataset to load the graphs</p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="hcga.graphs.Graphs.calculate_features">
 <code class="sig-name descname">calculate_features</code><span class="sig-paren">(</span><em class="sig-param">calc_speed='slow'</em>, <em class="sig-param">parallel=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.calculate_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.calculate_features" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculation the features for each graph in the set of graphs</p>
+<dd><p>Extract the features from each graph in the set of graphs</p>
+<dl class="simple">
+<dt>calc_speed<span class="classifier">string</span></dt><dd><p>set of features to consider (from the operations.csv file). Can take ‘slow’, ‘medium’ or ‘fast’.</p>
+</dd>
+<dt>parallel<span class="classifier">bool</span></dt><dd><p>True to run with multiprocessing</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcga.graphs.Graphs.extract_feature">
+<code class="sig-name descname">extract_feature</code><span class="sig-paren">(</span><em class="sig-param">n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.extract_feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.extract_feature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract a feature from the feature matrix</p>
+<dl class="simple">
+<dt>n<span class="classifier">int/string:</span></dt><dd><p>Either the feature number of its name</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>feature: list</dt><dd><p>Feature values accross graphs</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -177,13 +206,133 @@
 <code class="sig-name descname">graph_classification</code><span class="sig-paren">(</span><em class="sig-param">plot=True</em>, <em class="sig-param">ml_model='xgboost'</em>, <em class="sig-param">data='all'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.graph_classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.graph_classification" title="Permalink to this definition">¶</a></dt>
 <dd><p>Graph Classification</p>
 <dl class="simple">
-<dt>data: the type of features to classify</dt><dd><p>‘all’ - all the features calculated
-‘feats’ - features based on node features and node labels only
-‘topology’ - features based only on the graph topology features</p>
+<dt>data: string</dt><dd><dl class="simple">
+<dt>the type of features to classify</dt><dd><ul class="simple">
+<li><p>‘all’ - all the features calculated</p></li>
+<li><p>‘feats’ - features based on node features and node labels only</p></li>
+<li><p>‘topology’ - features based only on the graph topology features</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt>ml_model: string</dt><dd><dl class="simple">
+<dt>ML method to use, can be:</dt><dd><ul class="simple">
+<li><p>xgboost</p></li>
+<li><p>random_forest</p></li>
+</ul>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
+<dl class="method">
+<dt id="hcga.graphs.Graphs.graph_classification_mlp">
+<code class="sig-name descname">graph_classification_mlp</code><span class="sig-paren">(</span><em class="sig-param">X=None</em>, <em class="sig-param">y=None</em>, <em class="sig-param">verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.graph_classification_mlp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.graph_classification_mlp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classify graphs with MLP algorithm</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcga.graphs.Graphs.graph_regression">
+<code class="sig-name descname">graph_regression</code><span class="sig-paren">(</span><em class="sig-param">plot=True</em>, <em class="sig-param">data='all'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.graph_regression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.graph_regression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform graph regression</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcga.graphs.Graphs.load_feature_set">
+<code class="sig-name descname">load_feature_set</code><span class="sig-paren">(</span><em class="sig-param">filename='TestData/feature_set.pkl'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.load_feature_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.load_feature_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the features from a pickle</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcga.graphs.Graphs.load_graphs">
+<code class="sig-name descname">load_graphs</code><span class="sig-paren">(</span><em class="sig-param">directory=''</em>, <em class="sig-param">dataset='synthetic'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.load_graphs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.load_graphs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to load graphs from a directory.</p>
+<dl class="simple">
+<dt>directory: string</dt><dd><p>directory path with graphs</p>
+</dd>
+<dt>dataset: string</dt><dd><p>Name of the dataset, the following are allowed: 
+* ENZYMES – benchmark 
+* DD – benchmark 
+* COLLAB – benchmark
+* PROTEINS – benchmark 
+* REDDIT-MULTI-12K – benchmark
+* synthetic – contains several variants of synthetics 
+* HELICENES – Julia Schneider’s dataset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcga.graphs.Graphs.normalise_feature_data">
+<code class="sig-name descname">normalise_feature_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.normalise_feature_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.normalise_feature_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalise the feature matrix usinf sklearn scaler to remove the mean and scale to unit variance</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcga.graphs.Graphs.pca_features_plot">
+<code class="sig-name descname">pca_features_plot</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">indices</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.pca_features_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.pca_features_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the PCA of the feature set and plot it</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcga.graphs.Graphs.plot_violin_feature">
+<code class="sig-name descname">plot_violin_feature</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">feature_id</em>, <em class="sig-param">feature_names</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.plot_violin_feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.plot_violin_feature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the violins of a feature</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcga.graphs.Graphs.save_feature_set">
+<code class="sig-name descname">save_feature_set</code><span class="sig-paren">(</span><em class="sig-param">filename='TestData/feature_set.pkl'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.save_feature_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.save_feature_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the features in a pickle</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcga.graphs.Graphs.top_features_importance_plot">
+<code class="sig-name descname">top_features_importance_plot</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">top_feat_indices</em>, <em class="sig-param">feature_names</em>, <em class="sig-param">y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.top_features_importance_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.top_features_importance_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the top feature importances</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcga.graphs.Graphs.univariate_top_features">
+<code class="sig-name descname">univariate_top_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.univariate_top_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.univariate_top_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the univariate classification accuracies</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcga.graphs.calculate_features_single_graph">
+<code class="sig-prename descclassname">hcga.graphs.</code><code class="sig-name descname">calculate_features_single_graph</code><span class="sig-paren">(</span><em class="sig-param">calc_speed</em>, <em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#calculate_features_single_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.calculate_features_single_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the feature of a single graph, for parallel computations</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcga.graphs.classification">
+<code class="sig-prename descclassname">hcga.graphs.</code><code class="sig-name descname">classification</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">ml_model</em>, <em class="sig-param">verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.classification" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform classification of a normalized feature fata</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcga.graphs.reduce_feature_set">
+<code class="sig-prename descclassname">hcga.graphs.</code><code class="sig-name descname">reduce_feature_set</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">top_feats</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#reduce_feature_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.reduce_feature_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduce the feature set</p>
+<dl class="simple">
+<dt>top_feats: list</dt><dd><p>List of features to keep</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcga.graphs.top_features">
+<code class="sig-prename descclassname">hcga.graphs.</code><code class="sig-name descname">top_features</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">top_feats</em>, <em class="sig-param">feature_names</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#top_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.top_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select and plot the dendogram, heatmap and importance distribution of top features</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcga.graphs.univariate_classification">
+<code class="sig-prename descclassname">hcga.graphs.</code><code class="sig-name descname">univariate_classification</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#univariate_classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.univariate_classification" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply an univariate classification on each feature</p>
 </dd></dl>
 
 </div>
