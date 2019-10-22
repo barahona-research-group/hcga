@@ -8,7 +8,7 @@
 *hcga* is inspired by *hctsa*, the time serie massive feature extraction framework of [Hctsa]_ and instead extracts features from graphs to classify or regress them.  
 This code comes with the companion paper [Hcga]_  containing more details and examples of applications. 
 
-How to install HCGA
+Installation
 -------------------
 
 To install the dev version from `GitHub <https://github.com/imperialcollegelondon/hcga/>`_ with the commands::
@@ -18,6 +18,13 @@ To install the dev version from `GitHub <https://github.com/imperialcollegelondo
        $ pip install -e .
 
 There is no release version yet, but stay tuned for more!
+
+Usage
+-----
+
+See the example folder with a '''test.py''' example script. 
+
+To add another dataset, do ...
 
 Citing
 ------
