@@ -65,7 +65,8 @@ class KatzCentrality():
                 feature_list['powerlaw_a_{}'.format(bins[i])] = utils.power_law_fit(katz_centrality,bins=bins[i])[0][-2]# value 'a' in power law
                 feature_list['powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(katz_centrality,bins=bins[i])[1] # value sse in power law
                 
-        except:
+        except Exception as e:
+            print('Exception for centrality_katz', e)
             feature_list['mean'] = np.nan
             feature_list['std'] = np.nan
             feature_list['max'] = np.nan

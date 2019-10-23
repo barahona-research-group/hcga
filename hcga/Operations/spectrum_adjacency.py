@@ -61,9 +61,12 @@ class SpectrumAdjacency():
         
         
         for i in range(10):
-            for j in range(10):
+            for j in range(i):
                 try:
-                    feature_list['A_eigvals_ratio_'+str(i)+'_'+str(j)] = eigenvals_A[i]/eigenvals_A[j]
+                    if abs(eigenvals_A[j] ) < 1e-8:
+                        feature_list['A_eigvals_ratio_'+str(i)+'_'+str(j)] = 0 
+                    else:
+                        feature_list['A_eigvals_ratio_'+str(i)+'_'+str(j)] = eigenvals_A[i]/eigenvals_A[j]
                 except Exception as e:
                     print('Exception for spectrum_adjacency', e)
                     feature_list['A_eigvals_ratio_'+str(i)+'_'+str(j)] = np.nan

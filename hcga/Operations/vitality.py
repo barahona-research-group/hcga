@@ -72,7 +72,8 @@ class Vitality():
                 feature_list['closeness_min']=np.nan
                 feature_list['opt_mod']=np.nan
         
-        except:
+        except Exception as e:
+            print('Exception for vitality (2nd)', e)
             feature_list['closeness_mean']=np.nan
             feature_list['closeness_std']=np.nan
             feature_list['closeness_median']=np.nan

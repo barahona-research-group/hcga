@@ -79,9 +79,12 @@ class SpectrumLaplacian():
         
         
         for i in range(10):
-            for j in range(10):
+            for j in range(i):
                 try:
-                    feature_list['L_eigvals_ratio_'+str(i)+'_'+str(j)] = eigenvals_L[i]/eigenvals_L[j]
+                    if abs(eigenvals_L[j] ) < 1e-8:
+                        feature_list['L_eigvals_ratio_'+str(i)+'_'+str(j)] = 0 
+                    else:
+                        feature_list['L_eigvals_ratio_'+str(i)+'_'+str(j)] = eigenvals_L[i]/eigenvals_L[j]
                 except Exception as e:
                     print('Exception for spectrum_laplacian (second try)', e)
                     feature_list['L_eigvals_ratio_'+str(i)+'_'+str(j)] = np.nan

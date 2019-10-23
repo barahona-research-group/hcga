@@ -58,11 +58,15 @@ class SpectrumModularity():
         
         
         for i in range(10):
-            for j in range(10):
+            for j in range(i):
                 if i != j:
                     try:
-                        feature_list['M_eigvals_ratio_'+str(i)+'_'+str(j)] = eigenvals_M[i]/eigenvals_M[j]
-                    except:
+                        if abs(eigenvals_M[j] ) < 1e-8:
+                            feature_list['M_eigvals_ratio_'+str(i)+'_'+str(j)] = 0 
+                        else:
+                            feature_list['M_eigvals_ratio_'+str(i)+'_'+str(j)] = eigenvals_M[i]/eigenvals_M[j]
+                    except Exception as e:
+                        print('Exception for spectrum_modularity', e)
                         feature_list['M_eigvals_ratio_'+str(i)+'_'+str(j)] = np.nan
                 
         feature_list['M_eigvals_min'] = min(eigenvals_M)

@@ -73,7 +73,8 @@ class Hits():
             # if undirected h and a are the same
             h,a=nx.hits(G,max_iter=1000)
             h = np.asarray(list(h.values()))
-        except:
+        except Exception as e:
+            print('Exception for link_analysis_hit', e)
             h = np.array([1,1,1]) # random filling array
         
         
