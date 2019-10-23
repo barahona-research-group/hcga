@@ -53,7 +53,7 @@ class NodeFeaturesConv():
 
 
         # Only compute for networks with node features
-        if hasattr(G.nodes[0], 'feat'):
+        if 'feat' in G.nodes[0].keys():
             try:
                 
                 # Create a matrix features from each node

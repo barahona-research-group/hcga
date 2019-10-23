@@ -52,7 +52,7 @@ class NodeLabels():
 
         
         # Only compute for networks with node features
-        if hasattr(G.nodes[0], 'label'):
+        if 'label' in G.nodes[0].keys():
             try:
             
                 # Create a matrix features from each node
@@ -61,7 +61,7 @@ class NodeLabels():
                     node_matrix = np.vstack([node_matrix,G.nodes[i]['label']])
                 
                 
-                
+                    
                 num_feats = node_matrix.shape[1]
                 
                 for i in range(0,num_feats):                

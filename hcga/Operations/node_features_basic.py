@@ -63,7 +63,7 @@ class NodeFeaturesBasic():
                 feature_list['deg_powerlaw_SSE_{}'.format(bins[i])] = utils.power_law_fit(node_degrees,bins=bins[i])[1] # value sse in power law
         
         # Only compute for networks with node features
-        if hasattr(G.nodes[0], 'feat'):
+        if 'feat' in G.nodes[0].keys():
             try:
                 
                 # Create a matrix features from each node
