@@ -6,6 +6,7 @@ warnings.simplefilter("ignore")
 
 import numpy as np
 import pandas as pd
+import pickle as pickle
 import networkx as nx
 
 from hcga.utils import read_graphfile
@@ -74,6 +75,7 @@ class Graphs():
                 * REDDIT-MULTI-12K: benchmark
                 * synthetic: contains several variants of synthetics 
                 * HELICENES: Julia Schmidt's dataset
+                * NEURONS: neurons dataset for different animals 
         
         """
 
@@ -129,10 +131,18 @@ class Graphs():
             from hcga.TestData.HELICENES.graph_construction import construct_helicene_graphs
             graphs,graph_labels = construct_helicene_graphs()
 
+        elif dataset == 'NEURONS':
+            graphs_full = pickle.load(open(directory+'/NEURONS/neurons_animals.pkl','rb'))
+
+            graphs = []
+            graph_labels = []
+            for i in range(len(graphs_full)):
+                G = graphs_full[i][0]
+                graphs.append(graphs_full[i][0])
+                graph_labels.append(graphs_full[i][1])
             
         self.graphs = graphs
         self.graph_labels = graph_labels
-
 
     
     def calculate_features(self,calc_speed='slow',parallel=True):
@@ -216,8 +226,6 @@ class Graphs():
         
         self.raw_feature_matrix = raw_feature_matrix 
         print('Number of raw features: ', np.shape( raw_feature_matrix )[1])
-        raw_feature_matrix.isnull().any(axis=0).to_csv('tes.csv')
-        #raw_feature_matrix.to_csv('tes.csv')
 
         # remove infinite and nan columns
         feature_matrix_clean = raw_feature_matrix.replace([np.inf, -np.inf], np.nan).dropna(1,how="any")
@@ -233,8 +241,6 @@ class Graphs():
         self.graph_feature_matrix = feature_matrix_clean
         print("Final number of features extracted:", np.shape(feature_matrix_clean)[1])
 
-        self.save_feature_set()
-        self.save_feature_matrix()
 
         
     def extract_feature(self,n):
@@ -278,7 +284,7 @@ class Graphs():
         self.X_norm = X_norm
         self.y=np.asarray(self.graph_labels)
 
-    def graph_classification(self,plot=True,ml_model='xgboost', data='all'):
+    def graph_classification(self,plot=True,ml_model='xgboost', data='all', reduc_threshold = 0.9, image_folder='images'):
 
         """
         Graph classification
@@ -330,25 +336,25 @@ class Graphs():
         self.top_feats = top_feats         
         self.top_features_list=top_features_list       
             
-           
         # re running classification with reduced feature set
-        X_reduced, top_feat_indices = reduce_feature_set(X,top_feats)        
+        X_reduced, top_feat_indices = reduce_feature_set(X,top_feats, threshold = reduc_threshold)        
         testing_accuracy_reduced_set, top_feats_reduced_set = classification(X_reduced,y,ml_model) 
         print("Final mean test accuracy reduced feature set: --- {0:.3f} ---)".format(np.mean(testing_accuracy_reduced_set)))            
         
-        self.top_features_importance_plot(X,top_feat_indices,feature_names,y)     
-        
-        self.plot_violin_feature(X,y,top_feat_indices[0],feature_names)
-        
+        # top and violin plot top features
+        self.top_features_importance_plot(X,top_feat_indices,feature_names,y, name='xgboost', image_folder = image_folder)
+        self.plot_violin_feature(X,y,top_feat_indices[0],feature_names, name='xgboost', image_folder = image_folder)
+
+
         # univariate classification on top features
         univariate_topfeat_acc = univariate_classification(X_reduced,y)
         feature_names_reduced = [feature_names[i] for i in top_feat_indices]
         top_feat_index = np.argsort(univariate_topfeat_acc)[::-1]       
-        self.top_features_importance_plot(X_reduced,top_feat_index[0:2],feature_names_reduced,y)
-        
-        # violin plot top feature
-        self.plot_violin_feature(X_reduced,y,top_feat_index[0],feature_names_reduced)
-        
+
+        # top and violin plot top features from univariate
+        self.top_features_importance_plot(X_reduced,top_feat_index[0:2],feature_names_reduced,y, name='univariate', image_folder = image_folder)
+        self.plot_violin_feature(X_reduced,y,top_feat_index[0],feature_names_reduced, name='univariate', image_folder = image_folder)
+
         self.test_accuracy = testing_accuracy_reduced_set 
 
         return np.mean(testing_accuracy_reduced_set)
@@ -584,7 +590,7 @@ class Graphs():
         plt.xlabel('PC1')        
         plt.ylabel('PC2')
         
-    def top_features_importance_plot(self,X,top_feat_indices,feature_names,y):        
+    def top_features_importance_plot(self,X,top_feat_indices,feature_names,y, name = 'xgboost', image_folder='images'):
         """ 
         Plot the top feature importances
         """
@@ -599,9 +605,9 @@ class Graphs():
         plt.xlabel(feature_names[top_feat_indices[0]])        
         plt.ylabel(feature_names[top_feat_indices[1]])
         plt.colorbar(sc)
-        plt.savefig('Images/scatter_top2_feats_'+self.dataset+str(random.randint(1,101))+'.svg', bbox_inches = 'tight') 
+        plt.savefig(image_folder + '/scatter_top2_feats_'+self.dataset+'_'+name+'.svg', bbox_inches = 'tight') 
         
-    def plot_violin_feature(self,X,y,feature_id,feature_names):   
+    def plot_violin_feature(self,X,y,feature_id,feature_names, name = 'xgboost', image_folder='images'):   
         """
         Plot the violins of a feature
         """
@@ -619,9 +625,7 @@ class Graphs():
         sns.set(style="whitegrid")
         ax = sns.violinplot(data=data_split,palette="muted",width=1)
         ax.set(xlabel='Class label', ylabel=feature_names[feature_id])
-        plt.savefig('Images/violin_plot_'+self.dataset+'_'+feature_names[feature_id]+'_'+str(random.randint(1,101))+'.svg', bbox_inches = 'tight') 
-
-
+        plt.savefig(image_folder + '/violin_plot_'+self.dataset+'_'+feature_names[feature_id]+'_'+name+'.svg', bbox_inches = 'tight') 
         
     def save_feature_set(self,filename = 'Outputs/feature_set.pkl'):
         """
@@ -802,7 +806,7 @@ def top_features(X,top_feats,feature_names):
 
     return top_features_list
 
-def reduce_feature_set(X,top_feats):
+def reduce_feature_set(X,top_feats, threshold=0.9):
     """
     Reduce the feature set
 
@@ -822,7 +826,7 @@ def reduce_feature_set(X,top_feats):
     sum_importance = 0      
     for i in range(len(sorted_mean_importance)):
         sum_importance = sum_importance + sorted_mean_importance[i]
-        if sum_importance > 0.9:
+        if sum_importance > threshold:
             final_index = i
             break
     
