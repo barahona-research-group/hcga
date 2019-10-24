@@ -215,16 +215,13 @@ class Graphs():
         raw_feature_matrix = pd.DataFrame(feature_vals_matrix, columns = compounded_feature_names)
         
         self.raw_feature_matrix = raw_feature_matrix 
-        print(np.shape( raw_feature_matrix ))
-        print(np.isnan(raw_feature_matrix ))
-        print(raw_feature_matrix.isnull().any(axis=1))
-        print(raw_feature_matrix.isnull().any(axis=0))
+        print('Number of raw features: ', np.shape( raw_feature_matrix )[1])
         raw_feature_matrix.isnull().any(axis=0).to_csv('tes.csv')
         #raw_feature_matrix.to_csv('tes.csv')
 
         # remove infinite and nan columns
         feature_matrix_clean = raw_feature_matrix.replace([np.inf, -np.inf], np.nan).dropna(1,how="any")
-        print(np.shape( feature_matrix_clean))
+        print('Number of features without nans/infs: ', np.shape( feature_matrix_clean)[1])
         
         #remove columns with all zeros
         feats_all_zeros = (feature_matrix_clean==0).all(0)        
@@ -234,11 +231,8 @@ class Graphs():
         feature_matrix_clean = feature_matrix_clean.loc[:, (feature_matrix_clean != feature_matrix_clean.iloc[0]).any()]
         
         self.graph_feature_matrix = feature_matrix_clean
-        print("Number of features computed:", np.shape(feature_matrix_clean)[1])
+        print("Final number of features extracted:", np.shape(feature_matrix_clean)[1])
 
-        
-        
-        
         self.save_feature_set()
         self.save_feature_matrix()
 
