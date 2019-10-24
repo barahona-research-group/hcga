@@ -128,8 +128,7 @@ class Graphs():
             graphs,graph_labels = synthetic_data_sbm(N=1000)
 
         elif dataset == 'HELICENES':
-            from hcga.TestData.HELICENES.graph_construction import construct_helicene_graphs
-            graphs,graph_labels = construct_helicene_graphs()
+            graphs,graph_labels = pickle.load(open(directory+'/HELICENES/helicenes_for_hcga.pkl','rb'))
 
         elif dataset == 'NEURONS':
             graphs_full = pickle.load(open(directory+'/NEURONS/neurons_animals.pkl','rb'))

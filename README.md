@@ -17,17 +17,24 @@ See https://imperialcollegelondon.github.io/hcga/ for the documentation.
 Please cite our paper if you use this code in your own work:
 
 ```
-R. Peach, H. Palasciano, A. Arnaudon, M. Brahona, “hcga: Highly Comparative Graph Analysis for graph phenotyping”, In preparation, 2019
+R. Peach, H. Palasciano, A. Arnaudon, M. Barahona, “hcga: Highly Comparative Graph Analysis for graph phenotyping”, In preparation, 2019
 
 ```
 
 ## Run test file
 
-In the example folder, the script ``test.py`` demonstrates how to run the code on the ENZYMES dataset. 
+In the example folder, the script ``run.py`` can be used to run the examples of the paper, simply as 
 
-## Adding other datasets
+```./run.sh DATASET```
 
-Download your data from https://ls11-www.cs.tu-dortmund.de/staff/morris/graphkerneldatasets 
+where ``DATASET`` can be one of 
+    * ENZYMES
+    * DD
+    * COLLAB
+    * PROTEINS
+    * REDDIT-MULTI-12K
+    * NEURONS
+    * HELICENES
 
-Add the data into TestData folder e.g. /TestData/ENZYMES/
+More comments are in the scripts for some parameters choices. 
 
