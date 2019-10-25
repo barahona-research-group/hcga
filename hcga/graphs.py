@@ -82,8 +82,8 @@ class Graphs():
         
         """
 
-        if dataset == 'ENZYMES' or dataset == 'DD' or dataset == 'COLLAB' or dataset == 'PROTEINS' or dataset == 'REDDIT-MULTI-12K'  or 'ENZYMES1':
-
+        if dataset == 'ENZYMES' or dataset == 'DD' or dataset == 'COLLAB' or dataset == 'PROTEINS' or dataset == 'REDDIT-MULTI-12K' or dataset == 'ENZYMES1':
+            
             if dataset == 'ENZYMES1':
                 graphs,graph_labels = read_graphfile(directory,'ENZYMES')
             else:
@@ -337,7 +337,7 @@ class Graphs():
         print("Mean test accuracy full set: --- {0:.3f} ---)".format(np.mean(testing_accuracy)))            
 
         # get names of top features
-        top_features_list = top_features(X,top_feats,feature_names)  
+        top_features_list = top_features(X,top_feats, feature_names, image_folder = image_folder, threshold = reduc_threshold)  
         self.top_feats = top_feats         
         self.top_features_list=top_features_list       
             
@@ -757,7 +757,7 @@ def univariate_classification(X,y):
     return classification_acc
     
 
-def top_features(X,top_feats,feature_names):
+def top_features(X,top_feats,feature_names, image_folder, threshold = 0.9):
     """
     Select and plot the dendogram, heatmap and importance distribution of top features
     """
@@ -767,6 +767,8 @@ def top_features(X,top_feats,feature_names):
     import seaborn as sns
     
     mean_importance = np.mean(np.asarray(top_feats),0)                  
+    sorted_mean_importance = np.sort(mean_importance)[::-1]     
+
     top_feat_indices = np.argsort(mean_importance)[::-1]            
     top_features_list = []
     for i in range(len(top_feat_indices)):                
@@ -779,7 +781,7 @@ def top_features(X,top_feats,feature_names):
     Z = linkage(cor, 'ward')            
     plt.figure()
     dn = dendrogram(Z)         
-    plt.savefig('Images/dendogram_top40_features.svg', bbox_inches = 'tight') 
+    plt.savefig(image_folder+'/endogram_top40_features.svg', bbox_inches = 'tight') 
     
     new_index = [int(i) for  i in dn['ivl']]
     top_feats_names = [top_features_list[i] for i in new_index]             
@@ -787,18 +789,20 @@ def top_features(X,top_feats,feature_names):
     cor2 = np.abs(df.corr())            
     plt.figure()
     sns.heatmap(cor2, linewidth=0.5)
-    plt.savefig('Images/heatmap_top40_feature_dependencies.svg', bbox_inches = 'tight') 
+    plt.savefig(image_folder+'/heatmap_top40_feature_dependencies.svg', bbox_inches = 'tight') 
     
-    
-    sorted_mean_importance = np.sort(mean_importance)[::-1]    
+    # Taking only features till we have reached 90% importance
     sum_importance = 0      
+    final_index = 0 
     for i in range(len(sorted_mean_importance)):
-        sum_importance += sorted_mean_importance[i]
-        if sum_importance > 0.9:
+        sum_importance = sum_importance + sorted_mean_importance[i]
+        if sum_importance > threshold:
             final_index = i
             break
-    
-    
+    if final_index < 3: #take top 2 if no features are selected
+        final_index = 3
+
+
     plt.figure()
     plt.plot(np.sort(mean_importance)[::-1])
     plt.xlabel('Features')
@@ -806,7 +810,7 @@ def top_features(X,top_feats,feature_names):
     plt.xscale('log')
     plt.yscale('symlog', nonposy='clip', linthreshy=0.001)    
     plt.axvline(x=final_index,color='r')
-    plt.savefig('Images/feature_importance_distribution.svg', bbox_inches = 'tight') 
+    plt.savefig(image_folder+'/feature_importance_distribution.svg', bbox_inches = 'tight') 
     
 
     return top_features_list
@@ -829,13 +833,16 @@ def reduce_feature_set(X,top_feats, threshold=0.9):
     
     # Taking only features till we have reached 90% importance
     sum_importance = 0      
+    final_index = 0 
     for i in range(len(sorted_mean_importance)):
         sum_importance = sum_importance + sorted_mean_importance[i]
         if sum_importance > threshold:
             final_index = i
             break
-    
-    top_feat_indices = np.argsort(mean_importance)[::-1][0:final_index]     
+    if final_index < 3: #take top 2 if no features are selected
+        final_index = 3
+
+    top_feat_indices = np.argsort(mean_importance)[::-1][:final_index]     
         
     X_reduced = X[:,top_feat_indices]
     

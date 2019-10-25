@@ -224,7 +224,7 @@ class Operations():
         return feature_names, feature_vals
         
 
-    def precompute_eigenvectors(self,weight=None, max_iter=None, tol=1e-5):
+    def precompute_eigenvectors(self,weight=None, max_iter=None, tol=0):
 
         try:
             M = nx.to_scipy_sparse_matrix(self.G_largest_subgraph, nodelist=list(self.G_largest_subgraph), weight=weight,
