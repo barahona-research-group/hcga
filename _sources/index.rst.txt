@@ -22,9 +22,20 @@ There is no release version yet, but stay tuned for more!
 Usage
 -----
 
-See the example folder with a ``test.py`` example script. 
+In the example folder, the script ``run.py`` can be used to run the examples of the paper, simply as 
 
-To add another dataset, do ...
+```./run.sh DATASET```
+
+where ``DATASET`` can be one of 
+    * ENZYMES
+    * DD
+    * COLLAB
+    * PROTEINS
+    * REDDIT-MULTI-12K
+    * NEURONS
+    * HELICENES
+
+More comments are in the scripts for some parameters choices. 
 
 Citing
 ------
@@ -51,7 +62,7 @@ Any contributors are welcome, please contact us if interested.
 Bibliography
 ------------
 
-.. [Hcga]  R. Peach, H. Palasciano, A. Arnaudon, M. Brahona, 
+.. [Hcga]  R. Peach, H. Palasciano, A. Arnaudon, M. Barahona, 
                 “hcga: Highly Comparative Graph Analysis for graph phenotyping”, In preparation, 2019
 .. [Hctsa]  B. D. Fulcher and N. S. Jones, 
                 “hctsa:  A computational framework for automated time-series phenotyping using massive feature extraction,” Cell systems, vol. 5, no. 5, pp. 527–531, 2017
