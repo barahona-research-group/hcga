@@ -109,7 +109,9 @@
         <span class="n">feature_list</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">5</span><span class="p">:</span>            
             <span class="c1"># Calculating the shortest paths stats</span>
-            <span class="k">for</span> <span class="n">attempts</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+            <span class="n">attempt</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">attempt_max</span> <span class="o">=</span> <span class="mi">20</span>
+            <span class="k">while</span> <span class="n">attempt</span> <span class="o">&lt;</span> <span class="n">attempt_max</span> <span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     
                     <span class="n">rich_club</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">rich_club_coefficient</span><span class="p">(</span><span class="n">G</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>       
@@ -144,13 +146,16 @@
                     <span class="k">break</span>
                 
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Exception for rich_club:&#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-    
-                    <span class="n">feature_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;num_rich&#39;</span><span class="p">,</span><span class="s1">&#39;mean_rich_coef&#39;</span><span class="p">,</span><span class="s1">&#39;std_rich_coef&#39;</span><span class="p">,</span><span class="s1">&#39;max_rich_coef&#39;</span><span class="p">,</span><span class="s1">&#39;ratio_rich_coef&#39;</span><span class="p">,</span><span class="s1">&#39;ratio_top2_coef&#39;</span><span class="p">,</span>
-                                      <span class="s1">&#39;top10_10&#39;</span><span class="p">,</span><span class="s1">&#39;top10_9&#39;</span><span class="p">,</span><span class="s1">&#39;top10_8&#39;</span><span class="p">,</span><span class="s1">&#39;top10_7&#39;</span><span class="p">,</span><span class="s1">&#39;top10_6&#39;</span><span class="p">,</span><span class="s1">&#39;top10_5&#39;</span><span class="p">,</span><span class="s1">&#39;top10_4&#39;</span><span class="p">,</span><span class="s1">&#39;top10_3&#39;</span><span class="p">,</span>
-                                      <span class="s1">&#39;top10_2&#39;</span><span class="p">,</span><span class="s1">&#39;top10_1&#39;</span><span class="p">]</span>
-                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">feature_names</span><span class="p">)):</span>
-                        <span class="n">feature_list</span><span class="p">[</span><span class="n">feature_names</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span><span class="o">=</span><span class="mi">0</span>
+                    <span class="n">attempt</span> <span class="o">+=</span> <span class="mi">1</span>   
+
+            <span class="k">if</span> <span class="n">attempt</span> <span class="o">==</span> <span class="n">attempt_max</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of attempts (&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">attempt_max</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;) to compute rich_club exceded&#39;</span><span class="p">)</span>
+
+                <span class="n">feature_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;num_rich&#39;</span><span class="p">,</span><span class="s1">&#39;mean_rich_coef&#39;</span><span class="p">,</span><span class="s1">&#39;std_rich_coef&#39;</span><span class="p">,</span><span class="s1">&#39;max_rich_coef&#39;</span><span class="p">,</span><span class="s1">&#39;ratio_rich_coef&#39;</span><span class="p">,</span><span class="s1">&#39;ratio_top2_coef&#39;</span><span class="p">,</span>
+                                  <span class="s1">&#39;top10_10&#39;</span><span class="p">,</span><span class="s1">&#39;top10_9&#39;</span><span class="p">,</span><span class="s1">&#39;top10_8&#39;</span><span class="p">,</span><span class="s1">&#39;top10_7&#39;</span><span class="p">,</span><span class="s1">&#39;top10_6&#39;</span><span class="p">,</span><span class="s1">&#39;top10_5&#39;</span><span class="p">,</span><span class="s1">&#39;top10_4&#39;</span><span class="p">,</span><span class="s1">&#39;top10_3&#39;</span><span class="p">,</span>
+                                  <span class="s1">&#39;top10_2&#39;</span><span class="p">,</span><span class="s1">&#39;top10_1&#39;</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">feature_names</span><span class="p">)):</span>
+                    <span class="n">feature_list</span><span class="p">[</span><span class="n">feature_names</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span><span class="o">=</span><span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">feature_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;num_rich&#39;</span><span class="p">,</span><span class="s1">&#39;mean_rich_coef&#39;</span><span class="p">,</span><span class="s1">&#39;std_rich_coef&#39;</span><span class="p">,</span><span class="s1">&#39;max_rich_coef&#39;</span><span class="p">,</span><span class="s1">&#39;ratio_rich_coef&#39;</span><span class="p">,</span><span class="s1">&#39;ratio_top2_coef&#39;</span><span class="p">,</span>
                                   <span class="s1">&#39;top10_10&#39;</span><span class="p">,</span><span class="s1">&#39;top10_9&#39;</span><span class="p">,</span><span class="s1">&#39;top10_8&#39;</span><span class="p">,</span><span class="s1">&#39;top10_7&#39;</span><span class="p">,</span><span class="s1">&#39;top10_6&#39;</span><span class="p">,</span><span class="s1">&#39;top10_5&#39;</span><span class="p">,</span><span class="s1">&#39;top10_4&#39;</span><span class="p">,</span><span class="s1">&#39;top10_3&#39;</span><span class="p">,</span>
@@ -158,8 +163,6 @@
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">feature_names</span><span class="p">)):</span>
                     <span class="n">feature_list</span><span class="p">[</span><span class="n">feature_names</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             
-            
-
         <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">feature_list</span></div></div>
 </pre></div>
 

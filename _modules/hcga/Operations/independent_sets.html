@@ -89,7 +89,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>            
     
     
-            <span class="n">ind_set</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">maximal_independent_set</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+            <span class="n">ind_set</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">maximal_independent_set</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">seed</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
             
             <span class="n">feature_list</span><span class="p">[</span><span class="s1">&#39;num_ind_nodes_norm&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">ind_set</span><span class="p">)</span>
             

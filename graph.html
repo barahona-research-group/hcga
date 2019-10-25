@@ -87,7 +87,7 @@ The constructor takes either a list of networkx graphs, or a directory with a li
 
 <dl class="method">
 <dt id="hcga.graphs.Graphs.graph_classification">
-<code class="sig-name descname">graph_classification</code><span class="sig-paren">(</span><em class="sig-param">plot=True</em>, <em class="sig-param">ml_model='xgboost'</em>, <em class="sig-param">data='all'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.graph_classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.graph_classification" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">graph_classification</code><span class="sig-paren">(</span><em class="sig-param">plot=True</em>, <em class="sig-param">ml_model='xgboost'</em>, <em class="sig-param">data='all'</em>, <em class="sig-param">reduc_threshold=0.9</em>, <em class="sig-param">image_folder='images'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.graph_classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.graph_classification" title="Permalink to this definition">¶</a></dt>
 <dd><p>Graph classification</p>
 <dl class="simple">
 <dt>data: string</dt><dd><dl class="simple">
@@ -150,6 +150,7 @@ The constructor takes either a list of networkx graphs, or a directory with a li
 <li><p>REDDIT-MULTI-12K: benchmark</p></li>
 <li><p>synthetic: contains several variants of synthetics</p></li>
 <li><p>HELICENES: Julia Schmidt’s dataset</p></li>
+<li><p>NEURONS: neurons dataset for different animals</p></li>
 </ul>
 </dd>
 </dl>
@@ -171,7 +172,7 @@ The constructor takes either a list of networkx graphs, or a directory with a li
 
 <dl class="method">
 <dt id="hcga.graphs.Graphs.plot_violin_feature">
-<code class="sig-name descname">plot_violin_feature</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">feature_id</em>, <em class="sig-param">feature_names</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.plot_violin_feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.plot_violin_feature" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_violin_feature</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">feature_id</em>, <em class="sig-param">feature_names</em>, <em class="sig-param">name='xgboost'</em>, <em class="sig-param">image_folder='images'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.plot_violin_feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.plot_violin_feature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the violins of a feature</p>
 </dd></dl>
 
@@ -189,7 +190,7 @@ The constructor takes either a list of networkx graphs, or a directory with a li
 
 <dl class="method">
 <dt id="hcga.graphs.Graphs.top_features_importance_plot">
-<code class="sig-name descname">top_features_importance_plot</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">top_feat_indices</em>, <em class="sig-param">feature_names</em>, <em class="sig-param">y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.top_features_importance_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.top_features_importance_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">top_features_importance_plot</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">top_feat_indices</em>, <em class="sig-param">feature_names</em>, <em class="sig-param">y</em>, <em class="sig-param">name='xgboost'</em>, <em class="sig-param">image_folder='images'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#Graphs.top_features_importance_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.Graphs.top_features_importance_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the top feature importances</p>
 </dd></dl>
 
@@ -215,7 +216,7 @@ The constructor takes either a list of networkx graphs, or a directory with a li
 
 <dl class="function">
 <dt id="hcga.graphs.reduce_feature_set">
-<code class="sig-prename descclassname">hcga.graphs.</code><code class="sig-name descname">reduce_feature_set</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">top_feats</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#reduce_feature_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.reduce_feature_set" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">hcga.graphs.</code><code class="sig-name descname">reduce_feature_set</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">top_feats</em>, <em class="sig-param">threshold=0.9</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#reduce_feature_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.reduce_feature_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reduce the feature set</p>
 <dl class="simple">
 <dt>top_feats: list</dt><dd><p>List of features to keep</p>
@@ -225,7 +226,7 @@ The constructor takes either a list of networkx graphs, or a directory with a li
 
 <dl class="function">
 <dt id="hcga.graphs.top_features">
-<code class="sig-prename descclassname">hcga.graphs.</code><code class="sig-name descname">top_features</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">top_feats</em>, <em class="sig-param">feature_names</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#top_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.top_features" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">hcga.graphs.</code><code class="sig-name descname">top_features</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">top_feats</em>, <em class="sig-param">feature_names</em>, <em class="sig-param">image_folder</em>, <em class="sig-param">threshold=0.9</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graphs.html#top_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graphs.top_features" title="Permalink to this definition">¶</a></dt>
 <dd><p>Select and plot the dendogram, heatmap and importance distribution of top features</p>
 </dd></dl>
 

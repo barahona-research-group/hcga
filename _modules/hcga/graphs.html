@@ -46,6 +46,7 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">pickle</span> <span class="k">as</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
 <span class="kn">from</span> <span class="nn">hcga.utils</span> <span class="k">import</span> <span class="n">read_graphfile</span>
@@ -57,11 +58,14 @@
 <span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="k">import</span> <span class="n">Pool</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
 
-
 <span class="kn">import</span> <span class="nn">matplotlib</span>
 <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;agg&quot;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
+<span class="c1">#fix RNGs for reproducibility</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Graphs"><a class="viewcode-back" href="../../graph.html#hcga.graphs.Graphs">[docs]</a><span class="k">class</span> <span class="nc">Graphs</span><span class="p">():</span>
 
@@ -114,12 +118,16 @@
 <span class="sd">                * REDDIT-MULTI-12K: benchmark</span>
 <span class="sd">                * synthetic: contains several variants of synthetics </span>
 <span class="sd">                * HELICENES: Julia Schmidt&#39;s dataset</span>
+<span class="sd">                * NEURONS: neurons dataset for different animals </span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s1">&#39;ENZYMES&#39;</span> <span class="ow">or</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s1">&#39;DD&#39;</span> <span class="ow">or</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s1">&#39;COLLAB&#39;</span> <span class="ow">or</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s1">&#39;PROTEINS&#39;</span> <span class="ow">or</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s1">&#39;REDDIT-MULTI-12K&#39;</span> <span class="p">:</span>
-        
-            <span class="n">graphs</span><span class="p">,</span><span class="n">graph_labels</span> <span class="o">=</span> <span class="n">read_graphfile</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span><span class="n">dataset</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s1">&#39;ENZYMES&#39;</span> <span class="ow">or</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s1">&#39;DD&#39;</span> <span class="ow">or</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s1">&#39;COLLAB&#39;</span> <span class="ow">or</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s1">&#39;PROTEINS&#39;</span> <span class="ow">or</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s1">&#39;REDDIT-MULTI-12K&#39;</span> <span class="ow">or</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s1">&#39;ENZYMES1&#39;</span><span class="p">:</span>
+            
+            <span class="k">if</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s1">&#39;ENZYMES1&#39;</span><span class="p">:</span>
+                <span class="n">graphs</span><span class="p">,</span><span class="n">graph_labels</span> <span class="o">=</span> <span class="n">read_graphfile</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span><span class="s1">&#39;ENZYMES&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">graphs</span><span class="p">,</span><span class="n">graph_labels</span> <span class="o">=</span> <span class="n">read_graphfile</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span><span class="n">dataset</span><span class="p">)</span>
     
             <span class="n">to_remove</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">G</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">graphs</span><span class="p">):</span> 
@@ -166,13 +174,20 @@
             <span class="n">graphs</span><span class="p">,</span><span class="n">graph_labels</span> <span class="o">=</span> <span class="n">synthetic_data_sbm</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s1">&#39;HELICENES&#39;</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">hcga.TestData.HELICENES.graph_construction</span> <span class="k">import</span> <span class="n">construct_helicene_graphs</span>
-            <span class="n">graphs</span><span class="p">,</span><span class="n">graph_labels</span> <span class="o">=</span> <span class="n">construct_helicene_graphs</span><span class="p">()</span>
+            <span class="n">graphs</span><span class="p">,</span><span class="n">graph_labels</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">directory</span><span class="o">+</span><span class="s1">&#39;/HELICENES/helicenes_for_hcga.pkl&#39;</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">))</span>
 
+        <span class="k">elif</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s1">&#39;NEURONS&#39;</span><span class="p">:</span>
+            <span class="n">graphs_full</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">directory</span><span class="o">+</span><span class="s1">&#39;/NEURONS/neurons_animals_for_hcga.pkl&#39;</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+
+            <span class="n">graphs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">graph_labels</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">graphs_full</span><span class="p">)):</span>
+                <span class="n">G</span> <span class="o">=</span> <span class="n">graphs_full</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">graphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">graphs_full</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">graph_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">graphs_full</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
             
         <span class="bp">self</span><span class="o">.</span><span class="n">graphs</span> <span class="o">=</span> <span class="n">graphs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph_labels</span> <span class="o">=</span> <span class="n">graph_labels</span></div>
-
 
     
 <div class="viewcode-block" id="Graphs.calculate_features"><a class="viewcode-back" href="../../graph.html#hcga.graphs.Graphs.calculate_features">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">calc_speed</span><span class="o">=</span><span class="s1">&#39;slow&#39;</span><span class="p">,</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -255,9 +270,11 @@
         <span class="n">raw_feature_matrix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">feature_vals_matrix</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">compounded_feature_names</span><span class="p">)</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">raw_feature_matrix</span> <span class="o">=</span> <span class="n">raw_feature_matrix</span> 
-        
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of raw features: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span> <span class="n">raw_feature_matrix</span> <span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+
         <span class="c1"># remove infinite and nan columns</span>
         <span class="n">feature_matrix_clean</span> <span class="o">=</span> <span class="n">raw_feature_matrix</span><span class="o">.</span><span class="n">replace</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">how</span><span class="o">=</span><span class="s2">&quot;any&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of features without nans/infs: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span> <span class="n">feature_matrix_clean</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
         
         <span class="c1">#remove columns with all zeros</span>
         <span class="n">feats_all_zeros</span> <span class="o">=</span> <span class="p">(</span><span class="n">feature_matrix_clean</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>        
@@ -267,13 +284,8 @@
         <span class="n">feature_matrix_clean</span> <span class="o">=</span> <span class="n">feature_matrix_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">(</span><span class="n">feature_matrix_clean</span> <span class="o">!=</span> <span class="n">feature_matrix_clean</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">any</span><span class="p">()]</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">graph_feature_matrix</span> <span class="o">=</span> <span class="n">feature_matrix_clean</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of features computed:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">feature_matrix_clean</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final number of features extracted:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">feature_matrix_clean</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span></div>
 
-        
-        
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">save_feature_set</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">save_feature_matrix</span><span class="p">()</span></div>
 
         
 <div class="viewcode-block" id="Graphs.extract_feature"><a class="viewcode-back" href="../../graph.html#hcga.graphs.Graphs.extract_feature">[docs]</a>    <span class="k">def</span> <span class="nf">extract_feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
@@ -317,7 +329,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">X_norm</span> <span class="o">=</span> <span class="n">X_norm</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph_labels</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Graphs.graph_classification"><a class="viewcode-back" href="../../graph.html#hcga.graphs.Graphs.graph_classification">[docs]</a>    <span class="k">def</span> <span class="nf">graph_classification</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">ml_model</span><span class="o">=</span><span class="s1">&#39;xgboost&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Graphs.graph_classification"><a class="viewcode-back" href="../../graph.html#hcga.graphs.Graphs.graph_classification">[docs]</a>    <span class="k">def</span> <span class="nf">graph_classification</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">ml_model</span><span class="o">=</span><span class="s1">&#39;xgboost&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">reduc_threshold</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span> <span class="n">image_folder</span><span class="o">=</span><span class="s1">&#39;images&#39;</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Graph classification</span>
@@ -365,29 +377,29 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean test accuracy full set: --- </span><span class="si">{0:.3f}</span><span class="s2"> ---)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">testing_accuracy</span><span class="p">)))</span>            
 
         <span class="c1"># get names of top features</span>
-        <span class="n">top_features_list</span> <span class="o">=</span> <span class="n">top_features</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">top_feats</span><span class="p">,</span><span class="n">feature_names</span><span class="p">)</span>  
+        <span class="n">top_features_list</span> <span class="o">=</span> <span class="n">top_features</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">top_feats</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">image_folder</span> <span class="o">=</span> <span class="n">image_folder</span><span class="p">,</span> <span class="n">threshold</span> <span class="o">=</span> <span class="n">reduc_threshold</span><span class="p">)</span>  
         <span class="bp">self</span><span class="o">.</span><span class="n">top_feats</span> <span class="o">=</span> <span class="n">top_feats</span>         
         <span class="bp">self</span><span class="o">.</span><span class="n">top_features_list</span><span class="o">=</span><span class="n">top_features_list</span>       
             
-           
         <span class="c1"># re running classification with reduced feature set</span>
-        <span class="n">X_reduced</span><span class="p">,</span> <span class="n">top_feat_indices</span> <span class="o">=</span> <span class="n">reduce_feature_set</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">top_feats</span><span class="p">)</span>        
+        <span class="n">X_reduced</span><span class="p">,</span> <span class="n">top_feat_indices</span> <span class="o">=</span> <span class="n">reduce_feature_set</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">top_feats</span><span class="p">,</span> <span class="n">threshold</span> <span class="o">=</span> <span class="n">reduc_threshold</span><span class="p">)</span>        
         <span class="n">testing_accuracy_reduced_set</span><span class="p">,</span> <span class="n">top_feats_reduced_set</span> <span class="o">=</span> <span class="n">classification</span><span class="p">(</span><span class="n">X_reduced</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">ml_model</span><span class="p">)</span> 
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final mean test accuracy reduced feature set: --- </span><span class="si">{0:.3f}</span><span class="s2"> ---)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">testing_accuracy_reduced_set</span><span class="p">)))</span>            
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">top_features_importance_plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">top_feat_indices</span><span class="p">,</span><span class="n">feature_names</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>     
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">plot_violin_feature</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">top_feat_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">feature_names</span><span class="p">)</span>
-        
+        <span class="c1"># top and violin plot top features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_features_importance_plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">top_feat_indices</span><span class="p">,</span><span class="n">feature_names</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;xgboost&#39;</span><span class="p">,</span> <span class="n">image_folder</span> <span class="o">=</span> <span class="n">image_folder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot_violin_feature</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">top_feat_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">feature_names</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;xgboost&#39;</span><span class="p">,</span> <span class="n">image_folder</span> <span class="o">=</span> <span class="n">image_folder</span><span class="p">)</span>
+
+
         <span class="c1"># univariate classification on top features</span>
         <span class="n">univariate_topfeat_acc</span> <span class="o">=</span> <span class="n">univariate_classification</span><span class="p">(</span><span class="n">X_reduced</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
         <span class="n">feature_names_reduced</span> <span class="o">=</span> <span class="p">[</span><span class="n">feature_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">top_feat_indices</span><span class="p">]</span>
         <span class="n">top_feat_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">univariate_topfeat_acc</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>       
-        <span class="bp">self</span><span class="o">.</span><span class="n">top_features_importance_plot</span><span class="p">(</span><span class="n">X_reduced</span><span class="p">,</span><span class="n">top_feat_index</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span><span class="n">feature_names_reduced</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-        
-        <span class="c1"># violin plot top feature</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plot_violin_feature</span><span class="p">(</span><span class="n">X_reduced</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">top_feat_index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">feature_names_reduced</span><span class="p">)</span>
-        
+
+        <span class="c1"># top and violin plot top features from univariate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_features_importance_plot</span><span class="p">(</span><span class="n">X_reduced</span><span class="p">,</span><span class="n">top_feat_index</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span><span class="n">feature_names_reduced</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;univariate&#39;</span><span class="p">,</span> <span class="n">image_folder</span> <span class="o">=</span> <span class="n">image_folder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot_violin_feature</span><span class="p">(</span><span class="n">X_reduced</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">top_feat_index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">feature_names_reduced</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;univariate&#39;</span><span class="p">,</span> <span class="n">image_folder</span> <span class="o">=</span> <span class="n">image_folder</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">test_accuracy</span> <span class="o">=</span> <span class="n">testing_accuracy_reduced_set</span> 
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">testing_accuracy_reduced_set</span><span class="p">)</span></div>
@@ -623,7 +635,7 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;PC1&#39;</span><span class="p">)</span>        
         <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;PC2&#39;</span><span class="p">)</span></div>
         
-<div class="viewcode-block" id="Graphs.top_features_importance_plot"><a class="viewcode-back" href="../../graph.html#hcga.graphs.Graphs.top_features_importance_plot">[docs]</a>    <span class="k">def</span> <span class="nf">top_features_importance_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">X</span><span class="p">,</span><span class="n">top_feat_indices</span><span class="p">,</span><span class="n">feature_names</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>        
+<div class="viewcode-block" id="Graphs.top_features_importance_plot"><a class="viewcode-back" href="../../graph.html#hcga.graphs.Graphs.top_features_importance_plot">[docs]</a>    <span class="k">def</span> <span class="nf">top_features_importance_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">X</span><span class="p">,</span><span class="n">top_feat_indices</span><span class="p">,</span><span class="n">feature_names</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;xgboost&#39;</span><span class="p">,</span> <span class="n">image_folder</span><span class="o">=</span><span class="s1">&#39;images&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">        Plot the top feature importances</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -638,9 +650,9 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">feature_names</span><span class="p">[</span><span class="n">top_feat_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>        
         <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">feature_names</span><span class="p">[</span><span class="n">top_feat_indices</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;Images/scatter_top2_feats_&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">101</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;.svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span> <span class="o">=</span> <span class="s1">&#39;tight&#39;</span><span class="p">)</span> </div>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">image_folder</span> <span class="o">+</span> <span class="s1">&#39;/scatter_top2_feats_&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">name</span><span class="o">+</span><span class="s1">&#39;.svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span> <span class="o">=</span> <span class="s1">&#39;tight&#39;</span><span class="p">)</span> </div>
         
-<div class="viewcode-block" id="Graphs.plot_violin_feature"><a class="viewcode-back" href="../../graph.html#hcga.graphs.Graphs.plot_violin_feature">[docs]</a>    <span class="k">def</span> <span class="nf">plot_violin_feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">feature_id</span><span class="p">,</span><span class="n">feature_names</span><span class="p">):</span>   
+<div class="viewcode-block" id="Graphs.plot_violin_feature"><a class="viewcode-back" href="../../graph.html#hcga.graphs.Graphs.plot_violin_feature">[docs]</a>    <span class="k">def</span> <span class="nf">plot_violin_feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">feature_id</span><span class="p">,</span><span class="n">feature_names</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;xgboost&#39;</span><span class="p">,</span> <span class="n">image_folder</span><span class="o">=</span><span class="s1">&#39;images&#39;</span><span class="p">):</span>   
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plot the violins of a feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -658,9 +670,7 @@
         <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
         <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data_split</span><span class="p">,</span><span class="n">palette</span><span class="o">=</span><span class="s2">&quot;muted&quot;</span><span class="p">,</span><span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Class label&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="n">feature_names</span><span class="p">[</span><span class="n">feature_id</span><span class="p">])</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;Images/violin_plot_&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">feature_names</span><span class="p">[</span><span class="n">feature_id</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">101</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;.svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span> <span class="o">=</span> <span class="s1">&#39;tight&#39;</span><span class="p">)</span> </div>
-
-
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">image_folder</span> <span class="o">+</span> <span class="s1">&#39;/violin_plot_&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">feature_names</span><span class="p">[</span><span class="n">feature_id</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">name</span><span class="o">+</span><span class="s1">&#39;.svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span> <span class="o">=</span> <span class="s1">&#39;tight&#39;</span><span class="p">)</span> </div>
         
 <div class="viewcode-block" id="Graphs.save_feature_set"><a class="viewcode-back" href="../../graph.html#hcga.graphs.Graphs.save_feature_set">[docs]</a>    <span class="k">def</span> <span class="nf">save_feature_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;Outputs/feature_set.pkl&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -719,6 +729,7 @@
     
     <span class="c1"># reducing number of folds to half the least populated class</span>
     <span class="c1"># e.g. if only 9 elements of class A then we only use int(9/2)=4 folds</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
     <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
     <span class="n">n_splits</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="n">counts</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
 
@@ -787,7 +798,7 @@
     <span class="k">return</span> <span class="n">classification_acc</span></div>
     
 
-<div class="viewcode-block" id="top_features"><a class="viewcode-back" href="../../graph.html#hcga.graphs.top_features">[docs]</a><span class="k">def</span> <span class="nf">top_features</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">top_feats</span><span class="p">,</span><span class="n">feature_names</span><span class="p">):</span>
+<div class="viewcode-block" id="top_features"><a class="viewcode-back" href="../../graph.html#hcga.graphs.top_features">[docs]</a><span class="k">def</span> <span class="nf">top_features</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">top_feats</span><span class="p">,</span><span class="n">feature_names</span><span class="p">,</span> <span class="n">image_folder</span><span class="p">,</span> <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Select and plot the dendogram, heatmap and importance distribution of top features</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -797,6 +808,8 @@
     <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
     
     <span class="n">mean_importance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">top_feats</span><span class="p">),</span><span class="mi">0</span><span class="p">)</span>                  
+    <span class="n">sorted_mean_importance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">mean_importance</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>     
+
     <span class="n">top_feat_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">mean_importance</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>            
     <span class="n">top_features_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">top_feat_indices</span><span class="p">)):</span>                
@@ -809,7 +822,7 @@
     <span class="n">Z</span> <span class="o">=</span> <span class="n">linkage</span><span class="p">(</span><span class="n">cor</span><span class="p">,</span> <span class="s1">&#39;ward&#39;</span><span class="p">)</span>            
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
     <span class="n">dn</span> <span class="o">=</span> <span class="n">dendrogram</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>         
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;Images/dendogram_top40_features.svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span> <span class="o">=</span> <span class="s1">&#39;tight&#39;</span><span class="p">)</span> 
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">image_folder</span><span class="o">+</span><span class="s1">&#39;/endogram_top40_features.svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span> <span class="o">=</span> <span class="s1">&#39;tight&#39;</span><span class="p">)</span> 
     
     <span class="n">new_index</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span>  <span class="n">i</span> <span class="ow">in</span> <span class="n">dn</span><span class="p">[</span><span class="s1">&#39;ivl&#39;</span><span class="p">]]</span>
     <span class="n">top_feats_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">top_features_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">new_index</span><span class="p">]</span>             
@@ -817,18 +830,20 @@
     <span class="n">cor2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">())</span>            
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
     <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cor2</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;Images/heatmap_top40_feature_dependencies.svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span> <span class="o">=</span> <span class="s1">&#39;tight&#39;</span><span class="p">)</span> 
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">image_folder</span><span class="o">+</span><span class="s1">&#39;/heatmap_top40_feature_dependencies.svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span> <span class="o">=</span> <span class="s1">&#39;tight&#39;</span><span class="p">)</span> 
     
-    
-    <span class="n">sorted_mean_importance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">mean_importance</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>    
+    <span class="c1"># Taking only features till we have reached 90% importance</span>
     <span class="n">sum_importance</span> <span class="o">=</span> <span class="mi">0</span>      
+    <span class="n">final_index</span> <span class="o">=</span> <span class="mi">0</span> 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sorted_mean_importance</span><span class="p">)):</span>
-        <span class="n">sum_importance</span> <span class="o">+=</span> <span class="n">sorted_mean_importance</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">sum_importance</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">:</span>
+        <span class="n">sum_importance</span> <span class="o">=</span> <span class="n">sum_importance</span> <span class="o">+</span> <span class="n">sorted_mean_importance</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">sum_importance</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">:</span>
             <span class="n">final_index</span> <span class="o">=</span> <span class="n">i</span>
             <span class="k">break</span>
-    
-    
+    <span class="k">if</span> <span class="n">final_index</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span> <span class="c1">#take top 2 if no features are selected</span>
+        <span class="n">final_index</span> <span class="o">=</span> <span class="mi">3</span>
+
+
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">mean_importance</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Features&#39;</span><span class="p">)</span>
@@ -836,12 +851,12 @@
     <span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;symlog&#39;</span><span class="p">,</span> <span class="n">nonposy</span><span class="o">=</span><span class="s1">&#39;clip&#39;</span><span class="p">,</span> <span class="n">linthreshy</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>    
     <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">final_index</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;Images/feature_importance_distribution.svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span> <span class="o">=</span> <span class="s1">&#39;tight&#39;</span><span class="p">)</span> 
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">image_folder</span><span class="o">+</span><span class="s1">&#39;/feature_importance_distribution.svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span> <span class="o">=</span> <span class="s1">&#39;tight&#39;</span><span class="p">)</span> 
     
 
     <span class="k">return</span> <span class="n">top_features_list</span></div>
 
-<div class="viewcode-block" id="reduce_feature_set"><a class="viewcode-back" href="../../graph.html#hcga.graphs.reduce_feature_set">[docs]</a><span class="k">def</span> <span class="nf">reduce_feature_set</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">top_feats</span><span class="p">):</span>
+<div class="viewcode-block" id="reduce_feature_set"><a class="viewcode-back" href="../../graph.html#hcga.graphs.reduce_feature_set">[docs]</a><span class="k">def</span> <span class="nf">reduce_feature_set</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">top_feats</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.9</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reduce the feature set</span>
 
@@ -859,13 +874,16 @@
     
     <span class="c1"># Taking only features till we have reached 90% importance</span>
     <span class="n">sum_importance</span> <span class="o">=</span> <span class="mi">0</span>      
+    <span class="n">final_index</span> <span class="o">=</span> <span class="mi">0</span> 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sorted_mean_importance</span><span class="p">)):</span>
         <span class="n">sum_importance</span> <span class="o">=</span> <span class="n">sum_importance</span> <span class="o">+</span> <span class="n">sorted_mean_importance</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">sum_importance</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sum_importance</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">:</span>
             <span class="n">final_index</span> <span class="o">=</span> <span class="n">i</span>
             <span class="k">break</span>
-    
-    <span class="n">top_feat_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">mean_importance</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">final_index</span><span class="p">]</span>     
+    <span class="k">if</span> <span class="n">final_index</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span> <span class="c1">#take top 2 if no features are selected</span>
+        <span class="n">final_index</span> <span class="o">=</span> <span class="mi">3</span>
+
+    <span class="n">top_feat_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">mean_importance</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="n">final_index</span><span class="p">]</span>     
         
     <span class="n">X_reduced</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span><span class="n">top_feat_indices</span><span class="p">]</span>
     
