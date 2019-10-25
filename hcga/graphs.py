@@ -18,11 +18,14 @@ import time
 from multiprocessing import Pool
 from functools import partial
 
-
 import matplotlib
 matplotlib.use("agg")
 import matplotlib.pyplot as plt
 
+#fix RNGs for reproducibility
+import random
+random.seed(10)
+np.random.seed(10)
 
 class Graphs():
 
@@ -79,9 +82,12 @@ class Graphs():
         
         """
 
-        if dataset == 'ENZYMES' or dataset == 'DD' or dataset == 'COLLAB' or dataset == 'PROTEINS' or dataset == 'REDDIT-MULTI-12K' :
-        
-            graphs,graph_labels = read_graphfile(directory,dataset)
+        if dataset == 'ENZYMES' or dataset == 'DD' or dataset == 'COLLAB' or dataset == 'PROTEINS' or dataset == 'REDDIT-MULTI-12K'  or 'ENZYMES1':
+
+            if dataset == 'ENZYMES1':
+                graphs,graph_labels = read_graphfile(directory,'ENZYMES')
+            else:
+                graphs,graph_labels = read_graphfile(directory,dataset)
     
             to_remove = []
             for i,G in enumerate(graphs): 
@@ -131,7 +137,7 @@ class Graphs():
             graphs,graph_labels = pickle.load(open(directory+'/HELICENES/helicenes_for_hcga.pkl','rb'))
 
         elif dataset == 'NEURONS':
-            graphs_full = pickle.load(open(directory+'/NEURONS/neurons_animals.pkl','rb'))
+            graphs_full = pickle.load(open(directory+'/NEURONS/neurons_animals_for_hcga.pkl','rb'))
 
             graphs = []
             graph_labels = []

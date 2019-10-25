@@ -58,7 +58,7 @@ class SpectrumLaplacian():
 
         try: 
             # computing with weights
-            fiedler_vector = nx.fiedler_vector(G,weight='weight') # can use None
+            fiedler_vector = nx.fiedler_vector(G,weight='weight', seed = 10) # can use None
             
             # nodes in spectral partition by fiedler vector
             feature_list['fiedler_vector_neg']=sum(1 for number in fiedler_vector if number <0)

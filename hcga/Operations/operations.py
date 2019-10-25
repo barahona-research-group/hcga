@@ -224,14 +224,17 @@ class Operations():
         return feature_names, feature_vals
         
 
-    def precompute_eigenvectors(self,weight=None, max_iter=50, tol=0):
+    def precompute_eigenvectors(self,weight=None, max_iter=None, tol=1e-5):
 
         try:
             M = nx.to_scipy_sparse_matrix(self.G_largest_subgraph, nodelist=list(self.G_largest_subgraph), weight=weight,
                                       dtype=float)
-
-            eigenvalues, eigenvectors = linalg.eigs(M.T, k = self.G_largest_subgraph.number_of_nodes() - 2, which='LR',
-                                              maxiter=max_iter, tol=tol)
+            if not nx.is_directed(self.G_largest_subgraph):
+                eigenvalues, eigenvectors = linalg.eigsh(M.T, k = int(0.8*self.G_largest_subgraph.number_of_nodes()), which='LM',
+                                              maxiter=max_iter, tol=tol, v0 = numpy.ones(len(M))) #v0 is to fix randomness
+            else:
+                eigenvalues, eigenvectors = linalg.eigs(M.T, k = int(0.8*self.G_largest_subgraph.number_of_nodes()), which='LR',
+                                              maxiter=max_iter, tol=tol, v0 = numpy.ones(len(M)))
 
             self.eigenvalues = eigenvalues
             self.eigenvectors = eigenvectors

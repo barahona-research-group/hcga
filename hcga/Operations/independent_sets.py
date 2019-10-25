@@ -49,7 +49,7 @@ class IndependentSets():
         if not nx.is_directed(G):            
     
     
-            ind_set = nx.maximal_independent_set(G)
+            ind_set = nx.maximal_independent_set(G, seed = 10)
             
             feature_list['num_ind_nodes_norm']=len(ind_set)
             
