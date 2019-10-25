@@ -16,6 +16,12 @@ g = Graphs(directory='./datasets/', dataset=dataset)
 
 g.load_feature_matrix(filename = 'Output_' + dataset + '/feature_matrix.pkl' )
 
+if dataset =='HELICENES':
+    lab_mean = np.mean(g.graph_labels)
+    g.graph_labels[g.graph_labels < 0.005] = 0
+    g.graph_labels[g.graph_labels >=  0.005] = 1
+    g.graph_labels = g.graph_labels.astype(int)
+    
 print("Run classification...")
 g.normalise_feature_data()
-g.graph_classification(image_folder ='Output_' + dataset, reduc_threshold = 0.25) #threshold is used to compute the reduced set (1 = full set, 0 = no features)
+g.graph_classification(image_folder ='Output_' + dataset, reduc_threshold = 0.5) #threshold is used to compute the reduced set (1 = full set, 0 = no features)

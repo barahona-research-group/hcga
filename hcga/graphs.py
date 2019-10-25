@@ -842,6 +842,7 @@ def reduce_feature_set(X,top_feats, threshold=0.9):
     if final_index < 3: #take top 2 if no features are selected
         final_index = 3
 
+
     top_feat_indices = np.argsort(mean_importance)[::-1][:final_index]     
         
     X_reduced = X[:,top_feat_indices]
