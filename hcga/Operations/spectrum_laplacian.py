@@ -54,11 +54,11 @@ class SpectrumLaplacian():
             eigenvals_L = np.concatenate((eigenvals_L,np.zeros(10-len(eigenvals_L))))        
             
         
-        feature_list['algebraic_connectivity']=nx.algebraic_connectivity(G)
+        feature_list['algebraic_connectivity']=nx.algebraic_connectivity(G, method='tracemin_lu')
 
         try: 
             # computing with weights
-            fiedler_vector = nx.fiedler_vector(G,weight='weight', seed = 10) # can use None
+            fiedler_vector = nx.fiedler_vector(G,weight='weight', method='tracemin_lu') # can use None
             
             # nodes in spectral partition by fiedler vector
             feature_list['fiedler_vector_neg']=sum(1 for number in fiedler_vector if number <0)
