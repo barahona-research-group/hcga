@@ -805,6 +805,8 @@ def top_features(X,top_feats,feature_names, image_folder, threshold = 0.9):
 
     plt.figure()
     plt.plot(np.sort(mean_importance)[::-1])
+    import pickle as pkl        
+    pkl.dump(np.sort(mean_importance)[::-1], open('importance_data/'+image_folder+'.pkl','wb'), pkl.HIGHEST_PROTOCOL)
     plt.xlabel('Features')
     plt.ylabel('Feature Importance')
     plt.xscale('log')
