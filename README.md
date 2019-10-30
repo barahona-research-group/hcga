@@ -28,13 +28,13 @@ In the example folder, the script ``run.py`` can be used to run the examples of 
 ```./run.sh DATASET```
 
 where ``DATASET`` can be one of 
-    * ENZYMES
-    * DD
-    * COLLAB
-    * PROTEINS
-    * REDDIT-MULTI-12K
-    * NEURONS
-    * HELICENES
+* ``ENZYMES``
+* ``DD``
+* ``COLLAB``
+* ``PROTEINS``
+* ``REDDIT-MULTI-12K``
+* ``NEURONS``
+* ``HELICENES``
 
 More comments are in the scripts for some parameters choices. 
 
