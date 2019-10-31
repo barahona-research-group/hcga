@@ -10,7 +10,7 @@ dataset = sys.argv[-1]
 
 g = Graphs(directory='./datasets', dataset=dataset)
 
-g.n_processes = 80
+g.n_processes = 8
 
 #graph_subset = np.arange(0,len(g.graphs), 10)
 #g.graphs = [g.graphs[i] for i in graph_subset]
