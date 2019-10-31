@@ -33,7 +33,6 @@ where ``DATASET`` can be one of
     * PROTEINS
     * REDDIT-MULTI-12K
     * NEURONS
-    * HELICENES
 
 More comments are in the scripts for some parameters choices. 
 
