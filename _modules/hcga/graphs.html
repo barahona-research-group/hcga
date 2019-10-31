@@ -186,6 +186,17 @@
                 <span class="n">graphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">graphs_full</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
                 <span class="n">graph_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">graphs_full</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
             
+
+        <span class="k">elif</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s1">&#39;NEURONS2017&#39;</span><span class="p">:</span>
+            <span class="n">graphs_full</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">directory</span><span class="o">+</span><span class="s1">&#39;/NEURONS2017/neurons2017_for_hcga.pkl&#39;</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+
+            <span class="n">graphs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">graph_labels</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">graphs_full</span><span class="p">)):</span>
+                <span class="n">G</span> <span class="o">=</span> <span class="n">graphs_full</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">graphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">graphs_full</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">graph_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">graphs_full</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+            
         <span class="bp">self</span><span class="o">.</span><span class="n">graphs</span> <span class="o">=</span> <span class="n">graphs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph_labels</span> <span class="o">=</span> <span class="n">graph_labels</span></div>
 
@@ -845,6 +856,8 @@
 
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">mean_importance</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="kn">import</span> <span class="nn">pickle</span> <span class="k">as</span> <span class="nn">pkl</span>        
+    <span class="n">pkl</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">mean_importance</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;importance_data/&#39;</span><span class="o">+</span><span class="n">image_folder</span><span class="o">+</span><span class="s1">&#39;.pkl&#39;</span><span class="p">,</span><span class="s1">&#39;wb&#39;</span><span class="p">),</span> <span class="n">pkl</span><span class="o">.</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Features&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Feature Importance&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
@@ -881,6 +894,7 @@
             <span class="k">break</span>
     <span class="k">if</span> <span class="n">final_index</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span> <span class="c1">#take top 2 if no features are selected</span>
         <span class="n">final_index</span> <span class="o">=</span> <span class="mi">3</span>
+
 
     <span class="n">top_feat_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">mean_importance</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="n">final_index</span><span class="p">]</span>     
         
