@@ -1,10 +1,10 @@
 #!/bin/bash
 
-set -e
 
 #need this is a virtualenv called hcga is used
-module purge all
-. ~/hcga/bin/activate
+#set -e
+#module purge all
+#. ~/hcga/bin/activate
 
 export OMP_NUM_THREADS=1 #set to one to prevent numpy to run in parallel
 
