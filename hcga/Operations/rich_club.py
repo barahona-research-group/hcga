@@ -129,7 +129,7 @@ class RichClub():
                     attempt += 1   
 
             if attempt == attempt_max:
-                print('Number of attempts ('+str(attempt_max)+') to compute rich_club exceded')
+                print('Number of attempts ('+str(attempt_max)+') to compute rich_club exceeded')
 
                 feature_names = ['num_rich','mean_rich_coef','std_rich_coef','max_rich_coef','ratio_rich_coef','ratio_top2_coef',
                                   'top10_10','top10_9','top10_8','top10_7','top10_6','top10_5','top10_4','top10_3',

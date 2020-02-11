@@ -1,6 +1,6 @@
 # *hcga*: Highly comparative graph analysis
 
-This is the official repository of *hcga*, a highly comparative graph analysis toolbox. It performs a massive feature extraction from a set of graphs, and apply supervised classification methods. 
+This is the official repository of *hcga*, a highly comparative graph analysis toolbox. It performs a massive feature extraction from a set of graphs, and applies supervised classification methods. 
 
 ## Installation
 
