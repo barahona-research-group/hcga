@@ -52,7 +52,7 @@ np.random.seed(10)
 class Graphs():
 
     """
-        Main class of hcga, with all the construction ana analysis functions. 
+        Main class of hcga, with all the construction analysis functions. 
         The constructor takes either a list of networkx graphs, or a directory with a list of graph, and the name of the dataset (if it exists). 
 
         Parameters
@@ -121,7 +121,7 @@ class Graphs():
                     
                 """
                 The fact that some nodes are not connected needs to be changed. We need to append the subgraphs and run feature extraction
-                on each subgraph. Add features that relate to the extra subgraphs. or features indicatnig there are subgraphs.
+                on each subgraph. Add features that relate to the extra subgraphs. or features indicating there are subgraphs.
                 """
 #                if not nx.is_connected(G):  
 #                    print('Graph '+str(i)+' is not connected. Taking largest subgraph and relabelling the nodes.')
@@ -276,13 +276,13 @@ class Graphs():
 
         Parameters
         ----------
-        n: int ot string
+        n: int or string
             Either the feature number of its name
 
         Returns
         -------
         feature: list
-            Feature values accross graphs
+            Feature values across graphs
 
         """ 
 
@@ -297,7 +297,7 @@ class Graphs():
         
     def normalise_feature_data(self):
         """
-        Normalise the feature matrix usinf sklearn scaler to remove the mean and scale to unit variance
+        Normalise the feature matrix using sklearn scaler to remove the mean and scale to unit variance
         """
 
         from sklearn.preprocessing import StandardScaler
@@ -703,7 +703,7 @@ class Graphs():
 
 def classification(X,y,ml_model, verbose=True):
     """
-    Perform classification of a normalized feature fata
+    Perform classification of a normalized feature data
     """
 
     from sklearn.model_selection import StratifiedKFold  
@@ -768,7 +768,7 @@ def calculate_features_single_graph(calc_speed, G):
 
 def univariate_classification(X,y):
     """
-    Apply an univariate classification on each feature
+    Apply a univariate classification on each feature
     """
     
     classification_acc = []
