@@ -24,5 +24,6 @@ examples/TestData/feature_set\.pkl
 examples/Images/*
 
 **/.DS_Store
+**/.ipynb_checkpoints
 
 
