@@ -6,6 +6,8 @@ import numpy as np
 import pandas as pd
 import networkx as nx
 import hcga.graphs as hcga_graphs
+import zipfile
+
 
 class TestingGraphMethods(unittest.TestCase):
 
@@ -46,7 +48,17 @@ class TestingGraphMethods(unittest.TestCase):
         final_acc = self.g.graph_classification(reduc_threshold = 0.5, plot=False) 
         self.assertEqual(final_acc, final_acc_ref)
 
+class TestingGraphLoading(unittest.TestCase):
 
+    def test_load_graphs(self):
+        summary_ref = 7406729
+        directory = '../examples/datasets'
+        with zipfile.ZipFile(directory + '/PROTEINS.zip',"r") as zip_ref:
+            zip_ref.extractall(directory)
+        g2 = hcga_graphs.Graphs(directory=directory, dataset='PROTEINS')
+        summary = sum(x.number_of_edges() * x.number_of_nodes() for x in g2.graphs)
+        self.assertEqual(summary, summary_ref)
+    
 def synthetic_data_sbm(N=1000, seed=None):
     if seed:
         random.seed(seed)
