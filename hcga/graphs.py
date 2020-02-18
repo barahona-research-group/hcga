@@ -31,7 +31,7 @@ import pandas as pd
 import pickle as pickle
 import networkx as nx
 
-from hcga.utils import read_graphfile
+from hcga.io import read_graphfile
 from hcga.Operations.operations import Operations
 
 from tqdm import tqdm
