@@ -359,7 +359,7 @@ class Graphs():
         print("Mean test accuracy full set: --- {0:.3f} ---)".format(np.mean(testing_accuracy)))            
 
         # get names of top features
-        top_features_list = top_features(X,top_feats, feature_names, image_folder = image_folder, threshold = reduc_threshold)  
+        top_features_list = top_features(X,top_feats, feature_names, image_folder = image_folder, threshold = reduc_threshold, plot=plot)  
         self.top_feats = top_feats         
         self.top_features_list=top_features_list       
             
@@ -369,8 +369,9 @@ class Graphs():
         print("Final mean test accuracy reduced feature set: --- {0:.3f} ---)".format(np.mean(testing_accuracy_reduced_set)))            
         
         # top and violin plot top features
-        self.top_features_importance_plot(X,top_feat_indices,feature_names,y, name='xgboost', image_folder = image_folder)
-        self.plot_violin_feature(X,y,top_feat_indices[0],feature_names, name='xgboost', image_folder = image_folder)
+        if plot:
+            self.top_features_importance_plot(X,top_feat_indices,feature_names,y, name='xgboost', image_folder = image_folder)
+            self.plot_violin_feature(X,y,top_feat_indices[0],feature_names, name='xgboost', image_folder = image_folder)
 
 
         # univariate classification on top features
@@ -379,8 +380,14 @@ class Graphs():
         top_feat_index = np.argsort(univariate_topfeat_acc)[::-1]       
 
         # top and violin plot top features from univariate
-        self.top_features_importance_plot(X_reduced,top_feat_index[0:2],feature_names_reduced,y, name='univariate', image_folder = image_folder)
-        self.plot_violin_feature(X_reduced,y,top_feat_index[0],feature_names_reduced, name='univariate', image_folder = image_folder)
+        if plot:
+            self.top_features_importance_plot(
+                X_reduced,top_feat_index[0:2],
+                feature_names_reduced,y, name='univariate', 
+                image_folder = image_folder)
+            self.plot_violin_feature(
+                X_reduced,y,top_feat_index[0],feature_names_reduced, 
+                name='univariate', image_folder = image_folder)
 
         self.test_accuracy = testing_accuracy_reduced_set 
 
@@ -779,7 +786,7 @@ def univariate_classification(X,y):
     return classification_acc
     
 
-def top_features(X,top_feats,feature_names, image_folder, threshold = 0.9):
+def top_features(X,top_feats,feature_names, image_folder, threshold = 0.9, plot=True):
     """
     Select and plot the dendogram, heatmap and importance distribution of top features
     """
@@ -800,40 +807,42 @@ def top_features(X,top_feats,feature_names, image_folder, threshold = 0.9):
     top_features_list[:40]
     df_top40 = pd.DataFrame(columns = top_features_list[:40], data=X[:,top_feat_indices[:40]])            
     cor = np.abs(df_top40.corr())        
-    Z = linkage(cor, 'ward')            
-    plt.figure()
-    dn = dendrogram(Z)         
-    plt.savefig(image_folder+'/endogram_top40_features.svg', bbox_inches = 'tight') 
+    Z = linkage(cor, 'ward')   
     
-    new_index = [int(i) for  i in dn['ivl']]
-    top_feats_names = [top_features_list[i] for i in new_index]             
-    df = df_top40[top_feats_names]
-    cor2 = np.abs(df.corr())            
-    plt.figure()
-    sns.heatmap(cor2, linewidth=0.5)
-    plt.savefig(image_folder+'/heatmap_top40_feature_dependencies.svg', bbox_inches = 'tight') 
-    
-    # Taking only features till we have reached 90% importance
-    sum_importance = 0      
-    final_index = 0 
-    for i in range(len(sorted_mean_importance)):
-        sum_importance = sum_importance + sorted_mean_importance[i]
-        if sum_importance > threshold:
-            final_index = i
-            break
-    if final_index < 3: #take top 2 if no features are selected
-        final_index = 3
+    if plot:
+        plt.figure()
+        dn = dendrogram(Z)         
+        plt.savefig(image_folder+'/endogram_top40_features.svg', bbox_inches = 'tight') 
+
+        new_index = [int(i) for  i in dn['ivl']]
+        top_feats_names = [top_features_list[i] for i in new_index]             
+        df = df_top40[top_feats_names]
+        cor2 = np.abs(df.corr())            
+        plt.figure()
+        sns.heatmap(cor2, linewidth=0.5)
+        plt.savefig(image_folder+'/heatmap_top40_feature_dependencies.svg', bbox_inches = 'tight') 
+
+        # Taking only features till we have reached 90% importance
+        sum_importance = 0      
+        final_index = 0 
+        for i in range(len(sorted_mean_importance)):
+            sum_importance = sum_importance + sorted_mean_importance[i]
+            if sum_importance > threshold:
+                final_index = i
+                break
+        if final_index < 3: #take top 2 if no features are selected
+            final_index = 3
 
 
-    plt.figure()
-    plt.plot(np.sort(mean_importance)[::-1])
+        plt.figure()
+        plt.plot(np.sort(mean_importance)[::-1])
 
-    plt.xlabel('Features')
-    plt.ylabel('Feature Importance')
-    plt.xscale('log')
-    plt.yscale('symlog', nonposy='clip', linthreshy=0.001)    
-    plt.axvline(x=final_index,color='r')
-    plt.savefig(image_folder+'/feature_importance_distribution.svg', bbox_inches = 'tight') 
+        plt.xlabel('Features')
+        plt.ylabel('Feature Importance')
+        plt.xscale('log')
+        plt.yscale('symlog', nonposy='clip', linthreshy=0.001)    
+        plt.axvline(x=final_index,color='r')
+        plt.savefig(image_folder+'/feature_importance_distribution.svg', bbox_inches = 'tight') 
     
     #import pickle as pkl        
     #pkl.dump(np.sort(mean_importance)[::-1], open('importance_data/'+image_folder+'.pkl','wb'), pkl.HIGHEST_PROTOCOL)
