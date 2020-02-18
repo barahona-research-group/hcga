@@ -1,4 +1,8 @@
-"""Testing suite for hcga"""
+"""
+Testing suite for hcga
+
+Run all tests with the command 'python testing.py'
+"""
 
 import unittest
 import random
