@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 import networkx as nx
 import hcga.graphs as hcga_graphs
+import hcga.feature_analysis as hcga_analysis
 import zipfile
 
 
@@ -36,7 +37,7 @@ class TestingGraphMethods(unittest.TestCase):
         hashsum_ref = 8994831284871540922
         feature_matrix = pd.DataFrame(np.random.uniform(1,100,size=(4, 400)))
         self.g.graph_feature_matrix = feature_matrix
-        self.g.normalise_feature_data()
+        hcga_analysis.normalise_feature_data(self.g)
         hashsum = pd.util.hash_pandas_object(pd.DataFrame(self.g.X_norm)).sum()
         self.assertEqual(hashsum, hashsum_ref)
         

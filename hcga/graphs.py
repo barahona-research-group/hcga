@@ -33,6 +33,7 @@ import networkx as nx
 
 from hcga.io import read_graphfile
 from hcga.Operations.operations import Operations
+import hcga.feature_analysis as hcga_analysis
 
 from tqdm import tqdm
 import time
@@ -295,21 +296,6 @@ class Graphs():
         else:
             return graph_feature_matrix[n]   
         
-    def normalise_feature_data(self):
-        """
-        Normalise the feature matrix using sklearn scaler to remove the mean and scale to unit variance
-        """
-
-        from sklearn.preprocessing import StandardScaler
-        
-        graph_feature_matrix = self.graph_feature_matrix
-        
-        X=graph_feature_matrix.values
-        scaler = StandardScaler()
-        X_norm = scaler.fit_transform(X)     
-        
-        self.X_norm = X_norm
-        self.y=np.asarray(self.graph_labels)
 
     def graph_classification(self,plot=True,ml_model='xgboost', data='all', reduc_threshold = 0.9, image_folder='images'):
 
@@ -331,7 +317,7 @@ class Graphs():
 
         """
         
-        self.normalise_feature_data()
+        hcga_analysis.normalise_feature_data(self)
 
         X = self.X_norm
         y = self.y
@@ -405,7 +391,7 @@ class Graphs():
         from sklearn.metrics import explained_variance_score
 
                
-        self.normalise_feature_data()
+        hcga_analysis.normalise_feature_data(self)
 
         X = self.X_norm
         y = self.y
@@ -461,7 +447,7 @@ class Graphs():
         from sklearn.metrics import accuracy_score
         
         
-        self.normalise_feature_data()
+        hcga_analysis.normalise_feature_data(self)
 
         if X is None:
             X = self.X_norm
@@ -595,7 +581,7 @@ class Graphs():
         Compute the univariate classification accuracies
         """
 
-        self.normalise_feature_data()
+        hcga_analysis.normalise_feature_data(self)
 
         X = self.X_norm
         y = self.y
