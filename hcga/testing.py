@@ -12,13 +12,15 @@ import networkx as nx
 import hcga.graphs as hcga_graphs
 import hcga.feature_analysis as hcga_analysis
 import zipfile
+import os
 
 
 class TestingGraphMethods(unittest.TestCase):
 
     def setUp(self):
         rgraphs, rlabels = synthetic_data_sbm(N=4, seed=42)
-        self.g = hcga_graphs.Graphs(graphs=rgraphs, graph_class=rlabels)
+        self.g = hcga_graphs.Graphs(graphs=rgraphs, graph_class=rlabels,
+                dataset='testing')
     
     def test_calculate_features(self):
         """
@@ -44,7 +46,6 @@ class TestingGraphMethods(unittest.TestCase):
     def test_graph_classification(self):
         final_acc_ref = 0.7
         np.random.seed(42)
-        hashsum_ref = -6561133957446616237
         n_graphs = 10
         feature_matrix = pd.DataFrame(np.random.uniform(1,100,size=(n_graphs, 400)))
         labels = [1]*(3) + [2]*(n_graphs-3)
@@ -52,6 +53,21 @@ class TestingGraphMethods(unittest.TestCase):
         self.g.graph_labels = labels
         final_acc = self.g.graph_classification(reduc_threshold = 0.5, plot=False) 
         self.assertEqual(final_acc, final_acc_ref)
+
+    def test_plot_features_classification(self):
+        np.random.seed(42)
+        n_graphs = 10
+        feature_matrix = pd.DataFrame(np.random.uniform(1,100,size=(n_graphs, 400)))
+        labels = [1]*(3) + [2]*(n_graphs-3)
+        self.g.graph_feature_matrix = feature_matrix
+        self.g.graph_labels = labels
+        output_dir = '../examples/Output_test'
+        if not os.path.isdir(output_dir):
+            os.mkdir(output_dir)
+        final_acc = self.g.graph_classification(
+                reduc_threshold = 0.5, plot=True, 
+                image_folder=output_dir) 
+        self.assertEqual(0, 0)
 
 class TestingGraphLoading(unittest.TestCase):
 
