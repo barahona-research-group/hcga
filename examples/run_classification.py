@@ -23,5 +23,5 @@ if dataset =='HELICENES':
     g.graph_labels = g.graph_labels.astype(int)
     
 print("Run classification...")
-g.normalise_feature_data()
+#g.normalise_feature_data()
 g.graph_classification(image_folder ='Output_' + dataset, reduc_threshold = 0.5) #threshold is used to compute the reduced set (1 = full set, 0 = no features)

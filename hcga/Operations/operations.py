@@ -115,10 +115,14 @@ class Operations():
         feature_dict = {}
 
         # loop over the feature classes defined in the YAML file
-        calculation_speeds = ['fast']
+        calculation_speeds = ['veryfast']
+        if calc_speed == 'fast':
+            calculation_speeds.append('fast')
         if calc_speed == 'medium':
+            calculation_speeds.append('fast')
             calculation_speeds.append('medium')
         elif calc_speed == 'slow':
+            calculation_speeds.append('fast')
             calculation_speeds.append('medium')
             calculation_speeds.append('slow')
         

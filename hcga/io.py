@@ -53,85 +53,6 @@ def save_features(feature_matrix, feature_info, filename='features.pkl'):
 
 ###old functions###
 
-
-
-
-
-
-
-
-
-def old():
-    if dataset == 'ENZYMES' or dataset == 'DD' or dataset == 'COLLAB' or dataset == 'PROTEINS' or dataset == 'REDDIT-MULTI-12K' or dataset == 'ENZYMES1':
-        
-        if dataset == 'ENZYMES1':
-            graphs,graph_labels = read_graphfile(directory,'ENZYMES')
-        else:
-            graphs,graph_labels = read_graphfile(directory,dataset)
-
-        to_remove = []
-        for i,G in enumerate(graphs): 
-
-            #hack to add weights on edges if not present
-            for u,v in G.edges: 
-                if len(G[u][v]) == 0:
-                    G[u][v]['weight'] = 1.
-                
-            if len(graphs[i])<3:
-                to_remove.append(i)
-         
-        # removing graphs with less than 2 nodes
-        graph_labels = [i for j, i in enumerate(graph_labels) if j not in to_remove]
-        graphs = [i for j, i in enumerate(graphs) if j not in to_remove]
-
-        
-    
-    elif dataset == 'synthetic':
-        from hcga.TestData.create_synthetic_data import synthetic_data
-        graphs,graph_labels = synthetic_data()
-
-    elif dataset == 'synthetic_watts_strogatz':
-        from hcga.TestData.create_synthetic_data import synthetic_data_watts_strogatz
-        graphs,graph_labels = synthetic_data_watts_strogatz(N=1000)
-
-    elif dataset == 'synthetic_powerlaw_cluster':
-        from hcga.TestData.create_synthetic_data import synthetic_data_powerlaw_cluster
-        graphs,graph_labels = synthetic_data_powerlaw_cluster(N=1000)
-
-    elif dataset == 'synthetic_sbm':
-        from hcga.TestData.create_synthetic_data import synthetic_data_sbm
-        graphs,graph_labels = synthetic_data_sbm(N=1000)
-
-    elif dataset == 'HELICENES':
-        graphs,graph_labels = pickle.load(open(directory+'/HELICENES/helicenes_for_hcga.pkl','rb'))
-
-    elif dataset == 'NEURONS':
-        graphs_full = pickle.load(open(directory+'/NEURONS/neurons_animals_for_hcga.pkl','rb'))
-
-        graphs = []
-        graph_labels = []
-        for i in range(len(graphs_full)):
-            G = graphs_full[i][0]
-            graphs.append(graphs_full[i][0])
-            graph_labels.append(graphs_full[i][1])
-        
-    self.graphs = graphs
-    self.graph_labels = graph_labels
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def read_graphfile(datadir, dataname, max_nodes=None):
     ''' Read data from https://ls11-www.cs.tu-dortmund.de/staff/morris/graphkerneldatasets
         graph index starts with 1 in file
@@ -244,5 +165,3 @@ def read_graphfile(datadir, dataname, max_nodes=None):
         # indexed from 0
         graphs.append(nx.relabel_nodes(G, mapping))
     return graphs, graph_labels
-
-
