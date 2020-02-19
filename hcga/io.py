@@ -1,11 +1,57 @@
 """input/output functions"""
-
-
-import networkx as nx
-import numpy as np
-import scipy as sc
+import sys
 import os
-import re
+import pickle
+import csv
+
+def _ensure_weights(graphs):
+    """ensure that graphs edges have a weights value"""
+    for i, graph in enumerate(graphs): 
+        for u, v in graph.edges: 
+            if 'weight' not in graph[u][v]:
+                graph[u][v]['weight'] = 1.
+
+
+def _remove_small_graphs(graphs, n_node_min=2):
+    """remove too small graphs"""
+    return [graph for graph in graphs if len(graph) > n_node_min]
+
+
+def load_graphs(graph_dataset, location='datasets'):
+   """load graphs in a list of networkx graphs"""
+   graphs = getattr(sys.modules[__name__], "load_%s" % graph_dataset)(location)
+
+   graphs = _remove_small_graphs(graphs)
+   _ensure_weights(graphs)
+    
+   return graphs
+
+
+def load_neurons(location):
+    """load the neuron dataset (from Kanari et al. paper)"""
+    graphs_full = pickle.load(open(os.path.join(location, 'neurons', 'neurons_animals_for_hcga.pkl'), 'rb'))
+
+    graphs = []
+    graph_labels = []
+    for i in range(len(graphs_full)):
+        graph = graphs_full[i][0]
+        graph.name = graphs_full[i][1]
+        graphs.append(graph)
+    
+    return graphs
+
+
+def save_features(feature_matrix, feature_info, filename='features.pkl'):
+    """Save the features in a pickle"""
+    pickle.dump([feature_matrix, feature_info], open(filename,'wb'))
+
+
+
+
+
+
+
+###old functions###
 
 def read_graphfile(datadir, dataname, max_nodes=None):
     ''' Read data from https://ls11-www.cs.tu-dortmund.de/staff/morris/graphkerneldatasets
@@ -119,4 +165,3 @@ def read_graphfile(datadir, dataname, max_nodes=None):
         # indexed from 0
         graphs.append(nx.relabel_nodes(G, mapping))
     return graphs, graph_labels
-
