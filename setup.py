@@ -2,12 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
    name='hcga',
-   version='0.1',
+   version='1.0.0',
    description='Highly comparative graph analysis',
    author='Robert Peach + Alexis Arnaudon + Henry Palasciano',
    author_email='r.peach13@imperial.ac.uk',
-   packages=['hcga'],  #same as name
-   install_requires=['numpy',
+   packages=find_packages(),
+   install_requires=[
+                    'click>=7.0',
+                    'numpy',
                      'scipy',
                      'tqdm', 
                      'networkx',
@@ -15,6 +17,8 @@ setup(
                      'sklearn', 
                      'fa2', 
                      'xgboost', 
-                     'seaborn'], #external packages as dependencies
-   include_package_data = True
+                     'seaborn'],
+    entry_points={
+        'console_scripts': ['hcga=hcga.app:cli'],
+    }
 )
