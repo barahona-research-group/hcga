@@ -50,11 +50,12 @@ class BasicStats(FeatureClass):
         n_edges = len(self.graph.edges)
 
         # Adding basic node and edge numbers
-        self.features['num_nodes'] = n_nodes
-        self.features['num_edges'] = n_edges 
+        self.add_feature('num_nodes', n_nodes, 'Number of nodes in the graph')
+        self.add_feature('num_edges', n_edges, 'Number of edges in the graph')
 
         # Degree stats
-        self.features['density'] = 2 * n_edges / (n_nodes * (n_edges - 1))
+        self.add_feature('density', 2 * n_edges / (n_nodes * (n_edges - 1)), 
+            'Density of the graph')
 
         degree_vals = list(dict(self.graph.degree()).values())
-        summary_statistics(self.features, degree_vals, 'degree')       
+        summary_statistics(self.add_feature, degree_vals, 'degree', 'the degree of the graph')       
