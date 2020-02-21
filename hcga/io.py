@@ -3,6 +3,7 @@ import sys
 import os
 import pickle
 import csv
+import numpy as np
 
 def _ensure_weights(graphs):
     """ensure that graphs edges have a weights value"""
@@ -23,8 +24,10 @@ def load_graphs(graph_dataset, location='datasets'):
 
    graphs = _remove_small_graphs(graphs)
    _ensure_weights(graphs)
+   
+   labels = np.asarray([graph.label for graph in graphs])
     
-   return graphs
+   return graphs,labels
 
 
 def load_neurons(location):
@@ -32,20 +35,24 @@ def load_neurons(location):
     graphs_full = pickle.load(open(os.path.join(location, 'neurons', 'neurons_animals_for_hcga.pkl'), 'rb'))
 
     graphs = []
-    graph_labels = []
     for i in range(len(graphs_full)):
         graph = graphs_full[i][0]
-        graph.name = graphs_full[i][1]
+        graph.label = graphs_full[i][1]
+        graph.name = graphs_full[i][2]
         graphs.append(graph)
-    
+        
     return graphs
 
 
-def save_features(feature_matrix, feature_info, filename='features.pkl'):
+def save_features(feature_matrix, feature_info, labels, filename='features.pkl'):
     """Save the features in a pickle"""
-    pickle.dump([feature_matrix, feature_info], open(filename,'wb'))
+    pickle.dump([feature_matrix, feature_info, labels], open(filename,'wb'))
 
 
+def load_features(filename='features.pkl'):
+    """Save the features in a pickle"""
+    [feature_matrix, feature_info, labels] = pickle.load(open(filename,'rb'))
+    return feature_matrix, feature_info, labels
 
 
 
