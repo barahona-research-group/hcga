@@ -4,36 +4,36 @@ from ..feature_utils import normalize_features
 class FeatureClass():
     """template class"""
 
+    # Class variables that describe the feature, 
+    # They should be defined for all child features
+    normalize_features = True
+    modes = ['fast', 'medium', 'slow']
+    shortname = 'TP'
+    name = 'template'
+    keywords = ['template']
+
     # Feature descriptions as class variable
     feature_descriptions = {}
 
     def __init_subclass__(cls, **kwargs):
-        """Initialise list of feature descriptions to zero for each child class"""
-        super().__init_subclass__(**kwargs)
+        """Initialise class variables to default for each child class"""
+        #super().__init_subclass__(**kwargs)
         cls.feature_descriptions = {}
 
     def __init__(self, graph=None):
         """init function"""
         self.graph = graph
         self.features = {}
-        self.set_infos()
-        self.normalize_features = True
-
-    def set_infos(self):
-        """set class infos"""
-        self.modes = ['fast', 'medium', 'slow']
-        self.shortname = 'TP'
-        self.name = 'template'
-        self.keywords = 'template'
 
     def get_info(self):
-        """return a dictionary of feature informations"""
-        return {'name': self.name, 
-                'shortname': self.shortname,
-                'keywords': self.keywords
+        """return a dictionary of informations about the feature class"""
+        return {'name': self.__class__.name, 
+                'shortname': self.__class__.shortname,
+                'keywords': self.__class__.keywords
                 }
 
     def get_feature_info(self, f_name):
+        """Returns a dictionary of information about the feature f_name"""
         if f_name not in  self.__class__.feature_descriptions:
             raise Exception('Feature {} does not exist in class {}'.format(
                 f_name, self.name))
@@ -42,16 +42,15 @@ class FeatureClass():
         feat_dict['feature_description'] = self.__class__.feature_descriptions[f_name]
         return feat_dict
 
-
     @classmethod
     def add_feature_description(cls, f_name, f_desc):
+        """Adds the description to the class variable if not already there"""
         if f_name not in cls.feature_descriptions:
             cls.feature_descriptions[f_name] = f_desc
 
     def add_feature(self, feature_name, feature_value, feature_description):
         """Adds a computed feature value and its description"""
         self.features[feature_name] = feature_value
-        # Adds the description in the class variable if not already there
         self.__class__.add_feature_description(feature_name, feature_description)
 
     def compute_features(self):
@@ -62,10 +61,12 @@ class FeatureClass():
         """update the feature dictionary if correct mode provided"""
         if self.graph is None:
             raise Exception('No graph provided to compute some features.')
+        if self.__class__.shortname == 'TP' and self.__class__.__name__ != 'FeatureClass':
+            raise Exception('Shortname not set for feature class {}'.format(self.__class__.__name__))
 
-        if mode in self.modes:
+        if mode in self.__class__.modes:
             self.compute_features()
-            if self.normalize_features:
+            if self.__class__.normalize_features:
                 normalize_features(self)
-            all_features[self.shortname] = self.features
+            all_features[self.__class__.shortname] = self.features
 

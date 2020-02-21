@@ -28,12 +28,11 @@ featureclass_name = 'BasicStats'
 class BasicStats(FeatureClass):
     """Basic stats class"""
 
-    def set_infos(self):
-        """set class infos"""
-        self.modes = ['fast', 'medium', 'slow']
-        self.shortname = 'BS'
-        self.name = 'basic_stats'
-        self.keywords = ''
+    modes = ['fast', 'medium', 'slow']
+    shortname = 'BS'
+    name = 'basic_stats'
+    keywords = []
+    normalize_features = True
 
     def compute_features(self):
         """
@@ -59,3 +58,4 @@ class BasicStats(FeatureClass):
 
         degree_vals = list(dict(self.graph.degree()).values())
         summary_statistics(self.add_feature, degree_vals, 'degree', 'the degree of the graph')       
+
