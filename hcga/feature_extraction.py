@@ -16,7 +16,7 @@ def extract(graphs, n_workers):
     features_info = _relabel_feature_ids(features_info_all, selected_ids)
 
     print(
-        "Feautre extracted:", len(features_info_all), ", selected:", len(features_info)
+        "Feature extracted:", len(features_info_all), ", selected:", len(features_info)
     )
 
     return feature_matrix, features_info
@@ -106,8 +106,10 @@ def set_feature_ids(all_features_raw):
             feature_class_info = feature_class.get_info()
 
             for feature in all_features_raw[0][feature_class.shortname]:
-                features_info[current_feature_id] = feature_class_info.copy()
-                features_info[current_feature_id]["feature"] = feature
+                #features_info[current_feature_id] = feature_class_info.copy()
+                #features_info[current_feature_id]["feature"] = feature
+                features_info[current_feature_id] = feature_class.get_feature_info(feature)
+
 
                 all_features[current_feature_id] = []
                 for i, _ in enumerate(all_features_raw):
