@@ -17,7 +17,9 @@ setup(
                      'sklearn', 
                      'fa2', 
                      'xgboost', 
-                     'seaborn'],
+                     'seaborn', 
+                     'lightgbm',
+                     'shap'],
     entry_points={
         'console_scripts': ['hcga=hcga.app:cli'],
     }

@@ -7,7 +7,7 @@ import networkx as nx
 import numpy as np
 
 
-def extract(graphs, n_workers, mode='fast'):
+def extract(graphs, n_workers, mode="fast"):
     """main function to extract features"""
 
     feat_classes = _get_list_feature_classes(mode)
@@ -23,7 +23,8 @@ def extract(graphs, n_workers, mode='fast'):
 
     return feature_matrix, features_info
 
-def _get_list_feature_classes(mode='fast'):
+
+def _get_list_feature_classes(mode="fast"):
     """Generates and returns the list of feature classes to compute for a given mode"""
     feature_path = Path(__file__).parent / "features"
     non_feature_files = ["__init__", "feature_class"]
@@ -148,4 +149,3 @@ def extract_feature_matrix(all_features):
     feature_matrix = np.array([all_features[feature_id] for feature_id in selected_ids])
 
     return feature_matrix, selected_ids
-

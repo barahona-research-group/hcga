@@ -6,6 +6,6 @@ cd ./datasets/
 unzip -o $1 
 cd ..
 
-hcga extract_features $1 -n 1
+hcga extract_features $1 -n 4
 
-hcga feature_analysis -n 1
+hcga feature_analysis
