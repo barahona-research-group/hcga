@@ -57,16 +57,15 @@ class FeatureClass():
         """main feature extraction function"""
         self.add_feature('test', 0., 'Test feature for the base feature class')
 
-    def update_features(self, all_features, mode):
+    def update_features(self, all_features):
         """update the feature dictionary if correct mode provided"""
         if self.graph is None:
             raise Exception('No graph provided to compute some features.')
         if self.__class__.shortname == 'TP' and self.__class__.__name__ != 'FeatureClass':
             raise Exception('Shortname not set for feature class {}'.format(self.__class__.__name__))
 
-        if mode in self.__class__.modes:
-            self.compute_features()
-            if self.__class__.normalize_features:
-                normalize_features(self)
-            all_features[self.__class__.shortname] = self.features
+        self.compute_features()
+        if self.__class__.normalize_features:
+            normalize_features(self)
+        all_features[self.__class__.shortname] = self.features
 
