@@ -18,9 +18,21 @@ def _remove_small_graphs(graphs, n_node_min=2):
     return [graph for graph in graphs if len(graph) > n_node_min]
 
 
-def load_graphs(graph_dataset, location='datasets'):
+def load_graphs(dataset_name, location='../datasets'):
    """load graphs in a list of networkx graphs"""
-   graphs = getattr(sys.modules[__name__], "load_%s" % graph_dataset)(location)
+   
+   with open(os.path.join(location, '{}.pkl'.format(dataset_name)), 'rb') as f:
+        [graphs_full, labels] = pickle.load(f)
+   
+   
+   graphs = []
+   for i in range(len(graphs_full)):
+       graph = graphs_full[i]
+       graph.label = labels[i]#graphs_full[i][1]
+       #graph.name = graphs_full[i][2]
+       graphs.append(graph)   
+   
+   #graphs = getattr(sys.modules[__name__], "load_%s" % graph_dataset)(location)
 
    graphs = _remove_small_graphs(graphs)
    _ensure_weights(graphs)
@@ -29,19 +41,6 @@ def load_graphs(graph_dataset, location='datasets'):
     
    return graphs,labels
 
-
-def load_neurons(location):
-    """load the neuron dataset (from Kanari et al. paper)"""
-    graphs_full = pickle.load(open(os.path.join(location, 'neurons', 'neurons_animals_for_hcga.pkl'), 'rb'))
-
-    graphs = []
-    for i in range(len(graphs_full)):
-        graph = graphs_full[i][0]
-        graph.label = graphs_full[i][1]
-        graph.name = graphs_full[i][2]
-        graphs.append(graph)
-        
-    return graphs
 
 
 def save_features(feature_matrix, feature_info, labels, filename='features.pkl'):

@@ -25,7 +25,7 @@ def unzip(zip_filename):
 def save_dataset(graphs, labels, filename):
     """Save the features in a pickle"""
     with open(filename, "wb") as f:
-        pickle.dump(graphs, f)
+        pickle.dump([graphs,labels], f)
     
 
 
