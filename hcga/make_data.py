@@ -37,7 +37,7 @@ def load_dataset(filename):
     
 
 
-def make_benchmark_dataset(data_name='ENZYMES'):
+def make_benchmark_dataset(data_name='ENZYMES', directory='./'):
     """
     Standard datasets include:
         DD
@@ -51,10 +51,10 @@ def make_benchmark_dataset(data_name='ENZYMES'):
     unzip('{}.zip'.format(data_name))
     os.remove('{}.zip'.format(data_name))    
     graphs,labels = read_graphfile(data_name,data_name)    
-    save_dataset(graphs, labels, '{}.pkl'.format(data_name))
+    save_dataset(graphs, labels, directory + '{}.pkl'.format(data_name))
 
     
-def make_test_data(add_features=False, save_data=False):
+def make_test_data(add_features=False, save_data=False, directory='./'):
     """ Makes pickle with graphs that test robustness of hcga """
     
     graphs = []
@@ -91,7 +91,7 @@ def make_test_data(add_features=False, save_data=False):
     labels = np.arange(len(graphs))
     
     if save_data:
-        save_dataset(graphs, labels, 'test_data.pkl')
+        save_dataset(graphs, labels, directory+'test_data.pkl')
     
     return graphs, labels
 
