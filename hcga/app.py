@@ -1,5 +1,6 @@
 """ hcga app with click module """
 import click
+from pathlib import Path
 
 from .io import load_graphs, save_features, load_features
 from .feature_extraction import extract
@@ -14,18 +15,22 @@ def cli():
 
 @cli.command("extract_features")
 @click.argument("dataset", type=str)
-@click.option("-n", "--n-workers", help="Number of workers")
+@click.option("-n", "--n-workers", default=1, help="Number of workers for multiprocessing")
 def extract_features(dataset, n_workers=1):
-    """extract features from dataset of graphs"""
+    """Extract features from dataset of graphs"""
     graphs, labels = load_graphs(dataset)
     feature_matrix, features_info = extract(graphs, n_workers=int(n_workers))
-    save_features(feature_matrix, features_info, labels)
+    data_file = Path(dataset)
+    feature_filename = data_file.parent / (data_file.stem + '_features.pkl')
+    save_features(feature_matrix, features_info, labels, 
+            filename=feature_filename)
 
 
 @cli.command("feature_analysis")
-def feature_analysis(filename="features.pkl"):
-    """extract features from dataset of graphs"""
-    feature_matrix, features_info, labels = load_features(filename)
+@click.argument("feature_file", type=str) 
+def feature_analysis(feature_file):
+    """Extract features from dataset of graphs"""
+    feature_matrix, features_info, labels = load_features(feature_file)
     analysis(feature_matrix, features_info, labels)
 
 @cli.command('get_benchmark_data')
