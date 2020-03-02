@@ -18,10 +18,11 @@ def _remove_small_graphs(graphs, n_node_min=2):
     return [graph for graph in graphs if len(graph) > n_node_min]
 
 
-def load_graphs(dataset_name, location='../datasets'):
+def load_graphs(dataset_file):
    """load graphs in a list of networkx graphs"""
    
-   with open(os.path.join(location, '{}.pkl'.format(dataset_name)), 'rb') as f:
+   #with open(os.path.join(location, '{}.pkl'.format(dataset_name)), 'rb') as f:
+   with open(dataset_file, 'rb') as f:
         [graphs_full, labels] = pickle.load(f)
    
    
