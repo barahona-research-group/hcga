@@ -54,30 +54,33 @@ def make_benchmark_dataset(data_name='ENZYMES'):
     save_dataset(graphs, labels, '{}.pkl'.format(data_name))
 
     
-def make_test_data(add_features=False):
+def make_test_data(add_features=False, save_data=False):
     """ Makes pickle with graphs that test robustness of hcga """
     
     graphs = []
     
     #one, two and three node graphs
-    graphs.append(nx.grid_graph([1]))    
-    graphs.append(nx.grid_graph([2]))    
-    graphs.append(nx.grid_graph([3]))
+    graphs.append(_add_graph_desc(nx.grid_graph([1]), 
+        'one-node graph'))    
+    graphs.append(_add_graph_desc(nx.grid_graph([2]), 
+        'two-node graph'))    
+    graphs.append(_add_graph_desc(nx.grid_graph([3]), 
+        'three-node graph'))    
     
     # no edges
     G = nx.Graph()
     G.add_node(0); G.add_node(1, weight=2); G.add_node(2, weight=3)
-    graphs.append(G)
+    graphs.append(_add_graph_desc(G, 'graph without edges'))
     
     # directed graph no weights
     G = nx.DiGraph()
     G.add_nodes_from(range(100, 110))
-    graphs.append(G)
+    graphs.append(_add_graph_desc(G, 'directed graph with no weights'))
     
     # directed graph weighted
     G = nx.DiGraph(); H = nx.path_graph(10); G.add_nodes_from(H)
     G.add_edges_from(H.edges)
-    graphs.append(G)
+    graphs.append(_add_graph_desc(G, 'directed graph weighted'))
     
     # multigraph
 
@@ -87,10 +90,15 @@ def make_test_data(add_features=False):
     
     labels = np.arange(len(graphs))
     
-    save_dataset(graphs, labels, 'test_data.pkl')
+    if save_data:
+        save_dataset(graphs, labels, 'test_data.pkl')
     
     return graphs, labels
 
+def _add_graph_desc(g, desc):
+    """Add descrition desc to graph g as a graph attribute"""
+    g.graph['description'] = desc
+    return g
     
 def add_dummy_node_features(graph):    
     for u in graph.nodes():
