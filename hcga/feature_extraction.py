@@ -5,6 +5,7 @@ from importlib import import_module
 from pathlib import Path
 import networkx as nx
 import numpy as np
+from tqdm import tqdm
 
 
 def extract(graphs, n_workers, mode="fast"):
@@ -71,9 +72,11 @@ def compute_all_features(graphs, list_feature_classes, n_workers=1):
         mapper = map
     else:
         pool = multiprocessing.Pool(n_workers)
-        mapper = pool.map
+        #mapper = pool.map
+        mapper = pool.imap_unordered
 
-    return list(mapper(worker, graphs))
+    print('Computing features for {} graphs:'.format(len(graphs)))
+    return list(tqdm(mapper(worker, graphs), total=len(graphs)))
 
 
 def _load_feature_class(feature_name):
