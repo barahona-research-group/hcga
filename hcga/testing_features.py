@@ -13,7 +13,20 @@ from hcga.feature_extraction import _get_list_feature_classes
 test_graphs, test_labels = make_test_data(save_data=False)
 test_feature_classes = _get_list_feature_classes(mode="fast")
 
-class TestingFeatureClasses(unittest.TestCase):
+class TestFeatureClasses(unittest.TestCase):
+
+    def test_compute_features(self):
+        for feature_class in test_feature_classes:
+            for graph in test_graphs:
+                with self.subTest(
+                        feature_class=feature_class.__name__, 
+                        graph=graph.graph['description'],
+                        ):
+                    feature_inst = feature_class(graph)
+                    feature_inst.compute_features()
+                    self.assertTrue(len(feature_inst.features)>0)
+
+class TestIndividualFeatures(unittest.TestCase):
 
     def test_features_not_nan(self):
         for feature_class in test_feature_classes:
@@ -27,7 +40,7 @@ class TestingFeatureClasses(unittest.TestCase):
                             feature=feat,
                             graph=graph.graph['description'],
                             ):
-                        self.assertFalse(np.isnan(val))
+                        self.assertTrue(np.isfinite(val))
 
 
 if __name__ == '__main__':
