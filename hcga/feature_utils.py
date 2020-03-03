@@ -70,7 +70,11 @@ def summary_statistics(add_feature, feat_dist, feat_name, feat_desc, feat_interp
         "Entropy" + compl_desc, feat_interpret - 1)
     add_feature(feat_name + "_sem", st.sem(feat_dist),
         "SEM" + compl_desc, feat_interpret - 1)
-    add_feature(feat_name + "_bayes_confint", 
-        st.bayes_mvs(feat_dist)[0][1][1] - st.bayes_mvs(feat_dist)[0][1][0],
-        "Bayes confidance interval" + compl_desc, feat_interpret - 1)
+    if len(feat_dist)>1:
+        add_feature(feat_name + "_bayes_confint", 
+            st.bayes_mvs(feat_dist)[0][1][1] - st.bayes_mvs(feat_dist)[0][1][0],
+            "Bayes confidance interval" + compl_desc, feat_interpret - 1)
+    else:
+        add_feature(feat_name + "_bayes_confint", np.nan,
+            "Bayes confidance interval" + compl_desc, feat_interpret - 1)
 
