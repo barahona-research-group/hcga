@@ -36,7 +36,7 @@ def _get_list_feature_classes(mode="fast"):
         feature_name = f_name.stem
         if feature_name not in non_feature_files:
             feature_class = _load_feature_class(feature_name)
-            if mode in feature_class.modes:
+            if mode in feature_class.modes or mode=='all':
                 list_feature_classes.append(feature_class)
                 # runs once update_feature with trivial graph to create class variables
                 feature_class(trivial_graph).update_features({})

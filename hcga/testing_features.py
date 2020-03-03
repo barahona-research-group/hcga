@@ -11,7 +11,7 @@ from hcga.make_data import make_test_data
 from hcga.feature_extraction import _get_list_feature_classes
 
 test_graphs, test_labels = make_test_data(save_data=False)
-test_feature_classes = _get_list_feature_classes(mode="fast")
+test_feature_classes = _get_list_feature_classes(mode="all")
 
 class TestFeatureClasses(unittest.TestCase):
 
