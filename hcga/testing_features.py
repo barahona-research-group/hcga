@@ -15,6 +15,28 @@ test_feature_classes = _get_list_feature_classes(mode="all")
 
 class TestFeatureClasses(unittest.TestCase):
 
+    def test_shortname_definition(self):
+        for feature_class in test_feature_classes:
+            with self.subTest(
+                    feature_class=feature_class.__name__, 
+                    ):
+                    self.assertNotEqual(feature_class.shortname, 'TP')
+
+    def test_name_definition(self):
+        for feature_class in test_feature_classes:
+            with self.subTest(
+                    feature_class=feature_class.__name__, 
+                    ):
+                    self.assertNotEqual(feature_class.name, 'template')
+
+    def test_shortnames_unique(self):
+        shortnames = []
+        for feature_class in test_feature_classes:
+            shortnames.append(feature_class.shortname)
+        shortnames = sorted(shortnames)
+        unique_shortnames = sorted(list(set(shortnames)))
+        self.assertListEqual(shortnames, unique_shortnames)
+
     def test_compute_features(self):
         for feature_class in test_feature_classes:
             for graph in test_graphs:
