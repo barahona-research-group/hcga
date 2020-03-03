@@ -67,15 +67,15 @@ class Worker:
 
 def compute_all_features(graphs, list_feature_classes, n_workers=1):
     """compute the feature from all graphs"""
+    print('Computing features for {} graphs:'.format(len(graphs)))
     worker = Worker(list_feature_classes)
     if n_workers == 1:
         mapper = map
     else:
         pool = multiprocessing.Pool(n_workers)
         #mapper = pool.map
-        mapper = pool.imap_unordered
+        mapper = pool.imap
 
-    print('Computing features for {} graphs:'.format(len(graphs)))
     return list(tqdm(mapper(worker, graphs), total=len(graphs)))
 
 
