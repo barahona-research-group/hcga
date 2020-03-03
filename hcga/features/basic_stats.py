@@ -23,7 +23,7 @@ from .feature_class import FeatureClass
 from .feature_class import InterpretabilityScore
 from ..feature_utils import summary_statistics
 import numpy as np
-
+import networkx as nx
 
 featureclass_name = 'BasicStats'
 
@@ -55,6 +55,14 @@ class BasicStats(FeatureClass):
                 'Number of nodes in the graph', InterpretabilityScore('max'))
         self.add_feature('num_edges', n_edges, 
                 'Number of edges in the graph', InterpretabilityScore('max'))
+
+
+        # Adding diameter stats
+        self.add_feature('diameter', nx.diameter(self.graph), 
+                'Diameter of the graph', InterpretabilityScore('max'))
+        self.add_feature('radius', nx.radius(self.graph), 
+                'Radius of the graph', InterpretabilityScore('max'))       
+  
 
         # Degree stats
         self.add_feature('density', 2 * n_edges / (n_nodes * (n_edges - 1)), 
