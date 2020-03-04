@@ -8,7 +8,7 @@ setup(
    author_email='r.peach13@imperial.ac.uk',
    packages=find_packages(),
    install_requires=[
-                    'click>=7.0',
+                    'click',
                     'numpy',
                      'scipy',
                      'tqdm', 
@@ -19,7 +19,8 @@ setup(
                      'xgboost', 
                      'seaborn', 
                      'lightgbm',
-                     'shap'],
+                     'shap',
+                     'pandas'],
     entry_points={
         'console_scripts': ['hcga=hcga.app:cli'],
     }

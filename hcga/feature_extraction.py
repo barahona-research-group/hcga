@@ -7,25 +7,29 @@ import networkx as nx
 import numpy as np
 from tqdm import tqdm
 
+import pandas as pd
+
 
 def extract(graphs, n_workers, mode="fast"):
     """main function to extract features"""
 
-    feat_classes = _get_list_feature_classes(mode)
+    feat_classes = get_list_feature_classes(mode)
+    raw_features = compute_all_features(graphs, feat_classes, n_workers=n_workers)
+    features, features_info = gather_features(raw_features, feat_classes)
 
-    all_features_raw = compute_all_features(graphs, feat_classes, n_workers=n_workers)
-    all_features, features_info_all = set_feature_ids(all_features_raw, feat_classes)
-    feature_matrix, selected_ids = extract_feature_matrix(all_features)
-    features_info = _relabel_feature_ids(features_info_all, selected_ids)
-
-    print(
-        "Feature extracted:", len(features_info_all), ", selected:", len(features_info)
-    )
-
-    return feature_matrix, features_info
+    print(len(features.columns), "feature extracted.")
+    good_features = filter_features(features)
+    print(len(good_features.columns), "good features")
+    return features, features_info
 
 
-def _get_list_feature_classes(mode="fast"):
+def _load_feature_class(feature_name):
+    """load the feature class from feature name"""
+    feature_module = import_module("hcga.features." + feature_name)
+    return getattr(feature_module, feature_module.featureclass_name)
+
+
+def get_list_feature_classes(mode="fast"):
     """Generates and returns the list of feature classes to compute for a given mode"""
     feature_path = Path(__file__).parent / "features"
     non_feature_files = ["__init__", "feature_class"]
@@ -44,17 +48,6 @@ def _get_list_feature_classes(mode="fast"):
     return list_feature_classes
 
 
-def _relabel_feature_ids(features_info_all, selected_ids):
-    """rname the keys in features info to match the index of the feature matrix"""
-    features_info = {}
-    id_counter = 0
-    for feature in features_info_all:
-        if feature in selected_ids:
-            features_info[id_counter] = features_info_all[feature]
-            id_counter += 1
-    return features_info
-
-
 class Worker:
     """worker for computing features"""
 
@@ -63,25 +56,6 @@ class Worker:
 
     def __call__(self, graph):
         return feature_extraction(graph, self.list_feature_classes)
-
-
-def compute_all_features(graphs, list_feature_classes, n_workers=1):
-    """compute the feature from all graphs"""
-    print("Computing features for {} graphs:".format(len(graphs)))
-    worker = Worker(list_feature_classes)
-    if n_workers == 1:
-        mapper = map
-    else:
-        pool = multiprocessing.Pool(n_workers)
-        mapper = pool.imap
-
-    return list(tqdm(mapper(worker, graphs), total=len(graphs)))
-
-
-def _load_feature_class(feature_name):
-    """load the feature class from feature name"""
-    feature_module = import_module("hcga.features." + feature_name)
-    return getattr(feature_module, feature_module.featureclass_name)
 
 
 def feature_extraction(graph, list_feature_classes, with_runtimes=False):
@@ -106,48 +80,51 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
     return all_features
 
 
-def set_feature_ids(all_features_raw, list_feature_classes):
-    """convert the raw feature to a dict by feature id, and corresponding info dict"""
+def compute_all_features(graphs, list_feature_classes, n_workers=1):
+    """compute the feature from all graphs"""
+    print("Computing features for {} graphs:".format(len(graphs)))
 
-    features_info = {}  # collect features info keyed by feature ids
-    all_features = {}  # collect feature values, keyed by feature ids
+    worker = Worker(list_feature_classes)
 
-    current_feature_id = 0
+    if n_workers == 1:
+        mapper = map
+    else:
+        pool = multiprocessing.Pool(n_workers)
+        mapper = pool.imap
+
+    return list(tqdm(mapper(worker, graphs), total=len(graphs)))
+
+
+def gather_features(all_features_raw, list_feature_classes):
+    """convert the raw feature to a pandas dataframe and a dict with features infos"""
+
+    features_info = {}
+    all_features = {}
 
     for feature_class in list_feature_classes:
         feature_inst = feature_class()
 
         for feature in all_features_raw[0][feature_inst.shortname]:
-            features_info[current_feature_id] = feature_inst.get_feature_info(feature)
+            feature_info = feature_inst.get_feature_info(feature)
+            features_info[feature_info["feature_name"]] = feature_info
 
-            all_features[current_feature_id] = []
+            all_features[feature_info["feature_name"]] = []
             for i, _ in enumerate(all_features_raw):
-                all_features[current_feature_id].append(
+                all_features[feature_info["feature_name"]].append(
                     all_features_raw[i][feature_inst.shortname][feature]
                 )
 
-            current_feature_id += 1
-
-    return all_features, features_info
+    return pd.DataFrame.from_dict(all_features), features_info
 
 
-def extract_feature_matrix(all_features):
+def filter_features(features):
     """filter features and create feature matrix"""
-    selected_ids = []
-    for feature_id in all_features:
-        # is there is a nan value
-        if any(np.isnan(all_features[feature_id])):
-            pass
-        # is there is an inf value
-        elif any(np.isinf(all_features[feature_id])):
-            pass
-        # if all elements are the same
-        elif len(set(all_features[feature_id])) == 1:
-            pass
-        # else select it as a valid feature
-        else:
-            selected_ids.append(feature_id)
 
-    feature_matrix = np.array([all_features[feature_id] for feature_id in selected_ids])
+    # remove inf and nan
+    features.replace([np.inf, -np.inf], np.nan)
+    valid_features = features.dropna(axis=1)
 
-    return feature_matrix, selected_ids
+    # remove features with equal values accros graphs
+    return valid_features.drop(
+        valid_features.std()[(valid_features.std() == 0)].index, axis=1
+    )
