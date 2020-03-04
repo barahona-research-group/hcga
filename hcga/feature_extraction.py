@@ -9,6 +9,8 @@ from tqdm import tqdm
 
 import pandas as pd
 
+from .utils import filter_features
+
 
 def extract(graphs, n_workers, mode="fast"):
     """main function to extract features"""
@@ -116,16 +118,3 @@ def gather_features(all_features_raw, list_feature_classes):
                 )
 
     return pd.DataFrame.from_dict(all_features), features_info
-
-
-def filter_features(features):
-    """filter features and create feature matrix"""
-
-    # remove inf and nan
-    features.replace([np.inf, -np.inf], np.nan)
-    valid_features = features.dropna(axis=1)
-
-    # remove features with equal values accros graphs
-    return valid_features.drop(
-        valid_features.std()[(valid_features.std() == 0)].index, axis=1
-    )

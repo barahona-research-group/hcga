@@ -40,14 +40,19 @@ def extract_features(
 
 
 @cli.command("feature_analysis")
-@click.argument("feature_file", type=str)
-def feature_analysis(feature_file):
+@click.option(
+    "-ff", "--feature-folder", default="./results", help="Location of results"
+)
+@click.option("-fn", "--feature-name", default="features", help="name of feature file")
+def feature_analysis(feature_folder, feature_name):
     """Extract features from dataset of graphs"""
     from .io import load_features
     from .feature_analysis import analysis
 
-    feature_matrix, features_info, labels = load_features(feature_file)
-    analysis(feature_matrix, features_info, labels)
+    features, features_info = load_features(
+        filename=feature_name, folder=feature_folder
+    )
+    analysis(features, features_info)
 
 
 @cli.command("get_data")

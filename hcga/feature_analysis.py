@@ -12,29 +12,39 @@ from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_sco
 from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
 from sklearn.preprocessing import StandardScaler
 
+from .utils import filter_features
 
-def analysis(feature_matrix, features_info, labels):
+
+def analysis(features, features_info):
     """main function to compute analysis"""
 
-    feature_matrix_norm = normalise_feature_data(feature_matrix.T)
-    fit_model(feature_matrix_norm, labels)
-    shap_values = shapley_analysis(feature_matrix_norm, labels)
+    good_features = filter_features(features)
+    normed_features = normalise_feature_data(good_features)
 
-    return shap_values
+    fit_model(normed_features)
+
+    # shap_values = shapley_analysis(normed_features, labels)
+
+    # return shap_values
 
 
 def fit_model(
-    X, y, model=RandomForestClassifier(n_estimators=100, max_depth=30), verbose=True
+    features, model=RandomForestClassifier(n_estimators=100, max_depth=30), verbose=True
 ):
     """
     Perform classification of a normalized feature data
     """
+    y = features["labels"]
+    X = features.drop(columns=["labels"])
 
     n_splits = number_folds(y)
+    print("Using", n_splits, "splits")
+
     skf = StratifiedKFold(n_splits=n_splits, random_state=10, shuffle=True)
-    testing_accuracy, top_feats = classify_folds(X, y, model, skf, verbose=False)
-    X = reduce_feature_set(X, top_feats)
-    testing_accuracy, top_feats = classify_folds(X, y, model, skf)
+
+    testing_accuracy, top_feats = classify_folds(X, y, model, skf, verbose=True)
+    # X = reduce_feature_set(X, top_feats)
+    # testing_accuracy, top_feats = classify_folds(X, y, model, skf)
 
     return testing_accuracy, top_feats
 
@@ -43,8 +53,7 @@ def classify_folds(X, y, model, skf, verbose=True):
     testing_accuracy = []
     top_feats = []
     for train_index, test_index in skf.split(X, y):
-
-        X_train, X_test = X[train_index], X[test_index]
+        X_train, X_test = X.loc[train_index], X.loc[test_index]
         y_train, y_test = y[train_index], y[test_index]
         y_pred = model.fit(X_train, y_train).predict(X_test)
 
@@ -139,22 +148,20 @@ def shapley_analysis(X, y, clf=lgb.LGBMClassifier()):
     return shap_values
 
 
-def normalise_feature_data(feature_matrix):
-    """
-    Normalise the feature matrix using sklearn scaler to remove the mean and scale to unit variance
-
-    """
-    return StandardScaler().fit_transform(feature_matrix)
+def normalise_feature_data(features):
+    """Normalise the feature matrix using sklearn scaler to remove the mean and scale to unit variance"""
+    labels = features["labels"]
+    normed_features = pd.DataFrame(
+        StandardScaler().fit_transform(features), columns=features.columns
+    )
+    normed_features["labels"] = labels
+    return normed_features
 
 
 def number_folds(y):
     counts = np.bincount(y)
     n_splits = int(np.min(counts[counts > 0]) / 2)
-    if n_splits < 2:
-        n_splits = 2
-    elif n_splits > 10:
-        n_splits = 10
-    return n_splits
+    return np.clip(n_splits, 2, 10)
 
 
 def define_feature_set(g, data="all"):
