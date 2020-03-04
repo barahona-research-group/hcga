@@ -24,21 +24,23 @@ from .feature_class import InterpretabilityScore
 from ..feature_utils import summary_statistics
 import numpy as np
 import networkx as nx
+from networkx.algorithms import assortativity
 
-featureclass_name = 'BasicStats'
 
-class BasicStats(FeatureClass):
+featureclass_name = 'Assortativity'
+
+class Assortativity(FeatureClass):
     """Basic stats class"""
 
     modes = ['fast', 'medium', 'slow']
-    shortname = 'BS'
-    name = 'basic_stats'
+    shortname = 'AS'
+    name = 'assortativity'
     keywords = []
     normalize_features = True
 
     def compute_features(self):
         """
-        Compute some basic stats of the network
+        Compute the assortativity of the network structure
 
         Computed statistics    
         -----
@@ -46,29 +48,17 @@ class BasicStats(FeatureClass):
 
         """
 
-        # basic normalisation parameters
-        n_nodes = len(self.graph)
-        n_edges = len(self.graph.edges)
-
         # Adding basic node and edge numbers
-        self.add_feature('num_nodes', n_nodes, 
-                'Number of nodes in the graph', InterpretabilityScore('max'))
-        self.add_feature('num_edges', n_edges, 
-                'Number of edges in the graph', InterpretabilityScore('max'))
+        self.add_feature('degree_assortativity_coeff', 
+                         nx.degree_assortativity_coefficient(self.graph), 
+                         'Similarity of connections in the graph with respect to the node degree', 
+                         InterpretabilityScore(4))
+        
+        self.add_feature('degree_assortativity_coeff_pearson', 
+                         nx.degree_pearson_correlation_coefficient(self.graph),
+                         'Similarity of connections in the graph with respect to the node degree', 
+                         InterpretabilityScore(4))
 
-
-        # Adding diameter stats
-        self.add_feature('diameter', nx.diameter(self.graph), 
-                'Diameter of the graph', InterpretabilityScore('max'))
-        self.add_feature('radius', nx.radius(self.graph), 
-                'Radius of the graph', InterpretabilityScore('max'))       
-  
-
-        # Degree stats
-        self.add_feature('density', np.float64(2 * n_edges) / np.float64(n_nodes * (n_edges - 1)), 
-            'Density of the graph', InterpretabilityScore('max'))
-
-        degree_vals = list(dict(self.graph.degree()).values())
-        summary_statistics(self.add_feature, degree_vals, 
-                'degree', 'the degree of the graph', InterpretabilityScore('max'))       
-
+        average_neighbor_degree = np.asarray(list(assortativity.average_neighbor_degree(self.graph).values()))       
+        summary_statistics(self.add_feature, average_neighbor_degree, 
+                'degree assortativity', 'average neighbor degree', InterpretabilityScore(4))       

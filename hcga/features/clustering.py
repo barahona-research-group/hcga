@@ -27,6 +27,7 @@ from .feature_class import FeatureClass
 from .feature_class import InterpretabilityScore
 from ..feature_utils import summary_statistics
 
+
 featureclass_name = 'Clustering'
 
 class Clustering(FeatureClass):
@@ -78,4 +79,3 @@ class Clustering(FeatureClass):
         summary_statistics(self.add_feature, square_clustering_dist, 
                 'square_clustering', 'the square clustering of the graph', 
                 InterpretabilityScore('max'))       
-
