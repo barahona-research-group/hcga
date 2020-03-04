@@ -65,7 +65,7 @@ class BasicStats(FeatureClass):
   
 
         # Degree stats
-        self.add_feature('density', 2 * n_edges / (n_nodes * (n_edges - 1)), 
+        self.add_feature('density', np.float64(2 * n_edges) / np.float64(n_nodes * (n_edges - 1)), 
             'Density of the graph', InterpretabilityScore('max'))
 
         degree_vals = list(dict(self.graph.degree()).values())

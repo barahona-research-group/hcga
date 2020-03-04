@@ -7,6 +7,11 @@ from .feature_extraction import extract
 from .feature_analysis import analysis
 from .make_data import make_benchmark_dataset, make_test_data
 
+import numpy
+numpy.seterr(all='ignore') 
+import warnings
+warnings.simplefilter("ignore")
+
 
 @click.group()
 def cli():
@@ -16,10 +21,11 @@ def cli():
 @cli.command("extract_features")
 @click.argument("dataset", type=str)
 @click.option("-n", "--n-workers", default=1, help="Number of workers for multiprocessing")
-def extract_features(dataset, n_workers=1):
+@click.option("-m", "--mode", default='fast', help="Mode of features to extract")
+def extract_features(dataset, n_workers, mode):
     """Extract features from dataset of graphs"""
     graphs, labels = load_graphs(dataset)
-    feature_matrix, features_info = extract(graphs, n_workers=int(n_workers))
+    feature_matrix, features_info = extract(graphs, n_workers=int(n_workers), mode=mode)
     data_file = Path(dataset)
     feature_filename = data_file.parent / (data_file.stem + '_features.pkl')
     save_features(feature_matrix, features_info, labels, 

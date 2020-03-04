@@ -19,56 +19,63 @@
 # You should have received a copy of the GNU General Public License
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
+import pandas as pd
+import numpy as np
+import networkx as nx
+
 from .feature_class import FeatureClass
 from .feature_class import InterpretabilityScore
 from ..feature_utils import summary_statistics
-import numpy as np
-import networkx as nx
 
 
 featureclass_name = 'Clustering'
 
 class Clustering(FeatureClass):
-    """Clustering class"""
+    """
+    Clustering class
+    """    
 
-    modes = ['fast','medium', 'slow']
-    shortname = 'CLU'
+    modes = ['medium', 'slow']
+    shortname = 'CL'
     name = 'clustering'
     keywords = []
     normalize_features = True
+    
 
     def compute_features(self):
-        """
-        Compute some clustering based measures for the network
+        """Compute the various clustering measures.
 
-        Computed statistics    
+        Notes
         -----
-        Put here the list of things that are computed, with corresponding names
+        Implementation of networkx code:
+            `Networkx_clustering <https://networkx.github.io/documentation/stable/reference/algorithms/clustering.html>`_
+
+        We followed the same structure as networkx for implementing clustering features.
 
         """
         
-        # computing the number of triangles that include a node as one vertex
-        triangles = np.asarray(list(nx.triangles(self.graph).values()))        
-        summary_statistics(self.add_feature, triangles, 
-                'triangles', 'the distribution of triangles that include a node as one vertex', InterpretabilityScore(3))  
-        
-        
-        # graph transitivity
-        self.add_feature('transitivity', nx.transitivity(self.graph), 
-                'Possible triangles are identified by the number of “triads” (two edges with a shared vertex)',
-                InterpretabilityScore(3))
-        
-        # clustering
-        triangle_clustering = list(nx.clustering(self.graph).values())
-        summary_statistics(self.add_feature, triangle_clustering, 
-                'triangle clustering', 'the clustering of a node u is the fraction of possible triangles through that node',
-                InterpretabilityScore(3))  
-        
-        # square clustering
-        square_clustering = list(nx.square_clustering(self.graph).values())
-        summary_statistics(self.add_feature, square_clustering, 
-                'square clustering', 'the clustering of a node u is the fraction of possible squares through that node',
-                InterpretabilityScore(3))  
-        
-        
+        if not nx.is_directed(self.graph):
+            triang = np.asarray(list(nx.triangles(self.graph).values())).mean()
+            transi = nx.transitivity(self.graph)
+        else:
+            transi = np.nan
+            triang = np.nan
 
+        self.add_feature('num_triangles', triang, 
+            'Number of triangles in the graph', 
+            InterpretabilityScore('max'))
+        self.add_feature('transitivity', transi, 
+            'Transitivity of the graph', 
+            InterpretabilityScore('max'))
+
+        # Average clustering coefficient
+        clustering_dist = list(nx.clustering(self.graph).values())
+        summary_statistics(self.add_feature, clustering_dist, 
+                'clustering', 'the clustering of the graph', 
+                InterpretabilityScore('max'))       
+
+        # generalised degree
+        square_clustering_dist = list(nx.square_clustering(self.graph).values())
+        summary_statistics(self.add_feature, square_clustering_dist, 
+                'square_clustering', 'the square clustering of the graph', 
+                InterpretabilityScore('max'))       

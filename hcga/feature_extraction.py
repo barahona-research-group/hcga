@@ -5,6 +5,7 @@ from importlib import import_module
 from pathlib import Path
 import networkx as nx
 import numpy as np
+from tqdm import tqdm
 
 
 def extract(graphs, n_workers, mode="fast"):
@@ -36,7 +37,7 @@ def _get_list_feature_classes(mode="fast"):
         feature_name = f_name.stem
         if feature_name not in non_feature_files:
             feature_class = _load_feature_class(feature_name)
-            if mode in feature_class.modes:
+            if mode in feature_class.modes or mode=='all':
                 list_feature_classes.append(feature_class)
                 # runs once update_feature with trivial graph to create class variables
                 feature_class(trivial_graph).update_features({})
@@ -66,14 +67,16 @@ class Worker:
 
 def compute_all_features(graphs, list_feature_classes, n_workers=1):
     """compute the feature from all graphs"""
+    print('Computing features for {} graphs:'.format(len(graphs)))
     worker = Worker(list_feature_classes)
     if n_workers == 1:
         mapper = map
     else:
         pool = multiprocessing.Pool(n_workers)
-        mapper = pool.map
+        #mapper = pool.map
+        mapper = pool.imap
 
-    return list(mapper(worker, graphs))
+    return list(tqdm(mapper(worker, graphs), total=len(graphs)))
 
 
 def _load_feature_class(feature_name):
