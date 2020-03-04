@@ -32,14 +32,10 @@ def extract_features(
     from .feature_extraction import extract
 
     graphs = load_dataset(dataset, dataset_folder)
-    feature_matrix, features_info = extract(graphs, n_workers=int(n_workers), mode=mode)
-    labels = [graph.label for graph in graphs]
+    features, features_info = extract(graphs, n_workers=int(n_workers), mode=mode)
+
     save_features(
-        feature_matrix,
-        features_info,
-        labels,
-        filename=output_name,
-        folder=output_folder,
+        features, features_info, filename=output_name, folder=output_folder,
     )
 
 

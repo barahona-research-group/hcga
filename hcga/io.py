@@ -45,15 +45,13 @@ def load_dataset(filename, folder="./datasets"):
     return graphs
 
 
-def save_features(
-    feature_matrix, feature_info, labels, folder=".", filename="features"
-):
+def save_features(feature_matrix, feature_info, folder=".", filename="features"):
     """Save the features in a pickle"""
     if not os.path.exists(folder):
         os.mkdir(folder)
 
     pickle.dump(
-        [feature_matrix, feature_info, labels],
+        [feature_matrix, feature_info],
         open(os.path.join(folder, filename + ".pkl"), "wb"),
     )
 

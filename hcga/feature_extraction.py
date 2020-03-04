@@ -16,6 +16,7 @@ def extract(graphs, n_workers, mode="fast"):
     feat_classes = get_list_feature_classes(mode)
     raw_features = compute_all_features(graphs, feat_classes, n_workers=n_workers)
     features, features_info = gather_features(raw_features, feat_classes)
+    features["labels"] = [graph.label for graph in graphs]
 
     print(len(features.columns), "feature extracted.")
     good_features = filter_features(features)
