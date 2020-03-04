@@ -5,6 +5,7 @@ import pickle
 import csv
 import numpy as np
 
+
 def _ensure_weights(graphs):
     """ensure that graphs edges have a weights value"""
     for i, graph in enumerate(graphs): 
@@ -18,11 +19,26 @@ def _remove_small_graphs(graphs, n_node_min=2):
     return [graph for graph in graphs if len(graph) > n_node_min]
 
 
+def save_dataset(graphs, labels, filename, folder='./datasets'):
+    """Save a dataset in a pickle"""
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+
+    with open(os.path.join(folder, filename + '.pkl'), "wb") as f:
+        pickle.dump([graphs, labels], f)
+    
+
+def load_dataset(filename, folder='./datasets'):
+    """load a dataset from a pickle"""
+    with open(os.path.join(folder, filename), "rb") as f:
+        [graphs, labels] = pickle.load(f)
+    return graphs, labels
+
+
 def load_graphs(dataset_file):
    """load graphs in a list of networkx graphs"""
    
-   #with open(os.path.join(location, '{}.pkl'.format(dataset_name)), 'rb') as f:
-   with open(dataset_file, 'rb') as f:
+   with open(dataset_file + '.pkl', 'rb') as f:
         [graphs_full, labels] = pickle.load(f)
    
    
