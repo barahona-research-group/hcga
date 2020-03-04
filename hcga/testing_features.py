@@ -13,21 +13,17 @@ from hcga.feature_extraction import _get_list_feature_classes
 test_graphs, test_labels = make_test_data(save_data=False)
 test_feature_classes = _get_list_feature_classes(mode="all")
 
-class TestFeatureClasses(unittest.TestCase):
 
+class TestFeatureClasses(unittest.TestCase):
     def test_shortname_definition(self):
         for feature_class in test_feature_classes:
-            with self.subTest(
-                    feature_class=feature_class.__name__, 
-                    ):
-                    self.assertNotEqual(feature_class.shortname, 'TP')
+            with self.subTest(feature_class=feature_class.__name__,):
+                self.assertNotEqual(feature_class.shortname, "TP")
 
     def test_name_definition(self):
         for feature_class in test_feature_classes:
-            with self.subTest(
-                    feature_class=feature_class.__name__, 
-                    ):
-                    self.assertNotEqual(feature_class.name, 'template')
+            with self.subTest(feature_class=feature_class.__name__,):
+                self.assertNotEqual(feature_class.name, "template")
 
     def test_shortnames_unique(self):
         shortnames = []
@@ -41,30 +37,29 @@ class TestFeatureClasses(unittest.TestCase):
         for feature_class in test_feature_classes:
             for graph in test_graphs:
                 with self.subTest(
-                        feature_class=feature_class.__name__, 
-                        graph=graph.graph['description'],
-                        ):
+                    feature_class=feature_class.__name__,
+                    graph=graph.graph["description"],
+                ):
                     feature_inst = feature_class(graph)
                     feature_inst.compute_features()
-                    self.assertTrue(len(feature_inst.features)>0)
+                    self.assertTrue(len(feature_inst.features) > 0)
+
 
 class TestIndividualFeatures(unittest.TestCase):
-
     def test_features_not_nan(self):
         for feature_class in test_feature_classes:
             for graph in test_graphs:
                 feature_inst = feature_class(graph)
                 feature_inst.compute_features()
-                #self.assertFalse(np.nan in feature_inst.features.values())
+                # self.assertFalse(np.nan in feature_inst.features.values())
                 for feat, val in feature_inst.features.items():
                     with self.subTest(
-                            feature_class=feature_class.__name__, 
-                            feature=feat,
-                            graph=graph.graph['description'],
-                            ):
+                        feature_class=feature_class.__name__,
+                        feature=feat,
+                        graph=graph.graph["description"],
+                    ):
                         self.assertTrue(np.isfinite(val))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
-

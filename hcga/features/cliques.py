@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # This file is part of hcga.
 #
-# Copyright (C) 2019, 
-# Robert Peach (r.peach13@imperial.ac.uk), 
-# Alexis Arnaudon (alexis.arnaudon@epfl.ch), 
+# Copyright (C) 2019,
+# Robert Peach (r.peach13@imperial.ac.uk),
+# Alexis Arnaudon (alexis.arnaudon@epfl.ch),
 # https://github.com/ImperialCollegeLondon/hcga.git
 #
 # hcga is free software: you can redistribute it and/or modify
@@ -21,20 +21,20 @@
 
 from .feature_class import FeatureClass
 from .feature_class import InterpretabilityScore
-from ..feature_utils import summary_statistics
 import numpy as np
 import networkx as nx
 from networkx.algorithms import clique
 
 
-featureclass_name = 'Cliques'
+featureclass_name = "Cliques"
+
 
 class Cliques(FeatureClass):
     """Basic stats class"""
 
-    modes = ['fast','medium', 'slow']
-    shortname = 'CL'
-    name = 'cliques'
+    modes = ["fast", "medium", "slow"]
+    shortname = "CL"
+    name = "cliques"
     keywords = []
     normalize_features = True
 
@@ -47,29 +47,39 @@ class Cliques(FeatureClass):
         Put here the list of things that are computed, with corresponding names
 
         """
-        
+
         # graph clique number
-        self.add_feature('graph_clique_number', clique.graph_clique_number(self.graph), 
-                'The clique number of a graph is the size of the largest clique in the graph',
-                InterpretabilityScore(3))
-        
+        self.add_feature(
+            "graph_clique_number",
+            lambda graph: clique.graph_clique_number(graph),
+            "The clique number of a graph is the size of the largest clique in the graph",
+            InterpretabilityScore(3),
+        )
+
         # number of maximal cliques
-        self.add_feature('num_max_cliques', clique.graph_number_of_cliques(self.graph), 
-                'The number of maximal cliques in the graph',
-                InterpretabilityScore(3))
-        
-        cliques = [u for u in list(clique.enumerate_all_cliques(self.graph)) if len(u)>1]            
-        
-        self.add_feature('num_cliques', len(cliques), 
-                'The number of cliques in the graph',
-                InterpretabilityScore(3))
-        
-        clique_sizes = [len(u) for u in cliques]
-        summary_statistics(self.add_feature, clique_sizes, 
-                'clique sizes', 'the distribution of clique sizes', InterpretabilityScore(3))       
+        self.add_feature(
+            "num_max_cliques",
+            lambda graph: clique.graph_number_of_cliques(graph),
+            "The number of maximal cliques in the graph",
+            InterpretabilityScore(3),
+        )
 
-        
-           
-        
-        
+        n_cliques = lambda graph: len(
+            [u for u in list(clique.enumerate_all_cliques(graph)) if len(u) > 1]
+        )
+        self.add_feature(
+            "num_cliques",
+            n_cliques,
+            "The number of cliques in the graph",
+            InterpretabilityScore(3),
+        )
 
+        clique_sizes = lambda graph: [
+            len(u) for u in list(clique.enumerate_all_cliques(graph)) if len(u) > 1
+        ]
+        self.add_feature(
+            "clique sizes",
+            clique_sizes,
+            "the distribution of clique sizes",
+            InterpretabilityScore(3),
+        )

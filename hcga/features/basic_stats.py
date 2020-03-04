@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # This file is part of hcga.
 #
-# Copyright (C) 2019, 
-# Robert Peach (r.peach13@imperial.ac.uk), 
-# Alexis Arnaudon (alexis.arnaudon@epfl.ch), 
+# Copyright (C) 2019,
+# Robert Peach (r.peach13@imperial.ac.uk),
+# Alexis Arnaudon (alexis.arnaudon@epfl.ch),
 # https://github.com/ImperialCollegeLondon/hcga.git
 #
 # hcga is free software: you can redistribute it and/or modify
@@ -21,18 +21,18 @@
 
 from .feature_class import FeatureClass
 from .feature_class import InterpretabilityScore
-from ..feature_utils import summary_statistics
 import numpy as np
 import networkx as nx
 
-featureclass_name = 'BasicStats'
+featureclass_name = "BasicStats"
+
 
 class BasicStats(FeatureClass):
     """Basic stats class"""
 
-    modes = ['fast', 'medium', 'slow']
-    shortname = 'BS'
-    name = 'basic_stats'
+    modes = ["fast", "medium", "slow"]
+    shortname = "BS"
+    name = "basic_stats"
     keywords = []
     normalize_features = True
 
@@ -47,28 +47,49 @@ class BasicStats(FeatureClass):
         """
 
         # basic normalisation parameters
-        n_nodes = len(self.graph)
-        n_edges = len(self.graph.edges)
+        n_nodes = lambda graph: len(graph)
+        n_edges = lambda graph: len(graph.edges)
 
         # Adding basic node and edge numbers
-        self.add_feature('num_nodes', n_nodes, 
-                'Number of nodes in the graph', InterpretabilityScore('max'))
-        self.add_feature('num_edges', n_edges, 
-                'Number of edges in the graph', InterpretabilityScore('max'))
-
+        self.add_feature(
+            "num_nodes",
+            n_nodes,
+            "Number of nodes in the graph",
+            InterpretabilityScore("max"),
+        )
+        self.add_feature(
+            "num_edges",
+            n_edges,
+            "Number of edges in the graph",
+            InterpretabilityScore("max"),
+        )
 
         # Adding diameter stats
-        self.add_feature('diameter', nx.diameter(self.graph), 
-                'Diameter of the graph', InterpretabilityScore('max'))
-        self.add_feature('radius', nx.radius(self.graph), 
-                'Radius of the graph', InterpretabilityScore('max'))       
-  
+        self.add_feature(
+            "diameter",
+            lambda graph: nx.diameter(graph),
+            "Diameter of the graph",
+            InterpretabilityScore("max"),
+        )
+        self.add_feature(
+            "radius",
+            lambda graph: nx.radius(graph),
+            "Radius of the graph",
+            InterpretabilityScore("max"),
+        )
 
         # Degree stats
-        self.add_feature('density', np.float64(2 * n_edges) / np.float64(n_nodes * (n_edges - 1)), 
-            'Density of the graph', InterpretabilityScore('max'))
+        density = lambda graph: np.float64(2 * n_edges(graph)) / np.float64(
+            n_nodes(graph) * (n_edges(graph) - 1)
+        )
+        self.add_feature(
+            "density", density, "Density of the graph", InterpretabilityScore("max")
+        )
 
-        degree_vals = list(dict(self.graph.degree()).values())
-        summary_statistics(self.add_feature, degree_vals, 
-                'degree', 'the degree of the graph', InterpretabilityScore('max'))       
-
+        degree_vals = lambda graph: list(dict(self.graph.degree()).values())
+        self.add_feature(
+            "degree",
+            degree_vals,
+            "the degree of the graph",
+            InterpretabilityScore("max"),
+        )

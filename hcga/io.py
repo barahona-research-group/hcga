@@ -8,10 +8,10 @@ import numpy as np
 
 def _ensure_weights(graphs):
     """ensure that graphs edges have a weights value"""
-    for i, graph in enumerate(graphs): 
-        for u, v in graph.edges: 
-            if 'weight' not in graph[u][v]:
-                graph[u][v]['weight'] = 1.
+    for i, graph in enumerate(graphs):
+        for u, v in graph.edges:
+            if "weight" not in graph[u][v]:
+                graph[u][v]["weight"] = 1.0
 
 
 def _remove_small_graphs(graphs, n_node_min=2):
@@ -19,172 +19,165 @@ def _remove_small_graphs(graphs, n_node_min=2):
     return [graph for graph in graphs if len(graph) > n_node_min]
 
 
-def save_dataset(graphs, labels, filename, folder='./datasets'):
+def save_dataset(graphs, labels, filename, folder="./datasets"):
     """Save a dataset in a pickle"""
     if not os.path.exists(folder):
         os.mkdir(folder)
 
-    with open(os.path.join(folder, filename + '.pkl'), "wb") as f:
+    with open(os.path.join(folder, filename + ".pkl"), "wb") as f:
         pickle.dump([graphs, labels], f)
-    
 
-def load_dataset(filename, folder='./datasets'):
+
+def load_dataset(filename, folder="./datasets"):
     """load a dataset from a pickle"""
-    with open(os.path.join(folder, filename), "rb") as f:
-        [graphs, labels] = pickle.load(f)
-    return graphs, labels
+    with open(os.path.join(folder, filename + ".pkl"), "rb") as f:
+        graphs_full, labels = pickle.load(f)
+
+    graphs = []
+    for i in range(len(graphs_full)):
+        graph = graphs_full[i]
+        graph.label = labels[i]
+        graphs.append(graph)
+
+    graphs = _remove_small_graphs(graphs)
+    _ensure_weights(graphs)
+
+    return graphs
 
 
-def load_graphs(dataset_file):
-   """load graphs in a list of networkx graphs"""
-   
-   with open(dataset_file + '.pkl', 'rb') as f:
-        [graphs_full, labels] = pickle.load(f)
-   
-   
-   graphs = []
-   for i in range(len(graphs_full)):
-       graph = graphs_full[i]
-       graph.label = labels[i]#graphs_full[i][1]
-       #graph.name = graphs_full[i][2]
-       graphs.append(graph)   
-   
-   #graphs = getattr(sys.modules[__name__], "load_%s" % graph_dataset)(location)
-
-   graphs = _remove_small_graphs(graphs)
-   _ensure_weights(graphs)
-   
-   labels = np.asarray([graph.label for graph in graphs])
-    
-   return graphs,labels
-
-
-
-def save_features(feature_matrix, feature_info, labels, filename='features.pkl'):
+def save_features(
+    feature_matrix, feature_info, labels, folder=".", filename="features"
+):
     """Save the features in a pickle"""
-    pickle.dump([feature_matrix, feature_info, labels], open(filename,'wb'))
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+
+    pickle.dump(
+        [feature_matrix, feature_info, labels],
+        open(os.path.join(folder, filename + ".pkl"), "wb"),
+    )
 
 
-def load_features(filename='features.pkl'):
+def load_features(filename="features.pkl"):
     """Save the features in a pickle"""
-    [feature_matrix, feature_info, labels] = pickle.load(open(filename,'rb'))
+    [feature_matrix, feature_info, labels] = pickle.load(open(filename, "rb"))
     return feature_matrix, feature_info, labels
-
-
-
 
 
 ###old functions###
 
+
 def read_graphfile(datadir, dataname, max_nodes=None):
-    ''' Read data from https://ls11-www.cs.tu-dortmund.de/staff/morris/graphkerneldatasets
+    """ Read data from https://ls11-www.cs.tu-dortmund.de/staff/morris/graphkerneldatasets
         graph index starts with 1 in file
 
     Returns:
         List of networkx objects with graph and node labels
-    '''
+    """
     prefix = os.path.join(datadir, dataname, dataname)
-    filename_graph_indic = prefix + '_graph_indicator.txt'
+    filename_graph_indic = prefix + "_graph_indicator.txt"
     # index of graphs that a given node belongs to
-    graph_indic={}
+    graph_indic = {}
     with open(filename_graph_indic) as f:
-        i=1
+        i = 1
         for line in f:
-            line=line.strip("\n")
-            graph_indic[i]=int(line)
-            i+=1
+            line = line.strip("\n")
+            graph_indic[i] = int(line)
+            i += 1
 
-    filename_nodes=prefix + '_node_labels.txt'
-    node_labels=[]
+    filename_nodes = prefix + "_node_labels.txt"
+    node_labels = []
     try:
         with open(filename_nodes) as f:
             for line in f:
-                line=line.strip("\n")
-                node_labels+=[int(line) - 1]
+                line = line.strip("\n")
+                node_labels += [int(line) - 1]
         num_unique_node_labels = max(node_labels) + 1
     except IOError:
-        print('No node labels')
- 
-    filename_node_attrs=prefix + '_node_attributes.txt'
-    node_attrs=[]
+        print("No node labels")
+
+    filename_node_attrs = prefix + "_node_attributes.txt"
+    node_attrs = []
     try:
         with open(filename_node_attrs) as f:
             for line in f:
                 line = line.strip("\s\n")
-                attrs = [float(attr) for attr in re.split("[,\s]+", line) if not attr == '']
+                attrs = [
+                    float(attr) for attr in re.split("[,\s]+", line) if not attr == ""
+                ]
                 node_attrs.append(np.array(attrs))
     except IOError:
-        print('No node attributes')
-       
-    label_has_zero = False
-    filename_graphs=prefix + '_graph_labels.txt'
-    graph_labels=[]
+        print("No node attributes")
 
-    # assume that all graph labels appear in the dataset 
-    #(set of labels don't have to be consecutive)
+    label_has_zero = False
+    filename_graphs = prefix + "_graph_labels.txt"
+    graph_labels = []
+
+    # assume that all graph labels appear in the dataset
+    # (set of labels don't have to be consecutive)
     label_vals = []
     with open(filename_graphs) as f:
         for line in f:
-            line=line.strip("\n")
+            line = line.strip("\n")
             val = int(line)
-            #if val == 0:
+            # if val == 0:
             #    label_has_zero = True
             if val not in label_vals:
                 label_vals.append(val)
             graph_labels.append(val)
-    #graph_labels = np.array(graph_labels)
+    # graph_labels = np.array(graph_labels)
     label_map_to_int = {val: i for i, val in enumerate(label_vals)}
     graph_labels = np.array([label_map_to_int[l] for l in graph_labels])
-    #if label_has_zero:
+    # if label_has_zero:
     #    graph_labels += 1
-    
-    filename_adj=prefix + '_A.txt'
-    adj_list={i:[] for i in range(1,len(graph_labels)+1)}    
-    index_graph={i:[] for i in range(1,len(graph_labels)+1)}
+
+    filename_adj = prefix + "_A.txt"
+    adj_list = {i: [] for i in range(1, len(graph_labels) + 1)}
+    index_graph = {i: [] for i in range(1, len(graph_labels) + 1)}
     num_edges = 0
     with open(filename_adj) as f:
         for line in f:
-            line=line.strip("\n").split(",")
-            e0,e1=(int(line[0].strip(" ")),int(line[1].strip(" ")))
-            adj_list[graph_indic[e0]].append((e0,e1))
-            index_graph[graph_indic[e0]]+=[e0,e1]
+            line = line.strip("\n").split(",")
+            e0, e1 = (int(line[0].strip(" ")), int(line[1].strip(" ")))
+            adj_list[graph_indic[e0]].append((e0, e1))
+            index_graph[graph_indic[e0]] += [e0, e1]
             num_edges += 1
     for k in index_graph.keys():
-        index_graph[k]=[u-1 for u in set(index_graph[k])]
+        index_graph[k] = [u - 1 for u in set(index_graph[k])]
 
-    graphs=[]
+    graphs = []
     node_label_list = []
-    for i in range(1,1+len(adj_list)):
+    for i in range(1, 1 + len(adj_list)):
         # indexed from 1 here
-        G=nx.from_edgelist(adj_list[i])
+        G = nx.from_edgelist(adj_list[i])
         if max_nodes is not None and G.number_of_nodes() > max_nodes:
             continue
-      
+
         # add features and labels
-        G.graph['label'] = graph_labels[i-1]
+        G.graph["label"] = graph_labels[i - 1]
         for u in G.nodes():
             if len(node_labels) > 0:
                 node_label_one_hot = [0] * num_unique_node_labels
-                node_label = node_labels[u-1]
+                node_label = node_labels[u - 1]
                 node_label_one_hot[node_label] = 1
-                G.nodes[u]['label'] = node_label_one_hot		
+                G.nodes[u]["label"] = node_label_one_hot
             if len(node_attrs) > 0:
-                G.nodes[u]['feat'] = node_attrs[u-1]
+                G.nodes[u]["feat"] = node_attrs[u - 1]
         if len(node_attrs) > 0:
-            G.graph['feat_dim'] = node_attrs[0].shape[0]
+            G.graph["feat_dim"] = node_attrs[0].shape[0]
 
         # relabeling
-        mapping={}
-        it=0
-        if float(nx.__version__)<2.0:
+        mapping = {}
+        it = 0
+        if float(nx.__version__) < 2.0:
             for n in G.nodes():
-                mapping[n]=it
-                it+=1
+                mapping[n] = it
+                it += 1
         else:
             for n in G.nodes:
-                mapping[n]=it
-                it+=1
-            
+                mapping[n] = it
+                it += 1
+
         # indexed from 0
         graphs.append(nx.relabel_nodes(G, mapping))
     return graphs, graph_labels

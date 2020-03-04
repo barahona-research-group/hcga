@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # This file is part of hcga.
 #
-# Copyright (C) 2019, 
-# Robert Peach (r.peach13@imperial.ac.uk), 
-# Alexis Arnaudon (alexis.arnaudon@epfl.ch), 
+# Copyright (C) 2019,
+# Robert Peach (r.peach13@imperial.ac.uk),
+# Alexis Arnaudon (alexis.arnaudon@epfl.ch),
 # https://github.com/ImperialCollegeLondon/hcga.git
 #
 # hcga is free software: you can redistribute it and/or modify
@@ -25,22 +25,21 @@ import networkx as nx
 
 from .feature_class import FeatureClass
 from .feature_class import InterpretabilityScore
-from ..feature_utils import summary_statistics
 
 
-featureclass_name = 'Clustering'
+featureclass_name = "Clustering"
+
 
 class Clustering(FeatureClass):
     """
     Clustering class
-    """    
+    """
 
-    modes = ['medium', 'slow']
-    shortname = 'CL'
-    name = 'clustering'
+    modes = ["medium", "slow"]
+    shortname = "CL"
+    name = "clustering"
     keywords = []
     normalize_features = True
-    
 
     def compute_features(self):
         """Compute the various clustering measures.
@@ -53,7 +52,7 @@ class Clustering(FeatureClass):
         We followed the same structure as networkx for implementing clustering features.
 
         """
-        
+
         if not nx.is_directed(self.graph):
             triang = np.asarray(list(nx.triangles(self.graph).values())).mean()
             transi = nx.transitivity(self.graph)
@@ -61,21 +60,33 @@ class Clustering(FeatureClass):
             transi = np.nan
             triang = np.nan
 
-        self.add_feature('num_triangles', triang, 
-            'Number of triangles in the graph', 
-            InterpretabilityScore('max'))
-        self.add_feature('transitivity', transi, 
-            'Transitivity of the graph', 
-            InterpretabilityScore('max'))
+        self.add_feature(
+            "num_triangles",
+            triang,
+            "Number of triangles in the graph",
+            InterpretabilityScore("max"),
+        )
+        self.add_feature(
+            "transitivity",
+            transi,
+            "Transitivity of the graph",
+            InterpretabilityScore("max"),
+        )
 
         # Average clustering coefficient
         clustering_dist = list(nx.clustering(self.graph).values())
-        summary_statistics(self.add_feature, clustering_dist, 
-                'clustering', 'the clustering of the graph', 
-                InterpretabilityScore('max'))       
+        self.add_feature(
+            "clustering",
+            clustering_dist,
+            "the clustering of the graph",
+            InterpretabilityScore("max"),
+        )
 
         # generalised degree
         square_clustering_dist = list(nx.square_clustering(self.graph).values())
-        summary_statistics(self.add_feature, square_clustering_dist, 
-                'square_clustering', 'the square clustering of the graph', 
-                InterpretabilityScore('max'))       
+        self.add_feature(
+            "square_clustering",
+            square_clustering_dist,
+            "the square clustering of the graph",
+            InterpretabilityScore("max"),
+        )
