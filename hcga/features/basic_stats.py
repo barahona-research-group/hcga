@@ -86,7 +86,7 @@ class BasicStats(FeatureClass):
             "density", density, "Density of the graph", InterpretabilityScore("max")
         )
 
-        degree_vals = lambda graph: list(dict(self.graph.degree()).values())
+        degree_vals = lambda graph: list(dict(graph.degree()).values())
         self.add_feature(
             "degree",
             degree_vals,

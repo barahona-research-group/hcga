@@ -7,11 +7,11 @@ Run all tests with the command 'python testing_features.py'
 import unittest
 import numpy as np
 
-from hcga.make_data import make_test_data
-from hcga.feature_extraction import _get_list_feature_classes
+from hcga.dataset_creation import make_test_dataset
+from hcga.feature_extraction import get_list_feature_classes
 
-test_graphs, test_labels = make_test_data(save_data=False)
-test_feature_classes = _get_list_feature_classes(mode="all")
+test_graphs, test_labels = make_test_dataset(write_to_file=False)
+test_feature_classes = get_list_feature_classes(mode="all")
 
 
 class TestFeatureClasses(unittest.TestCase):

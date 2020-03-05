@@ -110,7 +110,8 @@ class FeatureClass:
 
     def compute_features(self):
         """main feature extraction function"""
-        self.add_feature("test", 0.0, "Test feature for the base feature class", 5)
+        self.add_feature("test", lambda graph: 0.0, 
+                "Test feature for the base feature class", 5)
 
     def update_features(self, all_features):
         """update the feature dictionary if correct mode provided"""
