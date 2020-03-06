@@ -7,7 +7,6 @@ import numpy as np
 import pandas as pd
 import shap
 import xgboost
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score
 from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -15,44 +14,57 @@ from sklearn.preprocessing import StandardScaler
 from .utils import filter_features
 
 
-def analysis(features, features_info):
-    """main function to compute analysis"""
+def analysis(features, features_info, mode="sklearn_RF", verbose=True, folder="."):
+    """main function to classify graphs"""
 
     good_features = filter_features(features)
     normed_features = normalise_feature_data(good_features)
 
-    fit_model(normed_features)
+    if mode == "sklearn_RF":
 
-    # shap_values = shapley_analysis(normed_features, labels)
+        from sklearn.ensemble import RandomForestClassifier
 
-    # return shap_values
+        learning_model = RandomForestClassifier(n_estimators=100, max_depth=30)
+        X, testing_accuracy, top_features = fit_model(
+            normed_features, model=learning_model, verbose=verbose
+        )
+
+        return X, testing_accuracy, top_features
+
+    if mode == "shap":
+        shap_values = shapley_analysis(normed_features, labels)
+        return shap_values
 
 
 def fit_model(
-    features, model=RandomForestClassifier(n_estimators=100, max_depth=30), verbose=True
+    features, model=None, verbose=True, reduce_set=True,
 ):
-    """
-    Perform classification of a normalized feature data
-    """
-    y = features["labels"]
+    """Perform classification of a normalized feature data"""
+    if model is None:
+        raise Exception("Please provide a model for classification")
+
     X = features.drop(columns=["labels"])
+    y = features["labels"]
 
     n_splits = number_folds(y)
     print("Using", n_splits, "splits")
 
-    skf = StratifiedKFold(n_splits=n_splits, random_state=10, shuffle=True)
+    stratified_kfold = StratifiedKFold(n_splits=n_splits, random_state=10, shuffle=True)
+    testing_accuracy, top_features = classify_folds(
+        X, y, model, stratified_kfold, verbose=verbose
+    )
 
-    testing_accuracy, top_feats = classify_folds(X, y, model, skf, verbose=True)
-    # X = reduce_feature_set(X, top_feats)
-    # testing_accuracy, top_feats = classify_folds(X, y, model, skf)
+    if reduce_set:
+        X = reduce_feature_set(X, top_features, importance_threshold=0.2)
+        testing_accuracy, top_features = classify_folds(X, y, model, stratified_kfold)
 
-    return testing_accuracy, top_feats
+    return X, testing_accuracy, top_features
 
 
-def classify_folds(X, y, model, skf, verbose=True):
+def classify_folds(X, y, model, stratified_kfold, verbose=True):
     testing_accuracy = []
-    top_feats = []
-    for train_index, test_index in skf.split(X, y):
+    top_features = []
+    for train_index, test_index in stratified_kfold.split(X, y):
         X_train, X_test = X.loc[train_index], X.loc[test_index]
         y_train, y_test = y[train_index], y[test_index]
         y_pred = model.fit(X_train, y_train).predict(X_test)
@@ -69,33 +81,31 @@ def classify_folds(X, y, model, skf, verbose=True):
 
         testing_accuracy.append(acc)
 
-        top_feats.append(model.feature_importances_)
+        top_features.append(model.feature_importances_)
 
     if verbose:
         print("Final accuracy: --- {0:.3f} --- ".format(np.mean(testing_accuracy)))
 
-    return testing_accuracy, top_feats
+    return testing_accuracy, top_features
 
 
-def reduce_feature_set(X, top_feats, threshold=0.9):
+def reduce_feature_set(X, top_features, importance_threshold=0.9):
     """    Reduce the feature set   """
-    mean_importance = np.mean(np.asarray(top_feats), 0)
-    sorted_mean_importance = np.sort(mean_importance)[::-1]
 
-    # Taking only features till we have reached 90% importance
-    sum_importance = 0
-    final_index = 0
-    for i in range(len(sorted_mean_importance)):
-        sum_importance = sum_importance + sorted_mean_importance[i]
-        if sum_importance > threshold:
-            final_index = i
-            break
-    if final_index < 3:  # take top 2 if no features are selected
-        final_index = 3
+    mean_importance = np.mean(np.array(top_features), axis=0)
+    rank_feat = np.argsort(mean_importance)[::-1]
+    n_feat = len(
+        np.where(
+            np.cumsum(mean_importance[rank_feat])
+            < importance_threshold * mean_importance.sum()
+        )[0]
+    )
+    n_feat = max(3, n_feat)
+    rank_feat = rank_feat[:n_feat]
 
-    top_feat_indices = np.argsort(mean_importance)[::-1][:final_index]
+    print(n_feat, "to get .9 of total importance")
 
-    X_reduced = X[:, top_feat_indices]
+    X_reduced = X.iloc[:, rank_feat]
 
     return X_reduced  # , top_feat_indices
 

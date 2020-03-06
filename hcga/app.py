@@ -46,13 +46,29 @@ def extract_features(
 @click.option("-fn", "--feature-name", default="features", help="name of feature file")
 def feature_analysis(feature_folder, feature_name):
     """Extract features from dataset of graphs"""
-    from .io import load_features
+    from .io import load_features, save_analysis
     from .feature_analysis import analysis
 
     features, features_info = load_features(
         filename=feature_name, folder=feature_folder
     )
-    analysis(features, features_info)
+    X, testing_accuracy, top_features = analysis(
+        features, features_info, folder=feature_folder
+    )
+    save_analysis(X, testing_accuracy, top_features, folder=feature_folder)
+
+
+@cli.command("plot_analysis")
+@click.option(
+    "-ff", "--feature-folder", default="./results", help="Location of results"
+)
+def plot_analysis(feature_folder):
+    """Extract features from dataset of graphs"""
+    from .io import load_analysis
+    from .plotting import plot_sklearn_analysis
+
+    X, testing_accuracy, top_features = load_analysis(folder=feature_folder)
+    plot_sklearn_analysis(X, testing_accuracy, top_features, folder=feature_folder)
 
 
 @cli.command("get_data")

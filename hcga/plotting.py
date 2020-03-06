@@ -1,4 +1,5 @@
 """plotting functions"""
+import os
 
 import pandas as pd
 import numpy as np
@@ -6,12 +7,41 @@ from scipy.cluster.hierarchy import dendrogram, linkage
 import seaborn as sns
 import matplotlib
 
-matplotlib.use("agg")
 import matplotlib.pyplot as plt
+
+# matplotlib.use("agg")
+
+
+def plot_sklearn_analysis(X, testing_accurary, top_features, folder="."):
+    """main function to plot sklearn analysis"""
+    # TODO: add other functions, with argument in this one to select what to plot
+
+    plot_feature_importance(X, top_features, folder=folder)
+    # plot_dendrogram_top_features(X, top_featres, folder=folder)
+    # ...
+
+
+def plot_feature_importance(X, top_features, folder=".", ext=".svg"):
+    """plot the feature importances from sklearn computation"""
+
+    mean_features = np.mean(np.array(top_features), axis=0)
+    rank_features = np.argsort(mean_features)[::-1]
+
+    plt.figure()
+    plt.bar(np.arange(0, len(X.columns)), mean_features[rank_features])
+    plt.xticks(
+        np.arange(0, len(X.columns)),
+        [X.columns.values.tolist()[i] for i in rank_features],
+        rotation="vertical",
+    )
+    plt.savefig(
+        os.path.join(folder, "feature_importance_sklern" + ext), bbox_inches="tight"
+    )
+    plt.show()
 
 
 def plot_dendogram_top_features(
-    X, top_features_list, top_feat_indices, image_folder, top_N=40
+    X, top_features, top_feat_indices, image_folder, top_N=40
 ):
     df_topN = pd.DataFrame(
         columns=top_features_list[:top_N], data=X[:, top_feat_indices[:top_N]]
