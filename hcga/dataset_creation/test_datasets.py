@@ -18,7 +18,7 @@ def add_dummy_node_features(graph):
     return graph
 
 
-def make(folder="./datasets", add_features=False):
+def make(folder="./datasets", add_features=False, write_to_file=True):
     """ Makes pickle with graphs that test robustness of hcga """
 
     graphs = []
@@ -53,6 +53,7 @@ def make(folder="./datasets", add_features=False):
 
     labels = np.arange(len(graphs))
 
-    save_dataset(graphs, labels, "TESTDATA", folder=folder)
+    if write_to_file:
+        save_dataset(graphs, labels, "TESTDATA", folder=folder)
 
     return graphs, labels

@@ -33,7 +33,7 @@ class Cliques(FeatureClass):
     """Basic stats class"""
 
     modes = ["fast", "medium", "slow"]
-    shortname = "CL"
+    shortname = "Cli"
     name = "cliques"
     keywords = []
     normalize_features = True

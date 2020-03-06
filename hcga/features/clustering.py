@@ -36,7 +36,7 @@ class Clustering(FeatureClass):
     """
 
     modes = ["medium", "slow"]
-    shortname = "CL"
+    shortname = "Clu"
     name = "clustering"
     keywords = []
     normalize_features = True
@@ -53,12 +53,8 @@ class Clustering(FeatureClass):
 
         """
 
-        if not nx.is_directed(self.graph):
-            triang = np.asarray(list(nx.triangles(self.graph).values())).mean()
-            transi = nx.transitivity(self.graph)
-        else:
-            transi = np.nan
-            triang = np.nan
+        triang = lambda graph: np.asarray(list(nx.triangles(graph).values())).mean()
+        transi = lambda graph: nx.transitivity(graph)
 
         self.add_feature(
             "num_triangles",
@@ -74,7 +70,7 @@ class Clustering(FeatureClass):
         )
 
         # Average clustering coefficient
-        clustering_dist = list(nx.clustering(self.graph).values())
+        clustering_dist = lambda graph: list(nx.clustering(graph).values())
         self.add_feature(
             "clustering",
             clustering_dist,
@@ -83,7 +79,7 @@ class Clustering(FeatureClass):
         )
 
         # generalised degree
-        square_clustering_dist = list(nx.square_clustering(self.graph).values())
+        square_clustering_dist = lambda graph: list(nx.square_clustering(graph).values())
         self.add_feature(
             "square_clustering",
             square_clustering_dist,
