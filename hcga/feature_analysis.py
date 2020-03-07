@@ -170,7 +170,7 @@ def shapley_analysis(features, classifier=None, verbose=False):
         explainer.expected_value[0], shap_values[0][0, :], X_test.iloc[0, :]
     )
     shap.save_html("test.html", force)
-    shap.dependence_plot("harmonic centrality_max_E", shap_values[0], X_test)
+    # shap.dependence_plot("harmonic centrality_max_E", shap_values[0], X_test)
 
     return shap_values
 

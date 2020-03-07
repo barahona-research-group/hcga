@@ -20,19 +20,26 @@ def cli():
 )
 @click.option("-m", "--mode", default="fast", help="Mode of features to extract")
 @click.option(
+    "--norm/--no-norm",
+    default=False,
+    help="Normalised features by number of edges/nodes",
+)
+@click.option(
     "-df", "--dataset-folder", default="./datasets", help="Location of dataset"
 )
 @click.option("-of", "--output-folder", default="./results", help="Location of results")
 @click.option("-on", "--output-name", default="features", help="name of feature file")
 def extract_features(
-    dataset, n_workers, mode, dataset_folder, output_folder, output_name
+    dataset, n_workers, mode, dataset_folder, output_folder, output_name, norm
 ):
     """Extract features from dataset of graphs and save the feature matrix, info and labels"""
     from .io import load_dataset, save_features
     from .feature_extraction import extract
 
     graphs = load_dataset(dataset, dataset_folder)
-    features, features_info = extract(graphs, n_workers=int(n_workers), mode=mode)
+    features, features_info = extract(
+        graphs, n_workers=int(n_workers), mode=mode, normalize_features=norm
+    )
 
     save_features(
         features, features_info, filename=output_name, folder=output_folder,

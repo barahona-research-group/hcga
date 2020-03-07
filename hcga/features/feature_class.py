@@ -9,7 +9,6 @@ class FeatureClass:
 
     # Class variables that describe the feature,
     # They should be defined for all child features
-    normalize_features = True
     modes = ["fast", "medium", "slow"]
     shortname = "TP"
     name = "template"
@@ -113,7 +112,7 @@ class FeatureClass:
         self.add_feature("test", lambda graph: 0.0, 
                 "Test feature for the base feature class", 5)
 
-    def update_features(self, all_features):
+    def update_features(self, all_features, normalize_features=False):
         """update the feature dictionary if correct mode provided"""
         if self.graph is None:
             raise Exception("No graph provided to compute some features.")
@@ -126,8 +125,10 @@ class FeatureClass:
             )
 
         self.compute_features()
-        if self.__class__.normalize_features:
+
+        if normalize_features:
             self.compute_normalize_features()
+
         all_features[self.__class__.shortname] = self.features
 
     def compute_normalize_features(self):

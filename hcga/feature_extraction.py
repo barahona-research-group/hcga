@@ -12,11 +12,13 @@ import pandas as pd
 from .utils import filter_features
 
 
-def extract(graphs, n_workers, mode="fast"):
+def extract(graphs, n_workers, mode="fast", normalize_features=False):
     """main function to extract features"""
 
     feat_classes = get_list_feature_classes(mode)
-    raw_features = compute_all_features(graphs, feat_classes, n_workers=n_workers)
+    raw_features = compute_all_features(
+        graphs, feat_classes, n_workers=n_workers, normalize_features=normalize_features
+    )
     features, features_info = gather_features(raw_features, feat_classes)
     features["labels"] = [graph.label for graph in graphs]
 
@@ -54,14 +56,19 @@ def get_list_feature_classes(mode="fast"):
 class Worker:
     """worker for computing features"""
 
-    def __init__(self, list_feature_classes):
+    def __init__(self, list_feature_classes, normalize_features=False):
         self.list_feature_classes = list_feature_classes
+        self.normalize_features = normalize_features
 
     def __call__(self, graph):
-        return feature_extraction(graph, self.list_feature_classes)
+        return feature_extraction(
+            graph, self.list_feature_classes, normalize_features=self.normalize_features
+        )
 
 
-def feature_extraction(graph, list_feature_classes, with_runtimes=False):
+def feature_extraction(
+    graph, list_feature_classes, normalize_features=False, with_runtimes=False
+):
     """extract features from a single graph"""
 
     if with_runtimes:
@@ -73,7 +80,9 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
             start_time = time.time()
 
         feature_inst = feature_class(graph)
-        feature_inst.update_features(all_features)
+        feature_inst.update_features(
+            all_features, normalize_features=normalize_features
+        )
 
         if with_runtimes:
             runtimes[feature_class.shortname] = time.time() - start_time
@@ -83,11 +92,13 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
     return all_features
 
 
-def compute_all_features(graphs, list_feature_classes, n_workers=1):
+def compute_all_features(
+    graphs, list_feature_classes, n_workers=1, normalize_features=False
+):
     """compute the feature from all graphs"""
     print("Computing features for {} graphs:".format(len(graphs)))
 
-    worker = Worker(list_feature_classes)
+    worker = Worker(list_feature_classes, normalize_features=normalize_features)
 
     if n_workers == 1:
         mapper = map
