@@ -11,7 +11,6 @@ import wget
 from ..io import save_dataset
 
 
-
 def synthetic_data():
 
     graphs = [
