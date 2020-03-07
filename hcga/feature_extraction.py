@@ -13,25 +13,60 @@ from .utils import filter_features
 
 
 def extract(
-    graphs, n_workers, mode="fast", normalize_features=False, statistics_level="basic"
+    graphs,
+    n_workers,
+    mode="fast",
+    normalize_features=False,
+    statistics_level="basic",
+    with_runtimes=False,
 ):
     """main function to extract features"""
 
     feat_classes = get_list_feature_classes(mode, normalize_features=normalize_features)
+    if with_runtimes:
+        print(
+            "WARNING: Runtime option enable, we will only use 10 graphs and one worker to estimate",
+            "the computational time of each feature class.",
+        )
+        graphs = graphs[:10]
+
     raw_features = compute_all_features(
         graphs,
         feat_classes,
         n_workers=n_workers,
         normalize_features=normalize_features,
         statistics_level=statistics_level,
+        with_runtimes=with_runtimes,
     )
-    features, features_info = gather_features(raw_features, feat_classes)
-    features["labels"] = [graph.label for graph in graphs]
 
-    print(len(features.columns), "feature extracted.")
-    good_features = filter_features(features)
-    print(len(good_features.columns), "good features")
-    return features, features_info
+    if with_runtimes:
+        runtimes = [raw_feature[1] for raw_feature in raw_features]
+        from collections import defaultdict
+
+        list_runtimes = defaultdict(list)
+        for runtime in runtimes:
+            for feat in runtime:
+                list_runtimes[feat].append(runtime[feat])
+
+        for feat in list_runtimes:
+            print(
+                "Runtime of",
+                feat,
+                "is",
+                np.round(np.mean(list_runtimes[feat]), 3),
+                "seconds per graph.",
+            )
+        return 0.0, 0.0
+
+    else:
+        features, features_info = gather_features(raw_features, feat_classes)
+        features["labels"] = [graph.label for graph in graphs]
+
+        print(len(features.columns), "feature extracted.")
+        good_features = filter_features(features)
+        print(len(good_features.columns), "good features")
+
+        return features, features_info
 
 
 def _load_feature_class(feature_name):
@@ -65,11 +100,16 @@ class Worker:
     """worker for computing features"""
 
     def __init__(
-        self, list_feature_classes, normalize_features=False, statistics_level="basic"
+        self,
+        list_feature_classes,
+        normalize_features=False,
+        statistics_level="basic",
+        with_runtimes=False,
     ):
         self.list_feature_classes = list_feature_classes
         self.normalize_features = normalize_features
         self.statistics_level = statistics_level
+        self.with_runtimes = with_runtimes
 
     def __call__(self, graph):
         return feature_extraction(
@@ -77,6 +117,7 @@ class Worker:
             self.list_feature_classes,
             normalize_features=self.normalize_features,
             statistics_level=self.statistics_level,
+            with_runtimes=self.with_runtimes,
         )
 
 
@@ -108,7 +149,7 @@ def feature_extraction(
             runtimes[feature_class.shortname] = time.time() - start_time
 
     if with_runtimes:
-        return all_features, runtimes
+        return [all_features, runtimes]
     return all_features
 
 
@@ -118,6 +159,7 @@ def compute_all_features(
     n_workers=1,
     normalize_features=False,
     statistics_level="basic",
+    with_runtimes=False,
 ):
     """compute the feature from all graphs"""
     print("Computing features for {} graphs:".format(len(graphs)))
@@ -126,7 +168,11 @@ def compute_all_features(
         list_feature_classes,
         normalize_features=normalize_features,
         statistics_level=statistics_level,
+        with_runtimes=with_runtimes,
     )
+
+    if with_runtimes:
+        n_workers = 1
 
     if n_workers == 1:
         mapper = map

@@ -35,6 +35,7 @@ def cli():
 )
 @click.option("-of", "--output-folder", default="./results", help="Location of results")
 @click.option("-on", "--output-name", default="features", help="name of feature file")
+@click.option("--runtimes/--no-runtimes", default=False, help="output runtimes")
 def extract_features(
     dataset,
     n_workers,
@@ -44,14 +45,20 @@ def extract_features(
     output_name,
     norm,
     stats_level,
+    runtimes,
 ):
     """Extract features from dataset of graphs and save the feature matrix, info and labels"""
     from .io import load_dataset, save_features
     from .feature_extraction import extract
 
     graphs = load_dataset(dataset, dataset_folder)
+
     features, features_info = extract(
-        graphs, n_workers=int(n_workers), mode=mode, normalize_features=norm
+        graphs,
+        n_workers=int(n_workers),
+        mode=mode,
+        normalize_features=norm,
+        with_runtimes=runtimes,
     )
 
     save_features(

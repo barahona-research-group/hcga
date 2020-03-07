@@ -41,7 +41,7 @@ def make(dataset_name="ENZYMES", folder="./datasets"):
 
     shutil.rmtree(dataset_name)
     os.remove("{}.zip".format(dataset_name))
-
+    print('\n')
 
 def extract_benchmark_graphs(datadir, dataname, max_nodes=None):
     """ Read data from https://ls11-www.cs.tu-dortmund.de/staff/morris/graphkerneldatasets
