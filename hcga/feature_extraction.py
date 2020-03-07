@@ -12,12 +12,18 @@ import pandas as pd
 from .utils import filter_features
 
 
-def extract(graphs, n_workers, mode="fast", normalize_features=False):
+def extract(
+    graphs, n_workers, mode="fast", normalize_features=False, statistics_level="basic"
+):
     """main function to extract features"""
 
-    feat_classes = get_list_feature_classes(mode)
+    feat_classes = get_list_feature_classes(mode, normalize_features=normalize_features)
     raw_features = compute_all_features(
-        graphs, feat_classes, n_workers=n_workers, normalize_features=normalize_features
+        graphs,
+        feat_classes,
+        n_workers=n_workers,
+        normalize_features=normalize_features,
+        statistics_level=statistics_level,
     )
     features, features_info = gather_features(raw_features, feat_classes)
     features["labels"] = [graph.label for graph in graphs]
@@ -34,7 +40,7 @@ def _load_feature_class(feature_name):
     return getattr(feature_module, feature_module.featureclass_name)
 
 
-def get_list_feature_classes(mode="fast"):
+def get_list_feature_classes(mode="fast", normalize_features=False):
     """Generates and returns the list of feature classes to compute for a given mode"""
     feature_path = Path(__file__).parent / "features"
     non_feature_files = ["__init__", "feature_class"]
@@ -49,25 +55,37 @@ def get_list_feature_classes(mode="fast"):
             if mode in feature_class.modes or mode == "all":
                 list_feature_classes.append(feature_class)
                 # runs once update_feature with trivial graph to create class variables
-                feature_class(trivial_graph).update_features({})
+                feature_class(trivial_graph).update_features(
+                    {}, normalize_features=normalize_features
+                )
     return list_feature_classes
 
 
 class Worker:
     """worker for computing features"""
 
-    def __init__(self, list_feature_classes, normalize_features=False):
+    def __init__(
+        self, list_feature_classes, normalize_features=False, statistics_level="basic"
+    ):
         self.list_feature_classes = list_feature_classes
         self.normalize_features = normalize_features
+        self.statistics_level = statistics_level
 
     def __call__(self, graph):
         return feature_extraction(
-            graph, self.list_feature_classes, normalize_features=self.normalize_features
+            graph,
+            self.list_feature_classes,
+            normalize_features=self.normalize_features,
+            statistics_level=self.statistics_level,
         )
 
 
 def feature_extraction(
-    graph, list_feature_classes, normalize_features=False, with_runtimes=False
+    graph,
+    list_feature_classes,
+    normalize_features=False,
+    with_runtimes=False,
+    statistics_level="basic",
 ):
     """extract features from a single graph"""
 
@@ -81,7 +99,9 @@ def feature_extraction(
 
         feature_inst = feature_class(graph)
         feature_inst.update_features(
-            all_features, normalize_features=normalize_features
+            all_features,
+            normalize_features=normalize_features,
+            statistics_level=statistics_level,
         )
 
         if with_runtimes:
@@ -93,12 +113,20 @@ def feature_extraction(
 
 
 def compute_all_features(
-    graphs, list_feature_classes, n_workers=1, normalize_features=False
+    graphs,
+    list_feature_classes,
+    n_workers=1,
+    normalize_features=False,
+    statistics_level="basic",
 ):
     """compute the feature from all graphs"""
     print("Computing features for {} graphs:".format(len(graphs)))
 
-    worker = Worker(list_feature_classes, normalize_features=normalize_features)
+    worker = Worker(
+        list_feature_classes,
+        normalize_features=normalize_features,
+        statistics_level=statistics_level,
+    )
 
     if n_workers == 1:
         mapper = map

@@ -25,12 +25,25 @@ def cli():
     help="Normalised features by number of edges/nodes",
 )
 @click.option(
+    "-sl",
+    "--stats-level",
+    default="basic",
+    help="Level of statistical features (basic, medium, advances)",
+)
+@click.option(
     "-df", "--dataset-folder", default="./datasets", help="Location of dataset"
 )
 @click.option("-of", "--output-folder", default="./results", help="Location of results")
 @click.option("-on", "--output-name", default="features", help="name of feature file")
 def extract_features(
-    dataset, n_workers, mode, dataset_folder, output_folder, output_name, norm
+    dataset,
+    n_workers,
+    mode,
+    dataset_folder,
+    output_folder,
+    output_name,
+    norm,
+    stats_level,
 ):
     """Extract features from dataset of graphs and save the feature matrix, info and labels"""
     from .io import load_dataset, save_features

@@ -3,6 +3,12 @@ import numpy as np
 import scipy.stats as st
 import networkx as nx
 
+def _try(func, feat_dist):
+    try:
+        return func(feat_dist)
+    except:
+        return np.nan
+
 
 class FeatureClass:
     """template class"""
@@ -112,8 +118,9 @@ class FeatureClass:
         self.add_feature("test", lambda graph: 0.0, 
                 "Test feature for the base feature class", 5)
 
-    def update_features(self, all_features, normalize_features=False):
+    def update_features(self, all_features, normalize_features=False, statistics_level='basic'):
         """update the feature dictionary if correct mode provided"""
+        self.statistics_level = statistics_level
         if self.graph is None:
             raise Exception("No graph provided to compute some features.")
         if (
@@ -153,13 +160,19 @@ class FeatureClass:
 
     def feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes summary statistics of distributions"""
-        compl_desc = " of the distribution of " + feat_desc
 
-        def _try(func, feat_dist):
-            try:
-                return func(feat_dist)
-            except:
-                return np.nan
+        self.feature_statistics_basic(feat_dist, feat_name, feat_desc, feat_interpret)
+
+        if self.statistics_level == 'medium':
+            self.feature_statistics_medium(feat_dist, feat_name, feat_desc, feat_interpret)
+
+        if self.statistics_level == 'advanced':
+            self.feature_statistics_medium(feat_dist, feat_name, feat_desc, feat_interpret)
+            self.feature_statistics_advanced(feat_dist, feat_name, feat_desc, feat_interpret)
+
+    def feature_statistics_basic(self, feat_dist, feat_name, feat_desc, feat_interpret):
+        """Computes basic summary statistics of distributions"""
+        compl_desc = " of the distribution of " + feat_desc
 
         self.add_feature(
             feat_name + "_mean",
@@ -191,6 +204,11 @@ class FeatureClass:
             "Standard deviation" + compl_desc,
             feat_interpret,
         )
+
+    def feature_statistics_medium(self, feat_dist, feat_name, feat_desc, feat_interpret):
+        """Computes mediumsummary statistics of distributions"""
+        compl_desc = " of the distribution of " + feat_desc
+
         self.add_feature(
             feat_name + "_gmean",
             lambda graph: _try(st.gmean, feat_dist),
@@ -215,6 +233,11 @@ class FeatureClass:
             "Mode" + compl_desc,
             feat_interpret - 1,
         )
+
+    def feature_statistics_advanced(self, feat_dist, feat_name, feat_desc, feat_interpret):
+        """Computes advanced summary statistics of distributions"""
+        compl_desc = " of the distribution of " + feat_desc
+
         self.add_feature(
             feat_name + "_kstat",
             lambda graph: _try(st.kstat, feat_dist),
