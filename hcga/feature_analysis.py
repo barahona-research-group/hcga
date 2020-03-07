@@ -2,7 +2,6 @@
 
 import time
 
-import lightgbm as lgb
 import numpy as np
 import pandas as pd
 import shap
@@ -14,60 +13,95 @@ from sklearn.preprocessing import StandardScaler
 from .utils import filter_features
 
 
-def analysis(features, features_info, mode="sklearn_RF", verbose=True, folder="."):
+def analysis(
+    features,
+    features_info,
+    mode="sklearn",
+    classifier_type="RF",
+    verbose=True,
+    folder=".",
+    kfold=False,
+):
     """main function to classify graphs"""
 
     good_features = filter_features(features)
     normed_features = normalise_feature_data(good_features)
 
-    if mode == "sklearn_RF":
-
+    if classifier_type == "RF":
         from sklearn.ensemble import RandomForestClassifier
 
-        learning_model = RandomForestClassifier(n_estimators=100, max_depth=30)
-        X, testing_accuracy, top_features = fit_model(
-            normed_features, model=learning_model, verbose=verbose
-        )
+        classifier = RandomForestClassifier(n_estimators=100, max_depth=30)
+    elif classifier_type == "LGBM":
+        from lightgbm import LGBMClassifier
+
+        classifier = LGBMClassifier()
+    else:
+        raise Exception("Unknown classifier type: {}".format(classifier_type))
+    if mode == "sklearn":
+
+        if kfold:
+            X, testing_accuracy, top_features = fit_model(
+                normed_features, classifier=classifier, verbose=verbose
+            )
+        else:
+            print("To implement!")
 
         return X, testing_accuracy, top_features
 
     if mode == "shap":
-        shap_values = shapley_analysis(normed_features, labels)
-        return shap_values
+        if kfold:
+            shap_values = shapley_analysis_kfold(
+                normed_features, classifier=classifier, verbose=verbose
+            )
+        else:
+            shap_values = shapley_analysis(
+                normed_features, classifier=classifier, verbose=verbose
+            )
+
+        # TODO: have a consistent ouptut of feature classification to save, and plot later
+        return shap_values, shap_values, shap_values
+
+
+def _features_to_Xy(features):
+    """decompose features dataframe to X and y"""
+    X = features.drop(columns=["labels"])
+    y = features["labels"]
+    return X, y
 
 
 def fit_model(
-    features, model=None, verbose=True, reduce_set=True,
+    features, classifier=None, verbose=True, reduce_set=True,
 ):
     """Perform classification of a normalized feature data"""
-    if model is None:
+    if classifier is None:
         raise Exception("Please provide a model for classification")
 
-    X = features.drop(columns=["labels"])
-    y = features["labels"]
+    X, y = _features_to_Xy(features)
 
-    n_splits = number_folds(y)
+    n_splits = _number_folds(y)
     print("Using", n_splits, "splits")
 
     stratified_kfold = StratifiedKFold(n_splits=n_splits, random_state=10, shuffle=True)
     testing_accuracy, top_features = classify_folds(
-        X, y, model, stratified_kfold, verbose=verbose
+        X, y, classifier, stratified_kfold, verbose=verbose
     )
 
     if reduce_set:
         X = reduce_feature_set(X, top_features, importance_threshold=0.2)
-        testing_accuracy, top_features = classify_folds(X, y, model, stratified_kfold)
+        testing_accuracy, top_features = classify_folds(
+            X, y, classifier, stratified_kfold
+        )
 
     return X, testing_accuracy, top_features
 
 
-def classify_folds(X, y, model, stratified_kfold, verbose=True):
+def classify_folds(X, y, classifier, stratified_kfold, verbose=True):
     testing_accuracy = []
     top_features = []
     for train_index, test_index in stratified_kfold.split(X, y):
         X_train, X_test = X.loc[train_index], X.loc[test_index]
         y_train, y_test = y[train_index], y[test_index]
-        y_pred = model.fit(X_train, y_train).predict(X_test)
+        y_pred = classifier.fit(X_train, y_train)
 
         acc = accuracy_score(y_test, y_pred)
         balanced_acc = balanced_accuracy_score(y_test, y_pred)
@@ -107,50 +141,91 @@ def reduce_feature_set(X, top_features, importance_threshold=0.9):
 
     X_reduced = X.iloc[:, rank_feat]
 
-    return X_reduced  # , top_feat_indices
+    return X_reduced
 
 
-def shapley_analysis(X, y, clf=lgb.LGBMClassifier()):
+def shapley_analysis(features, classifier=None, verbose=False):
+    """shapeley analysis"""
 
-    n_splits = number_folds(y)
+    if classifier is None:
+        raise Exception("Please provide a model for classification")
 
-    shap_values = None
-    (X_train, X_test, y_train, y_test) = train_test_split(
+    X, y = _features_to_Xy(features)
+
+    X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, shuffle=True, stratify=y, random_state=42
     )
 
+    classifier.fit(X_train, y_train)
+    explainer = shap.TreeExplainer(classifier, feature_perturbation="interventional",)
+
+    shap_values = explainer.shap_values(X_test, check_additivity=False)
+    acc_scores = balanced_accuracy_score(y_test, classifier.predict(X_test))
+
+    if verbose:
+        print("Balanced accuracy: ", acc_scores)
+
+    shap.summary_plot(shap_values[0], X_test)  # , plot_type='dot')
+    force = shap.force_plot(
+        explainer.expected_value[0], shap_values[0][0, :], X_test.iloc[0, :]
+    )
+    shap.save_html("test.html", force)
+    shap.dependence_plot("harmonic centrality_max_E", shap_values[0], X_test)
+
+    return shap_values
+
+
+def shapley_analysis_kfold(features, classifier=None, verbose=False):
+    """shapeley analysis"""
+
+    if classifier is None:
+        raise Exception("Please provide a model for classification")
+
+    X, y = _features_to_Xy(features)
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, shuffle=True, stratify=y, random_state=42
+    )
+
+    n_splits = _number_folds(y)
+    print("Using", n_splits, "splits")
+
     folds = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=42)
-    folds_idx = [
-        (train_idx, val_idx) for train_idx, val_idx in folds.split(X_train, y=y_train)
-    ]
+
+    shap_values = None
     acc_scores = []
     oof_preds = np.zeros(y.shape[0])
+    for train_index, test_index in folds.split(X_train, y=y_train):
 
-    for n_fold, (train_idx, valid_idx) in enumerate(folds_idx):
+        X_train, X_test = X.loc[train_index], X.loc[test_index]
+        y_train, y_test = y[train_index], y[test_index]
 
-        train_x, train_y = X[train_idx, :], y[train_idx]
-        valid_x, valid_y = X[valid_idx, :], y[valid_idx]
-
-        clf.fit(
-            train_x,
-            train_y,
-            eval_set=[(train_x, train_y), (valid_x, valid_y)],
-            verbose=False,
+        classifier.fit(
+            X_train, y_train,
         )
 
-        explainer = shap.TreeExplainer(clf)
+        explainer = shap.TreeExplainer(
+            classifier, feature_perturbation="interventional",
+        )
 
         if shap_values is None:
-            shap_values = explainer.shap_values(X_test)
+            shap_values = explainer.shap_values(X_test, check_additivity=False)
         else:
             shap_values = [
-                x + y for x, y in zip(shap_values, explainer.shap_values(X_test))
+                x + y
+                for x, y in zip(
+                    shap_values, explainer.shap_values(X_test, check_additivity=False)
+                )
             ]
 
-        oof_preds[valid_idx] = clf.predict(valid_x)  # [:, 1]
-        acc_scores.append(balanced_accuracy_score(valid_y, oof_preds[valid_idx]))
+        oof_preds[test_index] = classifier.predict(X_test)
+        acc_scores.append(balanced_accuracy_score(y_test, oof_preds[test_index]))
 
-    # print( 'Balanced accuracy: ', np.mean(acc_scores))
+        if verbose:
+            print("Fold accuracy: --- {0:.3f} ---)".format(acc_scores[-1]))
+
+    if verbose:
+        print("Balanced accuracy: ", np.mean(acc_scores))
 
     shap_values = [x / n_splits for x in shap_values]
     shap.summary_plot(shap_values, X_test)
@@ -168,7 +243,7 @@ def normalise_feature_data(features):
     return normed_features
 
 
-def number_folds(y):
+def _number_folds(y):
     counts = np.bincount(y)
     n_splits = int(np.min(counts[counts > 0]) / 2)
     return np.clip(n_splits, 2, 10)

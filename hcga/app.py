@@ -44,7 +44,10 @@ def extract_features(
     "-ff", "--feature-folder", default="./results", help="Location of results"
 )
 @click.option("-fn", "--feature-name", default="features", help="name of feature file")
-def feature_analysis(feature_folder, feature_name):
+@click.option("-m", "--mode", default="sklearn", help="mode of feature analysis")
+@click.option("-c", "--classifier", default="RF", help="classifier feature analysis")
+@click.option("--kfold/--no-kfold", default=False, help="use K-fold")
+def feature_analysis(feature_folder, feature_name, mode, classifier, kfold):
     """Extract features from dataset of graphs"""
     from .io import load_features, save_analysis
     from .feature_analysis import analysis
@@ -53,7 +56,12 @@ def feature_analysis(feature_folder, feature_name):
         filename=feature_name, folder=feature_folder
     )
     X, testing_accuracy, top_features = analysis(
-        features, features_info, folder=feature_folder
+        features,
+        features_info,
+        folder=feature_folder,
+        mode=mode,
+        classifier_type=classifier,
+        kfold=kfold,
     )
     save_analysis(X, testing_accuracy, top_features, folder=feature_folder)
 

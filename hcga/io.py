@@ -19,17 +19,18 @@ def _remove_small_graphs(graphs, n_node_min=2):
     return [graph for graph in graphs if len(graph) > n_node_min]
 
 
-def save_analysis(X, testing_accuracy, top_features, folder='/', filename='sklearn_analysis'):
+def save_analysis(
+    X, testing_accuracy, top_features, folder="/", filename="sklearn_analysis"
+):
     """save results of analysis"""
     with open(os.path.join(folder, filename + ".pkl"), "wb") as f:
         pickle.dump([X, testing_accuracy, top_features], f)
 
-def load_analysis(folder='/', filename='sklearn_analysis'):
+
+def load_analysis(folder="/", filename="sklearn_analysis"):
     """save results of analysis"""
     with open(os.path.join(folder, filename + ".pkl"), "rb") as f:
         return pickle.load(f)
-
-
 
 
 def save_dataset(graphs, labels, filename, folder="./datasets"):
