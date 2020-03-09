@@ -22,7 +22,9 @@ def extract(
 ):
     """main function to extract features"""
 
-    feat_classes = get_list_feature_classes(mode, normalize_features=normalize_features)
+    feat_classes = get_list_feature_classes(
+            mode, normalize_features=normalize_features,
+            statistics_level=statistics_level)
     if with_runtimes:
         print(
             "WARNING: Runtime option enable, we will only use 10 graphs and one worker to estimate",
@@ -75,7 +77,8 @@ def _load_feature_class(feature_name):
     return getattr(feature_module, feature_module.featureclass_name)
 
 
-def get_list_feature_classes(mode="fast", normalize_features=False):
+def get_list_feature_classes(mode="fast", normalize_features=False,
+        statistics_level='basic'):
     """Generates and returns the list of feature classes to compute for a given mode"""
     feature_path = Path(__file__).parent / "features"
     non_feature_files = ["__init__", "feature_class"]
@@ -91,7 +94,8 @@ def get_list_feature_classes(mode="fast", normalize_features=False):
                 list_feature_classes.append(feature_class)
                 # runs once update_feature with trivial graph to create class variables
                 feature_class(trivial_graph).update_features(
-                    {}, normalize_features=normalize_features
+                    {}, normalize_features=normalize_features,
+                    statistics_level=statistics_level,
                 )
     return list_feature_classes
 
