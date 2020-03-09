@@ -160,6 +160,9 @@ class FeatureClass:
 
     def feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes summary statistics of distributions"""
+        if not hasattr(self, "statistics_level"):
+            # if compute_features used directly without update_features
+            self.statistics_level = 'advanced'
 
         self.feature_statistics_basic(feat_dist, feat_name, feat_desc, feat_interpret)
 
