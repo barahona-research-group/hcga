@@ -3,12 +3,6 @@ import numpy as np
 import scipy.stats as st
 import networkx as nx
 
-def _try(func, feat_dist):
-    try:
-        return func(feat_dist)
-    except:
-        return np.nan
-
 
 class FeatureClass:
     """template class"""
@@ -92,6 +86,8 @@ class FeatureClass:
 
         try:
             feature = feature_function(self.graph)
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             # if the feature cannot be compute, fill with np.nan
             feature_trivial = feature_function(self.__class__.trivial_graph)
@@ -324,6 +320,14 @@ class FeatureClass:
             "Bayes confidance interval" + compl_desc,
             feat_interpret - 1,
         )
+
+def _try(func, feat_dist):
+    try:
+        return func(feat_dist)
+    except (KeyboardInterrupt, SystemExit):
+        raise
+    except:
+        return np.nan
 
 
 class InterpretabilityScore:
