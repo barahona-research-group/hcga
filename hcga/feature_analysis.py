@@ -45,6 +45,7 @@ def analysis(
             )
         else:
             print("To implement!")
+            return None, None, None
 
         return X, testing_accuracy, top_features
 

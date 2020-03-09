@@ -3,6 +3,7 @@ import click
 
 import numpy
 import warnings
+from pathlib import Path
 
 numpy.seterr(all="ignore")
 warnings.simplefilter("ignore")
@@ -28,21 +29,15 @@ def cli():
     "-sl",
     "--stats-level",
     default="basic",
-    help="Level of statistical features (basic, medium, advances)",
+    help="Level of statistical features (basic, medium, advanced)",
 )
-@click.option(
-    "-df", "--dataset-folder", default="./datasets", help="Location of dataset"
-)
-@click.option("-of", "--output-folder", default="./results", help="Location of results")
-@click.option("-on", "--output-name", default="features", help="name of feature file")
+@click.option("-of", "--output-file", help="Location of results")
 @click.option("--runtimes/--no-runtimes", default=False, help="output runtimes")
 def extract_features(
     dataset,
     n_workers,
     mode,
-    dataset_folder,
-    output_folder,
-    output_name,
+    output_file,
     norm,
     stats_level,
     runtimes,
@@ -51,37 +46,41 @@ def extract_features(
     from .io import load_dataset, save_features
     from .feature_extraction import extract
 
-    graphs = load_dataset(dataset, dataset_folder)
+    graphs = load_dataset(dataset)
 
     features, features_info = extract(
         graphs,
         n_workers=int(n_workers),
         mode=mode,
         normalize_features=norm,
+        statistics_level=stats_level,
         with_runtimes=runtimes,
     )
 
+    if output_file is None:
+        output_file = Path(dataset).parent / (Path(dataset).stem + '_features.pkl')
+
     save_features(
-        features, features_info, filename=output_name, folder=output_folder,
+        features, features_info, filename=output_file,
     )
 
 
 @cli.command("feature_analysis")
+@click.argument(
+    "feature_file", type=str
+)
 @click.option(
     "-ff", "--feature-folder", default="./results", help="Location of results"
 )
-@click.option("-fn", "--feature-name", default="features", help="name of feature file")
 @click.option("-m", "--mode", default="sklearn", help="mode of feature analysis")
 @click.option("-c", "--classifier", default="RF", help="classifier feature analysis")
 @click.option("--kfold/--no-kfold", default=False, help="use K-fold")
-def feature_analysis(feature_folder, feature_name, mode, classifier, kfold):
+def feature_analysis(feature_file, feature_folder, mode, classifier, kfold):
     """Extract features from dataset of graphs"""
     from .io import load_features, save_analysis
     from .feature_analysis import analysis
 
-    features, features_info = load_features(
-        filename=feature_name, folder=feature_folder
-    )
+    features, features_info = load_features(filename=feature_file)
     X, testing_accuracy, top_features = analysis(
         features,
         features_info,

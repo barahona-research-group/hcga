@@ -10,7 +10,7 @@ import numpy as np
 from hcga.dataset_creation import make_test_dataset
 from hcga.feature_extraction import get_list_feature_classes
 
-test_graphs, test_labels = make_test_dataset(write_to_file=False)
+test_graphs, test_labels = make_test_dataset(write_to_file=False, n_graphs=1)
 test_feature_classes = get_list_feature_classes(mode="all")
 
 

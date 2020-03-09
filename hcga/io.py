@@ -4,6 +4,7 @@ import os
 import pickle
 import csv
 import numpy as np
+from pathlib import Path
 
 
 def _ensure_weights(graphs):
@@ -42,9 +43,9 @@ def save_dataset(graphs, labels, filename, folder="./datasets"):
         pickle.dump([graphs, labels], f)
 
 
-def load_dataset(filename, folder="./datasets"):
+def load_dataset(filename):
     """load a dataset from a pickle"""
-    with open(os.path.join(folder, filename + ".pkl"), "rb") as f:
+    with open(filename, "rb") as f:
         graphs_full, labels = pickle.load(f)
 
     graphs = []
@@ -59,17 +60,17 @@ def load_dataset(filename, folder="./datasets"):
     return graphs
 
 
-def save_features(feature_matrix, feature_info, folder=".", filename="features"):
+def save_features(feature_matrix, feature_info, filename="./features.pkl"):
     """Save the features in a pickle"""
-    if not os.path.exists(folder):
-        os.mkdir(folder)
+    if not Path(filename).parent.is_dir():
+        Path(filename).parent.mkdir()
 
     pickle.dump(
         [feature_matrix, feature_info],
-        open(os.path.join(folder, filename + ".pkl"), "wb"),
+        open(filename, "wb"),
     )
 
 
-def load_features(filename="features", folder="."):
+def load_features(filename="features.pkl"):
     """Save the features in a pickle"""
-    return pickle.load(open(os.path.join(folder, filename + ".pkl"), "rb"))
+    return pickle.load(open(filename, "rb"))
