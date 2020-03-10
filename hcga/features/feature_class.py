@@ -14,6 +14,9 @@ class FeatureClass:
     name = "template"
     keywords = ["template"]
 
+    statistics_level = 'basic'
+    normalize_features = True
+
     # Feature descriptions as class variable
     feature_descriptions = {}
 
@@ -28,6 +31,16 @@ class FeatureClass:
         """init function"""
         self.graph = graph
         self.features = {}
+
+    @classmethod
+    def setup_class(cls, normalize_features=True, statistics_level='basic'):
+        """Initializes the class by adding descriptions for all features"""
+        cls.normalize_features = normalize_features
+        cls.statistics_level = statistics_level
+
+        # runs once update_feature on None graph to populate feature descriptions
+        inst = cls(cls.trivial_graph)
+        inst.update_features({})
 
     def get_info(self):
         """return a dictionary of informations about the feature class"""
@@ -89,7 +102,7 @@ class FeatureClass:
         except (KeyboardInterrupt, SystemExit):
             raise
         except:
-            # if the feature cannot be compute, fill with np.nan
+            # if the feature cannot be computed, fill with np.nan
             feature_trivial = feature_function(self.__class__.trivial_graph)
             if isinstance(feature_trivial, list):
                 feature = [np.nan]
@@ -114,11 +127,9 @@ class FeatureClass:
         self.add_feature("test", lambda graph: 0.0, 
                 "Test feature for the base feature class", 5)
 
-    def update_features(self, all_features, normalize_features=False, statistics_level='basic'):
+    def update_features(self, all_features):
         """update the feature dictionary if correct mode provided"""
-        self.statistics_level = statistics_level
-        if self.graph is None:
-            raise Exception("No graph provided to compute some features.")
+
         if (
             self.__class__.shortname == "TP"
             and self.__class__.__name__ != "FeatureClass"
@@ -129,7 +140,7 @@ class FeatureClass:
 
         self.compute_features()
 
-        if normalize_features:
+        if self.normalize_features:
             self.compute_normalize_features()
 
         all_features[self.__class__.shortname] = self.features
@@ -156,9 +167,6 @@ class FeatureClass:
 
     def feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes summary statistics of distributions"""
-        if not hasattr(self, "statistics_level"):
-            # if compute_features used directly without update_features
-            self.statistics_level = 'advanced'
 
         self.feature_statistics_basic(feat_dist, feat_name, feat_desc, feat_interpret)
 
