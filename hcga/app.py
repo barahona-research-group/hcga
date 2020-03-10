@@ -17,22 +17,27 @@ def cli():
 @cli.command("extract_features")
 @click.argument("dataset", type=str)
 @click.option(
-    "-n", "--n-workers", default=1, help="Number of workers for multiprocessing"
+    "-n", "--n-workers", default=1, show_default=True,
+    help="Number of workers for multiprocessing"
 )
-@click.option("-m", "--mode", default="fast", help="Mode of features to extract")
+@click.option("-m", "--mode", default="fast", show_default=True,
+        help="Mode of features to extract (fast, medium, slow)")
 @click.option(
     "--norm/--no-norm",
-    default=False,
-    help="Normalised features by number of edges/nodes",
+    default=False, show_default=True,
+    help="Normalised features by number of edges/nodes (by default not)",
 )
 @click.option(
     "-sl",
     "--stats-level",
-    default="basic",
+    default="basic", show_default=True,
     help="Level of statistical features (basic, medium, advanced)",
 )
-@click.option("-of", "--output-file", help="Location of results")
-@click.option("--runtimes/--no-runtimes", default=False, help="output runtimes")
+@click.option("-of", "--output-file", 
+        help="Location of results, by default same as initial dataset")
+@click.option("--runtimes/--no-runtimes", 
+        default=False, show_default=True,
+        help="Output runtimes")
 def extract_features(
     dataset,
     n_workers,
@@ -70,12 +75,20 @@ def extract_features(
     "feature_file", type=str
 )
 @click.option(
-    "-ff", "--feature-folder", default="./results", help="Location of results"
+    "-rf", "--results-folder", 
+    default="./results", show_default=True, 
+    help="Location of results"
 )
-@click.option("-m", "--mode", default="sklearn", help="mode of feature analysis")
-@click.option("-c", "--classifier", default="RF", help="classifier feature analysis")
-@click.option("--kfold/--no-kfold", default=False, help="use K-fold")
-def feature_analysis(feature_file, feature_folder, mode, classifier, kfold):
+@click.option("-m", "--mode", 
+        default="sklearn", show_default=True,
+        help="mode of feature analysis")
+@click.option("-c", "--classifier", 
+        default="RF", show_default=True, 
+        help="classifier feature analysis")
+@click.option("--kfold/--no-kfold", 
+        default=False, show_default=True, 
+        help="use K-fold")
+def feature_analysis(feature_file, results_folder, mode, classifier, kfold):
     """Extract features from dataset of graphs"""
     from .io import load_features, save_analysis
     from .feature_analysis import analysis
@@ -84,17 +97,19 @@ def feature_analysis(feature_file, feature_folder, mode, classifier, kfold):
     X, testing_accuracy, top_features = analysis(
         features,
         features_info,
-        folder=feature_folder,
+        folder=results_folder,
         mode=mode,
         classifier_type=classifier,
         kfold=kfold,
     )
-    save_analysis(X, testing_accuracy, top_features, folder=feature_folder)
+    save_analysis(X, testing_accuracy, top_features, folder=results_folder)
 
 
 @cli.command("plot_analysis")
 @click.option(
-    "-ff", "--feature-folder", default="./results", help="Location of results"
+    "-ff", "--feature-folder", 
+    default="./results", show_default=True, 
+    help="Location of results"
 )
 def plot_analysis(feature_folder):
     """Extract features from dataset of graphs"""
@@ -107,9 +122,19 @@ def plot_analysis(feature_folder):
 
 @cli.command("get_data")
 @click.argument("dataset_name", type=str)
-@click.option("-f", "--folder", default="./datasets", help="Location to save dataset")
+@click.option("-f", "--folder", 
+        default="./datasets", show_default=True,
+        help="Location to save dataset")
 def generate_data(dataset_name, folder):
-    """Generate the benchmark or test data"""
+    """Generate the benchmark or test data
+
+    Dataset_name can be either:
+        - TESTDATA: to generate synthetic dataset for testing
+        - DD, ENZYMES, REDDIT-MULTI-12K, PROTEINS, MUTAG, 
+        or any other dataset hosted on
+        https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets
+
+    """
     if dataset_name == "TESTDATA":
         print("--- Building test dataset and creating pickle ---")
         from .dataset_creation import make_test_dataset
@@ -120,3 +145,4 @@ def generate_data(dataset_name, folder):
         from .dataset_creation import make_benchmark_dataset
 
         make_benchmark_dataset(dataset_name=dataset_name, folder=folder)
+
