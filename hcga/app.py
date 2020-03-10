@@ -81,15 +81,15 @@ def extract_features(
 )
 @click.option("-m", "--mode", 
         default="sklearn", show_default=True,
-        help="mode of feature analysis")
+        help="mode of feature analysis (sklearn, shap)")
 @click.option("-c", "--classifier", 
         default="RF", show_default=True, 
-        help="classifier feature analysis")
+        help="classifier feature analysis (RF, LGBM)")
 @click.option("--kfold/--no-kfold", 
         default=False, show_default=True, 
         help="use K-fold")
 def feature_analysis(feature_file, results_folder, mode, classifier, kfold):
-    """Extract features from dataset of graphs"""
+    """Analysis of the features extracted in feature_file"""
     from .io import load_features, save_analysis
     from .feature_analysis import analysis
 
