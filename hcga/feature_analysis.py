@@ -102,7 +102,8 @@ def classify_folds(X, y, classifier, stratified_kfold, verbose=True):
     for train_index, test_index in stratified_kfold.split(X, y):
         X_train, X_test = X.loc[train_index], X.loc[test_index]
         y_train, y_test = y[train_index], y[test_index]
-        y_pred = classifier.fit(X_train, y_train)
+        classifier.fit(X_train, y_train)
+        y_pred = classifier.predict(X_test)
 
         acc = accuracy_score(y_test, y_pred)
         balanced_acc = balanced_accuracy_score(y_test, y_pred)
@@ -116,7 +117,7 @@ def classify_folds(X, y, classifier, stratified_kfold, verbose=True):
 
         testing_accuracy.append(acc)
 
-        top_features.append(model.feature_importances_)
+        top_features.append(classifier.feature_importances_)
 
     if verbose:
         print("Final accuracy: --- {0:.3f} --- ".format(np.mean(testing_accuracy)))
