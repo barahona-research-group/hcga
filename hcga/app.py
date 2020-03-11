@@ -79,45 +79,36 @@ def extract_features(
     default="./results", show_default=True, 
     help="Location of results"
 )
-@click.option("-m", "--mode", 
-        default="sklearn", show_default=True,
-        help="mode of feature analysis (sklearn, shap)")
+@click.option("--shap/--no-shap", 
+        default=True, show_default=True,
+        help="True or False whether to compute shap values")
 @click.option("-c", "--classifier", 
         default="RF", show_default=True, 
         help="classifier feature analysis (RF, LGBM)")
 @click.option("--kfold/--no-kfold", 
-        default=False, show_default=True, 
+        default=True, show_default=True, 
         help="use K-fold")
-def feature_analysis(feature_file, results_folder, mode, classifier, kfold):
+@click.option("-p", "--plot", 
+        default=True, show_default=True, 
+        help="True or false to plot analysis results")
+def feature_analysis(feature_file, results_folder, shap, classifier, kfold, plot):
     """Analysis of the features extracted in feature_file"""
     from .io import load_features, save_analysis
     from .feature_analysis import analysis
 
     features, features_info = load_features(filename=feature_file)
-    X, testing_accuracy, top_features = analysis(
+    X, explainer, shap_values = analysis(
         features,
         features_info,
         folder=results_folder,
-        mode=mode,
+        shap=shap,
         classifier_type=classifier,
         kfold=kfold,
+        plot=plot
     )
-    save_analysis(X, testing_accuracy, top_features, folder=results_folder)
+    save_analysis(X, explainer, shap_values, folder=results_folder)
 
 
-@cli.command("plot_analysis")
-@click.option(
-    "-ff", "--feature-folder", 
-    default="./results", show_default=True, 
-    help="Location of results"
-)
-def plot_analysis(feature_folder):
-    """Extract features from dataset of graphs"""
-    from .io import load_analysis
-    from .plotting import plot_sklearn_analysis
-
-    X, testing_accuracy, top_features = load_analysis(folder=feature_folder)
-    plot_sklearn_analysis(X, testing_accuracy, top_features, folder=feature_folder)
 
 
 @cli.command("get_data")

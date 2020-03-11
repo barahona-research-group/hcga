@@ -21,14 +21,14 @@ def _remove_small_graphs(graphs, n_node_min=2):
 
 
 def save_analysis(
-    X, testing_accuracy, top_features, folder="/", filename="sklearn_analysis"
+    X, explainer, shap_values, folder="/", filename="analysis_results"
 ):
     """save results of analysis"""
     with open(os.path.join(folder, filename + ".pkl"), "wb") as f:
-        pickle.dump([X, testing_accuracy, top_features], f)
+        pickle.dump([X, explainer, shap_values], f)
 
 
-def load_analysis(folder="/", filename="sklearn_analysis"):
+def load_analysis(folder="/", filename="analysis_results"):
     """save results of analysis"""
     with open(os.path.join(folder, filename + ".pkl"), "rb") as f:
         return pickle.load(f)

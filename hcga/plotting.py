@@ -5,19 +5,119 @@ import pandas as pd
 import numpy as np
 from scipy.cluster.hierarchy import dendrogram, linkage
 import seaborn as sns
-import matplotlib
+import shap
 
 import matplotlib.pyplot as plt
 
 # matplotlib.use("agg")
 
 
-def plot_sklearn_analysis(X, testing_accurary, top_features, folder="."):
+
+
+def shap_plots(X,shap_values):  
+    # plot summary
+    custom_bar_ranking_plot(shap_values, X, max_feats=10)  
+    
+    custom_dot_summary_plot(shap_values, X, max_feats=10)
+    #custom_violin_summary_plot(shap_values, X, max_feats=10)
+    
+    
+#    
+#    # plot dependence plot for highest ranking feature
+#    feature_order = np.argsort(np.sum(np.mean(np.abs(shap_values), axis=0), axis=0))    
+#    shap.dependence_plot(X.columns[feature_order[-1]], shap_values[0], X)
+#    
+#    # plotting for random observation
+#    observation = np.random.randint(X.shape[0])
+#    shap.force_plot(explainer.expected_value, rf_shap_values[10,:], X_test.iloc[10,:])
+#    
+    
+           
+
+def custom_bar_ranking_plot(shap_vals, data, max_feats):
+
+    '''
+    Function for customizing and saving SHAP summary bar plot. 
+
+    Arguments:
+    shap_vals = SHAP values list generated from explainer
+    data      = data to explain
+    max_feats = number of features to display
+
+    '''
+    plt.rcParams.update({'font.size': 14})
+    shap.summary_plot(shap_vals, data, plot_type="bar", max_display=max_feats, show=False)
+    fig = plt.gcf()
+    fig.set_figheight(20)
+    fig.set_figwidth(15)
+    #ax = plt.gca()
+    plt.tight_layout()
+    plt.title(f'Feature Rankings-All Classes')
+    
+    
+
+def custom_dot_summary_plot(shap_vals, data, max_feats):
+    '''
+    Function for customizing and saving SHAP summary dot plot. 
+
+    Arguments:
+    shap_vals = SHAP values list generated from explainer
+    data      = data to explain
+    max_feats = number of features to display
+
+    '''
+    num_classes = len(shap_vals)
+    for i in range(num_classes):
+        plt.figure()
+        print(f'Sample Expanded Feature Summary for Class {i}')
+        plt.rcParams.update({'font.size': 14})
+        shap.summary_plot(shap_vals[i], data, plot_type='dot',max_display=max_feats,show=False)
+        fig = plt.gcf()
+        fig.set_figheight(20)
+        fig.set_figwidth(15)
+        #ax = plt.gca()
+        plt.tight_layout()
+        plt.title(f'Sample Expanded Feature Summary for Class {i}')
+        #plt.savefig(f"Sample_Expanded_Feature_Summary_Plot_Class_{i}_{dataname}.png")
+        plt.show()
+
+
+def custom_violin_summary_plot(shap_vals, data, max_feats):
+    '''
+    Function for customizing and saving SHAP violin plot. 
+
+    Arguments:
+    shap_vals = SHAP values list generated from explainer
+    data      = data to explain
+    max_feats = number of features to display
+    '''
+    num_classes = len(shap_vals)
+    for i in range(num_classes):
+        print(f'Violin Feature Summary for Class {i}')
+        plt.rcParams.update({'font.size': 14})
+        shap.summary_plot(shap_vals[i], data, plot_type="violin",max_display=max_feats,show=False)
+        fig = plt.gcf()
+        fig.set_figheight(20)
+        fig.set_figwidth(15)
+        #ax = plt.gca()
+        plt.tight_layout()
+        dataname=[ k for k,v in globals().items() if v is data][0]
+        plt.title(f'Violin Feature Summary for Class {i}-{dataname}')
+        #plt.savefig(f"Vioin_Feature_Summary_Plot_Class_{i}_{dataname}.png")
+        plt.show()
+
+
+
+
+
+
+
+def basic_plots(X, top_features, folder="."):
     """main function to plot sklearn analysis"""
     # TODO: add other functions, with argument in this one to select what to plot
 
     plot_feature_importance(X, top_features, folder=folder)
-    # plot_dendrogram_top_features(X, top_featres, folder=folder)
+    #plot_dendrogram_top_features(X, top_features, folder=folder)
     # ...
 
 
@@ -52,7 +152,7 @@ def plot_dendogram_top_features(
     plt.figure()
     dn = dendrogram(Z)
     plt.savefig(
-        image_folder + "/endogram_top{}_features.svg".format(top_N), bbox_inches="tight"
+        image_folder + "/dendogram_top{}_features.svg".format(top_N), bbox_inches="tight"
     )
 
 
