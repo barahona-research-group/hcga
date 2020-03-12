@@ -88,9 +88,9 @@ def extract_features(
 @click.option("--kfold/--no-kfold", 
         default=True, show_default=True, 
         help="use K-fold")
-@click.option("-p", "--plot", 
+@click.option("-p/-np", "--plot/--no-plot", 
         default=True, show_default=True, 
-        help="True or false to plot analysis results")
+        help="Optionnaly plot analysis results")
 def feature_analysis(feature_file, results_folder, shap, classifier, kfold, plot):
     """Analysis of the features extracted in feature_file"""
     from .io import load_features, save_analysis
@@ -106,9 +106,9 @@ def feature_analysis(feature_file, results_folder, shap, classifier, kfold, plot
         kfold=kfold,
         plot=plot
     )
-    save_analysis(X, explainer, shap_values, folder=results_folder)
-
-
+    filename_analysis = Path(feature_file).stem + '_analysis'
+    save_analysis(X, explainer, shap_values, 
+            folder=results_folder, filename=filename_analysis)
 
 
 @cli.command("get_data")
