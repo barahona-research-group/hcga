@@ -14,11 +14,11 @@ import matplotlib.pyplot as plt
 
 
 
-def shap_plots(X,shap_values):  
+def shap_plots(X,shap_values, folder, filename):  
     # plot summary
-    custom_bar_ranking_plot(shap_values, X, max_feats=10)  
+    custom_bar_ranking_plot(shap_values, X, folder, filename, max_feats=10)  
     
-    custom_dot_summary_plot(shap_values, X, max_feats=10)
+    custom_dot_summary_plot(shap_values, X, folder, filename, max_feats=10)
     #custom_violin_summary_plot(shap_values, X, max_feats=10)
     
     
@@ -34,7 +34,7 @@ def shap_plots(X,shap_values):
     
            
 
-def custom_bar_ranking_plot(shap_vals, data, max_feats):
+def custom_bar_ranking_plot(shap_vals, data, folder, filename, max_feats):
 
     '''
     Function for customizing and saving SHAP summary bar plot. 
@@ -53,10 +53,13 @@ def custom_bar_ranking_plot(shap_vals, data, max_feats):
     #ax = plt.gca()
     plt.tight_layout()
     plt.title(f'Feature Rankings-All Classes')
+    os.path.join(folder, filename + "_shap_bar_rank.png")
+    plt.savefig(os.path.join(folder, filename + "_shap_bar_rank.png"),dpi=200)
+
     
     
 
-def custom_dot_summary_plot(shap_vals, data, max_feats):
+def custom_dot_summary_plot(shap_vals, data, folder, filename, max_feats):
     '''
     Function for customizing and saving SHAP summary dot plot. 
 
@@ -79,7 +82,7 @@ def custom_dot_summary_plot(shap_vals, data, max_feats):
         plt.tight_layout()
         plt.title(f'Sample Expanded Feature Summary for Class {i}')
         #plt.savefig(f"Sample_Expanded_Feature_Summary_Plot_Class_{i}_{dataname}.png")
-        plt.show()
+        plt.savefig(os.path.join(folder, filename + "_shap_class_{}_summary.png".format(i)),dpi=200)
 
 
 def custom_violin_summary_plot(shap_vals, data, max_feats):

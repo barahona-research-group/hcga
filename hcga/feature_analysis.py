@@ -1,7 +1,7 @@
 """function for analysis of graph features"""
 
 import time
-
+import os
 import numpy as np
 import pandas as pd
 import shap
@@ -16,6 +16,7 @@ from .plotting import *
 def analysis(
     features,
     features_info,
+    filename,
     shap=True,
     classifier_type="RF",
     verbose=True,
@@ -53,17 +54,45 @@ def analysis(
         )
 
     if plot:
-
-        if shap:
-            
-            shap_plots(X, shap_values)
+        if shap:            
+            shap_plots(X, shap_values, folder, filename)
         else:
-            basic_plots(X, top_features)
+            basic_plots(X, top_features, folder, filename)
 
 
-    # TODO: have a consistent ouptut of feature classification to save, and plot later
+    # TODO: save a csv file with the ranked features
+    output_csv(normed_features, features_info, top_features, shap_values, folder, filename)
+    
+    
     return X, explainer, shap_values
 
+
+def output_csv(features, features_info, feature_importance, shap_values, folder, filename):
+    
+    X, y = _features_to_Xy(features)
+
+    
+    index_rows = ['feature_info','feature_interpretability','feature_importance','shap_average']
+    output_df = pd.DataFrame(columns=X.columns,index=index_rows)
+    
+    output_df.loc['feature_importance'] = np.vstack(feature_importance).mean(axis=0)
+    
+    output_df.loc['shap_average'] = np.sum(np.mean(np.abs(shap_values), axis=1), axis=0)
+    
+    # looping over shap values for each class
+    for i, shap_class in enumerate(shap_values): 
+        output_df.loc['shap_importance: class {}'.format(i)] = np.vstack(shap_class).mean(axis=0)
+    
+    for feat in  output_df.columns:
+        output_df[feat]['feature_info'] = features_info[feat]['feature_description']
+        output_df[feat]['feature_interpretability'] = features_info[feat]['feature_interpretability'].score
+
+    #sort by shap average
+    output_df = output_df.T.sort_values('shap_average', ascending=False).T
+        
+    output_df.to_csv(os.path.join(folder, filename + "_importance_results.csv"))
+    
+    
 
 def fit_model_kfold(features, compute_shap=True, classifier=None, verbose=False):
     """shapeley analysis"""

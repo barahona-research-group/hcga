@@ -96,17 +96,19 @@ def feature_analysis(feature_file, results_folder, shap, classifier, kfold, plot
     from .io import load_features, save_analysis
     from .feature_analysis import analysis
 
-    features, features_info = load_features(filename=feature_file)
+    [features, features_info] = load_features(filename=feature_file)
+    filename_analysis = Path(feature_file).stem + '_analysis'
+
     X, explainer, shap_values = analysis(
         features,
         features_info,
+        filename=filename_analysis,
         folder=results_folder,
         shap=shap,
         classifier_type=classifier,
         kfold=kfold,
         plot=plot
     )
-    filename_analysis = Path(feature_file).stem + '_analysis'
     save_analysis(X, explainer, shap_values, 
             folder=results_folder, filename=filename_analysis)
 
