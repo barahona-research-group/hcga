@@ -21,7 +21,7 @@ def shap_plots(X,shap_values, folder, filename):
     custom_dot_summary_plot(shap_values, X, folder, filename, max_feats=10)
     #custom_violin_summary_plot(shap_values, X, max_feats=10)
     
-    
+    plot_dendogram_shap(shap_values, X, folder, filename, max_feats=20)
 #    
 #    # plot dependence plot for highest ranking feature
 #    feature_order = np.argsort(np.sum(np.mean(np.abs(shap_values), axis=0), axis=0))    
@@ -85,6 +85,44 @@ def custom_dot_summary_plot(shap_vals, data, folder, filename, max_feats):
         plt.savefig(os.path.join(folder, filename + "_shap_class_{}_summary.png".format(i)),dpi=200)
 
 
+def plot_dendogram_shap(shap_vals, data, folder, filename, max_feats=20):
+    from matplotlib.gridspec import GridSpec    
+    
+    shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
+
+    top_feat_idx = shap_mean.argsort()[::-1][:max_feats]
+
+    df_topN = data[data.columns[top_feat_idx]]
+    
+    cor = np.abs(df_topN.corr())
+    Z = linkage(cor, "ward")
+
+    dn = dendrogram(Z,labels=data.columns[top_feat_idx])
+
+    top_feats_names = [df_topN.columns[i] for i in dn["leaves"]]
+    
+    df = df_topN[top_feats_names]
+    cor2 = np.abs(df.corr())
+
+    f, ax = plt.subplots(2, 1, figsize=(10,10))
+
+    dn = dendrogram(Z,ax=ax[0])
+    ax[0].xaxis.set_ticklabels([])    
+    sns.heatmap(cor2, ax=ax[1], linewidth=0.5)
+ 
+    gs = GridSpec(2, 1, height_ratios=[1, 3])
+    for i in range(2):
+        ax[i].set_position(gs[i].get_position(f))
+        
+    # TODO: move the color bar position...
+    ax[0].title.set_text('Top {} features heatmap and dendogram'.format(max_feats))
+
+    #f.tight_layout()
+
+    plt.savefig(os.path.join(folder, filename + "_shap_dendogram_top20.png"),dpi=200)
+
+
+
 def custom_violin_summary_plot(shap_vals, data, max_feats):
     '''
     Function for customizing and saving SHAP violin plot. 
@@ -107,7 +145,7 @@ def custom_violin_summary_plot(shap_vals, data, max_feats):
         dataname=[ k for k,v in globals().items() if v is data][0]
         plt.title(f'Violin Feature Summary for Class {i}-{dataname}')
         #plt.savefig(f"Vioin_Feature_Summary_Plot_Class_{i}_{dataname}.png")
-        plt.show()
+        plt.savefig(os.path.join(folder, filename + "_shap_class_{}_summary.png".format(i)),dpi=200)
 
 
 
@@ -120,6 +158,7 @@ def basic_plots(X, top_features, folder="."):
     # TODO: add other functions, with argument in this one to select what to plot
 
     plot_feature_importance(X, top_features, folder=folder)
+    
     #plot_dendrogram_top_features(X, top_features, folder=folder)
     # ...
 
