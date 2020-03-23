@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 
 
-def shap_plots(X,shap_values, folder, filename):  
+def shap_plots(X,y,shap_values, folder, filename):  
     # plot summary
     custom_bar_ranking_plot(shap_values, X, folder, filename, max_feats=10)  
     
@@ -23,6 +23,8 @@ def shap_plots(X,shap_values, folder, filename):
     
     plot_dendogram_shap(shap_values, X, folder, filename, max_feats=20)
 #    
+    
+    plot_shap_violin(shap_values, X, y, folder, filename, max_feats=20)
 #    # plot dependence plot for highest ranking feature
 #    feature_order = np.argsort(np.sum(np.mean(np.abs(shap_values), axis=0), axis=0))    
 #    shap.dependence_plot(X.columns[feature_order[-1]], shap_values[0], X)
@@ -123,6 +125,44 @@ def plot_dendogram_shap(shap_vals, data, folder, filename, max_feats=20):
 
 
 
+
+def plot_shap_violin(shap_vals, data, labels, folder, filename, max_feats=20):
+    """
+    Plot the violins of a feature
+    """
+    
+    shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
+
+    top_feat_idx = shap_mean.argsort()[::-1][:max_feats]
+
+
+    fig, axes = plt.subplots(nrows=5, ncols=4, dpi=120, figsize=(10,7))    # nrows must be set as smaller rounded number of subindicators / 4
+
+    for j, ax in enumerate(axes.flatten()):  
+        top_feat_idx[j]
+        
+        feature_data= data[data.columns[top_feat_idx[j]]].values
+        data_split = []
+        
+        for k in np.unique(labels):
+            indices = np.argwhere(labels.values == k)
+            data_split.append(feature_data[indices])
+            
+        #sns.set(style="whitegrid")
+        sns.violinplot(data=data_split, ax=ax, palette="muted", width=1)
+        ax.set(xlabel="Class label", ylabel=data.columns[top_feat_idx[j]])
+
+        ax.tick_params(axis='both', which='major', labelsize=5)
+
+        ax.xaxis.get_label().set_fontsize(7)
+        ax.yaxis.get_label().set_fontsize(7)
+        
+
+    plt.subplots_adjust(top = 0.9, bottom=0.1, hspace=1, wspace=0.5)
+    plt.savefig(os.path.join(folder, filename + "_shap_violins_top20.png"),dpi=200)
+
+
+
 def custom_violin_summary_plot(shap_vals, data, max_feats):
     '''
     Function for customizing and saving SHAP violin plot. 
@@ -146,6 +186,7 @@ def custom_violin_summary_plot(shap_vals, data, max_feats):
         plt.title(f'Violin Feature Summary for Class {i}-{dataname}')
         #plt.savefig(f"Vioin_Feature_Summary_Plot_Class_{i}_{dataname}.png")
         plt.savefig(os.path.join(folder, filename + "_shap_class_{}_summary.png".format(i)),dpi=200)
+
 
 
 

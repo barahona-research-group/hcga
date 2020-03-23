@@ -45,17 +45,17 @@ def analysis(
         raise Exception("Unknown classifier type: {}".format(classifier_type))
 
     if kfold:
-        X,  explainer, shap_values, top_features = fit_model_kfold(
+        X, y,  explainer, shap_values, top_features = fit_model_kfold(
             normed_features, classifier=classifier, verbose=verbose
         )
     else:
-        X, explainer, shap_values, top_features = fit_model(
+        X,y, explainer, shap_values, top_features = fit_model(
             normed_features, classifier=classifier, verbose=verbose
         )
 
     if plot:
         if shap:            
-            shap_plots(X, shap_values, folder, filename)
+            shap_plots(X,y, shap_values, folder, filename)
         else:
             basic_plots(X, top_features, folder, filename)
 
@@ -157,7 +157,7 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, verbose=False)
         shap_values = [x / n_splits for x in shap_values]
         #shap.summary_plot(shap_values, X_test)
 
-    return X, explainer, shap_values, top_features
+    return X,y, explainer, shap_values, top_features
 
 
 
@@ -196,7 +196,7 @@ def fit_model(features, compute_shap=True, classifier=None, verbose=False):
 #        shap.save_html("test.html", force)
     # shap.dependence_plot("harmonic centrality_max_E", shap_values[0], X_test)
 
-    return X, explainer, shap_values, top_features
+    return X,y, explainer, shap_values, top_features
 
 
 
