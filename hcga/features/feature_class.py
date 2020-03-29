@@ -2,6 +2,7 @@
 import numpy as np
 import scipy.stats as st
 import networkx as nx
+from networkx.algorithms.community import quality
 
 
 class FeatureClass:
@@ -111,9 +112,14 @@ class FeatureClass:
 
         if isinstance(feature, list) or isinstance(feature, np.ndarray):
             # if the feature is a list of numbers, extract statistics
-            self.feature_statistics(
-                feature, feature_name, feature_description, feature_interpret
-            )
+            if isinstance(feature[0], set):
+                self.clustering_statistics(
+                    feature, feature_name, feature_description, feature_interpret
+                )
+            else:
+                self.feature_statistics(
+                    feature, feature_name, feature_description, feature_interpret
+                )
         else:
             self.features[feature_name] = feature
             if not hasattr(feature_interpret, "get_score"):
@@ -164,6 +170,47 @@ class FeatureClass:
                 feat_desc + ", normalised by the number of edges in the graph",
                 feat_interpret - interpretability_downgrade,
             )
+
+    def clustering_statistics(self, community_partition, feat_name, feat_desc, feat_interpet):
+        """ Compute quality of the community partitions """
+        
+        self.add_feature(
+            feat_name + "_modularity",
+            lambda graph: _try(quality.modularity, community_partition),
+            "Modularity" + compl_desc,
+            feat_interpret,
+        )
+        self.add_feature(
+            feat_name + "_coverage",
+            lambda graph: _try(quality.coverage, community_partition),
+            "Coverage" + compl_desc,
+            feat_interpret,
+        )
+        self.add_feature(
+            feat_name + "_performance",
+            lambda graph: _try(quality.performance, community_partition),
+            "Performance" + compl_desc,
+            feat_interpret,
+        )
+        self.add_feature(
+            feat_name + "_inter_community_edges",
+            lambda graph: _try(quality.inter_community_edges, community_partition),
+            "Inter community edges" + compl_desc,
+            feat_interpret,
+        )        
+        self.add_feature(
+            feat_name + "_inter_community_non_edges",
+            lambda graph: _try(quality.inter_community_non_edges, community_partition),
+            "Inter community non edges" + compl_desc,
+            feat_interpret,
+        )        
+        self.add_feature(
+            feat_name + "_intra_community_edges",
+            lambda graph: _try(quality.intra_community_edges, community_partition),
+            "Intra community edges" + compl_desc,
+            feat_interpret,
+        )                        
+
 
     def feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes summary statistics of distributions"""
