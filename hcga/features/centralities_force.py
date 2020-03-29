@@ -77,9 +77,11 @@ class ForceCentrality(FeatureClass):
 
             # force centrality - larger values indicate further from centre of mass
             return np.vstack(c).mean(axis=0) / np.max(np.vstack(c))
+        
+        force_central = lambda graph: force_centrality(self.graph)
         self.add_feature(
             "force centrality",
-            force_centrality,
+            force_central,
             "Force centrality is the distance from the centre of mass of the network - larger values indicate further from the centre",
             InterpretabilityScore(5),
         )
