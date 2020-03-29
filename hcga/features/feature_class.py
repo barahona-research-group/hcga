@@ -102,13 +102,16 @@ class FeatureClass:
             feature = feature_function(self.graph)
         except (KeyboardInterrupt, SystemExit):
             raise
-        except:
+        except Exception as exc:
+            print('Failed feature', feature_name, 'exception:', exc)
             # if the feature cannot be computed, fill with np.nan
-            feature_trivial = feature_function(self.__class__.trivial_graph)
-            if isinstance(feature_trivial, list):
-                feature = [np.nan]
-            else:
-                feature = np.nan
+            #feature_trivial = feature_function(self.__class__.trivial_graph)
+            #if isinstance(feature_trivial, list):
+            #    feature = [np.nan]
+            #else:
+            #    feature = np.nan
+            # DANGER: this will not trigger the distribution computation anymore
+            feature = np.nan
 
         if isinstance(feature, list) or isinstance(feature, np.ndarray):
             # if the feature is a list of numbers, extract statistics

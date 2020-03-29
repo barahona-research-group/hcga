@@ -22,6 +22,7 @@
 import pandas as pd
 import numpy as np
 import networkx as nx
+from functools import lru_cache
 
 from .feature_class import FeatureClass
 from .feature_class import InterpretabilityScore
@@ -52,65 +53,51 @@ class CommunitiesAsyn(FeatureClass):
 
         Notes
         -----
-
-
+        Currently hardcoded the number of communities tried:  np.linspace(2, 20, 10)
         """
 
-        
-        num_communities = np.arange(8,np.min([len(self.graph)]))
-        
+        @lru_cache(maxsize=None) 
+        def eval_asyn(graph, num_comms):
+            """this evaluates the main function and cach it for speed up"""
+            return asyn_fluidc(graph, int(num_comms))
+
+        num_communities = np.linspace(2, 20, 10)
         for num_comms in num_communities:
-            
-            # this fails if num_comms is larger than number of nodes
-            c,density = list(asyn_fluidc(self.graph,int(num_comms)))            
-            
-            
-            sum_density = lambda graph: sum(density)            
             self.add_feature(
                 "sum_density_c={}".format(num_comms),
-                sum_density,
+                lambda graph: sum(eval_asyn(graph, num_comms)[1]),
                 "The total density of communities after async fluid optimisations for c={}".format(num_comms),
                 InterpretabilityScore(3),
             )
             
-            ratio_density = lambda graph: np.min(density)/np.max(density)
             self.add_feature(
                 "ratio_density_c={}".format(num_comms),
-                ratio_density,
+                lambda graph: np.min(eval_asyn(graph, num_comms)[1])/np.max(eval_asyn(graph, num_comms)[1]),
                 "The ratio density of communities after async fluid optimisations for c={}".format(num_comms),
                 InterpretabilityScore(3),
             )
-            
-            most_dense = lambda graph: len(c[np.argmax(density)])
+
             self.add_feature(
                 "len_most_dense_c={}".format(num_comms),
-                most_dense,
+                lambda graph: len(eval_asyn(graph, num_comms)[0][np.argmax(eval_asyn(graph, num_comms)[1])]),
                 "The length of the most dense community after async fluid optimisations for c={}".format(num_comms),
                 InterpretabilityScore(4),
             )
             
-            least_dense = lambda graph: len(c[np.argmin(density)])
             self.add_feature(
                 "len_least_dense_c={}".format(num_comms),
-                least_dense,
+                lambda graph: len(eval_asyn(graph, num_comms)[0][np.argmin(eval_asyn(graph, num_comms)[1])]),
                 "The length of the least dense community after async fluid optimisations for c={}".format(num_comms),
                 InterpretabilityScore(4),
             )
 
-
             # computing clustering quality 
-            partition = lambda graph: c
             self.add_feature(
                 "partition_c={}".format(num_comms),
-                partition,
+                lambda graph: eval_asyn(graph, num_comms)[0],
                 "The optimal partition after async fluid optimisations for c={}".format(num_comms),
                 InterpretabilityScore(4),
             )
-            
-
-
-
-
 
 @py_random_state(3)
 def asyn_fluidc(G, k, max_iter=100, seed=None):
