@@ -20,9 +20,7 @@ def _remove_small_graphs(graphs, n_node_min=2):
     return [graph for graph in graphs if len(graph) > n_node_min]
 
 
-def save_analysis(
-    X, explainer, shap_values, folder=".", filename="analysis_results"
-):
+def save_analysis(X, explainer, shap_values, folder=".", filename="analysis_results"):
     """save results of analysis"""
     with open(os.path.join(folder, filename + ".pkl"), "wb") as f:
         pickle.dump([X, explainer, shap_values], f)
@@ -66,8 +64,7 @@ def save_features(feature_matrix, feature_info, filename="./features.pkl"):
         Path(filename).parent.mkdir()
 
     pickle.dump(
-        [feature_matrix, feature_info],
-        open(filename, "wb"),
+        [feature_matrix, feature_info], open(filename, "wb"),
     )
 
 

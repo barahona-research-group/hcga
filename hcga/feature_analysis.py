@@ -13,6 +13,7 @@ from sklearn.preprocessing import StandardScaler
 from .utils import filter_features
 from .plotting import *
 
+
 def analysis(
     features,
     features_info,
@@ -28,10 +29,8 @@ def analysis(
 
     good_features = filter_features(features)
     normed_features = normalise_feature_data(good_features)
-    
-    #if reduced_set:
-        
-    
+
+    # if reduced_set:
 
     if classifier_type == "RF":
         from sklearn.ensemble import RandomForestClassifier
@@ -45,54 +44,63 @@ def analysis(
         raise Exception("Unknown classifier type: {}".format(classifier_type))
 
     if kfold:
-        X, y,  explainer, shap_values, top_features = fit_model_kfold(
+        X, y, explainer, shap_values, top_features = fit_model_kfold(
             normed_features, classifier=classifier, verbose=verbose
         )
     else:
-        X,y, explainer, shap_values, top_features = fit_model(
+        X, y, explainer, shap_values, top_features = fit_model(
             normed_features, classifier=classifier, verbose=verbose
         )
 
     if plot:
-        if shap:            
-            shap_plots(X,y, shap_values, folder, filename)
+        if shap:
+            shap_plots(X, y, shap_values, folder, filename)
         else:
             basic_plots(X, top_features, folder, filename)
 
-
     # TODO: save a csv file with the ranked features
-    output_csv(normed_features, features_info, top_features, shap_values, folder, filename)
-    
-    
+    output_csv(
+        normed_features, features_info, top_features, shap_values, folder, filename
+    )
+
     return X, explainer, shap_values
 
 
-def output_csv(features, features_info, feature_importance, shap_values, folder, filename):
-    
+def output_csv(
+    features, features_info, feature_importance, shap_values, folder, filename
+):
+
     X, y = _features_to_Xy(features)
 
-    
-    index_rows = ['feature_info','feature_interpretability','feature_importance','shap_average']
-    output_df = pd.DataFrame(columns=X.columns,index=index_rows)
-    
-    output_df.loc['feature_importance'] = np.vstack(feature_importance).mean(axis=0)
-    
-    output_df.loc['shap_average'] = np.sum(np.mean(np.abs(shap_values), axis=1), axis=0)
-    
-    # looping over shap values for each class
-    for i, shap_class in enumerate(shap_values): 
-        output_df.loc['shap_importance: class {}'.format(i)] = np.vstack(shap_class).mean(axis=0)
-    
-    for feat in  output_df.columns:
-        output_df[feat]['feature_info'] = features_info[feat]['feature_description']
-        output_df[feat]['feature_interpretability'] = features_info[feat]['feature_interpretability'].score
+    index_rows = [
+        "feature_info",
+        "feature_interpretability",
+        "feature_importance",
+        "shap_average",
+    ]
+    output_df = pd.DataFrame(columns=X.columns, index=index_rows)
 
-    #sort by shap average
-    output_df = output_df.T.sort_values('shap_average', ascending=False).T
-        
+    output_df.loc["feature_importance"] = np.vstack(feature_importance).mean(axis=0)
+
+    output_df.loc["shap_average"] = np.sum(np.mean(np.abs(shap_values), axis=1), axis=0)
+
+    # looping over shap values for each class
+    for i, shap_class in enumerate(shap_values):
+        output_df.loc["shap_importance: class {}".format(i)] = np.vstack(
+            shap_class
+        ).mean(axis=0)
+
+    for feat in output_df.columns:
+        output_df[feat]["feature_info"] = features_info[feat]["feature_description"]
+        output_df[feat]["feature_interpretability"] = features_info[feat][
+            "feature_interpretability"
+        ].score
+
+    # sort by shap average
+    output_df = output_df.T.sort_values("shap_average", ascending=False).T
+
     output_df.to_csv(os.path.join(folder, filename + "_importance_results.csv"))
-    
-    
+
 
 def fit_model_kfold(features, compute_shap=True, classifier=None, verbose=False):
     """shapeley analysis"""
@@ -102,9 +110,9 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, verbose=False)
 
     X, y = _features_to_Xy(features)
 
-#    X_train, X_test, y_train, y_test = train_test_split(
-#        X, y, test_size=0.2, shuffle=True, stratify=y, random_state=42
-#    )
+    #    X_train, X_test, y_train, y_test = train_test_split(
+    #        X, y, test_size=0.2, shuffle=True, stratify=y, random_state=42
+    #    )
 
     n_splits = _number_folds(y)
     print("Using", n_splits, "splits")
@@ -114,8 +122,7 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, verbose=False)
     shap_values = None
     explainer = None
 
-
-    top_features = []    
+    top_features = []
     acc_scores = []
     oof_preds = np.zeros(y.shape[0])
     for train_index, val_index in folds.split(X, y=y):
@@ -128,19 +135,18 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, verbose=False)
         )
         top_features.append(classifier.feature_importances_)
 
-        
         if compute_shap:
             explainer = shap.TreeExplainer(
                 classifier, feature_perturbation="interventional",
             )
-    
+
             if shap_values is None:
-                shap_values = explainer.shap_values(X,check_additivity=False)
+                shap_values = explainer.shap_values(X, check_additivity=False)
             else:
                 shap_values = [
                     x + y
                     for x, y in zip(
-                        shap_values, explainer.shap_values(X,check_additivity=False)
+                        shap_values, explainer.shap_values(X, check_additivity=False)
                     )
                 ]
 
@@ -155,18 +161,17 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, verbose=False)
 
     if compute_shap:
         shap_values = [x / n_splits for x in shap_values]
-        #shap.summary_plot(shap_values, X_test)
+        # shap.summary_plot(shap_values, X_test)
 
-    return X,y, explainer, shap_values, top_features
-
+    return X, y, explainer, shap_values, top_features
 
 
 def fit_model(features, compute_shap=True, classifier=None, verbose=False):
     """shapeley analysis"""
 
     explainer = None
-    shap_values = None   
-    
+    shap_values = None
+
     if classifier is None:
         raise Exception("Please provide a model for classification")
 
@@ -177,27 +182,28 @@ def fit_model(features, compute_shap=True, classifier=None, verbose=False):
     )
 
     classifier.fit(X_train, y_train)
-    top_features=classifier.feature_importances_
+    top_features = classifier.feature_importances_
 
     if compute_shap:
-        explainer = shap.TreeExplainer(classifier, feature_perturbation="interventional")
+        explainer = shap.TreeExplainer(
+            classifier, feature_perturbation="interventional"
+        )
         shap_values = explainer.shap_values(X_test, check_additivity=False)
-        
+
     acc_scores = balanced_accuracy_score(y_test, classifier.predict(X_test))
 
     if verbose:
         print("Balanced accuracy: ", acc_scores)
 
-#    if compute_shap:
-#        shap.summary_plot(shap_values[0], X_test)  # , plot_type='dot')
-#        force = shap.force_plot(
-#            explainer.expected_value[0], shap_values[0][0, :], X_test.iloc[0, :]
-#        )
-#        shap.save_html("test.html", force)
+    #    if compute_shap:
+    #        shap.summary_plot(shap_values[0], X_test)  # , plot_type='dot')
+    #        force = shap.force_plot(
+    #            explainer.expected_value[0], shap_values[0][0, :], X_test.iloc[0, :]
+    #        )
+    #        shap.save_html("test.html", force)
     # shap.dependence_plot("harmonic centrality_max_E", shap_values[0], X_test)
 
-    return X,y, explainer, shap_values, top_features
-
+    return X, y, explainer, shap_values, top_features
 
 
 def _features_to_Xy(features):
@@ -223,17 +229,9 @@ def _number_folds(y):
     return np.clip(n_splits, 2, 10)
 
 
-
-
-
-
-
-
-
-def reduce_feature_set(X, y, top_features, classifier,importance_threshold=0.9):
+def reduce_feature_set(X, y, top_features, classifier, importance_threshold=0.9):
     """    Reduce the feature set   """
 
-    
     mean_importance = np.mean(np.array(top_features), axis=0)
     rank_feat = np.argsort(mean_importance)[::-1]
     n_feat = len(
@@ -250,7 +248,3 @@ def reduce_feature_set(X, y, top_features, classifier,importance_threshold=0.9):
     X_reduced = X.iloc[:, rank_feat]
 
     return X_reduced
-
-
-
-

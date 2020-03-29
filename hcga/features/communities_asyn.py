@@ -56,7 +56,7 @@ class CommunitiesAsyn(FeatureClass):
         Currently hardcoded the number of communities tried:  np.linspace(2, 20, 10)
         """
 
-        @lru_cache(maxsize=None) 
+        @lru_cache(maxsize=None)
         def eval_asyn(graph, num_comms):
             """this evaluates the main function and cach it for speed up"""
             return asyn_fluidc(graph, int(num_comms))
@@ -66,38 +66,58 @@ class CommunitiesAsyn(FeatureClass):
             self.add_feature(
                 "sum_density_c={}".format(num_comms),
                 lambda graph: sum(eval_asyn(graph, num_comms)[1]),
-                "The total density of communities after async fluid optimisations for c={}".format(num_comms),
+                "The total density of communities after async fluid optimisations for c={}".format(
+                    num_comms
+                ),
                 InterpretabilityScore(3),
             )
-            
+
             self.add_feature(
                 "ratio_density_c={}".format(num_comms),
-                lambda graph: np.min(eval_asyn(graph, num_comms)[1])/np.max(eval_asyn(graph, num_comms)[1]),
-                "The ratio density of communities after async fluid optimisations for c={}".format(num_comms),
+                lambda graph: np.min(eval_asyn(graph, num_comms)[1])
+                / np.max(eval_asyn(graph, num_comms)[1]),
+                "The ratio density of communities after async fluid optimisations for c={}".format(
+                    num_comms
+                ),
                 InterpretabilityScore(3),
             )
 
             self.add_feature(
                 "len_most_dense_c={}".format(num_comms),
-                lambda graph: len(eval_asyn(graph, num_comms)[0][np.argmax(eval_asyn(graph, num_comms)[1])]),
-                "The length of the most dense community after async fluid optimisations for c={}".format(num_comms),
-                InterpretabilityScore(4),
-            )
-            
-            self.add_feature(
-                "len_least_dense_c={}".format(num_comms),
-                lambda graph: len(eval_asyn(graph, num_comms)[0][np.argmin(eval_asyn(graph, num_comms)[1])]),
-                "The length of the least dense community after async fluid optimisations for c={}".format(num_comms),
+                lambda graph: len(
+                    eval_asyn(graph, num_comms)[0][
+                        np.argmax(eval_asyn(graph, num_comms)[1])
+                    ]
+                ),
+                "The length of the most dense community after async fluid optimisations for c={}".format(
+                    num_comms
+                ),
                 InterpretabilityScore(4),
             )
 
-            # computing clustering quality 
+            self.add_feature(
+                "len_least_dense_c={}".format(num_comms),
+                lambda graph: len(
+                    eval_asyn(graph, num_comms)[0][
+                        np.argmin(eval_asyn(graph, num_comms)[1])
+                    ]
+                ),
+                "The length of the least dense community after async fluid optimisations for c={}".format(
+                    num_comms
+                ),
+                InterpretabilityScore(4),
+            )
+
+            # computing clustering quality
             self.add_feature(
                 "partition_c={}".format(num_comms),
                 lambda graph: eval_asyn(graph, num_comms)[0],
-                "The optimal partition after async fluid optimisations for c={}".format(num_comms),
+                "The optimal partition after async fluid optimisations for c={}".format(
+                    num_comms
+                ),
                 InterpretabilityScore(4),
             )
+
 
 @py_random_state(3)
 def asyn_fluidc(G, k, max_iter=100, seed=None):
@@ -185,23 +205,24 @@ def asyn_fluidc(G, k, max_iter=100, seed=None):
             com_counter = Counter()
             # Take into account self vertex community
             try:
-                com_counter.update({communities[vertex]:
-                                    density[communities[vertex]]})
+                com_counter.update({communities[vertex]: density[communities[vertex]]})
             except KeyError:
                 pass
             # Gather neighbour vertex communities
             for v in G[vertex]:
                 try:
-                    com_counter.update({communities[v]:
-                                        density[communities[v]]})
+                    com_counter.update({communities[v]: density[communities[v]]})
                 except KeyError:
                     continue
             # Check which is the community with highest density
             new_com = -1
             if len(com_counter.keys()) > 0:
                 max_freq = max(com_counter.values())
-                best_communities = [com for com, freq in com_counter.items()
-                                    if (max_freq - freq) < 0.0001]
+                best_communities = [
+                    com
+                    for com, freq in com_counter.items()
+                    if (max_freq - freq) < 0.0001
+                ]
                 # If actual vertex com in best communities, it is preserved
                 try:
                     if communities[vertex] in best_communities:
@@ -217,19 +238,19 @@ def asyn_fluidc(G, k, max_iter=100, seed=None):
                     # Update previous community status
                     try:
                         com_to_numvertices[communities[vertex]] -= 1
-                        density[communities[vertex]] = max_density / \
-                            com_to_numvertices[communities[vertex]]
+                        density[communities[vertex]] = (
+                            max_density / com_to_numvertices[communities[vertex]]
+                        )
                     except KeyError:
                         pass
                     # Update new community status
                     communities[vertex] = new_com
                     com_to_numvertices[communities[vertex]] += 1
-                    density[communities[vertex]] = max_density / \
-                        com_to_numvertices[communities[vertex]]
+                    density[communities[vertex]] = (
+                        max_density / com_to_numvertices[communities[vertex]]
+                    )
         # If maximum iterations reached --> output actual results
         if iter_count > max_iter:
             break
     # Return results by grouping communities as list of vertices
     return list(iter(groups(communities).values())), list(density.values())
-
-

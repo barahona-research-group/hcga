@@ -56,5 +56,3 @@ class CoreNumber(FeatureClass):
             "The core number distribution",
             InterpretabilityScore(5),
         )
-
-

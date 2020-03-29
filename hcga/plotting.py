@@ -12,33 +12,32 @@ import matplotlib.pyplot as plt
 # matplotlib.use("agg")
 
 
-
-
-def shap_plots(X,y,shap_values, folder, filename):  
+def shap_plots(X, y, shap_values, folder, filename):
     # plot summary
-    custom_bar_ranking_plot(shap_values, X, folder, filename, max_feats=10)  
-    
+    custom_bar_ranking_plot(shap_values, X, folder, filename, max_feats=10)
+
     custom_dot_summary_plot(shap_values, X, folder, filename, max_feats=10)
-    #custom_violin_summary_plot(shap_values, X, max_feats=10)
-    
+    # custom_violin_summary_plot(shap_values, X, max_feats=10)
+
     plot_dendogram_shap(shap_values, X, folder, filename, max_feats=20)
-#    
-    
+    #
+
     plot_shap_violin(shap_values, X, y, folder, filename, max_feats=20)
+
+
 #    # plot dependence plot for highest ranking feature
-#    feature_order = np.argsort(np.sum(np.mean(np.abs(shap_values), axis=0), axis=0))    
+#    feature_order = np.argsort(np.sum(np.mean(np.abs(shap_values), axis=0), axis=0))
 #    shap.dependence_plot(X.columns[feature_order[-1]], shap_values[0], X)
-#    
+#
 #    # plotting for random observation
 #    observation = np.random.randint(X.shape[0])
 #    shap.force_plot(explainer.expected_value, rf_shap_values[10,:], X_test.iloc[10,:])
-#    
-    
-           
+#
+
 
 def custom_bar_ranking_plot(shap_vals, data, folder, filename, max_feats):
 
-    '''
+    """
     Function for customizing and saving SHAP summary bar plot. 
 
     Arguments:
@@ -46,23 +45,23 @@ def custom_bar_ranking_plot(shap_vals, data, folder, filename, max_feats):
     data      = data to explain
     max_feats = number of features to display
 
-    '''
-    plt.rcParams.update({'font.size': 14})
-    shap.summary_plot(shap_vals, data, plot_type="bar", max_display=max_feats, show=False)
+    """
+    plt.rcParams.update({"font.size": 14})
+    shap.summary_plot(
+        shap_vals, data, plot_type="bar", max_display=max_feats, show=False
+    )
     fig = plt.gcf()
     fig.set_figheight(20)
     fig.set_figwidth(15)
-    #ax = plt.gca()
+    # ax = plt.gca()
     plt.tight_layout()
-    plt.title(f'Feature Rankings-All Classes')
+    plt.title(f"Feature Rankings-All Classes")
     os.path.join(folder, filename + "_shap_bar_rank.png")
-    plt.savefig(os.path.join(folder, filename + "_shap_bar_rank.png"),dpi=200)
+    plt.savefig(os.path.join(folder, filename + "_shap_bar_rank.png"), dpi=200)
 
-    
-    
 
 def custom_dot_summary_plot(shap_vals, data, folder, filename, max_feats):
-    '''
+    """
     Function for customizing and saving SHAP summary dot plot. 
 
     Arguments:
@@ -70,128 +69,129 @@ def custom_dot_summary_plot(shap_vals, data, folder, filename, max_feats):
     data      = data to explain
     max_feats = number of features to display
 
-    '''
+    """
     num_classes = len(shap_vals)
     for i in range(num_classes):
         plt.figure()
-        print(f'Sample Expanded Feature Summary for Class {i}')
-        plt.rcParams.update({'font.size': 14})
-        shap.summary_plot(shap_vals[i], data, plot_type='dot',max_display=max_feats,show=False)
+        print(f"Sample Expanded Feature Summary for Class {i}")
+        plt.rcParams.update({"font.size": 14})
+        shap.summary_plot(
+            shap_vals[i], data, plot_type="dot", max_display=max_feats, show=False
+        )
         fig = plt.gcf()
         fig.set_figheight(20)
         fig.set_figwidth(15)
-        #ax = plt.gca()
+        # ax = plt.gca()
         plt.tight_layout()
-        plt.title(f'Sample Expanded Feature Summary for Class {i}')
-        #plt.savefig(f"Sample_Expanded_Feature_Summary_Plot_Class_{i}_{dataname}.png")
-        plt.savefig(os.path.join(folder, filename + "_shap_class_{}_summary.png".format(i)),dpi=200)
+        plt.title(f"Sample Expanded Feature Summary for Class {i}")
+        # plt.savefig(f"Sample_Expanded_Feature_Summary_Plot_Class_{i}_{dataname}.png")
+        plt.savefig(
+            os.path.join(folder, filename + "_shap_class_{}_summary.png".format(i)),
+            dpi=200,
+        )
 
 
 def plot_dendogram_shap(shap_vals, data, folder, filename, max_feats=20):
-    from matplotlib.gridspec import GridSpec    
-    
+    from matplotlib.gridspec import GridSpec
+
     shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
 
     top_feat_idx = shap_mean.argsort()[::-1][:max_feats]
 
     df_topN = data[data.columns[top_feat_idx]]
-    
+
     cor = np.abs(df_topN.corr())
     Z = linkage(cor, "ward")
 
-    dn = dendrogram(Z,labels=data.columns[top_feat_idx])
+    dn = dendrogram(Z, labels=data.columns[top_feat_idx])
 
     top_feats_names = [df_topN.columns[i] for i in dn["leaves"]]
-    
+
     df = df_topN[top_feats_names]
     cor2 = np.abs(df.corr())
 
-    f, ax = plt.subplots(2, 1, figsize=(10,10))
+    f, ax = plt.subplots(2, 1, figsize=(10, 10))
 
-    dn = dendrogram(Z,ax=ax[0])
-    ax[0].xaxis.set_ticklabels([])    
+    dn = dendrogram(Z, ax=ax[0])
+    ax[0].xaxis.set_ticklabels([])
     sns.heatmap(cor2, ax=ax[1], linewidth=0.5)
- 
+
     gs = GridSpec(2, 1, height_ratios=[1, 3])
     for i in range(2):
         ax[i].set_position(gs[i].get_position(f))
-        
+
     # TODO: move the color bar position...
-    ax[0].title.set_text('Top {} features heatmap and dendogram'.format(max_feats))
+    ax[0].title.set_text("Top {} features heatmap and dendogram".format(max_feats))
 
-    #f.tight_layout()
+    # f.tight_layout()
 
-    plt.savefig(os.path.join(folder, filename + "_shap_dendogram_top20.png"),dpi=200)
-
-
+    plt.savefig(os.path.join(folder, filename + "_shap_dendogram_top20.png"), dpi=200)
 
 
 def plot_shap_violin(shap_vals, data, labels, folder, filename, max_feats=20):
     """
     Plot the violins of a feature
     """
-    
+
     shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
 
     top_feat_idx = shap_mean.argsort()[::-1][:max_feats]
 
+    fig, axes = plt.subplots(
+        nrows=5, ncols=4, dpi=120, figsize=(10, 7)
+    )  # nrows must be set as smaller rounded number of subindicators / 4
 
-    fig, axes = plt.subplots(nrows=5, ncols=4, dpi=120, figsize=(10,7))    # nrows must be set as smaller rounded number of subindicators / 4
-
-    for j, ax in enumerate(axes.flatten()):  
+    for j, ax in enumerate(axes.flatten()):
         top_feat_idx[j]
-        
-        feature_data= data[data.columns[top_feat_idx[j]]].values
+
+        feature_data = data[data.columns[top_feat_idx[j]]].values
         data_split = []
-        
+
         for k in np.unique(labels):
             indices = np.argwhere(labels.values == k)
             data_split.append(feature_data[indices])
-            
-        #sns.set(style="whitegrid")
+
+        # sns.set(style="whitegrid")
         sns.violinplot(data=data_split, ax=ax, palette="muted", width=1)
         ax.set(xlabel="Class label", ylabel=data.columns[top_feat_idx[j]])
 
-        ax.tick_params(axis='both', which='major', labelsize=5)
+        ax.tick_params(axis="both", which="major", labelsize=5)
 
         ax.xaxis.get_label().set_fontsize(7)
         ax.yaxis.get_label().set_fontsize(7)
-        
 
-    plt.subplots_adjust(top = 0.9, bottom=0.1, hspace=1, wspace=0.5)
-    plt.savefig(os.path.join(folder, filename + "_shap_violins_top20.png"),dpi=200)
-
+    plt.subplots_adjust(top=0.9, bottom=0.1, hspace=1, wspace=0.5)
+    plt.savefig(os.path.join(folder, filename + "_shap_violins_top20.png"), dpi=200)
 
 
 def custom_violin_summary_plot(shap_vals, data, max_feats):
-    '''
+    """
     Function for customizing and saving SHAP violin plot. 
 
     Arguments:
     shap_vals = SHAP values list generated from explainer
     data      = data to explain
     max_feats = number of features to display
-    '''
+    """
     num_classes = len(shap_vals)
     for i in range(num_classes):
-        print(f'Violin Feature Summary for Class {i}')
-        plt.rcParams.update({'font.size': 14})
-        shap.summary_plot(shap_vals[i], data, plot_type="violin",max_display=max_feats,show=False)
+        print(f"Violin Feature Summary for Class {i}")
+        plt.rcParams.update({"font.size": 14})
+        shap.summary_plot(
+            shap_vals[i], data, plot_type="violin", max_display=max_feats, show=False
+        )
         fig = plt.gcf()
         fig.set_figheight(20)
         fig.set_figwidth(15)
-        #ax = plt.gca()
+        # ax = plt.gca()
         plt.tight_layout()
-        dataname=[ k for k,v in globals().items() if v is data][0]
-        plt.title(f'Violin Feature Summary for Class {i}-{dataname}')
-        #plt.savefig(f"Vioin_Feature_Summary_Plot_Class_{i}_{dataname}.png")
-        plt.savefig(os.path.join(folder, filename + "_shap_class_{}_summary.png".format(i)),dpi=200)
-
-
-
-
-
-
+        dataname = [k for k, v in globals().items() if v is data][0]
+        plt.title(f"Violin Feature Summary for Class {i}-{dataname}")
+        # plt.savefig(f"Vioin_Feature_Summary_Plot_Class_{i}_{dataname}.png")
+        plt.savefig(
+            os.path.join(folder, filename + "_shap_class_{}_summary.png".format(i)),
+            dpi=200,
+        )
 
 
 def basic_plots(X, top_features, folder="."):
@@ -199,8 +199,8 @@ def basic_plots(X, top_features, folder="."):
     # TODO: add other functions, with argument in this one to select what to plot
 
     plot_feature_importance(X, top_features, folder=folder)
-    
-    #plot_dendrogram_top_features(X, top_features, folder=folder)
+
+    # plot_dendrogram_top_features(X, top_features, folder=folder)
     # ...
 
 
@@ -235,7 +235,8 @@ def plot_dendogram_top_features(
     plt.figure()
     dn = dendrogram(Z)
     plt.savefig(
-        image_folder + "/dendogram_top{}_features.svg".format(top_N), bbox_inches="tight"
+        image_folder + "/dendogram_top{}_features.svg".format(top_N),
+        bbox_inches="tight",
     )
 
 

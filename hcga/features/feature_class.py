@@ -15,7 +15,7 @@ class FeatureClass:
     name = "template"
     keywords = ["template"]
 
-    statistics_level = 'basic'
+    statistics_level = "basic"
     normalize_features = True
 
     # Feature descriptions as class variable
@@ -34,7 +34,7 @@ class FeatureClass:
         self.features = {}
 
     @classmethod
-    def setup_class(cls, normalize_features=True, statistics_level='basic'):
+    def setup_class(cls, normalize_features=True, statistics_level="basic"):
         """Initializes the class by adding descriptions for all features"""
         cls.normalize_features = normalize_features
         cls.statistics_level = statistics_level
@@ -103,12 +103,12 @@ class FeatureClass:
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception as exc:
-            print('Failed feature', feature_name, 'exception:', exc)
+            print("Failed feature", feature_name, "exception:", exc)
             # if the feature cannot be computed, fill with np.nan
-            #feature_trivial = feature_function(self.__class__.trivial_graph)
-            #if isinstance(feature_trivial, list):
+            # feature_trivial = feature_function(self.__class__.trivial_graph)
+            # if isinstance(feature_trivial, list):
             #    feature = [np.nan]
-            #else:
+            # else:
             #    feature = np.nan
             # DANGER: this will not trigger the distribution computation anymore
             feature = np.nan
@@ -133,8 +133,9 @@ class FeatureClass:
 
     def compute_features(self):
         """main feature extraction function"""
-        self.add_feature("test", lambda graph: 0.0, 
-                "Test feature for the base feature class", 5)
+        self.add_feature(
+            "test", lambda graph: 0.0, "Test feature for the base feature class", 5
+        )
 
     def update_features(self, all_features):
         """update the feature dictionary if correct mode provided"""
@@ -174,12 +175,13 @@ class FeatureClass:
                 feat_interpret - interpretability_downgrade,
             )
 
-    def clustering_statistics(self, community_partition, feat_name, feat_desc, feat_interpret):
+    def clustering_statistics(
+        self, community_partition, feat_name, feat_desc, feat_interpret
+    ):
         """ Compute quality of the community partitions """
-        
+
         compl_desc = " of the partition of " + feat_desc
 
-        
         self.add_feature(
             feat_name + "_modularity",
             lambda graph: _try(quality.modularity, community_partition),
@@ -203,32 +205,37 @@ class FeatureClass:
             lambda graph: _try(quality.inter_community_edges, community_partition),
             "Inter community edges" + compl_desc,
             feat_interpret,
-        )        
+        )
         self.add_feature(
             feat_name + "_inter_community_non_edges",
             lambda graph: _try(quality.inter_community_non_edges, community_partition),
             "Inter community non edges" + compl_desc,
             feat_interpret,
-        )        
+        )
         self.add_feature(
             feat_name + "_intra_community_edges",
             lambda graph: _try(quality.intra_community_edges, community_partition),
             "Intra community edges" + compl_desc,
             feat_interpret,
-        )                        
-
+        )
 
     def feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes summary statistics of distributions"""
 
         self.feature_statistics_basic(feat_dist, feat_name, feat_desc, feat_interpret)
 
-        if self.statistics_level == 'medium':
-            self.feature_statistics_medium(feat_dist, feat_name, feat_desc, feat_interpret)
+        if self.statistics_level == "medium":
+            self.feature_statistics_medium(
+                feat_dist, feat_name, feat_desc, feat_interpret
+            )
 
-        if self.statistics_level == 'advanced':
-            self.feature_statistics_medium(feat_dist, feat_name, feat_desc, feat_interpret)
-            self.feature_statistics_advanced(feat_dist, feat_name, feat_desc, feat_interpret)
+        if self.statistics_level == "advanced":
+            self.feature_statistics_medium(
+                feat_dist, feat_name, feat_desc, feat_interpret
+            )
+            self.feature_statistics_advanced(
+                feat_dist, feat_name, feat_desc, feat_interpret
+            )
 
     def feature_statistics_basic(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes basic summary statistics of distributions"""
@@ -265,7 +272,9 @@ class FeatureClass:
             feat_interpret,
         )
 
-    def feature_statistics_medium(self, feat_dist, feat_name, feat_desc, feat_interpret):
+    def feature_statistics_medium(
+        self, feat_dist, feat_name, feat_desc, feat_interpret
+    ):
         """Computes mediumsummary statistics of distributions"""
         compl_desc = " of the distribution of " + feat_desc
 
@@ -294,7 +303,9 @@ class FeatureClass:
             feat_interpret - 1,
         )
 
-    def feature_statistics_advanced(self, feat_dist, feat_name, feat_desc, feat_interpret):
+    def feature_statistics_advanced(
+        self, feat_dist, feat_name, feat_desc, feat_interpret
+    ):
         """Computes advanced summary statistics of distributions"""
         compl_desc = " of the distribution of " + feat_desc
 
@@ -381,6 +392,7 @@ class FeatureClass:
             "Bayes confidance interval" + compl_desc,
             feat_interpret - 1,
         )
+
 
 def _try(func, feat_dist):
     try:
