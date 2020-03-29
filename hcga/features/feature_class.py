@@ -171,8 +171,11 @@ class FeatureClass:
                 feat_interpret - interpretability_downgrade,
             )
 
-    def clustering_statistics(self, community_partition, feat_name, feat_desc, feat_interpet):
+    def clustering_statistics(self, community_partition, feat_name, feat_desc, feat_interpret):
         """ Compute quality of the community partitions """
+        
+        compl_desc = " of the partition of " + feat_desc
+
         
         self.add_feature(
             feat_name + "_modularity",

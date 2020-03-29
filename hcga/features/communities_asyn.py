@@ -62,38 +62,47 @@ class CommunitiesAsyn(FeatureClass):
         for num_comms in num_communities:
             
             # this fails if num_comms is larger than number of nodes
-            c,density = list(asyn_fluidc(self.graph,num_comms))            
+            c,density = list(asyn_fluidc(self.graph,int(num_comms)))            
             
+            
+            sum_density = lambda graph: sum(density)            
             self.add_feature(
                 "sum_density_c={}".format(num_comms),
-                sum(density),
+                sum_density,
                 "The total density of communities after async fluid optimisations for c={}".format(num_comms),
                 InterpretabilityScore(3),
             )
+            
+            ratio_density = lambda graph: np.min(density)/np.max(density)
             self.add_feature(
                 "ratio_density_c={}".format(num_comms),
-                np.min(density)/np.max(density),
+                ratio_density,
                 "The ratio density of communities after async fluid optimisations for c={}".format(num_comms),
                 InterpretabilityScore(3),
             )
+            
+            most_dense = lambda graph: len(c[np.argmax(density)])
             self.add_feature(
                 "len_most_dense_c={}".format(num_comms),
-                len(c[np.argmax(density)]),
+                most_dense,
                 "The length of the most dense community after async fluid optimisations for c={}".format(num_comms),
                 InterpretabilityScore(4),
             )
+            
+            least_dense = lambda graph: len(c[np.argmin(density)])
             self.add_feature(
                 "len_least_dense_c={}".format(num_comms),
-                len(c[np.argmin(density)]),
+                least_dense,
                 "The length of the least dense community after async fluid optimisations for c={}".format(num_comms),
                 InterpretabilityScore(4),
             )
 
 
             # computing clustering quality 
+            partition = lambda graph: c
             self.add_feature(
                 "partition_c={}".format(num_comms),
-                c,
+                partition,
                 "The optimal partition after async fluid optimisations for c={}".format(num_comms),
                 InterpretabilityScore(4),
             )
