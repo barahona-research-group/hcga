@@ -73,7 +73,7 @@ class ForceCentrality(FeatureClass):
 
         self.add_feature(
             "force centrality",
-            force_centrality,
+            lambda graph: force_centrality(self.graph),
             "Force centrality is the distance from the centre of mass of the network - larger values indicate further from the centre",
             InterpretabilityScore(5),
         )
