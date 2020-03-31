@@ -2,6 +2,7 @@
 import logging
 import sys
 import numpy as np
+import networkx as nx
 import scipy.stats as st
 from networkx.algorithms.community import quality
 
@@ -35,7 +36,17 @@ class FeatureClass:
     def __init__(self, graph=None):
         """init function"""
         self.graph = graph
+        self.verify_graph()
         self.features = {}
+
+    def verify_graph(self):
+        """make sure a graph has correct properties"""
+        if nx.is_directed(self.graph):
+            self.graph = self.graph.to_undirected()
+
+        if "id" not in self.graph.graph:
+            L.warning('An id has not been set for a graph')
+            self.graph.graph['id'] = -1
 
     @classmethod
     def setup_class(cls, normalize_features=True, statistics_level="basic"):
@@ -116,7 +127,6 @@ class FeatureClass:
                 feature = np.nan
 
         if isinstance(feature, (list, np.ndarray)):
-            # if the feature is a list of numbers, extract statistics
             if isinstance(feature[0], set):
                 self.clustering_statistics(
                     feature, feature_name, feature_description, feature_interpret

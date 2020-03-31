@@ -3,12 +3,12 @@ import networkx as nx
 import pandas as pd
 
 from .io import load_dataset, save_dataset, load_features, save_features, save_analysis
-from .feature_extraction import extract
-from .feature_analysis import analysis
+from .extraction import extract
+from .analysis import analysis
 
 
-class hcga:
-    """ hcga standard object class
+class Hcga:
+    """hcga standard object class.
 
     Parameters
     ----------

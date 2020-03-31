@@ -62,7 +62,7 @@ def extract_features(
 ):
     """Extract features from dataset of graphs and save the feature matrix, info and labels"""
     from .io import load_dataset, save_features
-    from .feature_extraction import extract
+    from .extraction import extract
 
     graphs = load_dataset(dataset)
 
@@ -74,9 +74,13 @@ def extract_features(
         statistics_level=stats_level,
         with_runtimes=runtimes,
     )
-    if not runtimes:
 
+    if not runtimes:
         folder = Path(results_folder) / Path(dataset).stem
+
+        if not Path(results_folder).exists():
+            os.mkdir(results_folder)
+
         if not folder.exists():
             os.mkdir(folder)
 
@@ -140,7 +144,7 @@ def feature_analysis(
 ):
     """Analysis of the features extracted in feature_file"""
     from .io import load_features, save_analysis
-    from .feature_analysis import analysis
+    from .analysis import analysis
 
     results_folder = Path(results_folder) / dataset
     feature_filename = results_folder / feature_file

@@ -45,10 +45,9 @@ class CommunitiesBisection(FeatureClass):
         -----
         """
 
-        # computing clustering quality
         self.add_feature(
             "partition",
-            lambda graph: list(kernighan_lin_bisection(self.graph)),
+            lambda graph: list(kernighan_lin_bisection(graph)),
             "The optimal partition after async fluid optimisations for c={}",
             InterpretabilityScore(4),
         )

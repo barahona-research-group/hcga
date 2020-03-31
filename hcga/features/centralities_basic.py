@@ -80,9 +80,11 @@ class CentralitiesBasic(FeatureClass):
         )
 
         # Edge betweenness centrality
-        edge_betweenness_centrality = lambda graph: list(
-            centrality.edge_betweenness_centrality(graph).values()
-        )
+        def edge_betweenness_centrality(graph):
+            if len(graph.edges) > 0:
+                return list(centrality.edge_betweenness_centrality(graph).values())
+            else:
+                return [np.nan]
         self.add_feature(
             "edge betweenness centrality",
             edge_betweenness_centrality,

@@ -11,8 +11,8 @@ from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_sco
 from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
 from sklearn.preprocessing import StandardScaler
 
-from .utils import filter_features
-from .plotting import *
+from . import utils
+from . import plotting
 
 
 def _get_classifier(classifier):
@@ -54,7 +54,7 @@ def analysis(
         features, features_info, interpretability
     )
 
-    good_features = filter_features(features)
+    good_features = utils.filter_features(features)
     normed_features = normalise_feature_data(good_features)
     classifier = _get_classifier(classifier)
 
@@ -75,9 +75,9 @@ def analysis(
 
     if plot:
         if shap:
-            shap_plots(X, y, shap_values, results_folder, max_feats=max_feats)
+            plotting.shap_plots(X, y, shap_values, results_folder, max_feats=max_feats)
         else:
-            basic_plots(X, top_features, results_folder)
+            plotting.basic_plots(X, top_features, results_folder)
 
     output_csv(
         normed_features, features_info, top_features, shap_values, results_folder

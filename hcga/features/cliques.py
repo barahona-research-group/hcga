@@ -71,9 +71,11 @@ class Cliques(FeatureClass):
             InterpretabilityScore(3),
         )
 
-        clique_sizes = lambda graph: [
-            len(u) for u in list(clique.enumerate_all_cliques(graph)) if len(u) > 1
-        ]
+        def clique_sizes(graph):
+            out = [len(u) for u in list(clique.enumerate_all_cliques(graph)) if len(u) > 1]
+            if len(out) == 0:
+                return [np.nan]
+            return out
         self.add_feature(
             "clique sizes",
             clique_sizes,

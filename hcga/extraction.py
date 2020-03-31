@@ -18,6 +18,7 @@ def _set_graph_id(graphs):
     for i, graph in enumerate(graphs):
         graph.graph['id'] = i
 
+
 def extract(
     graphs,
     n_workers,
