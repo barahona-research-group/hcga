@@ -128,15 +128,15 @@ class CentralitiesBasic(FeatureClass):
         )
 
         # Eigenvector centrality
-        eigenvector_centrality = lambda graph: list(
-            centrality.eigenvector_centrality(graph, max_iter=100).values()
-        )
-        self.add_feature(
-            "eigenvector centrality",
-            eigenvector_centrality,
-            "Eigenvector centrality computes the centrality for a node based on the centrality of its neighbors",
-            InterpretabilityScore(4),
-        )
+#        eigenvector_centrality = lambda graph: list(
+#            centrality.eigenvector_centrality(graph).values()
+#        )
+#        self.add_feature(
+#            "eigenvector centrality",
+#            eigenvector_centrality,
+#            "Eigenvector centrality computes the centrality for a node based on the centrality of its neighbors",
+#            InterpretabilityScore(4),
+#        )
 
         # Katz centrality
         katz_centrality = lambda graph: list(centrality.katz_centrality(graph).values())

@@ -117,8 +117,9 @@ def feature_analysis(feature_file, results_folder, shap, classifier, kfold, plot
 
     X, explainer, shap_values = analysis(
         features,
-        features_info,
+        features_info,        
         filename=filename_analysis,
+        interpretability=1,
         folder=results_folder,
         shap=shap,
         classifier_type=classifier,

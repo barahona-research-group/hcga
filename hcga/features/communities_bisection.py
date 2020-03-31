@@ -37,7 +37,7 @@ class CommunitiesBisection(FeatureClass):
     """
 
     modes = ["medium", "slow"]
-    shortname = "CB"
+    shortname = "CBI"
     name = "communities_bisection"
     keywords = []
     normalize_features = True

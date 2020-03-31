@@ -18,30 +18,41 @@ def analysis(
     features,
     features_info,
     filename,
+    interpretability=1,
     shap=True,
-    classifier_type="RF",
+    classifier="RF",
     verbose=True,
     folder=".",
     kfold=True,
     plot=True,
 ):
-    """main function to classify graphs and plot results"""
-
+    """main function to classify graphs and plot results
+    
+    Parameters 
+    -----
+    interpretability: an integer in range 1-5
+        1 is all features, 5 is features with interpretability=5
+    
+    """
+    features, features_info = filter_interpretable(features,features_info,interpretability)
+    
     good_features = filter_features(features)
     normed_features = normalise_feature_data(good_features)
 
     # if reduced_set:
-
-    if classifier_type == "RF":
-        from sklearn.ensemble import RandomForestClassifier
-
-        classifier = RandomForestClassifier(n_estimators=100, max_depth=30)
-    elif classifier_type == "LGBM":
-        from lightgbm import LGBMClassifier
-
-        classifier = LGBMClassifier()
+    if isinstance(classifier,str):
+        if classifier == "RF":
+            from sklearn.ensemble import RandomForestClassifier
+    
+            classifier = RandomForestClassifier(n_estimators=100, max_depth=30)
+        elif classifier == "LGBM":
+            from lightgbm import LGBMClassifier
+    
+            classifier = LGBMClassifier()
+        else:
+            raise Exception("Unknown classifier type: {}".format(classifier))
     else:
-        raise Exception("Unknown classifier type: {}".format(classifier_type))
+        classifier = classifier
 
     if kfold:
         X, y, explainer, shap_values, top_features = fit_model_kfold(
@@ -58,7 +69,7 @@ def analysis(
         else:
             basic_plots(X, top_features, folder, filename)
 
-    # TODO: save a csv file with the ranked features
+
     output_csv(
         normed_features, features_info, top_features, shap_values, folder, filename
     )
@@ -248,3 +259,20 @@ def reduce_feature_set(X, y, top_features, classifier, importance_threshold=0.9)
     X_reduced = X.iloc[:, rank_feat]
 
     return X_reduced
+
+
+def filter_interpretable(features,features_info,interpretability):
+    
+    for feat in list(features_info.keys()):
+        score = features_info[feat]['feature_interpretability'].score
+
+        if score < interpretability:
+            features = features.drop(columns=[feat])
+            del features_info[feat]
+            
+      
+    return features, features_info
+
+
+
+
