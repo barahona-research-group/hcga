@@ -1,9 +1,14 @@
 """template class for feature extraction"""
-import networkx as nx
+import logging
+import sys
 import numpy as np
 import scipy.stats as st
 from networkx.algorithms.community import quality
 
+from .. import utils
+
+logging.basicConfig(filename='feature_exceptions.log', filemode='w', level=logging.DEBUG)
+L = logging.getLogger('Feature exceptions')
 
 class FeatureClass:
     """template class"""
@@ -21,7 +26,7 @@ class FeatureClass:
     # Feature descriptions as class variable
     feature_descriptions = {}
 
-    trivial_graph = nx.generators.classic.complete_graph(3)
+    trivial_graph = utils.get_trivial_graph()
 
     def __init_subclass__(cls):
         """Initialise class variables to default for each child class"""
@@ -100,9 +105,9 @@ class FeatureClass:
         try:
             feature = feature_function(self.graph)
         except (KeyboardInterrupt, SystemExit):
-            raise
+            sys.exit(0)
         except Exception as exc:
-            print("Failed feature", feature_name, "exception:", exc)
+            L.debug("Failed feature %s for graph %d with exception: %s", feature_name, self.graph.graph['id'], str(exc))
             # if the feature cannot be computed, fill with np.nan
             feature_trivial = feature_function(self.__class__.trivial_graph)
             if isinstance(feature_trivial, list):
@@ -176,7 +181,6 @@ class FeatureClass:
         self, community_partition, feat_name, feat_desc, feat_interpret
     ):
         """ Compute quality of the community partitions """
-
         compl_desc = " of the partition of " + feat_desc
 
         self.add_feature(
@@ -395,7 +399,7 @@ def _try(func, feat_dist):
     try:
         return func(feat_dist)
     except (KeyboardInterrupt, SystemExit):
-        raise
+        sys.exit(0)
     except:
         return np.nan
 

@@ -1,5 +1,13 @@
 """utils functions"""
 import numpy as np
+import networkx as nx
+
+
+def get_trivial_graph():
+    """generate a grivial graph for internal purposes"""
+    graph = nx.generators.classic.complete_graph(3)
+    graph.graph['id'] = 0
+    return graph
 
 
 def filter_features(features):

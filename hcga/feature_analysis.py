@@ -128,10 +128,6 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, verbose=False)
 
     X, y = _features_to_Xy(features)
 
-    #    X_train, X_test, y_train, y_test = train_test_split(
-    #        X, y, test_size=0.2, shuffle=True, stratify=y, random_state=42
-    #    )
-
     n_splits = _number_folds(y)
     print("Using", n_splits, "splits")
 
@@ -172,14 +168,13 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, verbose=False)
         acc_scores.append(balanced_accuracy_score(y_val, oof_preds[val_index]))
 
         if verbose:
-            print("Fold accuracy: --- {0:.3f} ---)".format(acc_scores[-1]))
+            print("Fold accuracy: --- {0:.3f} ---".format(acc_scores[-1]))
 
     if verbose:
-        print("Balanced accuracy: ", np.mean(acc_scores))
+        print("Balanced accuracy: ", np.round(np.mean(acc_scores), 3))
 
     if compute_shap:
         shap_values = [x / n_splits for x in shap_values]
-        # shap.summary_plot(shap_values, X_test)
 
     return X, y, explainer, shap_values, top_features
 
@@ -212,14 +207,6 @@ def fit_model(features, compute_shap=True, classifier=None, verbose=False):
 
     if verbose:
         print("Balanced accuracy: ", acc_scores)
-
-    #    if compute_shap:
-    #        shap.summary_plot(shap_values[0], X_test)  # , plot_type='dot')
-    #        force = shap.force_plot(
-    #            explainer.expected_value[0], shap_values[0][0, :], X_test.iloc[0, :]
-    #        )
-    #        shap.save_html("test.html", force)
-    # shap.dependence_plot("harmonic centrality_max_E", shap_values[0], X_test)
 
     return X, y, explainer, shap_values, top_features
 

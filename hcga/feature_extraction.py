@@ -10,8 +10,13 @@ from tqdm import tqdm
 
 import pandas as pd
 
-from .utils import filter_features
+from . import utils
 
+
+def _set_graph_id(graphs):
+    """set graphs ids for logging"""
+    for i, graph in enumerate(graphs):
+        graph.graph['id'] = i
 
 def extract(
     graphs,
@@ -22,6 +27,7 @@ def extract(
     with_runtimes=False,
 ):
     """main function to extract features"""
+    _set_graph_id(graphs)
 
     feat_classes = get_list_feature_classes(
         mode, normalize_features=normalize_features, statistics_level=statistics_level
@@ -32,6 +38,7 @@ def extract(
             "the computational time of each feature class.",
         )
         graphs = graphs[:10]
+
 
     raw_features = compute_all_features(
         graphs, feat_classes, n_workers=n_workers, with_runtimes=with_runtimes,
@@ -59,7 +66,7 @@ def extract(
         features["labels"] = [graph.label for graph in graphs]
 
         print(len(features.columns), "feature extracted.")
-        good_features = filter_features(features)
+        good_features = utils.filter_features(features)
         print(len(good_features.columns), "good features")
 
         return features, features_info
@@ -79,7 +86,7 @@ def get_list_feature_classes(
     non_feature_files = ["__init__", "feature_class", "utils"]
 
     list_feature_classes = []
-    trivial_graph = nx.generators.classic.complete_graph(3)
+    trivial_graph = utils.get_trivial_graph()
 
     for f_name in feature_path.glob("*.py"):
         feature_name = f_name.stem
@@ -92,10 +99,6 @@ def get_list_feature_classes(
                     normalize_features=normalize_features,
                     statistics_level=statistics_level,
                 )
-                # feature_class(trivial_graph).update_features(
-                #    {}, normalize_features=normalize_features,
-                #    statistics_level=statistics_level,
-                # )
     return list_feature_classes
 
 
@@ -103,36 +106,16 @@ class Worker:
     """worker for computing features"""
 
     def __init__(
-        self,
-        list_feature_classes,
-        # normalize_features=False,
-        # statistics_level="basic",
-        with_runtimes=False,
-    ):
+        self, list_feature_classes, with_runtimes=False):
         self.list_feature_classes = list_feature_classes
-        # self.normalize_features = normalize_features
-        # self.statistics_level = statistics_level
         self.with_runtimes = with_runtimes
 
     def __call__(self, graph):
-        return feature_extraction(
-            graph,
-            self.list_feature_classes,
-            # normalize_features=self.normalize_features,
-            # statistics_level=self.statistics_level,
-            with_runtimes=self.with_runtimes,
-        )
+        return feature_extraction(graph, self.list_feature_classes, with_runtimes=self.with_runtimes)
 
 
-def feature_extraction(
-    graph,
-    list_feature_classes,
-    # normalize_features=False,
-    with_runtimes=False,
-    # statistics_level="basic",
-):
+def feature_extraction(graph, list_feature_classes, with_runtimes=False):
     """extract features from a single graph"""
-
     if with_runtimes:
         runtimes = {}
 
@@ -142,11 +125,7 @@ def feature_extraction(
             start_time = time.time()
 
         feature_inst = feature_class(graph)
-        feature_inst.update_features(
-            all_features,
-            # normalize_features=normalize_features,
-            # statistics_level=statistics_level,
-        )
+        feature_inst.update_features(all_features)
 
         if with_runtimes:
             runtimes[feature_class.shortname] = time.time() - start_time
@@ -160,20 +139,12 @@ def compute_all_features(
     graphs,
     list_feature_classes,
     n_workers=1,
-    # normalize_features=False,
-    # statistics_level="basic",
     with_runtimes=False,
 ):
     """compute the feature from all graphs"""
     print("Computing features for {} graphs:".format(len(graphs)))
 
-    worker = Worker(
-        list_feature_classes,
-        # normalize_features=normalize_features,
-        # statistics_level=statistics_level,
-        with_runtimes=with_runtimes,
-    )
-
+    worker = Worker(list_feature_classes, with_runtimes=with_runtimes)
     if with_runtimes:
         n_workers = 1
 
