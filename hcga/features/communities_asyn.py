@@ -28,7 +28,7 @@ from networkx.exception import NetworkXError
 from networkx.utils import groups, py_random_state
 
 from . import utils
-from .feature_class import FeatureClass, InterpretabilityScore
+from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "CommunitiesAsyn"
 

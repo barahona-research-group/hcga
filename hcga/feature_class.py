@@ -6,7 +6,7 @@ import networkx as nx
 import scipy.stats as st
 from networkx.algorithms.community import quality
 
-from .. import utils
+from . import utils
 
 logging.basicConfig(filename='feature_exceptions.log', filemode='w', level=logging.DEBUG)
 L = logging.getLogger('Feature exceptions')

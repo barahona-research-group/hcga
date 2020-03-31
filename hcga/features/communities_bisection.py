@@ -22,7 +22,7 @@
 
 from networkx.algorithms.community import kernighan_lin_bisection
 
-from .feature_class import FeatureClass, InterpretabilityScore
+from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "CommunitiesBisection"
 

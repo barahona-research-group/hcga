@@ -21,7 +21,7 @@
 
 from networkx.algorithms import clique
 
-from .feature_class import FeatureClass, InterpretabilityScore
+from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Cliques"
 

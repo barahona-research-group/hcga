@@ -23,7 +23,7 @@ import networkx as nx
 import numpy as np
 
 from . import utils
-from .feature_class import FeatureClass, InterpretabilityScore
+from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "BasicStats"
 

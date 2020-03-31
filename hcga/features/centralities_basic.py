@@ -22,7 +22,7 @@
 import networkx as nx
 from networkx.algorithms import centrality
 
-from .feature_class import FeatureClass, InterpretabilityScore
+from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "CentralitiesBasic"
 

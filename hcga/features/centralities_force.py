@@ -22,7 +22,7 @@
 import numpy as np
 from fa2 import ForceAtlas2
 
-from .feature_class import FeatureClass, InterpretabilityScore
+from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "ForceCentrality"
 

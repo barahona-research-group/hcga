@@ -23,7 +23,7 @@ from functools import lru_cache
 
 from networkx.algorithms.community import label_propagation_communities
 
-from .feature_class import FeatureClass, InterpretabilityScore
+from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "CommunitiesLabelPropagation"
 

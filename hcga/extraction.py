@@ -84,7 +84,7 @@ def get_list_feature_classes(
 ):
     """Generates and returns the list of feature classes to compute for a given mode"""
     feature_path = Path(__file__).parent / "features"
-    non_feature_files = ["__init__", "feature_class", "utils"]
+    non_feature_files = ["utils"]
 
     list_feature_classes = []
     trivial_graph = utils.get_trivial_graph()
