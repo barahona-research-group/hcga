@@ -19,22 +19,11 @@
 # You should have received a copy of the GNU General Public License
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
-import pandas as pd
-import numpy as np
-import networkx as nx
 from functools import lru_cache
-
-from .feature_class import FeatureClass
-from .feature_class import InterpretabilityScore
-
-from collections import Counter
-from networkx.exception import NetworkXError
-from networkx.algorithms.components import is_connected
-from networkx.utils import groups
-from networkx.utils import py_random_state
 
 from networkx.algorithms.community import label_propagation_communities
 
+from .feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "CommunitiesLabelPropagation"
 
@@ -60,24 +49,23 @@ class CommunitiesLabelPropagation(FeatureClass):
         @lru_cache(maxsize=None)
         def eval_labelprop(graph):
             """this evaluates the main function and cach it for speed up"""
-            return list(label_propagation_communities(graph))              
+            communities = list(label_propagation_communities(graph))
 
-
+            # if a single communities, add a trivial one
+            if len(communities) == 1:
+                communities.append([{0}])
+            return communities
 
         self.add_feature(
             "ratio_commsize",
-            lambda graph: len(eval_labelprop(self.graph)[0])/len(eval_labelprop(self.graph)[1]),
+            lambda graph: len(eval_labelprop(graph)[0]) / len(eval_labelprop(graph)[1]),
             "The ratio of the largest and second largest communities using label propagation",
             InterpretabilityScore(4),
         )
 
-
-
         self.add_feature(
             "sum_density_c={}",
-            lambda graph: eval_labelprop(self.graph),
+            lambda graph: eval_labelprop(graph),
             "The optimal partition using label propagation algorithm",
             InterpretabilityScore(4),
         )
-
-

@@ -19,20 +19,16 @@
 # You should have received a copy of the GNU General Public License
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
-import pandas as pd
-import numpy as np
-import networkx as nx
+from collections import Counter
 from functools import lru_cache
 
-from .feature_class import FeatureClass
-from .feature_class import InterpretabilityScore
-
-from collections import Counter
-from networkx.exception import NetworkXError
+import numpy as np
 from networkx.algorithms.components import is_connected
-from networkx.utils import groups
-from networkx.utils import py_random_state
+from networkx.exception import NetworkXError
+from networkx.utils import groups, py_random_state
 
+from . import utils
+from .feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "CommunitiesAsyn"
 
@@ -59,6 +55,12 @@ class CommunitiesAsyn(FeatureClass):
         @lru_cache(maxsize=None)
         def eval_asyn(graph, num_comms):
             """this evaluates the main function and cach it for speed up"""
+            graph = utils.ensure_connected(graph)
+
+            # To not crash with trivial graph
+            if int(num_comms) > len(graph):
+                return [{0}], [0]
+
             return asyn_fluidc(graph, int(num_comms))
 
         num_communities = np.linspace(2, 20, 10)
@@ -119,6 +121,7 @@ class CommunitiesAsyn(FeatureClass):
             )
 
 
+# this function is adapted from networks directly
 @py_random_state(3)
 def asyn_fluidc(G, k, max_iter=100, seed=None):
     """Returns communities in `G` as detected by Fluid Communities algorithm.

@@ -20,7 +20,8 @@ setup(
                      'seaborn', 
                      'lightgbm',
                      'shap',
-                     'pandas'],
+                     'pandas',
+                     'wget'],
     entry_points={
         'console_scripts': ['hcga=hcga.app:cli'],
     }

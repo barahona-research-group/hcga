@@ -20,13 +20,9 @@
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
 
-
-from .feature_class import FeatureClass
-from .feature_class import InterpretabilityScore
-
-
 from networkx.algorithms.community import kernighan_lin_bisection
 
+from .feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "CommunitiesBisection"
 
@@ -49,8 +45,6 @@ class CommunitiesBisection(FeatureClass):
         -----
         """
 
-
-
         # computing clustering quality
         self.add_feature(
             "partition",
@@ -58,7 +52,3 @@ class CommunitiesBisection(FeatureClass):
             "The optimal partition after async fluid optimisations for c={}",
             InterpretabilityScore(4),
         )
-
-
-
-

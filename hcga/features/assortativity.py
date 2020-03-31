@@ -19,12 +19,11 @@
 # You should have received a copy of the GNU General Public License
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
-from .feature_class import FeatureClass
-from .feature_class import InterpretabilityScore
-import numpy as np
 import networkx as nx
+import numpy as np
 from networkx.algorithms import assortativity
 
+from .feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Assortativity"
 
@@ -42,7 +41,7 @@ class Assortativity(FeatureClass):
         """
         Compute the assortativity of the network structure
 
-        Computed statistics    
+        Computed statistics
         -----
         Put here the list of things that are computed, with corresponding names
 

@@ -19,10 +19,11 @@
 # You should have received a copy of the GNU General Public License
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
-from .feature_class import FeatureClass
-from .feature_class import InterpretabilityScore
-import numpy as np
 import networkx as nx
+import numpy as np
+
+from . import utils
+from .feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "BasicStats"
 
@@ -40,7 +41,7 @@ class BasicStats(FeatureClass):
         """
         Compute some basic stats of the network
 
-        Computed statistics    
+        Computed statistics
         -----
         Put here the list of things that are computed, with corresponding names
 
@@ -67,13 +68,13 @@ class BasicStats(FeatureClass):
         # Adding diameter stats
         self.add_feature(
             "diameter",
-            lambda graph: nx.diameter(graph),
+            lambda graph: nx.diameter(utils.ensure_connected(graph)),
             "Diameter of the graph",
             InterpretabilityScore("max"),
         )
         self.add_feature(
             "radius",
-            lambda graph: nx.radius(graph),
+            lambda graph: nx.radius(utils.ensure_connected(graph)),
             "Radius of the graph",
             InterpretabilityScore("max"),
         )

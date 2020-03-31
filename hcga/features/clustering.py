@@ -19,13 +19,10 @@
 # You should have received a copy of the GNU General Public License
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
-import pandas as pd
-import numpy as np
 import networkx as nx
+import numpy as np
 
-from .feature_class import FeatureClass
-from .feature_class import InterpretabilityScore
-
+from .feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Clustering"
 

@@ -1,7 +1,7 @@
 """template class for feature extraction"""
+import networkx as nx
 import numpy as np
 import scipy.stats as st
-import networkx as nx
 from networkx.algorithms.community import quality
 
 
@@ -23,9 +23,8 @@ class FeatureClass:
 
     trivial_graph = nx.generators.classic.complete_graph(3)
 
-    def __init_subclass__(cls, **kwargs):
+    def __init_subclass__(cls):
         """Initialise class variables to default for each child class"""
-        # super().__init_subclass__(**kwargs)
         cls.feature_descriptions = {}
 
     def __init__(self, graph=None):
@@ -105,15 +104,13 @@ class FeatureClass:
         except Exception as exc:
             print("Failed feature", feature_name, "exception:", exc)
             # if the feature cannot be computed, fill with np.nan
-            # feature_trivial = feature_function(self.__class__.trivial_graph)
-            # if isinstance(feature_trivial, list):
-            #    feature = [np.nan]
-            # else:
-            #    feature = np.nan
-            # DANGER: this will not trigger the distribution computation anymore
-            feature = np.nan
+            feature_trivial = feature_function(self.__class__.trivial_graph)
+            if isinstance(feature_trivial, list):
+                feature = [np.nan]
+            else:
+                feature = np.nan
 
-        if isinstance(feature, list) or isinstance(feature, np.ndarray):
+        if isinstance(feature, (list, np.ndarray)):
             # if the feature is a list of numbers, extract statistics
             if isinstance(feature[0], set):
                 self.clustering_statistics(
@@ -414,7 +411,7 @@ class InterpretabilityScore:
         Parameters
         ----------
         score: number or {'min', 'max'}
-            value of score to set, 
+            value of score to set
             will be shrunk to be within [min_score, max_score]
         """
         if score == "max":
@@ -435,7 +432,7 @@ class InterpretabilityScore:
         return self.score
 
     def __add__(self, other):
-        if type(other) == int:
+        if isinstance(other, int):
             othervalue = other
         else:
             othervalue = other.get_score()
@@ -443,7 +440,7 @@ class InterpretabilityScore:
         return result
 
     def __sub__(self, other):
-        if type(other) == int:
+        if isinstance(other, int):
             othervalue = other
         else:
             othervalue = other.get_score()

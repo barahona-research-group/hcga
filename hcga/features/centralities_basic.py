@@ -19,11 +19,10 @@
 # You should have received a copy of the GNU General Public License
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
-from .feature_class import FeatureClass
-from .feature_class import InterpretabilityScore
-import numpy as np
-from networkx.algorithms import centrality
 import networkx as nx
+from networkx.algorithms import centrality
+
+from .feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "CentralitiesBasic"
 
@@ -128,15 +127,15 @@ class CentralitiesBasic(FeatureClass):
         )
 
         # Eigenvector centrality
-#        eigenvector_centrality = lambda graph: list(
-#            centrality.eigenvector_centrality(graph).values()
-#        )
-#        self.add_feature(
-#            "eigenvector centrality",
-#            eigenvector_centrality,
-#            "Eigenvector centrality computes the centrality for a node based on the centrality of its neighbors",
-#            InterpretabilityScore(4),
-#        )
+        #        eigenvector_centrality = lambda graph: list(
+        #            centrality.eigenvector_centrality(graph).values()
+        #        )
+        #        self.add_feature(
+        #            "eigenvector centrality",
+        #            eigenvector_centrality,
+        #            "Eigenvector centrality computes the centrality for a node based on the centrality of its neighbors",
+        #            InterpretabilityScore(4),
+        #        )
 
         # Katz centrality
         katz_centrality = lambda graph: list(centrality.katz_centrality(graph).values())

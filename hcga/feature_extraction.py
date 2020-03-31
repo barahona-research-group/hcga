@@ -5,6 +5,7 @@ from importlib import import_module
 from pathlib import Path
 import networkx as nx
 import numpy as np
+from collections import defaultdict
 from tqdm import tqdm
 
 import pandas as pd
@@ -38,15 +39,11 @@ def extract(
         graphs,
         feat_classes,
         n_workers=n_workers,
-        # normalize_features=normalize_features,
-        # statistics_level=statistics_level,
         with_runtimes=with_runtimes,
     )
 
     if with_runtimes:
         runtimes = [raw_feature[1] for raw_feature in raw_features]
-        from collections import defaultdict
-
         list_runtimes = defaultdict(list)
         for runtime in runtimes:
             for feat in runtime:
@@ -84,7 +81,7 @@ def get_list_feature_classes(
 ):
     """Generates and returns the list of feature classes to compute for a given mode"""
     feature_path = Path(__file__).parent / "features"
-    non_feature_files = ["__init__", "feature_class"]
+    non_feature_files = ["__init__", "feature_class", "utils"]
 
     list_feature_classes = []
     trivial_graph = nx.generators.classic.complete_graph(3)

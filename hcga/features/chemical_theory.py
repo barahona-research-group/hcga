@@ -19,11 +19,9 @@
 # You should have received a copy of the GNU General Public License
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
-from .feature_class import FeatureClass
-from .feature_class import InterpretabilityScore
-import numpy as np
-from networkx.algorithms import centrality
 import networkx as nx
+
+from .feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "ChemicalTheory"
 
@@ -41,7 +39,7 @@ class ChemicalTheory(FeatureClass):
         """
         Compute some standard centrality measures for the network
 
-        Computed statistics    
+        Computed statistics
         -----
         Put here the list of things that are computed, with corresponding names
 

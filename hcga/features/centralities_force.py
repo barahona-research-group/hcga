@@ -19,13 +19,10 @@
 # You should have received a copy of the GNU General Public License
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
-from .feature_class import FeatureClass
-from .feature_class import InterpretabilityScore
 import numpy as np
-from networkx.algorithms import centrality
-import networkx as nx
 from fa2 import ForceAtlas2
 
+from .feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "ForceCentrality"
 
@@ -43,7 +40,7 @@ class ForceCentrality(FeatureClass):
         """
         Compute some standard centrality measures for the network
 
-        Computed statistics    
+        Computed statistics
         -----
         Put here the list of things that are computed, with corresponding names
 
@@ -64,9 +61,9 @@ class ForceCentrality(FeatureClass):
 
         def force_centrality(graph):
             c = []
-            for i in range(n_force):
+            for _ in range(n_force):
                 pos = forceatlas2.forceatlas2_networkx_layout(
-                    graph, pos=None, iterations=2000
+                    graph, pos=None,
                 )
                 c.append(np.linalg.norm(np.array(list(pos.values())), axis=1))
             return np.vstack(c).mean(axis=0) / np.max(np.vstack(c))
