@@ -22,6 +22,9 @@ def _remove_small_graphs(graphs, n_node_min=2):
 
 def save_analysis(X, explainer, shap_values, folder=".", filename="analysis_results"):
     """save results of analysis"""
+    if not Path(folder).exists():
+        os.mkdir(folder)
+
     with open(os.path.join(folder, filename + ".pkl"), "wb") as f:
         pickle.dump([X, explainer, shap_values], f)
 

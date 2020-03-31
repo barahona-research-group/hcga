@@ -1,11 +1,9 @@
 """ hcga app with click module """
 import click
-
-import numpy
 import warnings
 from pathlib import Path
+import os
 
-numpy.seterr(all="ignore")
 warnings.simplefilter("ignore")
 
 
@@ -16,6 +14,13 @@ def cli():
 
 @cli.command("extract_features")
 @click.argument("dataset", type=str)
+@click.option(
+    "-rf",
+    "--results-folder",
+    default="results",
+    show_default=True,
+    help="Location of results",
+)
 @click.option(
     "-n",
     "--n-workers",
@@ -46,13 +51,14 @@ def cli():
 @click.option(
     "-of",
     "--output-file",
+    default="all_features.pkl",
     help="Location of results, by default same as initial dataset",
 )
 @click.option(
     "--runtimes/--no-runtimes", default=False, show_default=True, help="Output runtimes"
 )
 def extract_features(
-    dataset, n_workers, mode, output_file, norm, stats_level, runtimes,
+    dataset, n_workers, mode, output_file, norm, stats_level, runtimes, results_folder
 ):
     """Extract features from dataset of graphs and save the feature matrix, info and labels"""
     from .io import load_dataset, save_features
@@ -68,23 +74,31 @@ def extract_features(
         statistics_level=stats_level,
         with_runtimes=runtimes,
     )
+    if not runtimes:
 
-    if output_file is None:
-        output_file = Path(dataset).parent / (Path(dataset).stem + "_features.pkl")
+        folder = Path(results_folder) / Path(dataset).stem
+        if not folder.exists():
+            os.mkdir(folder)
 
-    save_features(
-        features, features_info, filename=output_file,
-    )
+        output_file = folder / output_file
+        save_features(features, features_info, filename=output_file)
 
 
 @cli.command("feature_analysis")
-@click.argument("feature_file", type=str)
+@click.argument("dataset", type=str)
 @click.option(
     "-rf",
     "--results-folder",
     default="./results",
     show_default=True,
     help="Location of results",
+)
+@click.option(
+    "-ff",
+    "--feature-file",
+    default="all_features.pkl",
+    show_default=True,
+    help="Location of features",
 )
 @click.option(
     "--shap/--no-shap",
@@ -99,6 +113,13 @@ def extract_features(
     show_default=True,
     help="classifier feature analysis (RF, LGBM)",
 )
+@click.option(
+    "-i",
+    "--interpretability",
+    default=1,
+    show_default=True,
+    help="Interpretability of feature to consider",
+)
 @click.option("--kfold/--no-kfold", default=True, show_default=True, help="use K-fold")
 @click.option(
     "-p/-np",
@@ -107,27 +128,33 @@ def extract_features(
     show_default=True,
     help="Optionnaly plot analysis results",
 )
-def feature_analysis(feature_file, results_folder, shap, classifier, kfold, plot):
+def feature_analysis(
+    dataset,
+    results_folder,
+    feature_file,
+    shap,
+    classifier,
+    kfold,
+    plot,
+    interpretability,
+):
     """Analysis of the features extracted in feature_file"""
     from .io import load_features, save_analysis
     from .feature_analysis import analysis
 
-    [features, features_info] = load_features(filename=feature_file)
-    filename_analysis = Path(feature_file).stem + "_analysis"
+    results_folder = Path(results_folder) / dataset
+    feature_filename = results_folder / feature_file
+    features, features_info = load_features(filename=feature_filename)
 
     X, explainer, shap_values = analysis(
         features,
-        features_info,        
-        filename=filename_analysis,
-        interpretability=1,
+        features_info,
+        interpretability=interpretability,
         folder=results_folder,
         shap=shap,
-        classifier_type=classifier,
+        classifier=classifier,
         kfold=kfold,
         plot=plot,
-    )
-    save_analysis(
-        X, explainer, shap_values, folder=results_folder, filename=filename_analysis
     )
 
 

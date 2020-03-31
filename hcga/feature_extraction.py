@@ -33,13 +33,8 @@ def extract(
         )
         graphs = graphs[:10]
 
-    
-
     raw_features = compute_all_features(
-        graphs,
-        feat_classes,
-        n_workers=n_workers,
-        with_runtimes=with_runtimes,
+        graphs, feat_classes, n_workers=n_workers, with_runtimes=with_runtimes,
     )
 
     if with_runtimes:

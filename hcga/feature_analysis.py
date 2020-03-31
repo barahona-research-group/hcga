@@ -2,6 +2,7 @@
 
 import time
 import os
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import shap
@@ -14,10 +15,24 @@ from .utils import filter_features
 from .plotting import *
 
 
+def _get_classifier(classifier):
+    """Get a classifier."""
+    if isinstance(classifier, str):
+        if classifier == "RF":
+            from sklearn.ensemble import RandomForestClassifier
+
+            return RandomForestClassifier(n_estimators=100, max_depth=30)
+        if classifier == "LGBM":
+            from lightgbm import LGBMClassifier
+
+            return LGBMClassifier()
+        raise Exception("Unknown classifier type: {}".format(classifier))
+    return classifier
+
+
 def analysis(
     features,
     features_info,
-    filename,
     interpretability=1,
     shap=True,
     classifier="RF",
@@ -25,8 +40,9 @@ def analysis(
     folder=".",
     kfold=True,
     plot=True,
+    max_feats=20,
 ):
-    """main function to classify graphs and plot results
+    """Main function to classify graphs and plot results.
     
     Parameters 
     -----
@@ -34,25 +50,13 @@ def analysis(
         1 is all features, 5 is features with interpretability=5
     
     """
-    features, features_info = filter_interpretable(features,features_info,interpretability)
-    
+    features, features_info = filter_interpretable(
+        features, features_info, interpretability
+    )
+
     good_features = filter_features(features)
     normed_features = normalise_feature_data(good_features)
-
-    # if reduced_set:
-    if isinstance(classifier,str):
-        if classifier == "RF":
-            from sklearn.ensemble import RandomForestClassifier
-    
-            classifier = RandomForestClassifier(n_estimators=100, max_depth=30)
-        elif classifier == "LGBM":
-            from lightgbm import LGBMClassifier
-    
-            classifier = LGBMClassifier()
-        else:
-            raise Exception("Unknown classifier type: {}".format(classifier))
-    else:
-        classifier = classifier
+    classifier = _get_classifier(classifier)
 
     if kfold:
         X, y, explainer, shap_values, top_features = fit_model_kfold(
@@ -63,24 +67,27 @@ def analysis(
             normed_features, classifier=classifier, verbose=verbose
         )
 
+    results_folder = Path(folder) / (
+        "results_interpretability_" + str(interpretability)
+    )
+    if not Path(results_folder).exists():
+        os.mkdir(results_folder)
+
     if plot:
         if shap:
-            shap_plots(X, y, shap_values, folder, filename)
+            shap_plots(X, y, shap_values, results_folder, max_feats=max_feats)
         else:
-            basic_plots(X, top_features, folder, filename)
-
+            basic_plots(X, top_features, results_folder)
 
     output_csv(
-        normed_features, features_info, top_features, shap_values, folder, filename
+        normed_features, features_info, top_features, shap_values, results_folder
     )
 
     return X, explainer, shap_values
 
 
-def output_csv(
-    features, features_info, feature_importance, shap_values, folder, filename
-):
-
+def output_csv(features, features_info, feature_importance, shap_values, folder):
+    """save csv file with analysis data"""
     X, y = _features_to_Xy(features)
 
     index_rows = [
@@ -110,7 +117,7 @@ def output_csv(
     # sort by shap average
     output_df = output_df.T.sort_values("shap_average", ascending=False).T
 
-    output_df.to_csv(os.path.join(folder, filename + "_importance_results.csv"))
+    output_df.to_csv(os.path.join(folder, "importance_results.csv"))
 
 
 def fit_model_kfold(features, compute_shap=True, classifier=None, verbose=False):
@@ -241,7 +248,7 @@ def _number_folds(y):
 
 
 def reduce_feature_set(X, y, top_features, classifier, importance_threshold=0.9):
-    """    Reduce the feature set   """
+    """Reduce the feature set."""
 
     mean_importance = np.mean(np.array(top_features), axis=0)
     rank_feat = np.argsort(mean_importance)[::-1]
@@ -261,18 +268,12 @@ def reduce_feature_set(X, y, top_features, classifier, importance_threshold=0.9)
     return X_reduced
 
 
-def filter_interpretable(features,features_info,interpretability):
-    
+def filter_interpretable(features, features_info, interpretability):
+    """Get only features with certain interpretability."""
+    interpretability = min(5, interpretability)
     for feat in list(features_info.keys()):
-        score = features_info[feat]['feature_interpretability'].score
-
+        score = features_info[feat]["feature_interpretability"].score
         if score < interpretability:
             features = features.drop(columns=[feat])
             del features_info[feat]
-            
-      
     return features, features_info
-
-
-
-
