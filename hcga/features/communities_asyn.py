@@ -27,8 +27,8 @@ from networkx.algorithms.components import is_connected
 from networkx.exception import NetworkXError
 from networkx.utils import groups, py_random_state
 
-from . import utils
 from ..feature_class import FeatureClass, InterpretabilityScore
+from . import utils
 
 featureclass_name = "CommunitiesAsyn"
 
@@ -55,13 +55,7 @@ class CommunitiesAsyn(FeatureClass):
         @lru_cache(maxsize=None)
         def eval_asyn(graph, num_comms):
             """this evaluates the main function and cach it for speed up"""
-            graph = utils.ensure_connected(graph)
-
-            # To not crash with trivial graph
-            if int(num_comms) > len(graph):
-                return [{0}], [0]
-
-            return asyn_fluidc(graph, int(num_comms))
+            return asyn_fluidc(utils.ensure_connected(graph), int(num_comms))
 
         num_communities = np.linspace(2, 20, 10)
         for num_comms in num_communities:
@@ -118,6 +112,7 @@ class CommunitiesAsyn(FeatureClass):
                     num_comms
                 ),
                 InterpretabilityScore(4),
+                statistics="clustering",
             )
 
 

@@ -1,13 +1,12 @@
 """plotting functions"""
 import os
 
-import pandas as pd
+import matplotlib.pyplot as plt
 import numpy as np
-from scipy.cluster.hierarchy import dendrogram, linkage
+import pandas as pd
 import seaborn as sns
 import shap
-
-import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import dendrogram, linkage
 
 # matplotlib.use("agg")
 

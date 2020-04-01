@@ -1,8 +1,9 @@
 """ hcga app with click module """
-import click
+import os
 import warnings
 from pathlib import Path
-import os
+
+import click
 
 warnings.simplefilter("ignore")
 

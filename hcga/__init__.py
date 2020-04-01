@@ -1,8 +1,7 @@
 """import basic functions"""
 
-# expose the class
-from .hcga import Hcga
-
+from .analysis import analysis
 # expose the two main functions
 from .extraction import extract
-from .analysis import analysis 
+# expose the class
+from .hcga import Hcga

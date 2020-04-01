@@ -1,14 +1,14 @@
 """functions to extract features from graphs"""
 import multiprocessing
 import time
+from collections import defaultdict
 from importlib import import_module
 from pathlib import Path
+
 import networkx as nx
 import numpy as np
-from collections import defaultdict
-from tqdm import tqdm
-
 import pandas as pd
+from tqdm import tqdm
 
 from . import utils
 
@@ -16,7 +16,7 @@ from . import utils
 def _set_graph_id(graphs):
     """set graphs ids for logging"""
     for i, graph in enumerate(graphs):
-        graph.graph['id'] = i
+        graph.graph["id"] = i
 
 
 def extract(
@@ -39,7 +39,6 @@ def extract(
             "the computational time of each feature class.",
         )
         graphs = graphs[:10]
-
 
     raw_features = compute_all_features(
         graphs, feat_classes, n_workers=n_workers, with_runtimes=with_runtimes,
@@ -84,7 +83,7 @@ def get_list_feature_classes(
 ):
     """Generates and returns the list of feature classes to compute for a given mode"""
     feature_path = Path(__file__).parent / "features"
-    non_feature_files = ["utils"]
+    non_feature_files = ["__init__", "utils"]
 
     list_feature_classes = []
     trivial_graph = utils.get_trivial_graph()
@@ -106,13 +105,14 @@ def get_list_feature_classes(
 class Worker:
     """worker for computing features"""
 
-    def __init__(
-        self, list_feature_classes, with_runtimes=False):
+    def __init__(self, list_feature_classes, with_runtimes=False):
         self.list_feature_classes = list_feature_classes
         self.with_runtimes = with_runtimes
 
     def __call__(self, graph):
-        return feature_extraction(graph, self.list_feature_classes, with_runtimes=self.with_runtimes)
+        return feature_extraction(
+            graph, self.list_feature_classes, with_runtimes=self.with_runtimes
+        )
 
 
 def feature_extraction(graph, list_feature_classes, with_runtimes=False):
@@ -137,10 +137,7 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
 
 
 def compute_all_features(
-    graphs,
-    list_feature_classes,
-    n_workers=1,
-    with_runtimes=False,
+    graphs, list_feature_classes, n_workers=1, with_runtimes=False,
 ):
     """compute the feature from all graphs"""
     print("Computing features for {} graphs:".format(len(graphs)))

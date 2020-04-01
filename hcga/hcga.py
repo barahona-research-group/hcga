@@ -1,10 +1,11 @@
-import numpy as np
 import networkx as nx
+import numpy as np
 import pandas as pd
 
-from .io import load_dataset, save_dataset, load_features, save_features, save_analysis
-from .extraction import extract
 from .analysis import analysis
+from .extraction import extract
+from .io import (load_dataset, load_features, save_analysis, save_dataset,
+                 save_features)
 
 
 class Hcga:

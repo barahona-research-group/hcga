@@ -40,7 +40,6 @@ def test_compute_features():
             assert len(feature_inst.features) > 0
 
 
-
 def test_trivial_graph():
     """test if the features are computable on trivial graph"""
     from hcga.utils import get_trivial_graph

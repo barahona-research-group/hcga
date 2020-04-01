@@ -62,12 +62,13 @@ class Assortativity(FeatureClass):
             InterpretabilityScore(4),
         )
 
-        average_neighbor_degree = lambda graph: np.asarray(
-            list(assortativity.average_neighbor_degree(graph).values())
+        average_neighbor_degree = lambda graph: list(
+            assortativity.average_neighbor_degree(graph).values()
         )
         self.add_feature(
             "degree assortativity",
             average_neighbor_degree,
             "average neighbor degree",
             InterpretabilityScore(4),
+            statistics="centrality",
         )

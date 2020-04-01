@@ -1,18 +1,20 @@
 """function for analysis of graph features"""
 
-import time
 import os
+import time
 from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import shap
 import xgboost
-from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score
-from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
+from sklearn.metrics import (accuracy_score, balanced_accuracy_score,
+                             roc_auc_score)
+from sklearn.model_selection import (StratifiedKFold, cross_val_score,
+                                     train_test_split)
 from sklearn.preprocessing import StandardScaler
 
-from . import utils
-from . import plotting
+from . import plotting, utils
 
 
 def _get_classifier(classifier):

@@ -68,4 +68,5 @@ class CommunitiesLabelPropagation(FeatureClass):
             lambda graph: eval_labelprop(graph),
             "The optimal partition using label propagation algorithm",
             InterpretabilityScore(4),
+            statistics="clustering",
         )

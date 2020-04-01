@@ -50,4 +50,5 @@ class CommunitiesBisection(FeatureClass):
             lambda graph: list(kernighan_lin_bisection(graph)),
             "The optimal partition after async fluid optimisations for c={}",
             InterpretabilityScore(4),
+            statistics="clustering",
         )

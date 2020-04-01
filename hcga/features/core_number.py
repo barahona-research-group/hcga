@@ -48,11 +48,12 @@ class CoreNumber(FeatureClass):
 
         # Degree centrality
         core_number = lambda graph: list(
-            np.asarray(list(nx.core_number(self.graph).values()))
+            np.asarray(list(nx.core_number(graph).values()))
         )
         self.add_feature(
             "core number",
             core_number,
             "The core number distribution",
             InterpretabilityScore(5),
+            statistics="centrality",
         )

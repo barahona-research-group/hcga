@@ -1,10 +1,11 @@
 """input/output functions"""
-import sys
+import csv
 import os
 import pickle
-import csv
-import numpy as np
+import sys
 from pathlib import Path
+
+import numpy as np
 
 
 def _ensure_weights(graphs):

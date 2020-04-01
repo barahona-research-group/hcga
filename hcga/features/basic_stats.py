@@ -22,8 +22,8 @@
 import networkx as nx
 import numpy as np
 
-from . import utils
 from ..feature_class import FeatureClass, InterpretabilityScore
+from . import utils
 
 featureclass_name = "BasicStats"
 
@@ -85,12 +85,4 @@ class BasicStats(FeatureClass):
         )
         self.add_feature(
             "density", density, "Density of the graph", InterpretabilityScore("max")
-        )
-
-        degree_vals = lambda graph: list(dict(graph.degree()).values())
-        self.add_feature(
-            "degree",
-            degree_vals,
-            "the degree of the graph",
-            InterpretabilityScore("max"),
         )

@@ -45,7 +45,7 @@ class ChemicalTheory(FeatureClass):
 
         """
 
-        wiener_index = lambda graph: [nx.wiener_index(graph)]
+        wiener_index = lambda graph: nx.wiener_index(graph)
         self.add_feature(
             "wiener index",
             wiener_index,
@@ -53,7 +53,7 @@ class ChemicalTheory(FeatureClass):
             InterpretabilityScore(4),
         )
 
-        estrada_index = lambda graph: [nx.estrada_index(graph)]
+        estrada_index = lambda graph: nx.estrada_index(graph)
         self.add_feature(
             "estrada_index",
             estrada_index,

@@ -51,14 +51,14 @@ class Clustering(FeatureClass):
         """
 
         triang = lambda graph: np.asarray(list(nx.triangles(graph).values())).mean()
-        transi = lambda graph: nx.transitivity(graph)
-
         self.add_feature(
             "num_triangles",
             triang,
             "Number of triangles in the graph",
             InterpretabilityScore("max"),
         )
+
+        transi = lambda graph: nx.transitivity(graph)
         self.add_feature(
             "transitivity",
             transi,
@@ -73,6 +73,7 @@ class Clustering(FeatureClass):
             clustering_dist,
             "the clustering of the graph",
             InterpretabilityScore("max"),
+            statistics="centrality",
         )
 
         # generalised degree
@@ -84,4 +85,5 @@ class Clustering(FeatureClass):
             square_clustering_dist,
             "the square clustering of the graph",
             InterpretabilityScore("max"),
+            statistics="centrality",
         )

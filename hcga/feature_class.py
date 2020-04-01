@@ -1,15 +1,19 @@
 """template class for feature extraction"""
 import logging
 import sys
-import numpy as np
+
 import networkx as nx
+import numpy as np
 import scipy.stats as st
 from networkx.algorithms.community import quality
 
 from . import utils
 
-logging.basicConfig(filename='feature_exceptions.log', filemode='w', level=logging.DEBUG)
-L = logging.getLogger('Feature exceptions')
+logging.basicConfig(
+    filename="feature_exceptions.log", filemode="w", level=logging.DEBUG
+)
+L = logging.getLogger("Feature exceptions")
+
 
 class FeatureClass:
     """template class"""
@@ -36,7 +40,8 @@ class FeatureClass:
     def __init__(self, graph=None):
         """init function"""
         self.graph = graph
-        self.verify_graph()
+        if graph is not None:
+            self.verify_graph()
         self.features = {}
 
     def verify_graph(self):
@@ -45,8 +50,8 @@ class FeatureClass:
             self.graph = self.graph.to_undirected()
 
         if "id" not in self.graph.graph:
-            L.warning('An id has not been set for a graph')
-            self.graph.graph['id'] = -1
+            L.warning("An id has not been set for a graph")
+            self.graph.graph["id"] = -1
 
     @classmethod
     def setup_class(cls, normalize_features=True, statistics_level="basic"):
@@ -104,7 +109,112 @@ class FeatureClass:
                 "interpret": f_interpret,
             }
 
+    def evaluate_feature(
+        self,
+        feature_function,
+        feature_name,
+        expected_types=[int, float],
+        return_type=float,
+    ):
+        """Evaluating a feature function and catching/raising errors"""
+        if not callable(feature_function):
+            raise Exception(
+                "The feature function {} is not callable!".format(feature_name)
+            )
+
+        try:
+            feature = feature_function(self.graph)
+        except (KeyboardInterrupt, SystemExit):
+            sys.exit(0)
+        except Exception as exc:
+            L.debug(
+                "Failed feature %s for graph %d with exception: %s",
+                feature_name,
+                self.graph.graph["id"],
+                str(exc),
+            )
+            if return_type == list:
+                return [np.nan]
+            if return_type == "clustering":
+                return [np.nan]
+            feature = return_type(np.nan)
+
+        if expected_types is "clustering":
+            if not isinstance(feature, list):
+                raise Exception(
+                    "Feature {} with clustering statistics is not a list of sets: {}".format(
+                        feature_name, feature
+                    )
+                )
+            elif not isinstance(feature[0], set):
+                raise Exception(
+                    "Feature {} with clustering statistics is not a list of sets: {}".format(
+                        feature_name, feature
+                    )
+                )
+        else:
+            if type(feature) not in expected_types or not np.nan:
+                raise Exception(
+                    "Feature {} with no statistics argument does not return expected type{}: {}".format(
+                        feature_name, expected_types, feature
+                    )
+                )
+
+        return feature
+
     def add_feature(
+        self,
+        feature_name,
+        feature_function,
+        feature_description,
+        feature_interpret,
+        statistics=None,
+    ):
+        """Adds a computed feature value and its description"""
+        if statistics is None:
+            feature = self.evaluate_feature(
+                feature_function,
+                feature_name,
+                expected_types=[int, float, np.int32, np.int64, np.float32, np.float64],
+                return_type=float,
+            )
+            self.features[feature_name] = feature
+
+            if not hasattr(feature_interpret, "get_score"):
+                feature_interpret = InterpretabilityScore(feature_interpret)
+            self.__class__.add_feature_description(
+                feature_name, feature_description, feature_interpret
+            )
+
+        elif statistics == "centrality":
+            centrality_features = self.evaluate_feature(
+                feature_function,
+                feature_name,
+                expected_types=[list, np.ndarray],
+                return_type=list,
+            )
+            self.feature_statistics(
+                centrality_features,
+                feature_name,
+                feature_description,
+                feature_interpret,
+            )
+
+        elif statistics == "clustering":
+            clustering_features = self.evaluate_feature(
+                feature_function,
+                feature_name,
+                expected_types="clustering",
+                return_type="clustering",
+            )
+            self.clustering_statistics(
+                clustering_features,
+                feature_name,
+                feature_description,
+                feature_interpret,
+            )
+
+    def add_feature_old(
         self, feature_name, feature_function, feature_description, feature_interpret
     ):
         """Adds a computed feature value and its description"""
@@ -118,7 +228,12 @@ class FeatureClass:
         except (KeyboardInterrupt, SystemExit):
             sys.exit(0)
         except Exception as exc:
-            L.debug("Failed feature %s for graph %d with exception: %s", feature_name, self.graph.graph['id'], str(exc))
+            L.debug(
+                "Failed feature %s for graph %d with exception: %s",
+                feature_name,
+                self.graph.graph["id"],
+                str(exc),
+            )
             # if the feature cannot be computed, fill with np.nan
             feature_trivial = feature_function(self.__class__.trivial_graph)
             if isinstance(feature_trivial, list):
