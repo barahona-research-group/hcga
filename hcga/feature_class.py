@@ -1,6 +1,8 @@
 """template class for feature extraction"""
 import logging
 import sys
+from functools import partial
+
 
 import networkx as nx
 import numpy as np
@@ -113,17 +115,25 @@ class FeatureClass:
         self,
         feature_function,
         feature_name,
-        expected_types=[int, float],
-        return_type=float,
+        function_args=None,
+        statistics=None,
     ):
         """Evaluating a feature function and catching/raising errors"""
         if not callable(feature_function):
             raise Exception(
                 "The feature function {} is not callable!".format(feature_name)
             )
+        if function_args is None:
+            eval_func = partial(feature_function, self.graph)
+        elif isinstance(function_args, list):
+            eval_func = partial(feature_function, *function_args)
+        elif isinstance(function_args, dict):
+            eval_func = partial(feature_function, **function_args)
+        else :
+            eval_func = partial(feature_function, function_args)
 
         try:
-            feature = feature_function(self.graph)
+            feature = eval_func()
         except (KeyboardInterrupt, SystemExit):
             sys.exit(0)
         except Exception as exc:
@@ -133,13 +143,13 @@ class FeatureClass:
                 self.graph.graph["id"],
                 str(exc),
             )
-            if return_type == list:
+            if statistics in ("centrality", "clustering"):
                 return [np.nan]
-            if return_type == "clustering":
-                return [np.nan]
-            feature = return_type(np.nan)
+            else:
+                return np.nan
+            #feature = return_type(np.nan)
 
-        if expected_types is "clustering":
+        if statistics is "clustering":
             if not isinstance(feature, list):
                 raise Exception(
                     "Feature {} with clustering statistics is not a list of sets: {}".format(
@@ -152,7 +162,16 @@ class FeatureClass:
                         feature_name, feature
                     )
                 )
+        elif statistics is "centrality":
+            expected_types = (list, np.ndarray)
+            if type(feature) not in expected_types:
+                raise Exception(
+                    "Feature {} with centrality statistics does not return expected type{}: {}".format(
+                        feature_name, expected_types, feature
+                    )
+                )
         else:
+            expected_types = (int, float, np.int32, np.int64, np.float32, np.float64)
             if type(feature) not in expected_types or not np.nan:
                 raise Exception(
                     "Feature {} with no statistics argument does not return expected type{}: {}".format(
@@ -168,17 +187,18 @@ class FeatureClass:
         feature_function,
         feature_description,
         feature_interpret,
+        function_args=None,
         statistics=None,
     ):
         """Adds a computed feature value and its description"""
+        func_result = self.evaluate_feature(
+            feature_function,
+            feature_name,
+            function_args = function_args,
+            statistics = statistics,
+        )
         if statistics is None:
-            feature = self.evaluate_feature(
-                feature_function,
-                feature_name,
-                expected_types=[int, float, np.int32, np.int64, np.float32, np.float64],
-                return_type=float,
-            )
-            self.features[feature_name] = feature
+            self.features[feature_name] = func_result
 
             if not hasattr(feature_interpret, "get_score"):
                 feature_interpret = InterpretabilityScore(feature_interpret)
@@ -187,28 +207,16 @@ class FeatureClass:
             )
 
         elif statistics == "centrality":
-            centrality_features = self.evaluate_feature(
-                feature_function,
-                feature_name,
-                expected_types=[list, np.ndarray],
-                return_type=list,
-            )
             self.feature_statistics(
-                centrality_features,
+                func_result,
                 feature_name,
                 feature_description,
                 feature_interpret,
             )
 
         elif statistics == "clustering":
-            clustering_features = self.evaluate_feature(
-                feature_function,
-                feature_name,
-                expected_types="clustering",
-                return_type="clustering",
-            )
             self.clustering_statistics(
-                clustering_features,
+                func_result,
                 feature_name,
                 feature_description,
                 feature_interpret,
@@ -310,39 +318,45 @@ class FeatureClass:
 
         self.add_feature(
             feat_name + "_modularity",
-            lambda graph: _try(quality.modularity, community_partition),
+            quality.modularity,
             "Modularity" + compl_desc,
             feat_interpret,
+            function_args=community_partition,
         )
         self.add_feature(
             feat_name + "_coverage",
-            lambda graph: _try(quality.coverage, community_partition),
+            quality.coverage,
             "Coverage" + compl_desc,
             feat_interpret,
+            function_args=community_partition,
         )
         self.add_feature(
             feat_name + "_performance",
-            lambda graph: _try(quality.performance, community_partition),
+            quality.performance,
             "Performance" + compl_desc,
             feat_interpret,
+            function_args=community_partition,
         )
         self.add_feature(
             feat_name + "_inter_community_edges",
-            lambda graph: _try(quality.inter_community_edges, community_partition),
+            quality.inter_community_edges,
             "Inter community edges" + compl_desc,
             feat_interpret,
+            function_args=community_partition,
         )
         self.add_feature(
             feat_name + "_inter_community_non_edges",
-            lambda graph: _try(quality.inter_community_non_edges, community_partition),
+            quality.inter_community_non_edges,
             "Inter community non edges" + compl_desc,
             feat_interpret,
+            function_args=community_partition,
         )
         self.add_feature(
             feat_name + "_intra_community_edges",
-            lambda graph: _try(quality.intra_community_edges, community_partition),
+            quality.intra_community_edges,
             "Intra community edges" + compl_desc,
             feat_interpret,
+            function_args=community_partition,
         )
 
     def feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
@@ -369,33 +383,38 @@ class FeatureClass:
 
         self.add_feature(
             feat_name + "_mean",
-            lambda graph: _try(np.mean, feat_dist),
+            np.mean,
             "Mean" + compl_desc,
             feat_interpret,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_min",
-            lambda graph: _try(np.min, feat_dist),
+            np.min,
             "Minimum" + compl_desc,
             feat_interpret,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_max",
-            lambda graph: _try(np.max, feat_dist),
+            np.max,
             "Maximum" + compl_desc,
             feat_interpret,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_median",
-            lambda graph: _try(np.median, feat_dist),
+            np.median,
             "Median" + compl_desc,
             feat_interpret,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_std",
-            lambda graph: _try(np.std, feat_dist),
+            np.std,
             "Standard deviation" + compl_desc,
             feat_interpret,
+            function_args=feat_dist,
         )
 
     def feature_statistics_medium(
@@ -406,27 +425,31 @@ class FeatureClass:
 
         self.add_feature(
             feat_name + "_gmean",
-            lambda graph: _try(st.gmean, feat_dist),
+            st.gmean,
             "G. Mean" + compl_desc,
             feat_interpret - 1,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_hmean",
-            lambda graph: _try(lambda dist: st.hmean(np.abs(dist) + 1e-8), feat_dist),
+            lambda dist: st.hmean(np.abs(dist) + 1e-8),
             "G. Mean" + compl_desc,
             feat_interpret - 1,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_kurtosis",
-            lambda graph: _try(st.kurtosis, feat_dist),
+            st.kurtosis,
             "Kurtosis" + compl_desc,
             feat_interpret - 1,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_mode",
-            lambda graph: _try(lambda dist: st.mode(dist)[0][0], feat_dist),
+            lambda dist: st.mode(dist)[0][0],
             "Mode" + compl_desc,
             feat_interpret - 1,
+            function_args=feat_dist,
         )
 
     def feature_statistics_advanced(
@@ -437,96 +460,95 @@ class FeatureClass:
 
         self.add_feature(
             feat_name + "_kstat",
-            lambda graph: _try(st.kstat, feat_dist),
+            st.kstat,
             "Kstat" + compl_desc,
             feat_interpret - 1,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_kstatvar",
-            lambda graph: _try(st.kstatvar, feat_dist),
+            st.kstatvar,
             "Kstat variance" + compl_desc,
             feat_interpret - 1,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_tmean",
-            lambda graph: _try(st.tmean, feat_dist),
+            st.tmean,
             "Tmean" + compl_desc,
             feat_interpret - 1,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_tmean",
-            lambda graph: _try(st.tvar, feat_dist),
+            st.tvar,
             "Tvariance" + compl_desc,
             feat_interpret - 1,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_tmin",
-            lambda graph: _try(st.tmin, feat_dist),
+            st.tmin,
             "Tminimum" + compl_desc,
             feat_interpret - 1,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_tmax",
-            lambda graph: _try(st.tmax, feat_dist),
+            st.tmax,
             "Tmaximum" + compl_desc,
             feat_interpret - 1,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_tstd",
-            lambda graph: _try(st.tstd, feat_dist),
+            st.tstd,
             "T standard deviation" + compl_desc,
             feat_interpret - 1,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_tsem",
-            lambda graph: _try(st.tsem, feat_dist),
+            st.tsem,
             "T sem" + compl_desc,
             feat_interpret - 1,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_variation",
-            lambda graph: _try(st.variation, feat_dist),
+            st.variation,
             "Variation" + compl_desc,
             feat_interpret - 1,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_mean_repeats",
-            lambda graph: _try(
-                lambda dist: np.mean(st.find_repeats(dist)[1]), feat_dist
-            ),
+            lambda dist: np.mean(st.find_repeats(dist)[1]),
             "Mean repeats" + compl_desc,
             feat_interpret - 1,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_entropy",
-            lambda graph: _try(st.entropy, feat_dist),
+            st.entropy,
             "Entropy" + compl_desc,
             feat_interpret - 1,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_sem",
-            lambda graph: _try(st.sem, feat_dist),
+            st.sem,
             "SEM" + compl_desc,
             feat_interpret - 1,
+            function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_bayes_confint",
-            lambda graph: _try(
-                lambda dist: st.bayes_mvs(dist)[0][1][1] - st.bayes_mvs(dist)[0][1][0],
-                feat_dist,
-            ),
+            lambda dist: st.bayes_mvs(dist)[0][1][1] - st.bayes_mvs(dist)[0][1][0],
             "Bayes confidance interval" + compl_desc,
             feat_interpret - 1,
+            function_args=feat_dist,
         )
-
-
-def _try(func, feat_dist):
-    try:
-        return func(feat_dist)
-    except (KeyboardInterrupt, SystemExit):
-        sys.exit(0)
-    except:
-        return np.nan
 
 
 class InterpretabilityScore:
