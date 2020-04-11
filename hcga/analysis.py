@@ -3,18 +3,22 @@
 import os
 import time
 from pathlib import Path
+import logging
+from functools import partial
+import multiprocessing
 
 import numpy as np
 import pandas as pd
 import shap
 import xgboost
-from sklearn.metrics import (accuracy_score, balanced_accuracy_score,
-                             roc_auc_score)
-from sklearn.model_selection import (StratifiedKFold, cross_val_score,
-                                     train_test_split)
+from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score
+from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
 from sklearn.preprocessing import StandardScaler
 
 from . import plotting, utils
+
+L = logging.getLogger(__name__)
+logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 
 
 def _get_classifier(classifier):
@@ -38,7 +42,6 @@ def analysis(
     interpretability=1,
     shap=True,
     classifier="RF",
-    verbose=True,
     folder=".",
     kfold=True,
     plot=True,
@@ -61,12 +64,12 @@ def analysis(
     classifier = _get_classifier(classifier)
 
     if kfold:
-        X, y, explainer, shap_values, top_features = fit_model_kfold(
-            normed_features, classifier=classifier, verbose=verbose
+        X, y, shap_values, top_features = fit_model_kfold(
+            normed_features, classifier=classifier,
         )
     else:
-        X, y, explainer, shap_values, top_features = fit_model(
-            normed_features, classifier=classifier, verbose=verbose
+        X, y, shap_values, top_features = fit_model(
+            normed_features, classifier=classifier,
         )
 
     results_folder = Path(folder) / (
@@ -85,7 +88,7 @@ def analysis(
         normed_features, features_info, top_features, shap_values, results_folder
     )
 
-    return X, explainer, shap_values
+    return X, shap_values
 
 
 def output_csv(features, features_info, feature_importance, shap_values, folder):
@@ -122,66 +125,59 @@ def output_csv(features, features_info, feature_importance, shap_values, folder)
     output_df.to_csv(os.path.join(folder, "importance_results.csv"))
 
 
-def fit_model_kfold(features, compute_shap=True, classifier=None, verbose=False):
+def fit_model_kfold(features, compute_shap=True, classifier=None):
     """shapeley analysis"""
-
     if classifier is None:
         raise Exception("Please provide a model for classification")
 
     X, y = _features_to_Xy(features)
 
     n_splits = _number_folds(y)
-    print("Using", n_splits, "splits")
+    L.info("Using " + str(n_splits) + " splits")
 
     folds = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=42)
-
-    shap_values = None
-    explainer = None
+    indices_all = (indices for indices in folds.split(X, y=y))
 
     top_features = []
+    shap_values = []
     acc_scores = []
-    oof_preds = np.zeros(y.shape[0])
-    for train_index, val_index in folds.split(X, y=y):
+    with multiprocessing.Pool(n_splits) as pool:
+        for top_feature, acc_score, shap_value in pool.imap(
+            partial(compute_fold, X, y, classifier, compute_shap), indices_all
+        ):
+            top_features.append(top_feature)
+            acc_scores.append(acc_score)
+            shap_values.append(shap_value)
 
-        X_train, X_val = X.loc[train_index], X.loc[val_index]
-        y_train, y_val = y[train_index], y[val_index]
+    L.info("Balanced accuracy: " + str(np.round(np.mean(acc_scores), 3)))
 
-        classifier.fit(
-            X_train, y_train,
-        )
-        top_features.append(classifier.feature_importances_)
+    mean_shap_values = list(np.mean(shap_values, axis=0))
 
-        if compute_shap:
-            explainer = shap.TreeExplainer(
-                classifier, feature_perturbation="interventional",
-            )
-
-            if shap_values is None:
-                shap_values = explainer.shap_values(X, check_additivity=False)
-            else:
-                shap_values = [
-                    x + y
-                    for x, y in zip(
-                        shap_values, explainer.shap_values(X, check_additivity=False)
-                    )
-                ]
-
-        oof_preds[val_index] = classifier.predict(X_val)
-        acc_scores.append(balanced_accuracy_score(y_val, oof_preds[val_index]))
-
-        if verbose:
-            print("Fold accuracy: --- {0:.3f} ---".format(acc_scores[-1]))
-
-    if verbose:
-        print("Balanced accuracy: ", np.round(np.mean(acc_scores), 3))
-
-    if compute_shap:
-        shap_values = [x / n_splits for x in shap_values]
-
-    return X, y, explainer, shap_values, top_features
+    return X, y, mean_shap_values, top_features
 
 
-def fit_model(features, compute_shap=True, classifier=None, verbose=False):
+def compute_fold(X, y, classifier, compute_shap, indices):
+    """Compute a single fold for parallel computation."""
+    train_index, val_index = indices
+    X_train, X_val = X.loc[train_index], X.loc[val_index]
+    y_train, y_val = y[train_index], y[val_index]
+
+    classifier.fit(
+        X_train, y_train,
+    )
+    top_features = classifier.feature_importances_
+
+    explainer = shap.TreeExplainer(classifier, feature_perturbation="interventional",)
+
+    shap_values = np.array(explainer.shap_values(X, check_additivity=False))
+
+    acc_score = balanced_accuracy_score(y_val, classifier.predict(X_val))
+
+    L.info("Fold accuracy: --- {0:.3f} ---".format(acc_score))
+    return top_features, acc_score, shap_values
+
+
+def fit_model(features, compute_shap=True, classifier=None):
     """shapeley analysis"""
 
     explainer = None
@@ -207,8 +203,7 @@ def fit_model(features, compute_shap=True, classifier=None, verbose=False):
 
     acc_scores = balanced_accuracy_score(y_test, classifier.predict(X_test))
 
-    if verbose:
-        print("Balanced accuracy: ", acc_scores)
+    L.info("Balanced accuracy: " + str(acc_scores))
 
     return X, y, explainer, shap_values, top_features
 

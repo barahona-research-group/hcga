@@ -112,11 +112,7 @@ class FeatureClass:
             }
 
     def evaluate_feature(
-        self,
-        feature_function,
-        feature_name,
-        function_args=None,
-        statistics=None,
+        self, feature_function, feature_name, function_args=None, statistics=None,
     ):
         """Evaluating a feature function and catching/raising errors"""
         if not callable(feature_function):
@@ -129,7 +125,7 @@ class FeatureClass:
             eval_func = partial(feature_function, *function_args)
         elif isinstance(function_args, dict):
             eval_func = partial(feature_function, **function_args)
-        else :
+        else:
             eval_func = partial(feature_function, function_args)
 
         try:
@@ -147,7 +143,7 @@ class FeatureClass:
                 return [np.nan]
             else:
                 return np.nan
-            #feature = return_type(np.nan)
+            # feature = return_type(np.nan)
 
         if statistics is "clustering":
             if not isinstance(feature, list):
@@ -194,8 +190,8 @@ class FeatureClass:
         func_result = self.evaluate_feature(
             feature_function,
             feature_name,
-            function_args = function_args,
-            statistics = statistics,
+            function_args=function_args,
+            statistics=statistics,
         )
         if statistics is None:
             self.features[feature_name] = func_result
@@ -208,18 +204,12 @@ class FeatureClass:
 
         elif statistics == "centrality":
             self.feature_statistics(
-                func_result,
-                feature_name,
-                feature_description,
-                feature_interpret,
+                func_result, feature_name, feature_description, feature_interpret,
             )
 
         elif statistics == "clustering":
             self.clustering_statistics(
-                func_result,
-                feature_name,
-                feature_description,
-                feature_interpret,
+                func_result, feature_name, feature_description, feature_interpret,
             )
 
     def add_feature_old(

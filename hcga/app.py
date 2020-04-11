@@ -151,7 +151,7 @@ def feature_analysis(
     feature_filename = results_folder / feature_file
     features, features_info = load_features(filename=feature_filename)
 
-    X, explainer, shap_values = analysis(
+    X, shap_values = analysis(
         features,
         features_info,
         interpretability=interpretability,

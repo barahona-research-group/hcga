@@ -4,8 +4,7 @@ import pandas as pd
 
 from .analysis import analysis
 from .extraction import extract
-from .io import (load_dataset, load_features, save_analysis, save_dataset,
-                 save_features)
+from .io import load_dataset, load_features, save_analysis, save_dataset, save_features
 
 
 class Hcga:

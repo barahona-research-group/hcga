@@ -109,19 +109,15 @@ def plot_shap_violin(shap_vals, data, labels, folder, max_feats=20):
     """
     Plot the violins of a feature
     """
-
     shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
-
     top_feat_idx = shap_mean.argsort()[::-1][:max_feats]
 
-    fig, axes = plt.subplots(
-        nrows=5, ncols=4, dpi=120, figsize=(10, 7)
-    )  # nrows must be set as smaller rounded number of subindicators / 4
+    ncols = 4
+    nrows = int(np.ceil(len(top_feat_idx) / ncols))
+    fig, axes = plt.subplots(nrows=nrows, ncols=ncols, dpi=120, figsize=(10, 7))
 
-    for j, ax in enumerate(axes.flatten()):
-        top_feat_idx[j]
-
-        feature_data = data[data.columns[top_feat_idx[j]]].values
+    for ax, top_feat in zip(axes.flatten(), top_feat_idx):
+        feature_data = data[data.columns[top_feat]].values
         data_split = []
 
         for k in np.unique(labels):
@@ -130,7 +126,7 @@ def plot_shap_violin(shap_vals, data, labels, folder, max_feats=20):
 
         # sns.set(style="whitegrid")
         sns.violinplot(data=data_split, ax=ax, palette="muted", width=1)
-        ax.set(xlabel="Class label", ylabel=data.columns[top_feat_idx[j]])
+        ax.set(xlabel="Class label", ylabel=data.columns[top_feat])
 
         ax.tick_params(axis="both", which="major", labelsize=5)
 
