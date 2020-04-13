@@ -49,37 +49,23 @@ class Eulerian(FeatureClass):
         # checking if eulerian
         self.add_feature(
             "eulerian",
-            lambda graph: nx.is_eulerian(graph)*1,
+            lambda graph: nx.is_eulerian(graph) * 1,
             "A graph is eulerian if it has a eulerian circuit: a closed walk that includes each edges of the graph exactly once",
-            InterpretabilityScore(3),            
-        )    
-        
+            InterpretabilityScore(3),
+        )
+
         # checking if semi eulerian
         self.add_feature(
             "semi_eulerian",
-            lambda graph: nx.is_semieulerian(graph)*1,
+            lambda graph: nx.is_semieulerian(graph) * 1,
             "A graph is semi eulerian if it has a eulerian path but no eulerian circuit",
-            InterpretabilityScore(3),            
-        )   
+            InterpretabilityScore(3),
+        )
 
         # checking if eulerian path exists
         self.add_feature(
             "semi_eulerian",
-            lambda graph: nx.has_eulerian_path(graph)*1,
+            lambda graph: nx.has_eulerian_path(graph) * 1,
             "Whether a eulerian path exists in the network",
-            InterpretabilityScore(3),            
-        )    
-
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-
-
+            InterpretabilityScore(3),
+        )

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # This file is part of hcga.
 #
-# Copyright (C) 2019, 
-# Robert Peach (r.peach13@imperial.ac.uk), 
-# Alexis Arnaudon (alexis.arnaudon@epfl.ch), 
+# Copyright (C) 2019,
+# Robert Peach (r.peach13@imperial.ac.uk),
+# Alexis Arnaudon (alexis.arnaudon@epfl.ch),
 # https://github.com/ImperialCollegeLondon/hcga.git
 #
 # hcga is free software: you can redistribute it and/or modify
@@ -25,11 +25,12 @@ from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Hits"
 
+
 class Hits(FeatureClass):
     """
     HITS hubs class
     """
-    
+
     modes = ["medium", "slow"]
     shortname = "LAH"
     name = "Hits"
@@ -72,8 +73,9 @@ class Hits(FeatureClass):
            http://www.cs.cornell.edu/home/kleinber/auth.pdf.
 
         """
+
         def hits(graph):
-            h,a = nx.hits(graph ,max_iter=1000)
+            h, a = nx.hits(graph, max_iter=1000)
             return np.asarray(list(h.values()))
 
         self.add_feature(
@@ -83,6 +85,3 @@ class Hits(FeatureClass):
             InterpretabilityScore(3),
             statistics="centrality",
         )
-        
-        
-

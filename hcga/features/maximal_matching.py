@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # This file is part of hcga.
 #
-# Copyright (C) 2019, 
-# Robert Peach (r.peach13@imperial.ac.uk), 
-# Alexis Arnaudon (alexis.arnaudon@epfl.ch), 
+# Copyright (C) 2019,
+# Robert Peach (r.peach13@imperial.ac.uk),
+# Alexis Arnaudon (alexis.arnaudon@epfl.ch),
 # https://github.com/ImperialCollegeLondon/hcga.git
 #
 # hcga is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ import networkx as nx
 from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "MaximalMatching"
+
 
 class MaximalMatching(FeatureClass):
     """
@@ -51,7 +52,7 @@ class MaximalMatching(FeatureClass):
 
 
         """
-        
+
         self.add_feature(
             "maximal_matching",
             lambda graph: len(nx.maximal_matching(graph)),

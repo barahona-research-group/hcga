@@ -55,8 +55,8 @@ class Components(FeatureClass):
 
         @lru_cache(maxsize=None)
         def eval_connectedcomponents(graph):
-            """this evaluates the main function and cach it for speed up"""           
-            return list(nx.connected_components(graph)) 
+            """this evaluates the main function and cach it for speed up"""
+            return list(nx.connected_components(graph))
 
         self.add_feature(
             "largest_connected_component",
@@ -64,17 +64,19 @@ class Components(FeatureClass):
             "The size of the largest connected component",
             InterpretabilityScore(4),
         )
-  
+
         self.add_feature(
             "ratio_largest_connected_components",
-            lambda graph: len(eval_connectedcomponents(graph)[0])/len(eval_connectedcomponents(graph)[1]),
+            lambda graph: len(eval_connectedcomponents(graph)[0])
+            / len(eval_connectedcomponents(graph)[1]),
             "The size ratio of the two largest connected components",
             InterpretabilityScore(4),
         )
-        
+
         self.add_feature(
             "ratio_maxmin_connected_components",
-            lambda graph: len(eval_connectedcomponents(graph)[0])/len(eval_connectedcomponents(graph)[-1]),
+            lambda graph: len(eval_connectedcomponents(graph)[0])
+            / len(eval_connectedcomponents(graph)[-1]),
             "The size ratio of the max and min largest connected components",
             InterpretabilityScore(4),
-        )     
+        )

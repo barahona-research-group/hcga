@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # This file is part of hcga.
 #
-# Copyright (C) 2019, 
-# Robert Peach (r.peach13@imperial.ac.uk), 
-# Alexis Arnaudon (alexis.arnaudon@epfl.ch), 
+# Copyright (C) 2019,
+# Robert Peach (r.peach13@imperial.ac.uk),
+# Alexis Arnaudon (alexis.arnaudon@epfl.ch),
 # https://github.com/ImperialCollegeLondon/hcga.git
 #
 # hcga is free software: you can redistribute it and/or modify
@@ -27,11 +27,12 @@ import networkx as nx
 
 featureclass_name = "NodeCliqueNumber"
 
+
 class NodeCliqueNumber(FeatureClass):
     """
     Node clique number class
     """
- 
+
     modes = ["fast", "medium", "slow"]
     shortname = "CN"
     name = "node_clique_number"
@@ -48,12 +49,13 @@ class NodeCliqueNumber(FeatureClass):
         -----
         Clique number calculations using networkx:
             `Networkx_clique <https://networkx.github.io/documentation/stable/reference/algorithms/clique.html>`_
-        """        
-                
-        
+        """
+
         self.add_feature(
             "clique sizes",
-            lambda graph: np.asarray(list(clique.node_clique_number(utils.ensure_connected(graph)).values())),
+            lambda graph: np.asarray(
+                list(clique.node_clique_number(utils.ensure_connected(graph)).values())
+            ),
             "the distribution of clique sizes",
             InterpretabilityScore(3),
             statistics="centrality",

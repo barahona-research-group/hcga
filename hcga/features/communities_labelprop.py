@@ -54,10 +54,10 @@ class CommunitiesLabelPropagation(FeatureClass):
             # if a single communities, add a trivial one
             if len(communities) == 1:
                 communities.append([{0}])
-                
+
             # sort sets by size
             communities.sort(key=len, reverse=True)
-            
+
             return communities
 
         self.add_feature(
@@ -76,11 +76,11 @@ class CommunitiesLabelPropagation(FeatureClass):
 
         self.add_feature(
             "ratio_commsize_maxmin",
-            lambda graph: len(eval_labelprop(graph)[0]) / len(eval_labelprop(graph)[-1]),
+            lambda graph: len(eval_labelprop(graph)[0])
+            / len(eval_labelprop(graph)[-1]),
             "The ratio of the largest and second largest communities using label propagation",
             InterpretabilityScore(3),
         )
-
 
         self.add_feature(
             "communities",

@@ -55,10 +55,10 @@ class CommunitiesBisection(FeatureClass):
             # if a single communities, add a trivial one
             if len(communities) == 1:
                 communities.append([{0}])
-                
+
             # sort sets by size
             communities.sort(key=len, reverse=True)
-            
+
             return communities
 
         self.add_feature(
@@ -82,10 +82,3 @@ class CommunitiesBisection(FeatureClass):
             InterpretabilityScore(4),
             statistics="clustering",
         )
-
-
-
-
-
-
-

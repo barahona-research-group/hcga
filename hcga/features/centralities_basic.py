@@ -138,7 +138,9 @@ class CentralitiesBasic(FeatureClass):
 
         # Eigenvector centrality
         eigenvector_centrality = lambda graph: list(
-            centrality.eigenvector_centrality(utils.ensure_connected(graph), max_iter=500).values()
+            centrality.eigenvector_centrality(
+                utils.ensure_connected(graph), max_iter=500
+            ).values()
         )
         self.add_feature(
             "eigenvector centrality",
@@ -159,5 +161,3 @@ class CentralitiesBasic(FeatureClass):
             InterpretabilityScore(4),
             statistics="centrality",
         )
-
-

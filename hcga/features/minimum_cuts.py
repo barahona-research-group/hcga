@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # This file is part of hcga.
 #
-# Copyright (C) 2019, 
-# Robert Peach (r.peach13@imperial.ac.uk), 
-# Alexis Arnaudon (alexis.arnaudon@epfl.ch), 
+# Copyright (C) 2019,
+# Robert Peach (r.peach13@imperial.ac.uk),
+# Alexis Arnaudon (alexis.arnaudon@epfl.ch),
 # https://github.com/ImperialCollegeLondon/hcga.git
 #
 # hcga is free software: you can redistribute it and/or modify
@@ -24,10 +24,12 @@ from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "MinimumCuts"
 
+
 class MinimumCuts(FeatureClass):
     """
     Minimum cuts class
     """
+
     modes = ["fast", "medium", "slow"]
     shortname = "MiC"
     name = "minimum_cuts"

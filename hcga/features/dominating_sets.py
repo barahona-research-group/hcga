@@ -72,30 +72,26 @@ class DominatingSets(FeatureClass):
 
         """
 
-
         self.add_feature(
             "size_dominating_set",
             lambda graph: len(list(nx.dominating_set(graph))),
             "The number of nodes in the dominating set",
-            InterpretabilityScore(3)            
+            InterpretabilityScore(3),
         )
 
         self.add_feature(
             "size_min_dominating_set",
             lambda graph: len(list(min_weighted_dominating_set(graph))),
             "The number of nodes in the minimum weighted dominating set",
-            InterpretabilityScore(3)            
+            InterpretabilityScore(3),
         )
-        
+
         self.add_feature(
             "size_min_edge_dominating_set",
             lambda graph: len(list(min_edge_dominating_set(graph))),
             "The number of nodes in the minimum edge dominating set",
-            InterpretabilityScore(3)            
+            InterpretabilityScore(3),
         )
-
-
-
 
 
 def min_weighted_dominating_set(G, weight=None):
@@ -177,6 +173,7 @@ def min_weighted_dominating_set(G, weight=None):
 
     return dom_set
 
+
 def min_edge_dominating_set(G):
     r"""Returns minimum cardinality edge dominating set.
 
@@ -199,6 +196,7 @@ def min_edge_dominating_set(G):
     if not G:
         raise ValueError("Expected non-empty NetworkX graph!")
     return maximal_matching(G)
+
 
 def maximal_matching(G):
     r"""Find a maximal matching in the graph.

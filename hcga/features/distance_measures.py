@@ -51,35 +51,33 @@ class DistanceMeasures(FeatureClass):
             "barycenter_size",
             lambda graph: len(nx.barycenter(graph)),
             "The barycenter is the subgraph which minimises a distance function",
-            InterpretabilityScore(4),            
-        )        
+            InterpretabilityScore(4),
+        )
 
         # center
         self.add_feature(
             "center_size",
             lambda graph: len(nx.center(graph)),
             "The center is the subgraph of nodes with eccentricity equal to radius",
-            InterpretabilityScore(3),            
-        )  
-        
-        
+            InterpretabilityScore(3),
+        )
+
         # extrema bounding
         self.add_feature(
             "center_size",
             lambda graph: nx.extrema_bounding(graph),
             "The largest distance in the graph",
-            InterpretabilityScore(4),            
-        )      
-        
+            InterpretabilityScore(4),
+        )
+
         # periphery
         self.add_feature(
             "periphery",
             lambda graph: len(nx.periphery(graph)),
             "The number of peripheral nodes in the graph",
-            InterpretabilityScore(4),            
-        )      
+            InterpretabilityScore(4),
+        )
 
-        
         self.add_feature(
             "eccentricity",
             lambda graph: list(nx.eccentricity(graph).values()),
@@ -87,17 +85,3 @@ class DistanceMeasures(FeatureClass):
             InterpretabilityScore(3),
             statistics="centrality",
         )
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-
-

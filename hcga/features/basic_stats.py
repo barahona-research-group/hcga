@@ -89,9 +89,8 @@ class BasicStats(FeatureClass):
 
         self.add_feature(
             "edge_weights",
-            lambda graph: list(nx.get_edge_attributes(graph,'weight').values()),
+            lambda graph: list(nx.get_edge_attributes(graph, "weight").values()),
             "Weights of the edges",
             InterpretabilityScore("max"),
             statistics="centrality",
         )
-
