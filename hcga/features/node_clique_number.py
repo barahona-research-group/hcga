@@ -53,8 +53,8 @@ class NodeCliqueNumber(FeatureClass):
 
         self.add_feature(
             "clique sizes",
-            lambda graph: np.asarray(
-                list(clique.node_clique_number(utils.ensure_connected(graph)).values())
+            lambda graph: list(
+                clique.node_clique_number(utils.ensure_connected(graph)).values()
             ),
             "the distribution of clique sizes",
             InterpretabilityScore(3),

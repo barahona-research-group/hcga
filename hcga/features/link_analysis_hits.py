@@ -76,7 +76,7 @@ class Hits(FeatureClass):
 
         def hits(graph):
             h, a = nx.hits(graph, max_iter=1000)
-            return np.asarray(list(h.values()))
+            return list(h.values())
 
         self.add_feature(
             "Hits",
