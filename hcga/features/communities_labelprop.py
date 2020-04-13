@@ -54,19 +54,38 @@ class CommunitiesLabelPropagation(FeatureClass):
             # if a single communities, add a trivial one
             if len(communities) == 1:
                 communities.append([{0}])
+                
+            # sort sets by size
+            communities.sort(key=len, reverse=True)
+            
             return communities
 
         self.add_feature(
-            "ratio_commsize",
-            lambda graph: len(eval_labelprop(graph)[0]) / len(eval_labelprop(graph)[1]),
+            "largest_commsize",
+            lambda graph: len(eval_labelprop(graph)[0]),
             "The ratio of the largest and second largest communities using label propagation",
             InterpretabilityScore(4),
         )
 
         self.add_feature(
-            "sum_density_c={}",
+            "ratio_commsize",
+            lambda graph: len(eval_labelprop(graph)[0]) / len(eval_labelprop(graph)[1]),
+            "The ratio of the largest and second largest communities using label propagation",
+            InterpretabilityScore(3),
+        )
+
+        self.add_feature(
+            "ratio_commsize_maxmin",
+            lambda graph: len(eval_labelprop(graph)[0]) / len(eval_labelprop(graph)[-1]),
+            "The ratio of the largest and second largest communities using label propagation",
+            InterpretabilityScore(3),
+        )
+
+
+        self.add_feature(
+            "communities",
             lambda graph: eval_labelprop(graph),
             "The optimal partition using label propagation algorithm",
-            InterpretabilityScore(4),
+            InterpretabilityScore(3),
             statistics="clustering",
         )

@@ -37,7 +37,7 @@ class ChemicalTheory(FeatureClass):
 
     def compute_features(self):
         """
-        Compute some standard centrality measures for the network
+        Compute some chemical theory measures for the network
 
         Computed statistics
         -----

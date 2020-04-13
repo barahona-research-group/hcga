@@ -20,25 +20,25 @@
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
 import networkx as nx
-import numpy as np
+
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 
-featureclass_name = "CoreNumber"
+featureclass_name = "Eulerian"
 
 
-class CoreNumber(FeatureClass):
-    """Core number class"""
+class Eulerian(FeatureClass):
+    """ Eulerian Measures class """
 
     modes = ["fast", "medium", "slow"]
-    shortname = "CN"
-    name = "core_number"
+    shortname = "EU"
+    name = "eulerian"
     keywords = []
     normalize_features = True
 
     def compute_features(self):
         """
-        Compute the core number of the network
+        Compute the Eulerian measures of the network
 
         Computed statistics
         -----
@@ -46,13 +46,40 @@ class CoreNumber(FeatureClass):
 
         """
 
-        core_number = lambda graph: list(
-            np.asarray(list(nx.core_number(graph).values()))
-        )
+        # checking if eulerian
         self.add_feature(
-            "core number",
-            core_number,
-            "The core number distribution",
-            InterpretabilityScore(5),
-            statistics="centrality",
-        )
+            "eulerian",
+            lambda graph: nx.is_eulerian(graph)*1,
+            "A graph is eulerian if it has a eulerian circuit: a closed walk that includes each edges of the graph exactly once",
+            InterpretabilityScore(3),            
+        )    
+        
+        # checking if semi eulerian
+        self.add_feature(
+            "semi_eulerian",
+            lambda graph: nx.is_semieulerian(graph)*1,
+            "A graph is semi eulerian if it has a eulerian path but no eulerian circuit",
+            InterpretabilityScore(3),            
+        )   
+
+        # checking if eulerian path exists
+        self.add_feature(
+            "semi_eulerian",
+            lambda graph: nx.has_eulerian_path(graph)*1,
+            "Whether a eulerian path exists in the network",
+            InterpretabilityScore(3),            
+        )    
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+
+

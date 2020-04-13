@@ -21,6 +21,7 @@
 
 import networkx as nx
 from networkx.algorithms import centrality
+import numpy as np
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 from . import utils
@@ -158,3 +159,5 @@ class CentralitiesBasic(FeatureClass):
             InterpretabilityScore(4),
             statistics="centrality",
         )
+
+

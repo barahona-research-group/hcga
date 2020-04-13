@@ -21,40 +21,42 @@
 
 from functools import lru_cache
 
-
-from networkx.algorithms.community import kernighan_lin_bisection
+from networkx.algorithms.community import greedy_modularity_communities
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 
-featureclass_name = "CommunitiesBisection"
+featureclass_name = "CommunitiesModularity"
 
 
-class CommunitiesBisection(FeatureClass):
+class CommunitiesModularity(FeatureClass):
     """
-    Communities Bisection class
+    Communities Modularity propagation class
     """
 
     modes = ["medium", "slow"]
-    shortname = "CBI"
-    name = "communities_bisection"
+    shortname = "CM"
+    name = "communities_modularity"
     keywords = []
     normalize_features = True
 
     def compute_features(self):
-        """Compute the measures about community detection using bisection algorithm.
+        """Compute the measures about community detection using the modularity algorithm.
 
         Notes
         -----
         """
 
         @lru_cache(maxsize=None)
-        def eval_bisection(graph):
+        def eval_modularity(graph):
             """this evaluates the main function and cach it for speed up"""
-            communities = list(kernighan_lin_bisection(graph))
+            communities = list(greedy_modularity_communities(graph))
 
             # if a single communities, add a trivial one
             if len(communities) == 1:
                 communities.append([{0}])
+                
+            # convert frozenset to set
+            communities=[set(comm) for comm in communities]
                 
             # sort sets by size
             communities.sort(key=len, reverse=True)
@@ -63,29 +65,29 @@ class CommunitiesBisection(FeatureClass):
 
         self.add_feature(
             "largest_commsize",
-            lambda graph: len(eval_bisection(graph)[0]),
-            "The ratio of the largest and second largest communities using bisection algorithm",
+            lambda graph: len(eval_modularity(graph)[0]),
+            "The ratio of the largest and second largest communities using greedy modularity",
             InterpretabilityScore(4),
         )
 
         self.add_feature(
             "ratio_commsize",
-            lambda graph: len(eval_bisection(graph)[0]) / len(eval_bisection(graph)[1]),
-            "The ratio of the largest and second largest communities using bisection algorithm",
+            lambda graph: len(eval_modularity(graph)[0]) / len(eval_modularity(graph)[1]),
+            "The ratio of the largest and second largest communities using greedy modularity",
             InterpretabilityScore(3),
         )
 
         self.add_feature(
-            "partition",
-            lambda graph: list(kernighan_lin_bisection(graph)),
-            "The optimal partition for kernighan lin bisection algorithm",
-            InterpretabilityScore(4),
-            statistics="clustering",
+            "ratio_commsize_maxmin",
+            lambda graph: len(eval_modularity(graph)[0]) / len(eval_modularity(graph)[-1]),
+            "The ratio of the largest and second largest communities using greedy modularity",
+            InterpretabilityScore(3),
         )
 
-
-
-
-
-
-
+        self.add_feature(
+            "communities",
+            lambda graph: eval_modularity(graph),
+            "The optimal partition using greedy modularity algorithm",
+            InterpretabilityScore(3),
+            statistics="clustering",
+        )

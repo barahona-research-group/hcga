@@ -20,25 +20,25 @@
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
 import networkx as nx
-import numpy as np
+
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 
-featureclass_name = "CoreNumber"
+featureclass_name = "Efficiency"
 
 
-class CoreNumber(FeatureClass):
-    """Core number class"""
+class Efficiency(FeatureClass):
+    """ Distance Measures class """
 
     modes = ["fast", "medium", "slow"]
-    shortname = "CN"
-    name = "core_number"
+    shortname = "EF"
+    name = "efficiency"
     keywords = []
     normalize_features = True
 
     def compute_features(self):
         """
-        Compute the core number of the network
+        Compute the efficiency measures of the network
 
         Computed statistics
         -----
@@ -46,13 +46,34 @@ class CoreNumber(FeatureClass):
 
         """
 
-        core_number = lambda graph: list(
-            np.asarray(list(nx.core_number(graph).values()))
-        )
+        # local effiency
         self.add_feature(
-            "core number",
-            core_number,
-            "The core number distribution",
-            InterpretabilityScore(5),
-            statistics="centrality",
-        )
+            "local_efficiency",
+            lambda graph: nx.local_efficiency(graph),
+            "The local efficiency",
+            InterpretabilityScore(4),            
+        )    
+        
+        # global effiency
+        self.add_feature(
+            "global_efficiency",
+            lambda graph: nx.global_efficiency(graph),
+            "The global efficiency",
+            InterpretabilityScore(4),            
+        )  
+
+  
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+
+

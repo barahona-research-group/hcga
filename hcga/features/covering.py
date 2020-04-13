@@ -20,39 +20,41 @@
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
 import networkx as nx
-import numpy as np
+
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 
-featureclass_name = "CoreNumber"
+featureclass_name = "Covering"
 
 
-class CoreNumber(FeatureClass):
-    """Core number class"""
+class Covering(FeatureClass):
+    """Covering class"""
 
     modes = ["fast", "medium", "slow"]
-    shortname = "CN"
-    name = "core_number"
+    shortname = "CV"
+    name = "covering"
     keywords = []
     normalize_features = True
 
     def compute_features(self):
         """
-        Compute the core number of the network
+        Compute some measures for graph covering
 
         Computed statistics
         -----
         Put here the list of things that are computed, with corresponding names
 
+        Notes
+        -----
+        
         """
 
-        core_number = lambda graph: list(
-            np.asarray(list(nx.core_number(graph).values()))
-        )
+
         self.add_feature(
-            "core number",
-            core_number,
-            "The core number distribution",
-            InterpretabilityScore(5),
-            statistics="centrality",
+            "min_edge_cover",
+            lambda graph: len(list(nx.min_edge_cover(graph))),
+            "The number of edges which consistutes the minimum edge cover of the graph",
+            InterpretabilityScore(3),
         )
+  
+
