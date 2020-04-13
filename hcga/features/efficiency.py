@@ -51,29 +51,13 @@ class Efficiency(FeatureClass):
             "local_efficiency",
             lambda graph: nx.local_efficiency(graph),
             "The local efficiency",
-            InterpretabilityScore(4),            
-        )    
-        
+            InterpretabilityScore(4),
+        )
+
         # global effiency
         self.add_feature(
             "global_efficiency",
             lambda graph: nx.global_efficiency(graph),
             "The global efficiency",
-            InterpretabilityScore(4),            
-        )  
-
-  
-
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-
-
+            InterpretabilityScore(4),
+        )

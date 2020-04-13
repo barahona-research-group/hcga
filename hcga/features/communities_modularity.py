@@ -54,13 +54,13 @@ class CommunitiesModularity(FeatureClass):
             # if a single communities, add a trivial one
             if len(communities) == 1:
                 communities.append([{0}])
-                
+
             # convert frozenset to set
-            communities=[set(comm) for comm in communities]
-                
+            communities = [set(comm) for comm in communities]
+
             # sort sets by size
             communities.sort(key=len, reverse=True)
-            
+
             return communities
 
         self.add_feature(
@@ -72,14 +72,16 @@ class CommunitiesModularity(FeatureClass):
 
         self.add_feature(
             "ratio_commsize",
-            lambda graph: len(eval_modularity(graph)[0]) / len(eval_modularity(graph)[1]),
+            lambda graph: len(eval_modularity(graph)[0])
+            / len(eval_modularity(graph)[1]),
             "The ratio of the largest and second largest communities using greedy modularity",
             InterpretabilityScore(3),
         )
 
         self.add_feature(
             "ratio_commsize_maxmin",
-            lambda graph: len(eval_modularity(graph)[0]) / len(eval_modularity(graph)[-1]),
+            lambda graph: len(eval_modularity(graph)[0])
+            / len(eval_modularity(graph)[-1]),
             "The ratio of the largest and second largest communities using greedy modularity",
             InterpretabilityScore(3),
         )

@@ -31,7 +31,7 @@ class CoreNumber(FeatureClass):
     """Core number class"""
 
     modes = ["fast", "medium", "slow"]
-    shortname = "CN"
+    shortname = "CoN"
     name = "core_number"
     keywords = []
     normalize_features = True

@@ -63,15 +63,9 @@ class IndependentSets(FeatureClass):
 
         """
 
-
         self.add_feature(
             "size_max_indep_set",
             lambda graph: len(nx.maximal_independent_set(graph)),
             "The number of nodes in the maximal independent set",
-            InterpretabilityScore(3)            
+            InterpretabilityScore(3),
         )
-
-
-
-
-
