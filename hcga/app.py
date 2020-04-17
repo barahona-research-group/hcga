@@ -38,7 +38,7 @@ def cli():
 )
 @click.option(
     "--norm/--no-norm",
-    default=False,
+    default=True,
     show_default=True,
     help="Normalised features by number of edges/nodes (by default not)",
 )

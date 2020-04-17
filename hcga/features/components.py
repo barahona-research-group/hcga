@@ -70,7 +70,7 @@ class Components(FeatureClass):
                 return 0
             return (
                 len(eval_connectedcomponents(graph)[0])
-                / len(eval_connectedcomponents(graph)[1]),
+                / len(eval_connectedcomponents(graph)[1])
             )
 
         self.add_feature(
@@ -85,7 +85,7 @@ class Components(FeatureClass):
                 return 0
             return (
                 len(eval_connectedcomponents(graph)[0])
-                / len(eval_connectedcomponents(graph)[-1]),
+                / len(eval_connectedcomponents(graph)[-1])
             )
 
         self.add_feature(

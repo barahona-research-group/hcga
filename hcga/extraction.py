@@ -83,7 +83,6 @@ def get_list_feature_classes(
     non_feature_files = ["__init__", "utils"]
 
     list_feature_classes = []
-    # trivial_graph = utils.get_trivial_graph()
 
     for f_name in feature_path.glob("*.py"):
         feature_name = f_name.stem
