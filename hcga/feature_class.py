@@ -143,8 +143,10 @@ class FeatureClass:
                 self.graph.graph["id"],
                 str(exc),
             )
-            if statistics in ("centrality", "clustering", "node_features"):
-                return np.array([np.nan]).reshape([-1,1])#[np.nan]
+            if statistics in ("centrality", "clustering"):
+                return [np.nan]#np.array([np.nan]).reshape([-1,1])#[np.nan]
+            if statistics is "node_features":
+                return np.array([np.nan]).reshape([-1,1])
             else:
                 return np.nan
             # feature = return_type(np.nan)
@@ -162,7 +164,7 @@ class FeatureClass:
                         feature_name, feature
                     )
                 )
-        elif statistics in  ("centrality", "node_features"):
+        elif statistics in ("centrality", "node_features"):
             expected_types = (list, np.ndarray)
             if type(feature) not in expected_types:
                 raise Exception(
@@ -172,10 +174,10 @@ class FeatureClass:
                 )
         else:
             expected_types = (int, float, np.int32, np.int64, np.float32, np.float64)
-            if type(feature) not in expected_types or not np.nan:
+            if type(feature) not in expected_types or not np.nan:                
                 raise Exception(
-                    "Feature {} with no statistics argument does not return expected type{}: {}".format(
-                        feature_name, expected_types, feature
+                    "{} Feature {} of type {} with no statistics argument does not return expected type{}: {}".format(
+                        function_args, feature_name, type(feature), expected_types, feature
                     )
                 )
 
@@ -433,7 +435,7 @@ class FeatureClass:
     def feature_statistics_medium(
         self, feat_dist, feat_name, feat_desc, feat_interpret
     ):
-        """Computes mediumsummary statistics of distributions"""
+        """Computes medium summary statistics of distributions"""
         compl_desc = " of the distribution of " + feat_desc
 
         self.add_feature(

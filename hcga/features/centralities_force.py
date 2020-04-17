@@ -63,13 +63,15 @@ class ForceCentrality(FeatureClass):
             c = []
             for _ in range(n_force):
                 pos = forceatlas2.forceatlas2_networkx_layout(graph, pos=None,)
-                c.append(np.linalg.norm(np.array(list(pos.values())), axis=1))
-            return np.vstack(c).mean(axis=0) / np.max(np.vstack(c))
+                c.append(np.linalg.norm(np.array(list(pos.values())), axis=1))           
+
+            return (np.vstack(c).mean(axis=0) / np.max(np.vstack(c))).tolist()
+
 
         self.add_feature(
-            "force centrality",
+            "force_centrality",
             force_centrality,
             "Force centrality is the distance from the centre of mass of the network - larger values indicate further from the centre",
-            InterpretabilityScore(5),
+            InterpretabilityScore(4),
             statistics="centrality",
         )
