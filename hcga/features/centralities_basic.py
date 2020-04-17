@@ -137,11 +137,19 @@ class CentralitiesBasic(FeatureClass):
         )
 
         # Eigenvector centrality
-        eigenvector_centrality = lambda graph: list(
-            centrality.eigenvector_centrality(
+        def eigenvector_centrality(graph):
+            try:
+                return list(centrality.eigenvector_centrality(
                 utils.ensure_connected(graph), max_iter=500
-            ).values()
-        )
+                ).values()
+                )   
+            except:
+                return [np.nan]
+#        eigenvector_centrality = lambda graph: list(
+#            centrality.eigenvector_centrality(
+#                utils.ensure_connected(graph), max_iter=500
+#            ).values()
+#        )
         self.add_feature(
             "eigenvector centrality",
             eigenvector_centrality,
@@ -158,6 +166,17 @@ class CentralitiesBasic(FeatureClass):
             "katz centrality",
             katz_centrality,
             "Generalisation of eigenvector centrality - Katz centrality computes the centrality for a node based on the centrality of its neighbors",
+            InterpretabilityScore(4),
+            statistics="centrality",
+        )
+
+
+        # Page Rank
+        pagerank = lambda graph: list(nx.pagerank(graph).values())
+        self.add_feature(
+            "pagerank",
+            pagerank,
+            "The pagerank computes a ranking of the nodes in the graph based on the structure of the incoming links. ",
             InterpretabilityScore(4),
             statistics="centrality",
         )

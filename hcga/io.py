@@ -21,6 +21,16 @@ def _remove_small_graphs(graphs, n_node_min=2):
     return [graph for graph in graphs if len(graph) > n_node_min]
 
 
+def _combine_node_feats_labels(graphs):
+    """ node labels and node features combined into a single node features vector """
+    
+    for graph in graphs:
+        for u in graph.nodes:
+            #only combine if node labels exist
+            if graph.nodes[u]['label']:
+                graph.nodes[u]['feat'] = np.hstack([graph.nodes[u]['feat'],graph.nodes[u]['label']])
+    return graphs
+
 def save_analysis(X, explainer, shap_values, folder=".", filename="analysis_results"):
     """save results of analysis"""
     if not Path(folder).exists():
@@ -58,6 +68,8 @@ def load_dataset(filename):
 
     graphs = _remove_small_graphs(graphs)
     _ensure_weights(graphs)
+
+    graphs = _combine_node_feats_labels(graphs)
 
     return graphs
 

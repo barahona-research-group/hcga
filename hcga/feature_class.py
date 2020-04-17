@@ -33,7 +33,7 @@ class FeatureClass:
     # Feature descriptions as class variable
     feature_descriptions = {}
 
-    trivial_graph = utils.get_trivial_graph()
+    #trivial_graph = utils.get_trivial_graph()
 
     def __init_subclass__(cls):
         """Initialise class variables to default for each child class"""
@@ -45,6 +45,7 @@ class FeatureClass:
         if graph is not None:
             self.verify_graph()
         self.features = {}
+        #self.node_features = []
 
     def verify_graph(self):
         """make sure a graph has correct properties"""
@@ -55,14 +56,17 @@ class FeatureClass:
             L.warning("An id has not been set for a graph")
             self.graph.graph["id"] = -1
 
+        
+
     @classmethod
-    def setup_class(cls, normalize_features=True, statistics_level="basic"):
+    def setup_class(cls, n_feats, normalize_features=True, statistics_level="basic"):
         """Initializes the class by adding descriptions for all features"""
         cls.normalize_features = normalize_features
         cls.statistics_level = statistics_level
-
+        
+        
         # runs once update_feature on None graph to populate feature descriptions
-        inst = cls(cls.trivial_graph)
+        inst = cls(utils.get_trivial_graph(n_feats))
         inst.update_features({})
 
     def get_info(self):
@@ -139,8 +143,8 @@ class FeatureClass:
                 self.graph.graph["id"],
                 str(exc),
             )
-            if statistics in ("centrality", "clustering"):
-                return [np.nan]
+            if statistics in ("centrality", "clustering", "node_features"):
+                return np.array([np.nan]).reshape([-1,1])#[np.nan]
             else:
                 return np.nan
             # feature = return_type(np.nan)
@@ -158,11 +162,11 @@ class FeatureClass:
                         feature_name, feature
                     )
                 )
-        elif statistics is "centrality":
+        elif statistics in  ("centrality", "node_features"):
             expected_types = (list, np.ndarray)
             if type(feature) not in expected_types:
                 raise Exception(
-                    "Feature {} with centrality statistics does not return expected type{}: {}".format(
+                    "Feature {} with statistics does not return expected type{}: {}".format(
                         feature_name, expected_types, feature
                     )
                 )
@@ -209,6 +213,11 @@ class FeatureClass:
 
         elif statistics == "clustering":
             self.clustering_statistics(
+                func_result, feature_name, feature_description, feature_interpret,
+            )
+
+        elif statistics == "node_features":
+            self.node_feature_statistics(
                 func_result, feature_name, feature_description, feature_interpret,
             )
 
@@ -349,6 +358,13 @@ class FeatureClass:
             function_args=community_partition,
         )
 
+    def node_feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
+        """ Splits a nxf feature array and then computes summary statistics of each feature distribution """
+        
+        for node_feats in range(feat_dist.shape[1]):
+            self.feature_statistics_basic(feat_dist[:,node_feats] , feat_name + str(node_feats), feat_desc + str(node_feats), feat_interpret)
+            
+
     def feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes summary statistics of distributions"""
 
@@ -382,6 +398,13 @@ class FeatureClass:
             feat_name + "_min",
             np.min,
             "Minimum" + compl_desc,
+            feat_interpret,
+            function_args=feat_dist,
+        )
+        self.add_feature(
+            feat_name + "_sum",
+            np.sum,
+            "Sum" + compl_desc,
             feat_interpret,
             function_args=feat_dist,
         )

@@ -22,25 +22,25 @@
 import networkx as nx
 import numpy as np
 
-from . import utils
+from functools import lru_cache
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 
-featureclass_name = "DistanceMeasures"
+featureclass_name = "RichClub"
 
 
-class DistanceMeasures(FeatureClass):
-    """ Distance Measures class """
+class RichClub(FeatureClass):
+    """ Rich Club class """
 
     modes = ["fast", "medium", "slow"]
-    shortname = "DM"
-    name = "distance_measures"
+    shortname = "RC"
+    name = "rich_club"
     keywords = []
     normalize_features = True
 
     def compute_features(self):
         """
-        Compute the distance measures of the network
+        Compute the rich club measures of the network
 
         Computed statistics
         -----
@@ -48,50 +48,38 @@ class DistanceMeasures(FeatureClass):
 
         """
 
-        # barycenter
+        @lru_cache(maxsize=None)
+        def eval_rich_club(graph):
+            # extracting feature matrix       
+            return list(nx.rich_club_coefficient(graph, normalized=False).values())
+
+        # k = 1
         self.add_feature(
-            "barycenter_size",
-            lambda graph: len(nx.barycenter(graph)),
-            "The barycenter is the subgraph which minimises a distance function",
+            "rich_club_k=1",
+            lambda graph: eval_rich_club(graph)[0],
+            "The rich-club coefficient is the ratio of the number of actual to the number of potential edges for nodes with degree greater than k",
             InterpretabilityScore(4),
         )
 
-        # center
+        # 
         self.add_feature(
-            "center_size",
-            lambda graph: len(nx.center(graph)),
-            "The center is the subgraph of nodes with eccentricity equal to radius",
-            InterpretabilityScore(3),
+            "rich_club_k=max",
+            lambda graph: eval_rich_club(graph)[-1],
+            "The rich-club coefficient is the ratio of the number of actual to the number of potential edges for nodes with degree greater than k",
+            InterpretabilityScore(4),
         )
-
-        # extrema bounding
+        
         self.add_feature(
-            "center_size",
-            lambda graph: nx.extrema_bounding(graph),
-            "The largest distance in the graph",
+            "rich_club_maxminratio",
+            lambda graph: np.min(eval_rich_club(graph))/np.max(eval_rich_club(graph)),
+            "The ratio of the smallest to largest rich club coefficients",
             InterpretabilityScore(4),
         )
 
-        # periphery
         self.add_feature(
-            "periphery",
-            lambda graph: len(nx.periphery(graph)),
-            "The number of peripheral nodes in the graph",
+            "rich_club",
+            lambda graph: eval_rich_club(graph),
+            "The distribution of rich club coefficients",
             InterpretabilityScore(4),
-        )
-
-        def eccentricity(graph):
-            try:
-                return list(nx.eccentricity(
-                utils.ensure_connected(graph)).values()
-                )   
-            except:
-                return [np.nan]
-
-        self.add_feature(
-            "eccentricity",
-            eccentricity,
-            "The distribution of node eccentricity across the network",
-            InterpretabilityScore(3),
             statistics="centrality",
         )
