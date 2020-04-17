@@ -7,7 +7,7 @@ import warnings
 
 warnings.simplefilter("ignore")
 
-test_feature_classes = get_list_feature_classes(n_feats=0, mode="all", statistics_level="advanced")
+test_feature_classes = get_list_feature_classes(mode="all", statistics_level="advanced")
 
 def test_shortname_definition():
     """test if the class shortname has been set"""
@@ -44,8 +44,7 @@ def test_trivial_graph():
     """test if the features are computable on trivial graph"""
     from hcga.utils import get_trivial_graph
 
-    # TODO if they node features are zero we don't get any features
-    graph = get_trivial_graph(1)
+    graph = get_trivial_graph()
     for feature_class in test_feature_classes:
         feature_inst = feature_class(graph)
         feature_inst.compute_features()

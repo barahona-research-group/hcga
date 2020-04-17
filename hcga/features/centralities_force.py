@@ -63,10 +63,9 @@ class ForceCentrality(FeatureClass):
             c = []
             for _ in range(n_force):
                 pos = forceatlas2.forceatlas2_networkx_layout(graph, pos=None,)
-                c.append(np.linalg.norm(np.array(list(pos.values())), axis=1))           
+                c.append(np.linalg.norm(np.array(list(pos.values())), axis=1))
 
             return (np.vstack(c).mean(axis=0) / np.max(np.vstack(c))).tolist()
-
 
         self.add_feature(
             "force_centrality",

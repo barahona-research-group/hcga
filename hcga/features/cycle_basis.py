@@ -19,10 +19,10 @@
 # You should have received a copy of the GNU General Public License
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
-import networkx as nx
-import numpy as np
 from functools import lru_cache
 
+import networkx as nx
+import numpy as np
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 

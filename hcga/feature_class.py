@@ -3,7 +3,6 @@ import logging
 import sys
 from functools import partial
 
-
 import networkx as nx
 import numpy as np
 import scipy.stats as st
@@ -33,7 +32,7 @@ class FeatureClass:
     # Feature descriptions as class variable
     feature_descriptions = {}
 
-    #trivial_graph = utils.get_trivial_graph()
+    trivial_graph = utils.get_trivial_graph()
 
     def __init_subclass__(cls):
         """Initialise class variables to default for each child class"""
@@ -45,7 +44,7 @@ class FeatureClass:
         if graph is not None:
             self.verify_graph()
         self.features = {}
-        #self.node_features = []
+        # self.node_features = []
 
     def verify_graph(self):
         """make sure a graph has correct properties"""
@@ -56,17 +55,14 @@ class FeatureClass:
             L.warning("An id has not been set for a graph")
             self.graph.graph["id"] = -1
 
-        
-
     @classmethod
-    def setup_class(cls, n_feats, normalize_features=True, statistics_level="basic"):
+    def setup_class(cls, normalize_features=True, statistics_level="basic"):
         """Initializes the class by adding descriptions for all features"""
         cls.normalize_features = normalize_features
         cls.statistics_level = statistics_level
-        
-        
+
         # runs once update_feature on None graph to populate feature descriptions
-        inst = cls(utils.get_trivial_graph(n_feats))
+        inst = cls(cls.trivial_graph)
         inst.update_features({})
 
     def get_info(self):
@@ -118,22 +114,17 @@ class FeatureClass:
     def evaluate_feature(
         self, feature_function, feature_name, function_args=None, statistics=None,
     ):
-        """Evaluating a feature function and catching/raising errors"""
+        """Evaluating a feature function and catching/raising errors."""
         if not callable(feature_function):
             raise Exception(
                 "The feature function {} is not callable!".format(feature_name)
             )
+
         if function_args is None:
-            eval_func = partial(feature_function, self.graph)
-        elif isinstance(function_args, list):
-            eval_func = partial(feature_function, *function_args)
-        elif isinstance(function_args, dict):
-            eval_func = partial(feature_function, **function_args)
-        else:
-            eval_func = partial(feature_function, function_args)
+            function_args = self.graph
 
         try:
-            feature = eval_func()
+            feature = feature_function(function_args)
         except (KeyboardInterrupt, SystemExit):
             sys.exit(0)
         except Exception as exc:
@@ -144,17 +135,16 @@ class FeatureClass:
                 str(exc),
             )
             if statistics in ("centrality", "clustering"):
-                return [np.nan]#np.array([np.nan]).reshape([-1,1])#[np.nan]
+                return [np.nan]
             if statistics is "node_features":
-                return np.array([np.nan]).reshape([-1,1])
+                return np.array([np.nan]).reshape([-1, 1])
             else:
                 return np.nan
-            # feature = return_type(np.nan)
 
         if statistics is "clustering":
             if not isinstance(feature, list):
                 raise Exception(
-                    "Feature {} with clustering statistics is not a list of sets: {}".format(
+                    "Feature {} with clustering statistics is not a list: {}".format(
                         feature_name, feature
                     )
                 )
@@ -174,10 +164,14 @@ class FeatureClass:
                 )
         else:
             expected_types = (int, float, np.int32, np.int64, np.float32, np.float64)
-            if type(feature) not in expected_types or not np.nan:                
+            if type(feature) not in expected_types:  # or not None:
                 raise Exception(
                     "{} Feature {} of type {} with no statistics argument does not return expected type{}: {}".format(
-                        function_args, feature_name, type(feature), expected_types, feature
+                        function_args,
+                        feature_name,
+                        type(feature),
+                        expected_types,
+                        feature,
                     )
                 )
 
@@ -201,9 +195,9 @@ class FeatureClass:
         )
         if statistics is None:
             self.features[feature_name] = func_result
-
             if not hasattr(feature_interpret, "get_score"):
                 feature_interpret = InterpretabilityScore(feature_interpret)
+
             self.__class__.add_feature_description(
                 feature_name, feature_description, feature_interpret
             )
@@ -221,50 +215,6 @@ class FeatureClass:
         elif statistics == "node_features":
             self.node_feature_statistics(
                 func_result, feature_name, feature_description, feature_interpret,
-            )
-
-    def add_feature_old(
-        self, feature_name, feature_function, feature_description, feature_interpret
-    ):
-        """Adds a computed feature value and its description"""
-        if not callable(feature_function):
-            raise Exception(
-                "The feature function {} is not callable!".format(feature_name)
-            )
-
-        try:
-            feature = feature_function(self.graph)
-        except (KeyboardInterrupt, SystemExit):
-            sys.exit(0)
-        except Exception as exc:
-            L.debug(
-                "Failed feature %s for graph %d with exception: %s",
-                feature_name,
-                self.graph.graph["id"],
-                str(exc),
-            )
-            # if the feature cannot be computed, fill with np.nan
-            feature_trivial = feature_function(self.__class__.trivial_graph)
-            if isinstance(feature_trivial, list):
-                feature = [np.nan]
-            else:
-                feature = np.nan
-
-        if isinstance(feature, (list, np.ndarray)):
-            if isinstance(feature[0], set):
-                self.clustering_statistics(
-                    feature, feature_name, feature_description, feature_interpret
-                )
-            else:
-                self.feature_statistics(
-                    feature, feature_name, feature_description, feature_interpret
-                )
-        else:
-            self.features[feature_name] = feature
-            if not hasattr(feature_interpret, "get_score"):
-                feature_interpret = InterpretabilityScore(feature_interpret)
-            self.__class__.add_feature_description(
-                feature_name, feature_description, feature_interpret
             )
 
     def compute_features(self):
@@ -362,10 +312,13 @@ class FeatureClass:
 
     def node_feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """ Splits a nxf feature array and then computes summary statistics of each feature distribution """
-        
         for node_feats in range(feat_dist.shape[1]):
-            self.feature_statistics_basic(feat_dist[:,node_feats] , feat_name + str(node_feats), feat_desc + str(node_feats), feat_interpret)
-            
+            self.feature_statistics_basic(
+                feat_dist[:, node_feats],
+                feat_name + str(node_feats),
+                feat_desc + str(node_feats),
+                feat_interpret,
+            )
 
     def feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes summary statistics of distributions"""

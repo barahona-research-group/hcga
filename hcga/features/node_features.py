@@ -19,11 +19,10 @@
 # You should have received a copy of the GNU General Public License
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
-import numpy as np
-import networkx as nx
-
 from functools import lru_cache
 
+import networkx as nx
+import numpy as np
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 
@@ -53,71 +52,35 @@ class NodeFeatures(FeatureClass):
 
         """
 
-        
         @lru_cache(maxsize=None)
-        def eval_node_feats(graph):
-            # extracting feature matrix
-            feature_matrix = []
-            for node in graph.nodes:                
-                feature_matrix.append(graph.nodes[node]['feat'])            
-            return np.vstack(feature_matrix)
+        def get_feature_matrix(graph):
+            """Extracting feature matrix."""
+            return np.vstack([graph.nodes[node]["feat"] for node in graph.nodes])
 
-        @lru_cache(maxsize=None)
-        def eval_conv_node_feats(graph):
-            # extracting the convolved feature matrix - single message passing
-            feature_matrix = []
-            for node in graph.nodes:                
-                feature_matrix.append(graph.nodes[node]['feat'])            
-            return nx.to_numpy_array(graph).dot(np.vstack(feature_matrix))
-
-        @lru_cache(maxsize=None)
-        def eval_conv2_node_feats(graph):
-            # extracting the convolved feature matrix - single message passing
-            feature_matrix = []
-            for node in graph.nodes:                
-                feature_matrix.append(graph.nodes[node]['feat'])            
-            return np.linalg.matrix_power(nx.to_numpy_array(graph),2).dot(np.vstack(feature_matrix))
-
-
-                
-        # compute statistics over each feature
-        node_feat = lambda graph: eval_node_feats(graph)          
         self.add_feature(
             "node_feature_",
-            node_feat,
+            lambda graph: get_feature_matrix(graph),
             "The summary statistics of node feature ",
             InterpretabilityScore(5),
             statistics="node_features",
         )
- 
-        conv_node_feat = lambda graph: eval_conv_node_feats(graph)           
+
         self.add_feature(
             "conv_node_feature_",
-            conv_node_feat,
+            lambda graph: nx.to_numpy_array(graph).dot(get_feature_matrix(graph)),
             "The summary statistics after a single message passing of features of node feature ",
             InterpretabilityScore(3),
             statistics="node_features",
-        )       
+        )
 
-        conv2_node_feat = lambda graph: eval_conv2_node_feats(graph)           
         self.add_feature(
             "conv2_node_feature_",
-            conv2_node_feat,
+            lambda graph: np.linalg.matrix_power(nx.to_numpy_array(graph), 2).dot(
+                get_feature_matrix(graph)
+            ),
             "The summary statistics after a two message passing of features of node feature ",
             InterpretabilityScore(3),
             statistics="node_features",
-        )    
+        )
 
-        #TODO add more features based on node features here
-
-
-
-
-
-
-
-
-
-
-
-
+        # TODO add more features based on node features here

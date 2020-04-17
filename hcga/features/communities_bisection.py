@@ -21,7 +21,6 @@
 
 from functools import lru_cache
 
-
 from networkx.algorithms.community import kernighan_lin_bisection
 
 from ..feature_class import FeatureClass, InterpretabilityScore

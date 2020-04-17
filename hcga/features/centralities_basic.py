@@ -20,8 +20,8 @@
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
 import networkx as nx
-from networkx.algorithms import centrality
 import numpy as np
+from networkx.algorithms import centrality
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 from . import utils
@@ -137,19 +137,11 @@ class CentralitiesBasic(FeatureClass):
         )
 
         # Eigenvector centrality
-        def eigenvector_centrality(graph):
-            try:
-                return list(centrality.eigenvector_centrality(
+        eigenvector_centrality = lambda graph: list(
+            centrality.eigenvector_centrality(
                 utils.ensure_connected(graph), max_iter=500
-                ).values()
-                )   
-            except:
-                return [np.nan]
-#        eigenvector_centrality = lambda graph: list(
-#            centrality.eigenvector_centrality(
-#                utils.ensure_connected(graph), max_iter=500
-#            ).values()
-#        )
+            ).values()
+        )
         self.add_feature(
             "eigenvector centrality",
             eigenvector_centrality,
@@ -169,7 +161,6 @@ class CentralitiesBasic(FeatureClass):
             InterpretabilityScore(4),
             statistics="centrality",
         )
-
 
         # Page Rank
         pagerank = lambda graph: list(nx.pagerank(graph).values())

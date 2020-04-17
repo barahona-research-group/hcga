@@ -19,11 +19,10 @@
 # You should have received a copy of the GNU General Public License
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
-import numpy as np
-import networkx as nx
-
 from functools import lru_cache
 
+import networkx as nx
+import numpy as np
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 
@@ -51,12 +50,11 @@ class Spectrum(FeatureClass):
 
         """
 
-        
         @lru_cache(maxsize=None)
-        def eval_spectrum_adj(graph):         
+        def eval_spectrum_adj(graph):
             return np.real(nx.linalg.spectrum.adjacency_spectrum(graph))
 
-        # distribution of eigenvalues        
+        # distribution of eigenvalues
         self.add_feature(
             "eigenvalues_adjacency",
             lambda graph: eval_spectrum_adj(graph),
@@ -64,10 +62,11 @@ class Spectrum(FeatureClass):
             InterpretabilityScore(3),
             statistics="centrality",
         )
- 
+
         @lru_cache(maxsize=None)
-        def eval_spectrum_modularity(graph):         
-            return  np.real(nx.linalg.spectrum.modularity_spectrum(graph))
+        def eval_spectrum_modularity(graph):
+            return np.real(nx.linalg.spectrum.modularity_spectrum(graph))
+
         # distribution of eigenvalues
         self.add_feature(
             "eigenvalues_modularity",
@@ -76,11 +75,11 @@ class Spectrum(FeatureClass):
             InterpretabilityScore(3),
             statistics="centrality",
         )
- 
 
         @lru_cache(maxsize=None)
-        def eval_spectrum_laplacian(graph):         
-            return  np.real(nx.linalg.spectrum.laplacian_spectrum(graph))
+        def eval_spectrum_laplacian(graph):
+            return np.real(nx.linalg.spectrum.laplacian_spectrum(graph))
+
         # distribution of eigenvalues
         self.add_feature(
             "eigenvalues_laplacian",
@@ -89,7 +88,3 @@ class Spectrum(FeatureClass):
             InterpretabilityScore(3),
             statistics="centrality",
         )
- 
-
-
-

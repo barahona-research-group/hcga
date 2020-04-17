@@ -19,10 +19,10 @@
 # You should have received a copy of the GNU General Public License
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
+from functools import lru_cache
+
 import networkx as nx
 import numpy as np
-
-from functools import lru_cache
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 
@@ -50,7 +50,7 @@ class RichClub(FeatureClass):
 
         @lru_cache(maxsize=None)
         def eval_rich_club(graph):
-            # extracting feature matrix       
+            # extracting feature matrix
             return list(nx.rich_club_coefficient(graph, normalized=False).values())
 
         # k = 1
@@ -61,17 +61,17 @@ class RichClub(FeatureClass):
             InterpretabilityScore(4),
         )
 
-        # 
+        #
         self.add_feature(
             "rich_club_k=max",
             lambda graph: eval_rich_club(graph)[-1],
             "The rich-club coefficient is the ratio of the number of actual to the number of potential edges for nodes with degree greater than k",
             InterpretabilityScore(4),
         )
-        
+
         self.add_feature(
             "rich_club_maxminratio",
-            lambda graph: np.min(eval_rich_club(graph))/np.max(eval_rich_club(graph)),
+            lambda graph: np.min(eval_rich_club(graph)) / np.max(eval_rich_club(graph)),
             "The ratio of the smallest to largest rich club coefficients",
             InterpretabilityScore(4),
         )
