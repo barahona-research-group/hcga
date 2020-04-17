@@ -41,6 +41,7 @@ def _get_classifier(classifier):
 def analysis(
     features,
     features_info,
+    graphs,
     interpretability=1,
     shap=True,
     classifier="RF",
@@ -82,7 +83,7 @@ def analysis(
 
     if plot:
         if shap:
-            plotting.shap_plots(X, y, shap_values, results_folder, max_feats=max_feats)
+            plotting.shap_plots(X, y, shap_values, results_folder, graphs, max_feats=max_feats)
         else:
             plotting.basic_plots(X, top_features, results_folder)
 

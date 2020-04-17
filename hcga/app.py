@@ -86,7 +86,7 @@ def extract_features(
             os.mkdir(folder)
 
         output_file = folder / output_file
-        save_features(features, features_info, filename=output_file)
+        save_features(features, features_info, graphs, filename=output_file)
 
 
 @cli.command("feature_analysis")
@@ -144,16 +144,19 @@ def feature_analysis(
     interpretability,
 ):
     """Analysis of the features extracted in feature_file"""
-    from .io import load_features, save_analysis
+    from .io import load_features
+
     from .analysis import analysis
+
 
     results_folder = Path(results_folder) / dataset
     feature_filename = results_folder / feature_file
-    features, features_info = load_features(filename=feature_filename)
+    features, features_info, graphs = load_features(filename=feature_filename)
 
     X, shap_values = analysis(
         features,
         features_info,
+        graphs,
         interpretability=interpretability,
         folder=results_folder,
         shap=shap,
