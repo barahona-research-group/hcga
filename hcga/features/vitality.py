@@ -27,7 +27,7 @@ featureclass_name = "Vitality"
 
 
 class Vitality(FeatureClass):
-    modes = ["medium", "slow"]
+    modes = ["slow"]
     shortname = "V"
     name = "vitality"
     keywords = []

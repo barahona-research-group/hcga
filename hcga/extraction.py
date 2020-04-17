@@ -13,6 +13,10 @@ from tqdm import tqdm
 from . import utils
 
 
+import signal
+import time
+
+
 def extract(
     graphs,
     n_workers,
@@ -31,7 +35,7 @@ def extract(
             "WARNING: Runtime option enable, we will only use 10 graphs and one worker to estimate",
             "the computational time of each feature class.",
         )
-        graphs = graphs[:10]
+        graphs = graphs[:8]
 
     raw_features = compute_all_features(
         graphs, feat_classes, n_workers=n_workers, with_runtimes=with_runtimes,
@@ -143,7 +147,7 @@ def compute_all_features(
         mapper = map
     else:
         pool = multiprocessing.Pool(n_workers)
-        mapper = pool.imap
+        mapper = pool.imap_unordered
 
     return list(tqdm(mapper(worker, graphs), total=len(graphs)))
 

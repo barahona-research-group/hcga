@@ -22,6 +22,7 @@
 import networkx as nx
 
 from ..feature_class import FeatureClass, InterpretabilityScore
+from .utils import ensure_connected
 
 featureclass_name = "MinimumCuts"
 
@@ -49,14 +50,14 @@ class MinimumCuts(FeatureClass):
         """
         self.add_feature(
             "min_node_cut_size'",
-            lambda graph: len(nx.minimum_node_cut(graph)),
+            lambda graph: len(nx.minimum_node_cut(ensure_connected(graph))),
             "Minimum node cut size",
             InterpretabilityScore("max"),
         )
 
         self.add_feature(
             "min_edge_cut_size'",
-            lambda graph: len(nx.minimum_edge_cut(graph)),
+            lambda graph: len(nx.minimum_edge_cut(ensure_connected(graph))),
             "Minimum edge cut size",
             InterpretabilityScore("max"),
         )

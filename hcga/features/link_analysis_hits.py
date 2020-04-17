@@ -23,6 +23,7 @@ import networkx as nx
 import numpy as np
 
 from ..feature_class import FeatureClass, InterpretabilityScore
+from .utils import ensure_connected
 
 featureclass_name = "Hits"
 
@@ -76,7 +77,7 @@ class Hits(FeatureClass):
         """
 
         def hits(graph):
-            h, a = nx.hits(graph, max_iter=1000)
+            h, a = nx.hits(ensure_connected(graph), max_iter=1000)
             return list(h.values())
 
         self.add_feature(

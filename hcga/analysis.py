@@ -11,10 +11,8 @@ import numpy as np
 import pandas as pd
 import shap
 import xgboost
-from sklearn.metrics import (accuracy_score, balanced_accuracy_score,
-                             roc_auc_score)
-from sklearn.model_selection import (StratifiedKFold, cross_val_score,
-                                     train_test_split)
+from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score
+from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
 from sklearn.preprocessing import StandardScaler
 
 from . import plotting, utils
@@ -83,7 +81,9 @@ def analysis(
 
     if plot:
         if shap:
-            plotting.shap_plots(X, y, shap_values, results_folder, graphs, max_feats=max_feats)
+            plotting.shap_plots(
+                X, y, shap_values, results_folder, graphs, max_feats=max_feats
+            )
         else:
             plotting.basic_plots(X, top_features, results_folder)
 

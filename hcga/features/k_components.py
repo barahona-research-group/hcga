@@ -48,7 +48,7 @@ class KComponents(FeatureClass):
     
     """
 
-    modes = ["medium", "slow"]
+    modes = ["slow"]
     shortname = "KC"
     name = "k_components"
     keywords = []

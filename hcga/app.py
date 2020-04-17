@@ -148,7 +148,6 @@ def feature_analysis(
 
     from .analysis import analysis
 
-
     results_folder = Path(results_folder) / dataset
     feature_filename = results_folder / feature_file
     features, features_info, graphs = load_features(filename=feature_filename)

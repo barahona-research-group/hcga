@@ -65,18 +65,32 @@ class Components(FeatureClass):
             InterpretabilityScore(4),
         )
 
+        def ratio_largest(graph):
+            if len(eval_connectedcomponents(graph)) == 1:
+                return 0
+            return (
+                len(eval_connectedcomponents(graph)[0])
+                / len(eval_connectedcomponents(graph)[1]),
+            )
+
         self.add_feature(
             "ratio_largest_connected_components",
-            lambda graph: len(eval_connectedcomponents(graph)[0])
-            / len(eval_connectedcomponents(graph)[1]),
+            ratio_largest,
             "The size ratio of the two largest connected components",
             InterpretabilityScore(4),
         )
 
+        def ratio_min_max(graph):
+            if len(eval_connectedcomponents(graph)) == 1:
+                return 0
+            return (
+                len(eval_connectedcomponents(graph)[0])
+                / len(eval_connectedcomponents(graph)[-1]),
+            )
+
         self.add_feature(
             "ratio_maxmin_connected_components",
-            lambda graph: len(eval_connectedcomponents(graph)[0])
-            / len(eval_connectedcomponents(graph)[-1]),
+            ratio_min_max,
             "The size ratio of the max and min largest connected components",
             InterpretabilityScore(4),
         )

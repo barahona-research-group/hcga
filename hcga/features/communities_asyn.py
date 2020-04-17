@@ -57,7 +57,7 @@ class CommunitiesAsyn(FeatureClass):
             """this evaluates the main function and cach it for speed up"""
             return asyn_fluidc(utils.ensure_connected(graph), int(num_comms))
 
-        num_communities = np.linspace(2, 20, 10)
+        num_communities = np.linspace(2, 10, 5)
         for num_comms in num_communities:
             self.add_feature(
                 "sum_density_c={}".format(num_comms),

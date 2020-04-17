@@ -76,7 +76,7 @@ class CommunitiesBisection(FeatureClass):
 
         self.add_feature(
             "partition",
-            lambda graph: list(kernighan_lin_bisection(graph)),
+            eval_bisection,
             "The optimal partition for kernighan lin bisection algorithm",
             InterpretabilityScore(4),
             statistics="clustering",

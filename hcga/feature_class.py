@@ -10,10 +10,8 @@ from networkx.algorithms.community import quality
 
 from . import utils
 
-logging.basicConfig(
-    filename="feature_exceptions.log", filemode="w", level=logging.DEBUG
-)
 L = logging.getLogger("Feature exceptions")
+L.setLevel(logging.DEBUG)
 
 
 class FeatureClass:
@@ -269,45 +267,40 @@ class FeatureClass:
 
         self.add_feature(
             feat_name + "_modularity",
-            quality.modularity,
+            lambda graph: quality.modularity(graph, community_partition),
             "Modularity" + compl_desc,
             feat_interpret,
-            function_args=community_partition,
         )
+
         self.add_feature(
             feat_name + "_coverage",
-            quality.coverage,
+            lambda graph: quality.coverage(graph, community_partition),
             "Coverage" + compl_desc,
             feat_interpret,
-            function_args=community_partition,
         )
         self.add_feature(
             feat_name + "_performance",
-            quality.performance,
+            lambda graph: quality.performance(graph, community_partition),
             "Performance" + compl_desc,
             feat_interpret,
-            function_args=community_partition,
         )
         self.add_feature(
             feat_name + "_inter_community_edges",
-            quality.inter_community_edges,
+            lambda graph: quality.inter_community_edges(graph, community_partition),
             "Inter community edges" + compl_desc,
             feat_interpret,
-            function_args=community_partition,
         )
         self.add_feature(
             feat_name + "_inter_community_non_edges",
-            quality.inter_community_non_edges,
+            lambda graph: quality.inter_community_non_edges(graph, community_partition),
             "Inter community non edges" + compl_desc,
             feat_interpret,
-            function_args=community_partition,
         )
         self.add_feature(
             feat_name + "_intra_community_edges",
-            quality.intra_community_edges,
+            lambda graph: quality.intra_community_edges(graph, community_partition),
             "Intra community edges" + compl_desc,
             feat_interpret,
-            function_args=community_partition,
         )
 
     def node_feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):

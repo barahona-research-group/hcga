@@ -23,7 +23,7 @@ import networkx as nx
 import numpy as np
 
 from ..feature_class import FeatureClass, InterpretabilityScore
-from . import utils
+from .utils import ensure_connected
 
 featureclass_name = "DistanceMeasures"
 
@@ -50,7 +50,7 @@ class DistanceMeasures(FeatureClass):
         # barycenter
         self.add_feature(
             "barycenter_size",
-            lambda graph: len(nx.barycenter(graph)),
+            lambda graph: len(nx.barycenter(ensure_connected(graph))),
             "The barycenter is the subgraph which minimises a distance function",
             InterpretabilityScore(4),
         )
@@ -58,7 +58,7 @@ class DistanceMeasures(FeatureClass):
         # center
         self.add_feature(
             "center_size",
-            lambda graph: len(nx.center(graph)),
+            lambda graph: len(nx.center(ensure_connected(graph))),
             "The center is the subgraph of nodes with eccentricity equal to radius",
             InterpretabilityScore(3),
         )
@@ -66,7 +66,7 @@ class DistanceMeasures(FeatureClass):
         # extrema bounding
         self.add_feature(
             "center_size",
-            lambda graph: nx.extrema_bounding(graph),
+            lambda graph: nx.extrema_bounding(ensure_connected(graph)),
             "The largest distance in the graph",
             InterpretabilityScore(4),
         )
@@ -74,7 +74,7 @@ class DistanceMeasures(FeatureClass):
         # periphery
         self.add_feature(
             "periphery",
-            lambda graph: len(nx.periphery(graph)),
+            lambda graph: len(nx.periphery(ensure_connected(graph))),
             "The number of peripheral nodes in the graph",
             InterpretabilityScore(4),
         )
@@ -82,7 +82,7 @@ class DistanceMeasures(FeatureClass):
         # eccentricity
         self.add_feature(
             "eccentricity",
-            lambda graph: list(nx.eccentricity(graph).values()),
+            lambda graph: list(nx.eccentricity(ensure_connected(graph)).values()),
             "The distribution of node eccentricity across the network",
             InterpretabilityScore(3),
             statistics="centrality",

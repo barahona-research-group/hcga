@@ -18,7 +18,8 @@ def shap_plots(X, y, shap_values, folder, graphs, max_feats=20):
     custom_dot_summary_plot(shap_values, X, folder, max_feats=max_feats)
     plot_dendogram_shap(shap_values, X, folder, max_feats=max_feats)
     plot_shap_violin(shap_values, X, y, folder, max_feats=max_feats)
-    plot_feature_summary(X,graphs,folder,shap_values)
+    plot_feature_summary(X, graphs, folder, shap_values)
+
 
 def custom_bar_ranking_plot(shap_vals, data, folder, max_feats):
     """
@@ -106,17 +107,17 @@ def plot_dendogram_shap(shap_vals, data, folder, max_feats=20):
     )
 
 
-def plot_feature_summary(data,graphs,folder,shap_vals = None,feat_name = None):
+def plot_feature_summary(data, graphs, folder, shap_vals=None, feat_name=None):
     """ for a given feature id, plot the feature summary """
-    
+
     if not feat_name:
         shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
         top_feat_idx = shap_mean.argsort()[::-1][:1][0]
-    
-    feature_data = data.iloc[:,top_feat_idx].sort_values()
-    
-    fig = plt.figure(figsize=(10,8))
-    grid = plt.GridSpec(5, 3, wspace=0.4, hspace=0.3)    
+
+    feature_data = data.iloc[:, top_feat_idx].sort_values()
+
+    fig = plt.figure(figsize=(10, 8))
+    grid = plt.GridSpec(5, 3, wspace=0.4, hspace=0.3)
     ax = []
     ax.append(plt.subplot(grid[0:, 0:2]))
     ax.append(plt.subplot(grid[4, 2]))
@@ -124,29 +125,37 @@ def plot_feature_summary(data,graphs,folder,shap_vals = None,feat_name = None):
     ax.append(plt.subplot(grid[2, 2]))
     ax.append(plt.subplot(grid[1, 2]))
     ax.append(plt.subplot(grid[0, 2]))
-    
-    
-    g = sns.violinplot(data=data.iloc[:,top_feat_idx], ax=ax[0], palette="muted", width=1)
-        
+
+    g = sns.violinplot(
+        data=data.iloc[:, top_feat_idx], ax=ax[0], palette="muted", width=1
+    )
+
     # TODO improve this random sampling.... its quite crude
     # show 5 samples
-    samples = np.arange(0,feature_data.shape[0],feature_data.shape[0]/4).astype(np.int64).tolist() + [feature_data.shape[0]-1]
-    
+    samples = np.arange(0, feature_data.shape[0], feature_data.shape[0] / 4).astype(
+        np.int64
+    ).tolist() + [feature_data.shape[0] - 1]
+
     c = sns.color_palette("hls", 5)
-    for i,sample in enumerate(samples):      
+    for i, sample in enumerate(samples):
         print(feature_data.iloc[sample])
-        g.axhline(feature_data.iloc[sample], ls='--',color=c[i])
-        
+        g.axhline(feature_data.iloc[sample], ls="--", color=c[i])
+
         graph = graphs[feature_data.index[sample]]
         pos = nx.spring_layout(graph)
-        nx.draw(graph, pos, ax=ax[i+1],node_size=5,node_color=c[i])
-        ax[i+1].set_title('Graph ID: {}'.format(feature_data.index[sample]),fontsize='small')
-    
-    
-    fig.suptitle('Feature: {}'.format(data.columns[top_feat_idx])) # or plt.suptitle('Main title')
-    plt.savefig(os.path.join(folder, "feature_{}_summary.png".format(top_feat_idx)), dpi=200)
+        nx.draw(graph, pos, ax=ax[i + 1], node_size=5, node_color=c[i])
+        ax[i + 1].set_title(
+            "Graph ID: {}".format(feature_data.index[sample]), fontsize="small"
+        )
 
-    
+    fig.suptitle(
+        "Feature: {}".format(data.columns[top_feat_idx])
+    )  # or plt.suptitle('Main title')
+    plt.savefig(
+        os.path.join(folder, "feature_{}_summary.png".format(top_feat_idx)), dpi=200
+    )
+
+
 def plot_shap_violin(shap_vals, data, labels, folder, max_feats=20):
     """
     Plot the violins of a feature
