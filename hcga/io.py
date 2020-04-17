@@ -91,13 +91,13 @@ def load_dataset(filename):
     return graphs
 
 
-def save_features(features, feature_info, filename="./features.pkl"):
+def save_features(features, feature_info, graphs, filename="./features.pkl"):
     """Save the features in a pickle"""
     if not Path(filename).parent.is_dir():
         Path(filename).parent.mkdir()
 
     pickle.dump(
-        [features, feature_info], open(filename, "wb"),
+        [features, feature_info, graphs], open(filename, "wb"),
     )
 
 
