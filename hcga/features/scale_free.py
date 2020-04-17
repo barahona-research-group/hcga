@@ -21,7 +21,6 @@
 
 import networkx as nx
 
-
 from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "ScaleFree"
@@ -63,13 +62,10 @@ class ScaleFree(FeatureClass):
 
         """
 
-
         # s metric
         self.add_feature(
             "s_metric",
-            lambda graph: nx.s_metric(graph,normalized=False),
+            lambda graph: nx.s_metric(graph, normalized=False),
             "The s-metric is defined as the sum of the products deg(u)*deg(v) for every edge (u,v) in G",
             InterpretabilityScore(4),
         )
-
-

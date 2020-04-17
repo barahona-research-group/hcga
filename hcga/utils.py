@@ -3,14 +3,12 @@ import networkx as nx
 import numpy as np
 
 
-def get_trivial_graph(n_feats):
+def get_trivial_graph():
     """generate a grivial graph for internal purposes"""
     graph = nx.generators.classic.complete_graph(3)
-    
-    # filling with empty features
     for u in graph.nodes:
-        graph.nodes[u]['feat'] = np.empty(n_feats)*np.nan
-        
+        graph.nodes[u]["feat"] = None
+
     graph.graph["id"] = 0
     return graph
 

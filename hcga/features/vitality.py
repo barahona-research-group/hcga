@@ -46,9 +46,8 @@ class Vitality(FeatureClass):
 
 
         """
-        
-       
-        # distribution of vitality  
+
+        # distribution of vitality
         self.add_feature(
             "vitality",
             lambda graph: list(nx.closeness_vitality(graph).values()),
@@ -56,7 +55,3 @@ class Vitality(FeatureClass):
             InterpretabilityScore(3),
             statistics="centrality",
         )
- 
-
-
-

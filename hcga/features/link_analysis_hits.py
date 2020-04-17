@@ -21,6 +21,7 @@
 
 import networkx as nx
 import numpy as np
+
 from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Hits"

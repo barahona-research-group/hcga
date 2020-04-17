@@ -21,7 +21,6 @@
 
 import networkx as nx
 
-
 from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "SmallWorldness"
@@ -84,5 +83,3 @@ class SmallWorldness(FeatureClass):
             "The small world coefficient omega",
             InterpretabilityScore(4),
         )
-
-

@@ -21,7 +21,6 @@
 
 import networkx as nx
 
-
 from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Covering"

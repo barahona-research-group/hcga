@@ -19,11 +19,12 @@
 # You should have received a copy of the GNU General Public License
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
-from networkx.algorithms import clique
-from . import utils
-from ..feature_class import FeatureClass, InterpretabilityScore
-import numpy as np
 import networkx as nx
+import numpy as np
+from networkx.algorithms import clique
+
+from ..feature_class import FeatureClass, InterpretabilityScore
+from . import utils
 
 featureclass_name = "NodeCliqueNumber"
 

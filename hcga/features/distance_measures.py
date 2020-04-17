@@ -22,9 +22,8 @@
 import networkx as nx
 import numpy as np
 
-from . import utils
-
 from ..feature_class import FeatureClass, InterpretabilityScore
+from . import utils
 
 featureclass_name = "DistanceMeasures"
 
@@ -80,17 +79,10 @@ class DistanceMeasures(FeatureClass):
             InterpretabilityScore(4),
         )
 
-        def eccentricity(graph):
-            try:
-                return list(nx.eccentricity(
-                utils.ensure_connected(graph)).values()
-                )   
-            except:
-                return [np.nan]
-
+        # eccentricity
         self.add_feature(
             "eccentricity",
-            eccentricity,
+            lambda graph: list(nx.eccentricity(graph).values()),
             "The distribution of node eccentricity across the network",
             InterpretabilityScore(3),
             statistics="centrality",

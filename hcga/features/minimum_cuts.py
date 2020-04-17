@@ -20,6 +20,7 @@
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
 import networkx as nx
+
 from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "MinimumCuts"

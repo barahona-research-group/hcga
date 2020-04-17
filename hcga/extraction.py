@@ -13,18 +13,6 @@ from tqdm import tqdm
 from . import utils
 
 
-def _set_graph_id(graphs):
-    """set graphs ids for logging"""
-    for i, graph in enumerate(graphs):
-        graph.graph["id"] = i
-
-def _get_num_node_feats(graphs):
-    """get number of features per node"""    
-    try:
-        return graphs[0].nodes[0]['feat'].shape
-    except:
-        return 0
-
 def extract(
     graphs,
     n_workers,
@@ -34,12 +22,9 @@ def extract(
     with_runtimes=False,
 ):
     """main function to extract features"""
-    _set_graph_id(graphs)
-
-    n_feats=_get_num_node_feats(graphs)
 
     feat_classes = get_list_feature_classes(
-        n_feats, mode, normalize_features=normalize_features, statistics_level=statistics_level
+        mode, normalize_features=normalize_features, statistics_level=statistics_level
     )
     if with_runtimes:
         print(
@@ -87,14 +72,14 @@ def _load_feature_class(feature_name):
 
 
 def get_list_feature_classes(
-    n_feats, mode="fast", normalize_features=False, statistics_level="basic"
+    mode="fast", normalize_features=False, statistics_level="basic"
 ):
     """Generates and returns the list of feature classes to compute for a given mode"""
     feature_path = Path(__file__).parent / "features"
     non_feature_files = ["__init__", "utils"]
 
     list_feature_classes = []
-    #trivial_graph = utils.get_trivial_graph()
+    # trivial_graph = utils.get_trivial_graph()
 
     for f_name in feature_path.glob("*.py"):
         feature_name = f_name.stem
@@ -104,7 +89,6 @@ def get_list_feature_classes(
                 list_feature_classes.append(feature_class)
                 # runs once update_feature with trivial graph to create class variables
                 feature_class.setup_class(
-                    n_feats = n_feats,    
                     normalize_features=normalize_features,
                     statistics_level=statistics_level,
                 )
@@ -150,7 +134,7 @@ def compute_all_features(
 ):
     """compute the feature from all graphs"""
     print("Computing features for {} graphs:".format(len(graphs)))
-    
+
     worker = Worker(list_feature_classes, with_runtimes=with_runtimes)
     if with_runtimes:
         n_workers = 1

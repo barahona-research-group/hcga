@@ -21,15 +21,13 @@
 
 import networkx as nx
 
-
-
 from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "StructuralHoles"
 
 
 class StructuralHoles(FeatureClass):
-    modes = ["fast","medium", "slow"]
+    modes = ["fast", "medium", "slow"]
     shortname = "SH"
     name = "structural_holes"
     keywords = []
@@ -48,8 +46,8 @@ class StructuralHoles(FeatureClass):
 
 
         """
-        
-        # distribution of structural holes constraint    
+
+        # distribution of structural holes constraint
         self.add_feature(
             "constraint",
             lambda graph: list(nx.structuralholes.constraint(graph).values()),
@@ -57,7 +55,7 @@ class StructuralHoles(FeatureClass):
             InterpretabilityScore(3),
             statistics="centrality",
         )
- 
+
         self.add_feature(
             "effective_size",
             lambda graph: list(nx.structuralholes.effective_size(graph).values()),
@@ -65,7 +63,3 @@ class StructuralHoles(FeatureClass):
             InterpretabilityScore(3),
             statistics="centrality",
         )
-
-
-
-
