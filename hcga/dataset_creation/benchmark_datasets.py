@@ -142,6 +142,7 @@ def extract_benchmark_graphs(datadir, dataname, max_nodes=None):
         if len(node_attrs) > 0:
             G.graph["feat_dim"] = node_attrs[0].shape[0]
 
+
         # relabeling
         mapping = {}
         it = 0
@@ -154,6 +155,14 @@ def extract_benchmark_graphs(datadir, dataname, max_nodes=None):
                 mapping[n] = it
                 it += 1
 
+        G = nx.relabel_nodes(G, mapping)
+        
+        #combine node labels and node attributes into node features
+        if 'label' in G.nodes[0] and 'feat' in G.nodes[0]:
+            for u in G.nodes:
+                G.nodes[u]['feat'] = np.hstack([G.nodes[u]['feat'],G.nodes[u]['label']])
+        
         # indexed from 0
-        graphs.append(nx.relabel_nodes(G, mapping))
+        graphs.append(G)
+        
     return graphs, graph_labels
