@@ -43,6 +43,12 @@ def cli():
     help="Normalised features by number of edges/nodes (by default not)",
 )
 @click.option(
+    "--node-feat/--no-node-feat",
+    default=True,
+    show_default=True,
+    help="Use node features if any.",
+)
+@click.option(
     "-sl",
     "--stats-level",
     default="basic",
@@ -59,7 +65,15 @@ def cli():
     "--runtimes/--no-runtimes", default=False, show_default=True, help="Output runtimes"
 )
 def extract_features(
-    dataset, n_workers, mode, output_file, norm, stats_level, runtimes, results_folder
+    dataset,
+    n_workers,
+    mode,
+    output_file,
+    norm,
+    stats_level,
+    runtimes,
+    results_folder,
+    node_feat,
 ):
     """Extract features from dataset of graphs and save the feature matrix, info and labels"""
     from .io import load_dataset, save_features
@@ -74,6 +88,7 @@ def extract_features(
         normalize_features=norm,
         statistics_level=stats_level,
         with_runtimes=runtimes,
+        with_node_features=node_feat,
     )
 
     if not runtimes:

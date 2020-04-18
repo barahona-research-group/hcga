@@ -26,11 +26,10 @@ class FeatureClass:
 
     statistics_level = "basic"
     normalize_features = True
+    with_node_features = False
 
     # Feature descriptions as class variable
     feature_descriptions = {}
-
-    trivial_graph = utils.get_trivial_graph()
 
     def __init_subclass__(cls):
         """Initialise class variables to default for each child class"""
@@ -54,13 +53,16 @@ class FeatureClass:
             self.graph.graph["id"] = -1
 
     @classmethod
-    def setup_class(cls, normalize_features=True, statistics_level="basic"):
+    def setup_class(
+        cls, normalize_features=True, statistics_level="basic", n_node_features=0
+    ):
         """Initializes the class by adding descriptions for all features"""
         cls.normalize_features = normalize_features
         cls.statistics_level = statistics_level
+        cls.n_node_features = n_node_features
 
         # runs once update_feature on None graph to populate feature descriptions
-        inst = cls(cls.trivial_graph)
+        inst = cls(utils.get_trivial_graph(n_node_features=n_node_features))
         inst.update_features({})
 
     def get_info(self):

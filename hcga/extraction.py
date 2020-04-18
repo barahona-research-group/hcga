@@ -17,6 +17,18 @@ import signal
 import time
 
 
+def _get_n_node_features(graphs, with_node_features=False):
+    """Get the number of features of the nodes."""
+    if not with_node_features:
+        return 0
+
+    n_node_features = len(graphs[0].nodes[list(graphs[0])[0]]["feat"][0])
+    print(graphs[0].nodes[list(graphs[0])[0]]["feat"])
+    for graph in graphs:
+        assert n_node_features == len(graph.nodes[list(graph)[0]]["feat"][0])
+    return n_node_features
+
+
 def extract(
     graphs,
     n_workers,
@@ -24,11 +36,16 @@ def extract(
     normalize_features=False,
     statistics_level="basic",
     with_runtimes=False,
+    with_node_features=False,
 ):
     """main function to extract features"""
-
+    n_node_features = _get_n_node_features(graphs, with_node_features)
+    print(n_node_features)
     feat_classes = get_list_feature_classes(
-        mode, normalize_features=normalize_features, statistics_level=statistics_level
+        mode,
+        normalize_features=normalize_features,
+        statistics_level=statistics_level,
+        n_node_features=n_node_features,
     )
     if with_runtimes:
         print(
@@ -76,7 +93,7 @@ def _load_feature_class(feature_name):
 
 
 def get_list_feature_classes(
-    mode="fast", normalize_features=False, statistics_level="basic"
+    mode="fast", normalize_features=False, statistics_level="basic", n_node_features=0
 ):
     """Generates and returns the list of feature classes to compute for a given mode"""
     feature_path = Path(__file__).parent / "features"
@@ -94,6 +111,7 @@ def get_list_feature_classes(
                 feature_class.setup_class(
                     normalize_features=normalize_features,
                     statistics_level=statistics_level,
+                    n_node_features=n_node_features,
                 )
     return list_feature_classes
 

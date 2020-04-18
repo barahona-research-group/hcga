@@ -24,7 +24,16 @@ def _set_node_features(graph):
     """If no node features, set it to 0."""
     if "feat" not in graph.nodes[list(graph.nodes)[0]]:
         for node in graph.nodes:
-            graph.nodes[node]["feat"] = 0
+            graph.nodes[node]["feat"] = [
+                0,
+            ]
+
+    if "feat" in graph.nodes[list(graph.nodes)[0]]:
+        for node in graph.nodes:
+            if not isinstance(graph.nodes[node]["feat"], list) or not isinstance(
+                graph.nodes[node]["feat"], np.ndarray
+            ):
+                graph.nodes[node]["feat"] = [graph.nodes[node]["feat"]]
 
 
 def _combine_node_feats_labels(graphs):

@@ -14,7 +14,7 @@ def _add_graph_desc(g, desc):
 def add_dummy_node_features(graph):
     """add random node features"""
     for u in graph.nodes():
-        graph.nodes[u]["feat"] = np.random.rand(10)
+        graph.nodes[u]["feat"] = [np.random.rand(10)]
     return graph
 
 

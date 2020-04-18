@@ -55,6 +55,7 @@ class NodeFeatures(FeatureClass):
         @lru_cache(maxsize=None)
         def get_feature_matrix(graph):
             """Extracting feature matrix."""
+            print(len(graph), np.shape(np.vstack([graph.nodes[node]["feat"] for node in graph.nodes])))
             return np.vstack([graph.nodes[node]["feat"] for node in graph.nodes])
 
         self.add_feature(
