@@ -22,10 +22,9 @@ def _get_n_node_features(graphs, with_node_features=False):
     if not with_node_features:
         return 0
 
-    n_node_features = len(graphs[0].nodes[list(graphs[0])[0]]["feat"][0])
-    print(graphs[0].nodes[list(graphs[0])[0]]["feat"])
+    n_node_features = len(graphs[0].nodes[list(graphs[0])[0]]["feat"])
     for graph in graphs:
-        assert n_node_features == len(graph.nodes[list(graph)[0]]["feat"][0])
+        assert n_node_features == len(graph.nodes[list(graph)[0]]["feat"])
     return n_node_features
 
 
