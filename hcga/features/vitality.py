@@ -48,10 +48,10 @@ class Vitality(FeatureClass):
         """
 
         # distribution of vitality
-#        self.add_feature(
-#            "vitality",
-#            lambda graph: list(nx.closeness_vitality(graph).values()),
-#            "The closeness vitality of a node is the change in the sum of distances between all node pairs when excluding that node",
-#            InterpretabilityScore(3),
-#            statistics="centrality",
-#        )
+        self.add_feature(
+            "vitality",
+            lambda graph: list(nx.closeness_vitality(graph).values()),
+            "The closeness vitality of a node is the change in the sum of distances between all node pairs when excluding that node",
+            InterpretabilityScore(3),
+            statistics="centrality",
+        )
