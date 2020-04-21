@@ -20,8 +20,9 @@
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
 from networkx.algorithms import clique
-
+import numpy as np
 from ..feature_class import FeatureClass, InterpretabilityScore
+from functools import lru_cache
 
 featureclass_name = "Cliques"
 
@@ -75,9 +76,23 @@ class Cliques(FeatureClass):
             len(u) for u in list(clique.enumerate_all_cliques(graph)) if len(u) > 1
         ]
         self.add_feature(
-            "clique sizes",
+            "clique_sizes",
             clique_sizes,
             "the distribution of clique sizes",
             InterpretabilityScore(3),
             statistics="centrality",
+        )
+        
+        @lru_cache(maxsize=None)
+        def eval_cliques(graph):
+            """this evaluates the main function and cach it for speed up"""
+            cliques = [len(u) for u in list(clique.find_cliques(graph)) if len(u) > 1]            
+            return np.bincount(cliques)[np.nonzero(np.bincount(cliques))]
+        
+        maximal_clique_sizes = lambda graph: eval_cliques(graph)[0]/eval_cliques(graph)[-1]
+        self.add_feature(
+            "clique_sizes_maximal",
+            maximal_clique_sizes,
+            "the ratio of number of max and min size cliques",
+            InterpretabilityScore(3),            
         )

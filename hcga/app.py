@@ -49,6 +49,12 @@ def cli():
     help="Use node features if any.",
 )
 @click.option(
+    "--ensure-connectivity/--no-ensure-connectivity",
+    default=True,
+    show_default=True,
+    help="Ensure only connected graphs.",
+)
+@click.option(
     "-sl",
     "--stats-level",
     default="basic",
@@ -74,6 +80,7 @@ def extract_features(
     runtimes,
     results_folder,
     node_feat,
+    ensure_connectivity,
 ):
     """Extract features from dataset of graphs and save the feature matrix, info and labels"""
     from .io import load_dataset, save_features
@@ -89,6 +96,7 @@ def extract_features(
         statistics_level=stats_level,
         with_runtimes=runtimes,
         with_node_features=node_feat,
+        ensure_connectivity=ensure_connectivity,
     )
 
     if not runtimes:
@@ -127,11 +135,17 @@ def extract_features(
     help="True or False whether to compute shap values",
 )
 @click.option(
+    "--grid-search/--no-grid-search",
+    default=False,
+    show_default=True,
+    help="True or False whether to use grid search",
+)
+@click.option(
     "-c",
     "--classifier",
-    default="RF",
+    default="XG",
     show_default=True,
-    help="classifier feature analysis (RF, LGBM)",
+    help="classifier feature analysis (RF, LGBM, XG)",
 )
 @click.option(
     "-i",
@@ -153,6 +167,7 @@ def feature_analysis(
     results_folder,
     feature_file,
     shap,
+    grid_search,
     classifier,
     kfold,
     plot,
@@ -172,6 +187,7 @@ def feature_analysis(
         features_info,
         graphs,
         interpretability=interpretability,
+        grid_search=grid_search,
         folder=results_folder,
         shap=shap,
         classifier=classifier,

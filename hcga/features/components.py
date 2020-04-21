@@ -53,6 +53,21 @@ class Components(FeatureClass):
         
         """
 
+
+        self.add_feature(
+            "is_connected",
+            lambda graph: nx.is_connected(graph)*1,
+            "Whether the graph is connected or not",
+            InterpretabilityScore(5),
+        )
+        
+        self.add_feature(
+            "num_connected_components",
+            lambda graph: len(list(nx.connected_components(graph))),
+            "The number of connected components",
+            InterpretabilityScore(5),
+        )
+        
         @lru_cache(maxsize=None)
         def eval_connectedcomponents(graph):
             """this evaluates the main function and cach it for speed up"""
