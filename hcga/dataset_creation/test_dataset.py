@@ -14,7 +14,8 @@ def _add_graph_desc(g, desc):
 def add_dummy_node_features(graph):
     """add random node features"""
     for u in graph.nodes():
-        graph.nodes[u]["feat"] = [np.random.rand(10)]
+        graph.nodes[u]["feat"] = np.random.rand(10)
+        print(graph.nodes[u]["feat"])
     return graph
 
 
@@ -22,12 +23,11 @@ def make_test_dataset(folder="./datasets", add_features=False, write_to_file=Tru
     """ Makes pickle with graphs that test robustness of hcga """
 
     graphs = []
-
     # one, two and three node graphs
     for i in range(n_graphs):
-        graphs.append(_add_graph_desc(nx.grid_graph([1]), "one-node graph"))
-        graphs.append(_add_graph_desc(nx.grid_graph([2]), "two-node graph"))
-        graphs.append(_add_graph_desc(nx.grid_graph([3]), "three-node graph"))
+        graphs.append(_add_graph_desc(nx.grid_graph([1]).copy(), "one-node graph"))
+        graphs.append(_add_graph_desc(nx.grid_graph([2]).copy(), "two-node graph"))
+        graphs.append(_add_graph_desc(nx.grid_graph([3]).copy(), "three-node graph"))
 
     # no edges
     G = nx.Graph()
@@ -35,13 +35,13 @@ def make_test_dataset(folder="./datasets", add_features=False, write_to_file=Tru
     G.add_node(1, weight=2)
     G.add_node(2, weight=3)
     for i in range(n_graphs):
-        graphs.append(_add_graph_desc(G, "graph without edges"))
+        graphs.append(_add_graph_desc(G.copy(), "graph without edges"))
 
     # directed graph no weights
     G = nx.DiGraph()
     G.add_nodes_from(range(100, 110))
     for i in range(n_graphs):
-        graphs.append(_add_graph_desc(G, "directed graph with no weights"))
+        graphs.append(_add_graph_desc(G.copy(), "directed graph with no weights"))
 
     # directed graph weighted
     G = nx.DiGraph()
@@ -49,7 +49,7 @@ def make_test_dataset(folder="./datasets", add_features=False, write_to_file=Tru
     G.add_nodes_from(H)
     G.add_edges_from(H.edges)
     for i in range(n_graphs):
-        graphs.append(_add_graph_desc(G, "directed graph weighted"))
+        graphs.append(_add_graph_desc(G.copy(), "directed graph weighted"))
 
     # adding features to all
     if add_features:
@@ -59,8 +59,5 @@ def make_test_dataset(folder="./datasets", add_features=False, write_to_file=Tru
 
     if write_to_file:
         save_dataset(graphs, labels, "TESTDATA", folder=folder)
-
-    for i, graph in enumerate(graphs):
-        graph.graph['id'] = 1
 
     return graphs, labels

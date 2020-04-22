@@ -22,15 +22,10 @@ def _set_graph_id(graph, i):
 
 def _set_node_features(graph):
     """If no node features, set it to 0."""
-    if "feat" not in graph.nodes[list(graph.nodes)[0]]:
-        for node in graph.nodes:
-            graph.nodes[node]["feat"] = [
-                0,
-            ]
-
-    if "feat" in graph.nodes[list(graph.nodes)[0]]:
-        for node in graph.nodes:
-            if not isinstance(graph.nodes[node]["feat"], list) or not isinstance(
+    for node in graph.nodes:
+        if "feat" not in graph.nodes[node]:
+            graph.nodes[node]["feat"] = [0]
+        elif not isinstance(graph.nodes[node]["feat"], list) or not isinstance(
                 graph.nodes[node]["feat"], np.ndarray
             ):
                 graph.nodes[node]["feat"] = [graph.nodes[node]["feat"]]
@@ -84,19 +79,13 @@ def _get_num_node_feats(graphs):
 def load_dataset(filename):
     """load a dataset from a pickle"""
     with open(filename, "rb") as f:
-        graphs_full, labels = pickle.load(f)
+        graphs, labels = pickle.load(f)
 
-    graphs = []
-    for i, graph in enumerate(graphs_full):
-        # if len(graph) > N_NODE_MIN:
+    for i, graph in enumerate(graphs):
         graph.label = labels[i]
         _set_graph_id(graph, i)
         _set_node_features(graph)
         _ensure_weights(graph)
-        graphs.append(graph)
-
-    # graphs = _combine_node_feats_labels(graphs)
-
     return graphs
 
 

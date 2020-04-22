@@ -132,10 +132,9 @@ def output_csv(features, features_info, feature_importance, shap_values, folder)
             ).mean(axis=0)
 
     for feat in output_df.columns:
-        output_df[feat]["feature_info"] = features_info[feat]["feature_description"]
-        output_df[feat]["feature_interpretability"] = features_info[feat][
-            "feature_interpretability"
-        ].score
+        feat_fullname = feat[0] + '_' + feat[1]
+        output_df[feat]["feature_info"] = features_info[feat_fullname]["description"]
+        output_df[feat]["feature_interpretability"] = features_info[feat_fullname]["interpretability"].score
 
     # sort by shap average
     output_df = output_df.T.sort_values("shap_average", ascending=False).T
@@ -394,7 +393,7 @@ def filter_interpretable(features, features_info, interpretability):
     """Get only features with certain interpretability."""
     interpretability = min(5, interpretability)
     for feat in list(features_info.keys()):
-        score = features_info[feat]["feature_interpretability"].score
+        score = features_info[feat]["interpretability"].score
         if score < interpretability:
             features = features.drop(columns=[feat])
             del features_info[feat]

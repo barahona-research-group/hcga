@@ -55,7 +55,6 @@ class NodeFeatures(FeatureClass):
         @lru_cache(maxsize=None)
         def get_feature_matrix(graph):
             """Extracting feature matrix."""
-            print(len(graph), np.shape(np.vstack([graph.nodes[node]["feat"] for node in graph.nodes])))
             return np.vstack([graph.nodes[node]["feat"] for node in graph.nodes])
 
         @lru_cache(maxsize=None)
@@ -97,6 +96,7 @@ class NodeFeatures(FeatureClass):
             InterpretabilityScore(3),
             statistics="centrality",
         )
+
         self.add_feature(
             "mean_feature",
             lambda graph: np.mean(get_feature_matrix(graph),axis=0).tolist(),
@@ -112,6 +112,7 @@ class NodeFeatures(FeatureClass):
             InterpretabilityScore(3),
             statistics="centrality",
         )
+
         self.add_feature(
             "max_feature",
             lambda graph: np.max(get_feature_matrix(graph),axis=0).tolist(),

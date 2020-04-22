@@ -50,7 +50,7 @@ def cli():
 )
 @click.option(
     "--ensure-connectivity/--no-ensure-connectivity",
-    default=True,
+    default=False,
     show_default=True,
     help="Ensure only connected graphs.",
 )
