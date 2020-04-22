@@ -53,21 +53,20 @@ class Components(FeatureClass):
         
         """
 
-
         self.add_feature(
             "is_connected",
-            lambda graph: nx.is_connected(graph)*1,
+            lambda graph: nx.is_connected(graph) * 1,
             "Whether the graph is connected or not",
             InterpretabilityScore(5),
         )
-        
+
         self.add_feature(
             "num_connected_components",
             lambda graph: len(list(nx.connected_components(graph))),
             "The number of connected components",
             InterpretabilityScore(5),
         )
-        
+
         @lru_cache(maxsize=None)
         def eval_connectedcomponents(graph):
             """this evaluates the main function and cach it for speed up"""
@@ -83,9 +82,8 @@ class Components(FeatureClass):
         def ratio_largest(graph):
             if len(eval_connectedcomponents(graph)) == 1:
                 return 0
-            return (
-                len(eval_connectedcomponents(graph)[0])
-                / len(eval_connectedcomponents(graph)[1])
+            return len(eval_connectedcomponents(graph)[0]) / len(
+                eval_connectedcomponents(graph)[1]
             )
 
         self.add_feature(
@@ -98,9 +96,8 @@ class Components(FeatureClass):
         def ratio_min_max(graph):
             if len(eval_connectedcomponents(graph)) == 1:
                 return 0
-            return (
-                len(eval_connectedcomponents(graph)[0])
-                / len(eval_connectedcomponents(graph)[-1])
+            return len(eval_connectedcomponents(graph)[0]) / len(
+                eval_connectedcomponents(graph)[-1]
             )
 
         self.add_feature(

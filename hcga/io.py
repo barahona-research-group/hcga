@@ -7,6 +7,8 @@ from pathlib import Path
 
 import numpy as np
 
+MIN_NUM_NODES = 2
+
 
 def _ensure_weights(graph):
     """ensure that graphs edges have a weights value"""
@@ -25,10 +27,12 @@ def _set_node_features(graph):
     for node in graph.nodes:
         if "feat" not in graph.nodes[node]:
             graph.nodes[node]["feat"] = [0]
-        elif not isinstance(graph.nodes[node]["feat"], list) or not isinstance(
-                graph.nodes[node]["feat"], np.ndarray
-            ):
-                graph.nodes[node]["feat"] = [graph.nodes[node]["feat"]]
+
+        feat_shape = np.shape(graph.nodes[node]["feat"])
+        if len(feat_shape) == 0:
+            graph.nodes[node]["feat"] = [graph.nodes[node]["feat"]]
+        elif len(feat_shape) > 1:
+            raise Exception("Please provide flat node features vector.")
 
 
 def _combine_node_feats_labels(graphs):
@@ -68,25 +72,20 @@ def save_dataset(graphs, labels, filename, folder="./datasets"):
         pickle.dump([graphs, labels], f)
 
 
-def _get_num_node_feats(graphs):
-    """get number of features per node"""
-    if "feat" in graphs[0].nodes[0]:
-        return graphs[0].nodes[0]["feat"].shape
-    else:
-        return 0
-
-
 def load_dataset(filename):
     """load a dataset from a pickle"""
     with open(filename, "rb") as f:
         graphs, labels = pickle.load(f)
 
+    cleaned_graphs = []
     for i, graph in enumerate(graphs):
-        graph.label = labels[i]
-        _set_graph_id(graph, i)
-        _set_node_features(graph)
-        _ensure_weights(graph)
-    return graphs
+        if len(graph) > MIN_NUM_NODES:
+            graph.label = labels[i]
+            _set_graph_id(graph, i)
+            _set_node_features(graph)
+            _ensure_weights(graph)
+            cleaned_graphs.append(graph)
+    return cleaned_graphs
 
 
 def save_features(features, feature_info, graphs, filename="./features.pkl"):

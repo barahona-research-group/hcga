@@ -87,7 +87,7 @@ class FeatureClass:
         feature_info = self.get_info()
 
         feature_info["name"] = feature_name
-        feature_info['fullname'] = feature_info["shortname"] + '_' + feature_name
+        feature_info["fullname"] = feature_info["shortname"] + "_" + feature_name
         feature_info["description"] = feature_dict["desc"]
         feature_info["interpretability"] = feature_dict["interpret"]
         return feature_info

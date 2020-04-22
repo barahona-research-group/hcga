@@ -105,6 +105,8 @@ class NodeConnectivity(FeatureClass):
         )
 
         # calculate the wiener index
+
+
 #        self.add_feature(
 #            "wiener_index",
 #            nx.wiener_index,
