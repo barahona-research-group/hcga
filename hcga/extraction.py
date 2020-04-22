@@ -13,8 +13,6 @@ from tqdm import tqdm
 from . import utils
 
 
-
-
 def extract(
     graphs,
     n_workers,
