@@ -1,10 +1,8 @@
-import networkx as nx
-import numpy as np
-import pandas as pd
+
 
 from .analysis import analysis
 from .extraction import extract
-from .io import load_dataset, load_features, save_analysis, save_dataset, save_features
+from .io import load_dataset, load_features, save_dataset, save_features
 
 
 class Hcga:
@@ -49,16 +47,19 @@ class Hcga:
             make_benchmark_dataset(dataset_name=dataset_name, folder=folder)
 
     def extract(
-        self, n_workers=1, mode="slow", norm=False, stats_level="basic", runtimes=False
+        self, n_workers=1, mode="slow", norm=False, stats_level="basic", runtimes=False, ensure_connectivity=True, node_feat=True,
     ):
 
-        self.features, self.features_info = extract(
+        
+        features, features_info = extract(
             self.graphs,
             n_workers=int(n_workers),
             mode=mode,
             normalize_features=norm,
             statistics_level=stats_level,
             with_runtimes=runtimes,
+            with_node_features=node_feat,
+            ensure_connectivity=ensure_connectivity,
         )
 
         self.save_features()
@@ -71,15 +72,15 @@ class Hcga:
 
     def load_features(self, feature_file="./results/features.pkl"):
 
-        [self.features, self.features_info] = load_features(filename=feature_file)
+        [self.features, self.features_info, self.graphs] = load_features(filename=feature_file)
 
     def analyse_features(
         self,
         feature_file="./results/features.pkl",
-        output_folder="./results",
-        output_filename="features_analysis",
+        results_folder="./results",
         interpretability=1,
         shap=True,
+        grid_search=False,
         classifier="RF",
         kfold=True,
         plot=True,
@@ -87,14 +88,17 @@ class Hcga:
 
         self.load_features(feature_file=feature_file)
 
-        X, explainer, shap_values = analysis(
+        
+        X, shap_values = analysis(
             self.features,
             self.features_info,
-            filename=output_filename,
+            self.graphs,
             interpretability=interpretability,
-            folder=output_folder,
+            grid_search=grid_search,
+            folder=results_folder,
             shap=shap,
             classifier=classifier,
             kfold=kfold,
             plot=plot,
         )
+
