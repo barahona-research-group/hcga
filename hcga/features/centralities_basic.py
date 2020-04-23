@@ -138,8 +138,8 @@ class CentralitiesBasic(FeatureClass):
 
         # Eigenvector centrality
         eigenvector_centrality = lambda graph: list(
-            centrality.eigenvector_centrality(
-                utils.ensure_connected(graph), max_iter=500
+            centrality.eigenvector_centrality_numpy(
+                utils.ensure_connected(graph)
             ).values()
         )
         self.add_feature(

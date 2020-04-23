@@ -73,42 +73,44 @@ class FeatureClass:
             "keywords": self.__class__.keywords,
         }
 
-    def _test_feature_exists(self, f_name):
-        """Test if feature f_name exists in description list"""
-        if f_name not in self.__class__.feature_descriptions:
+    def _test_feature_exists(self, feature_name):
+        """Test if feature feature_name exists in description list"""
+        if feature_name not in self.__class__.feature_descriptions:
             raise Exception(
-                "Feature {} does not exist in class {}".format(f_name, self.name)
+                "Feature {} does not exist in class {}".format(feature_name, self.name)
             )
 
-    def get_feature_info(self, f_name):
-        """Returns a dictionary of information about the feature f_name"""
-        self._test_feature_exists(f_name)
-        feat_info = self.get_info()
-        feat_info["feature_name"] = f_name
-        feat_dict = self.__class__.feature_descriptions[f_name]
-        feat_info["feature_description"] = feat_dict["desc"]
-        feat_info["feature_interpretability"] = feat_dict["interpret"]
-        return feat_info
+    def get_feature_info(self, feature_name):
+        """Returns a dictionary of information about the feature feature_name"""
+        self._test_feature_exists(feature_name)
+        feature_dict = self.__class__.feature_descriptions[feature_name]
+        feature_info = self.get_info()
 
-    def get_feature_description(self, f_name):
-        """Returns interpretability score of the feature f_name"""
-        self._test_feature_exists(f_name)
-        feat_dict = self.__class__.feature_descriptions[f_name]
+        feature_info["name"] = feature_name
+        feature_info["fullname"] = feature_info["shortname"] + "_" + feature_name
+        feature_info["description"] = feature_dict["desc"]
+        feature_info["interpretability"] = feature_dict["interpret"]
+        return feature_info
+
+    def get_feature_description(self, feature_name):
+        """Returns interpretability score of the feature feature_name"""
+        self._test_feature_exists(feature_name)
+        feat_dict = self.__class__.feature_descriptions[feature_name]
         return feat_dict["desc"]
 
-    def get_feature_interpretability(self, f_name):
-        """Returns interpretability score of the feature f_name"""
-        self._test_feature_exists(f_name)
-        feat_dict = self.__class__.feature_descriptions[f_name]
+    def get_feature_interpretability(self, feature_name):
+        """Returns interpretability score of the feature feature_name"""
+        self._test_feature_exists(feature_name)
+        feat_dict = self.__class__.feature_descriptions[feature_name]
         return feat_dict["interpret"]
 
     @classmethod
-    def add_feature_description(cls, f_name, f_desc, f_interpret):
+    def add_feature_description(cls, feature_name, feature_desc, feature_interpret):
         """Adds the description to the class variable if not already there"""
-        if f_name not in cls.feature_descriptions:
-            cls.feature_descriptions[f_name] = {
-                "desc": f_desc,
-                "interpret": f_interpret,
+        if feature_name not in cls.feature_descriptions:
+            cls.feature_descriptions[feature_name] = {
+                "desc": feature_desc,
+                "interpret": feature_interpret,
             }
 
     def evaluate_feature(
@@ -225,7 +227,6 @@ class FeatureClass:
 
     def update_features(self, all_features):
         """update the feature dictionary if correct mode provided"""
-
         if (
             self.__class__.shortname == "TP"
             and self.__class__.__name__ != "FeatureClass"
@@ -235,7 +236,6 @@ class FeatureClass:
             )
 
         self.compute_features()
-
         if self.normalize_features:
             self.compute_normalize_features()
 

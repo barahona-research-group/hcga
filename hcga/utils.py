@@ -13,10 +13,22 @@ def get_trivial_graph(n_node_features=0):
     return graph
 
 
+def filter_samples(features, graphs, sample_removal=0.05):
+    """ Remove samples with more than X% bad values """
+    nan_features = features[
+        features.isnull().sum(axis=1) / len(features.columns) < sample_removal
+    ]
+    new_graphs = [graphs[i] for i in nan_features.index.tolist()]
+    nan_features = nan_features.reset_index(drop=True)
+    return nan_features, new_graphs
+
+
 def filter_features(features):
     """filter features and create feature matrix"""
     # remove inf and nan
     nan_features = features.replace([np.inf, -np.inf], np.nan)
+
+    # remove features with nans
     valid_features = nan_features.dropna(axis=1)
 
     # remove features with equal values accros graphs

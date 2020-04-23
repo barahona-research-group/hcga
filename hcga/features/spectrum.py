@@ -63,6 +63,42 @@ class Spectrum(FeatureClass):
             statistics="centrality",
         )
 
+        # get ratio of eigenvalues
+        n_eigs = 10
+        for i in range(n_eigs):
+            for j in range(i):
+                self.add_feature(
+                    "eigenvalue_ratio_{}_{}".format(i, j),
+                    lambda graph: eval_spectrum_adj(graph)[j]
+                    / eval_spectrum_adj(graph)[i],
+                    "The ratio of the {} and {} eigenvalues".format(i, j),
+                    InterpretabilityScore(2),
+                )
+        #        self.add_feature(
+        #            "eigenvalue_ratio_1_3",
+        #            lambda graph: eval_spectrum_adj(graph)[0]/eval_spectrum_adj(graph)[2],
+        #            "The ratio of the 1st and 3rd eigenvalues",
+        #            InterpretabilityScore(3),
+        #        )
+        #        self.add_feature(
+        #            "eigenvalue_ratio_1_4",
+        #            lambda graph: eval_spectrum_adj(graph)[0]/eval_spectrum_adj(graph)[3],
+        #            "The ratio of the 1st and 4th eigenvalues",
+        #            InterpretabilityScore(3),
+        #        )
+        #        self.add_feature(
+        #            "eigenvalue_ratio_1_5",
+        #            lambda graph: eval_spectrum_adj(graph)[0]/eval_spectrum_adj(graph)[4],
+        #            "The ratio of the 1st and 5th eigenvalues",
+        #            InterpretabilityScore(3),
+        #        )
+        #        self.add_feature(
+        #            "eigenvalue_ratio_2_3",
+        #            lambda graph: eval_spectrum_adj(graph)[1]/eval_spectrum_adj(graph)[2],
+        #            "The ratio of the 2st and 3nd eigenvalues",
+        #            InterpretabilityScore(3),
+        #        )
+
         @lru_cache(maxsize=None)
         def eval_spectrum_modularity(graph):
             return np.real(nx.linalg.spectrum.modularity_spectrum(graph))

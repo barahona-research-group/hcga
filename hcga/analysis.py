@@ -1,19 +1,17 @@
 """function for analysis of graph features"""
 
 import logging
-import multiprocessing
 import os
-import time
-from functools import partial
 from pathlib import Path
 
+from datetime import datetime
 import numpy as np
 import pandas as pd
 import shap
-import xgboost
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score
 from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import RandomizedSearchCV
 
 from . import plotting, utils
 
@@ -27,8 +25,16 @@ def _get_classifier(classifier):
         if classifier == "RF":
             from sklearn.ensemble import RandomForestClassifier
 
-            return RandomForestClassifier(n_estimators=100, max_depth=30)
+            print("... Using RandomForest classifier ...")
+            return RandomForestClassifier(n_estimators=1000, max_depth=30)
+        if classifier == "XG":
+            from xgboost import XGBClassifier
+
+            print("... Using Xgboost classifier ...")
+
+            return XGBClassifier()
         if classifier == "LGBM":
+            print("... Using LGBM classifier ...")
             from lightgbm import LGBMClassifier
 
             return LGBMClassifier()
@@ -41,6 +47,7 @@ def analysis(
     features_info,
     graphs,
     interpretability=1,
+    grid_search=True,
     shap=True,
     classifier="RF",
     folder=".",
@@ -60,11 +67,16 @@ def analysis(
         features, features_info, interpretability
     )
 
-    good_features = utils.filter_features(features)
+    filtered_features, graphs = utils.filter_samples(features,graphs,sample_removal=0.7)
+    good_features = utils.filter_features(filtered_features)
     normed_features = normalise_feature_data(good_features)
     classifier = _get_classifier(classifier)
 
-    if kfold:
+    if grid_search and kfold:
+        X, y, shap_values, top_features = fit_grid_search(
+            normed_features, classifier=classifier,
+        )
+    elif kfold:
         X, y, shap_values, top_features = fit_model_kfold(
             normed_features, classifier=classifier,
         )
@@ -111,12 +123,14 @@ def output_csv(features, features_info, feature_importance, shap_values, folder)
     output_df.loc["shap_average"] = np.sum(np.mean(np.abs(shap_values), axis=1), axis=0)
 
     # looping over shap values for each class
-    for i, shap_class in enumerate(shap_values):
-        output_df.loc["shap_importance: class {}".format(i)] = np.vstack(
-            shap_class
-        ).mean(axis=0)
+    if len(shap_values) > 1:
+        for i, shap_class in enumerate(shap_values):
+            output_df.loc["shap_importance: class {}".format(i)] = np.vstack(
+                shap_class
+            ).mean(axis=0)
 
     for feat in output_df.columns:
+        #feat_fullname = feat[0] + "_" + feat[1]
         output_df[feat]["feature_info"] = features_info[feat]["feature_description"]
         output_df[feat]["feature_interpretability"] = features_info[feat][
             "feature_interpretability"
@@ -138,25 +152,76 @@ def fit_model_kfold(features, compute_shap=True, classifier=None):
     n_splits = _number_folds(y)
     L.info("Using " + str(n_splits) + " splits")
 
-    folds = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=42)
+    folds = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=1)
     indices_all = (indices for indices in folds.split(X, y=y))
 
     top_features = []
     shap_values = []
     acc_scores = []
-    with multiprocessing.Pool(n_splits) as pool:
-        for top_feature, acc_score, shap_value in pool.imap(
-            partial(compute_fold, X, y, classifier, compute_shap), indices_all
-        ):
-            top_features.append(top_feature)
-            acc_scores.append(acc_score)
-            shap_values.append(shap_value)
 
-    L.info("Balanced accuracy: " + str(np.round(np.mean(acc_scores), 3)))
+    for indices in indices_all:
+        top_feature, acc_score, shap_value = compute_fold(
+            X, y, classifier, compute_shap, indices
+        )
+        top_features.append(top_feature)
+        acc_scores.append(acc_score)
+        shap_values.append(shap_value)
 
-    mean_shap_values = list(np.mean(shap_values, axis=0))
+    #    with multiprocessing.Pool(n_splits) as pool:
+    #        for top_feature, acc_score, shap_value in pool.imap(
+    #            partial(compute_fold, X, y, classifier, compute_shap), indices_all
+    #        ):
+    #            top_features.append(top_feature)
+    #            acc_scores.append(acc_score)
+    #            shap_values.append(shap_value)
 
-    return X, y, mean_shap_values, top_features
+    L.info("accuracy: " + str(np.round(np.mean(acc_scores), 3)))
+
+    # taking average of folds
+    if any(isinstance(el, list) for el in shap_values):
+        shap_fold_average = np.mean(shap_values, axis=0)
+        shap_fold_average = [
+            shap_fold_average[label, :, :]
+            for label in range(shap_fold_average.shape[0])
+        ]
+    else:
+        shap_fold_average = [np.mean(shap_values, axis=0)]
+
+    shap_top_features = np.sum(np.mean(np.abs(shap_fold_average), axis=1), axis=0)
+
+    #    X_reduced = reduce_feature_set(X, top_features, importance_threshold=0.95)
+    #    top_features = []
+    #    shap_values = []
+    #    acc_scores = []
+    #    compute_shap = False
+    #    indices_all = (indices for indices in folds.split(X, y=y))
+    #    for indices in indices_all:
+    #        top_feature, acc_score = compute_fold(X_reduced, y, classifier, compute_shap, indices)
+    #        top_features.append(top_feature)
+    #        acc_scores.append(acc_score)
+    #        shap_values.append(shap_value)
+    #    L.info("Reduced set: accuracy: " + str(np.round(np.mean(acc_scores), 3)))
+
+    X_reduced_corr = reduce_correlation_feature_set(X, shap_top_features, n_feats=200)
+
+    shap_values = []
+    acc_scores = []
+    compute_shap = False
+    indices_all = (indices for indices in folds.split(X, y=y))
+    for indices in indices_all:
+        top_feature, acc_score = compute_fold(
+            X_reduced_corr, y, classifier, compute_shap, indices
+        )
+        acc_scores.append(acc_score)
+
+    L.info(
+        "Reduced set via correlation: accuracy: "
+        + str(np.round(np.mean(acc_scores), 3))
+    )
+
+    # mean_shap_values = list(np.mean(shap_values, axis=0))
+
+    return X, y, shap_fold_average, top_features
 
 
 def compute_fold(X, y, classifier, compute_shap, indices):
@@ -170,14 +235,17 @@ def compute_fold(X, y, classifier, compute_shap, indices):
     )
     top_features = classifier.feature_importances_
 
-    explainer = shap.TreeExplainer(classifier, feature_perturbation="interventional",)
-
-    shap_values = np.array(explainer.shap_values(X, check_additivity=False))
-
-    acc_score = balanced_accuracy_score(y_val, classifier.predict(X_val))
-
+    acc_score = accuracy_score(y_val, classifier.predict(X_val))
     L.info("Fold accuracy: --- {0:.3f} ---".format(acc_score))
-    return top_features, acc_score, shap_values
+
+    if compute_shap:
+        explainer = shap.TreeExplainer(
+            classifier, feature_perturbation="interventional",
+        )
+        shap_values = explainer.shap_values(X, check_additivity=False)
+        return top_features, acc_score, shap_values
+    else:
+        return top_features, acc_score
 
 
 def fit_model(features, compute_shap=True, classifier=None):
@@ -204,11 +272,62 @@ def fit_model(features, compute_shap=True, classifier=None):
         )
         shap_values = explainer.shap_values(X_test, check_additivity=False)
 
-    acc_scores = balanced_accuracy_score(y_test, classifier.predict(X_test))
+    acc_scores = accuracy_score(y_test, classifier.predict(X_test))
 
-    L.info("Balanced accuracy: " + str(acc_scores))
+    L.info("accuracy: " + str(acc_scores))
 
     return X, y, explainer, shap_values, top_features
+
+
+def fit_grid_search(features, compute_shap=True, classifier=None):
+
+    if classifier is None:
+        raise Exception("Please provide a model for classification")
+
+    X, y = _features_to_Xy(features)
+
+    n_splits = _number_folds(y)
+    L.info("Using " + str(n_splits) + " splits")
+
+    n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=10)]
+    max_depth = [5, 10, 15, 20, 25, 30, 35, 50, 70, 100]
+    max_depth.append(None)
+    min_samples_split = [2, 5, 10, 20]
+    min_samples_leaf = [1, 2, 4, 10]
+    bootstrap = [True, False]
+    max_features = ["auto", "sqrt"]
+
+    random_grid = {
+        "n_estimators": n_estimators,
+        "max_features": max_features,
+        "max_depth": max_depth,
+        "min_samples_split": min_samples_split,
+        "min_samples_leaf": min_samples_leaf,
+        "bootstrap": bootstrap,
+    }
+
+    folds = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=10)
+
+    model = RandomizedSearchCV(
+        estimator=classifier,
+        param_distributions=random_grid,
+        n_iter=100,
+        cv=folds,
+        verbose=2,
+        random_state=42,
+        n_jobs=-1,
+    )
+
+    start_time = timer(None)
+    model.fit(X, y)
+    timer(start_time)  # timing ends here for "start_time" variable
+    optimal_model = model.best_estimator_
+
+    X, y, mean_shap_values, top_features = fit_model_kfold(
+        features, compute_shap=True, classifier=optimal_model
+    )
+
+    return X, y, mean_shap_values, top_features
 
 
 def _features_to_Xy(features):
@@ -224,6 +343,7 @@ def normalise_feature_data(features):
     normed_features = pd.DataFrame(
         StandardScaler().fit_transform(features), columns=features.columns
     )
+    normed_features.index = features.index
     normed_features["labels"] = labels
     return normed_features
 
@@ -234,9 +354,31 @@ def _number_folds(y):
     return np.clip(n_splits, 2, 10)
 
 
-def reduce_feature_set(X, y, top_features, classifier, importance_threshold=0.9):
+def reduce_correlation_feature_set(X, shap_top_features, n_feats=100, alpha=0.99):
+    """Reduce the feature set by taking uncorrelated features."""
+
+    rank_feat = np.argsort(shap_top_features)[::-1]
+    # loop over and add those with minimal correlation
+    _feats = [rank_feat[0]]
+    corr_matrix = np.corrcoef(X.T)
+    for i in rank_feat:
+        # feat_idx = rank_feat[i]
+        # find if there is a correlation larger than alpha
+        if not (corr_matrix[_feats, i] > alpha).any():
+            _feats.append(i)
+        if len(_feats) > n_feats:
+            break
+
+    print(n_feats, " of features with <0.99 correlation.")
+
+    X_reduced = X[X.columns[_feats]]
+    return X_reduced
+
+
+def reduce_feature_set(X, top_features, importance_threshold=0.5):
     """Reduce the feature set."""
 
+    # rank_feat = np.argsort(shap_top_features)[::-1]
     mean_importance = np.mean(np.array(top_features), axis=0)
     rank_feat = np.argsort(mean_importance)[::-1]
     n_feat = len(
@@ -246,11 +388,16 @@ def reduce_feature_set(X, y, top_features, classifier, importance_threshold=0.9)
         )[0]
     )
     n_feat = max(3, n_feat)
+
+    # n_feat = 2*np.int(np.sqrt(X.shape[1]))
+
     rank_feat = rank_feat[:n_feat]
 
-    print(n_feat, "to get .9 of total importance")
+    # print(n_feat, " features used in reduced feature set")
 
-    X_reduced = X.iloc[:, rank_feat]
+    print(n_feat, "to get {} of total importance".format(importance_threshold))
+
+    X_reduced = X[X.columns[rank_feat]]
 
     return X_reduced
 
@@ -264,3 +411,16 @@ def filter_interpretable(features, features_info, interpretability):
             features = features.drop(columns=[feat])
             del features_info[feat]
     return features, features_info
+
+
+def timer(start_time=None):
+    if not start_time:
+        start_time = datetime.now()
+        return start_time
+    elif start_time:
+        thour, temp_sec = divmod((datetime.now() - start_time).total_seconds(), 3600)
+        tmin, tsec = divmod(temp_sec, 60)
+        print(
+            "\n Time taken: %i hours %i minutes and %s seconds."
+            % (thour, tmin, round(tsec, 2))
+        )

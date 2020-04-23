@@ -55,8 +55,12 @@ class NodeFeatures(FeatureClass):
         @lru_cache(maxsize=None)
         def get_feature_matrix(graph):
             """Extracting feature matrix."""
-            print(len(graph), np.shape(np.vstack([graph.nodes[node]["feat"] for node in graph.nodes])))
             return np.vstack([graph.nodes[node]["feat"] for node in graph.nodes])
+
+        @lru_cache(maxsize=None)
+        def get_conv_matrix(graph):
+            """Extracting feature matrix."""
+            return nx.to_numpy_array(graph) + np.eye(len(graph))
 
         self.add_feature(
             "node_feature_",
@@ -68,7 +72,7 @@ class NodeFeatures(FeatureClass):
 
         self.add_feature(
             "conv_node_feature_",
-            lambda graph: nx.to_numpy_array(graph).dot(get_feature_matrix(graph)),
+            lambda graph: get_conv_matrix(graph).dot(get_feature_matrix(graph)),
             "The summary statistics after a single message passing of features of node feature ",
             InterpretabilityScore(3),
             statistics="node_features",
@@ -76,7 +80,7 @@ class NodeFeatures(FeatureClass):
 
         self.add_feature(
             "conv2_node_feature_",
-            lambda graph: np.linalg.matrix_power(nx.to_numpy_array(graph), 2).dot(
+            lambda graph: np.linalg.matrix_power(get_conv_matrix(graph), 2).dot(
                 get_feature_matrix(graph)
             ),
             "The summary statistics after a two message passing of features of node feature ",
@@ -85,3 +89,64 @@ class NodeFeatures(FeatureClass):
         )
 
         # TODO add more features based on node features here
+        self.add_feature(
+            "mean_node_feature_",
+            lambda graph: np.mean(get_feature_matrix(graph), axis=1).tolist(),
+            "The summary statistics of the mean of all node features ",
+            InterpretabilityScore(3),
+            statistics="centrality",
+        )
+
+        self.add_feature(
+            "mean_feature",
+            lambda graph: np.mean(get_feature_matrix(graph), axis=0).tolist(),
+            "The summary statistics of the mean of each feature across the nodes ",
+            InterpretabilityScore(3),
+            statistics="centrality",
+        )
+
+        self.add_feature(
+            "max_node_feature_",
+            lambda graph: np.max(get_feature_matrix(graph), axis=1).tolist(),
+            "The summary statistics of the max of all node features ",
+            InterpretabilityScore(3),
+            statistics="centrality",
+        )
+
+        self.add_feature(
+            "max_feature",
+            lambda graph: np.max(get_feature_matrix(graph), axis=0).tolist(),
+            "The summary statistics of the max of each feature across the nodes ",
+            InterpretabilityScore(3),
+            statistics="centrality",
+        )
+
+        self.add_feature(
+            "min_node_feature_",
+            lambda graph: np.min(get_feature_matrix(graph), axis=1).tolist(),
+            "The summary statistics of the min of all node features ",
+            InterpretabilityScore(3),
+            statistics="centrality",
+        )
+        self.add_feature(
+            "min_feature",
+            lambda graph: np.min(get_feature_matrix(graph), axis=0).tolist(),
+            "The summary statistics of the min of each feature across the nodes ",
+            InterpretabilityScore(3),
+            statistics="centrality",
+        )
+
+        self.add_feature(
+            "sum_node_feature_",
+            lambda graph: np.sum(get_feature_matrix(graph), axis=1).tolist(),
+            "The summary statistics of the sum of all node features ",
+            InterpretabilityScore(3),
+            statistics="centrality",
+        )
+        self.add_feature(
+            "sum_feature",
+            lambda graph: np.sum(get_feature_matrix(graph), axis=0).tolist(),
+            "The summary statistics of the sum of each feature across the nodes ",
+            InterpretabilityScore(3),
+            statistics="centrality",
+        )
