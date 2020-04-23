@@ -136,12 +136,22 @@ def plot_feature_summary(data, graphs, folder, shap_vals=None, feat_name=None):
         np.int64
     ).tolist() + [feature_data.shape[0] - 1]
 
+    graph_ids = feature_data.iloc[samples].index.tolist()
+
+    graph_to_plot = []
+    for graph_id in graph_ids:
+        for graph in graphs:
+            if graph.graph['id'] == graph_id:
+                graph_to_plot.append(graph)
+    
+
     c = sns.color_palette("hls", 5)
     for i, sample in enumerate(samples):
         print(feature_data.iloc[sample])
-        g.axhline(feature_data.iloc[sample], ls="--", color=c[i])
-
-        graph = graphs[feature_data.index[sample]]
+        g.axhline(feature_data.iloc[sample], ls="--", color=c[i])         
+            
+        
+        graph = graph_to_plot[i]
         pos = nx.spring_layout(graph)
         nx.draw(graph, pos, ax=ax[i + 1], node_size=5, node_color=c[i])
         ax[i + 1].set_title(

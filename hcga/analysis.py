@@ -67,7 +67,7 @@ def analysis(
         features, features_info, interpretability
     )
 
-    filtered_features, graphs = utils.filter_samples(features,graphs,sample_removal=0.7)
+    filtered_features = utils.filter_samples(features,sample_removal=0.8)
     good_features = utils.filter_features(filtered_features)
     normed_features = normalise_feature_data(good_features)
     classifier = _get_classifier(classifier)
@@ -130,10 +130,10 @@ def output_csv(features, features_info, feature_importance, shap_values, folder)
             ).mean(axis=0)
 
     for feat in output_df.columns:
-        #feat_fullname = feat[0] + "_" + feat[1]
-        output_df[feat]["feature_info"] = features_info[feat]["feature_description"]
-        output_df[feat]["feature_interpretability"] = features_info[feat][
-            "feature_interpretability"
+        feat_fullname = feat[0] + "_" + feat[1]
+        output_df[feat]["feature_info"] = features_info[feat_fullname]["description"]
+        output_df[feat]["feature_interpretability"] = features_info[feat_fullname][
+            "interpretability"
         ].score
 
     # sort by shap average
@@ -227,8 +227,8 @@ def fit_model_kfold(features, compute_shap=True, classifier=None):
 def compute_fold(X, y, classifier, compute_shap, indices):
     """Compute a single fold for parallel computation."""
     train_index, val_index = indices
-    X_train, X_val = X.loc[train_index], X.loc[val_index]
-    y_train, y_val = y[train_index], y[val_index]
+    X_train, X_val = X.iloc[train_index], X.iloc[val_index]
+    y_train, y_val = y.iloc[train_index], y.iloc[val_index]
 
     classifier.fit(
         X_train, y_train,
@@ -406,7 +406,7 @@ def filter_interpretable(features, features_info, interpretability):
     """Get only features with certain interpretability."""
     interpretability = min(5, interpretability)
     for feat in list(features_info.keys()):
-        score = features_info[feat]["feature_interpretability"].score
+        score = features_info[feat]["interpretability"].score
         if score < interpretability:
             features = features.drop(columns=[feat])
             del features_info[feat]

@@ -13,14 +13,13 @@ def get_trivial_graph(n_node_features=0):
     return graph
 
 
-def filter_samples(features, graphs, sample_removal=0.05):
+def filter_samples(features, sample_removal=0.05):
     """ Remove samples with more than X% bad values """
-    nan_features = features[
-        features.isnull().sum(axis=1) / len(features.columns) < sample_removal
-    ]
-    new_graphs = [graphs[i] for i in nan_features.index.tolist()]
-    nan_features = nan_features.reset_index(drop=True)
-    return nan_features, new_graphs
+    samples_to_filter = features.index[features.isnull().sum(axis=1) / len(features.columns) > sample_removal].tolist()
+    features = features.drop(labels=samples_to_filter)
+    #new_graphs = [graphs[i] for i in nan_features]
+    #nan_features = nan_features.reset_index(drop=True)
+    return features
 
 
 def filter_features(features):
