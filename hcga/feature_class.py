@@ -25,6 +25,7 @@ class FeatureClass:
     keywords = ["template"]
 
     statistics_level = "basic"
+    encoding = None
     normalize_features = True
     with_node_features = False
 
@@ -37,20 +38,12 @@ class FeatureClass:
 
     def __init__(self, graph=None):
         """init function"""
-        self.graph = graph
         if graph is not None:
-            self.verify_graph()
+            self.graph = graph.get_graph(self.__class__.encoding)
+        else:
+            self.graph = None
         self.features = {}
-        # self.node_features = []
 
-    def verify_graph(self):
-        """make sure a graph has correct properties"""
-        if nx.is_directed(self.graph):
-            self.graph = self.graph.to_undirected()
-
-        if "id" not in self.graph.graph:
-            L.warning("An id has not been set for a graph")
-            self.graph.graph["id"] = -1
 
     @classmethod
     def setup_class(
@@ -133,7 +126,7 @@ class FeatureClass:
             L.debug(
                 "Failed feature %s for graph %d with exception: %s",
                 feature_name,
-                self.graph.graph["id"],
+                self.graph.id,
                 str(exc),
             )
             if statistics in ("centrality", "clustering"):

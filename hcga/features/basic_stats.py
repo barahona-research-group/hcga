@@ -23,7 +23,7 @@ import networkx as nx
 import numpy as np
 
 from ..feature_class import FeatureClass, InterpretabilityScore
-from . import utils
+from .utils import ensure_connected
 
 featureclass_name = "BasicStats"
 
@@ -35,7 +35,7 @@ class BasicStats(FeatureClass):
     shortname = "BS"
     name = "basic_stats"
     keywords = []
-    normalize_features = True
+    encoding = 'networkx' 
 
     def compute_features(self):
         """
@@ -68,13 +68,13 @@ class BasicStats(FeatureClass):
         # Adding diameter stats
         self.add_feature(
             "diameter",
-            lambda graph: nx.diameter(utils.ensure_connected(graph)),
+            lambda graph: nx.diameter(ensure_connected(graph)),
             "Diameter of the graph",
             InterpretabilityScore("max"),
         )
         self.add_feature(
             "radius",
-            lambda graph: nx.radius(utils.ensure_connected(graph)),
+            lambda graph: nx.radius(ensure_connected(graph)),
             "Radius of the graph",
             InterpretabilityScore("max"),
         )

@@ -3,7 +3,7 @@ import networkx as nx
 import numpy as np
 
 from hcga.io import save_dataset
-
+from hcga.graph import Graph, GraphCollection
 
 def _add_graph_desc(g, desc):
     """Add descrition desc to graph g as a graph attribute"""
@@ -57,7 +57,13 @@ def make_test_dataset(folder="./datasets", add_features=False, write_to_file=Tru
 
     labels = np.random.randint(0, 2, len(graphs))
 
-    if write_to_file:
-        save_dataset(graphs, labels, "TESTDATA", folder=folder)
+    graphs_coll = GraphCollection()
+    for graph in graphs:
+        graphs_coll.add_graph(Graph(list(graph.nodes), list(graph.edges), np.random.randint(0, 2)))
 
-    return graphs, labels
+    #for graph in graphs_coll:
+    #    print(graph.get_graph()[0])
+    if write_to_file:
+        save_dataset(graphs_coll, labels, "TESTDATA", folder=folder)
+
+    return graphs_coll#, labels
