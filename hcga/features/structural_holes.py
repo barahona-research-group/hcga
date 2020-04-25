@@ -30,7 +30,7 @@ class StructuralHoles(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "SH"
     name = "structural_holes"
-    encoding = 'networkx' 
+    encoding = "networkx"
 
     def compute_features(self):
         """Compute structural holes measures.

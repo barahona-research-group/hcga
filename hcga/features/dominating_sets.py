@@ -59,7 +59,7 @@ class DominatingSets(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "DS"
     name = "dominating_sets"
-    encoding = 'networkx' 
+    encoding = "networkx"
 
     def compute_features(self):
         """

@@ -35,7 +35,7 @@ class Clustering(FeatureClass):
     modes = ["medium", "slow"]
     shortname = "Clu"
     name = "clustering"
-    encoding = 'networkx' 
+    encoding = "networkx"
 
     def compute_features(self):
         """Compute the various clustering measures.

@@ -8,7 +8,6 @@ from pathlib import Path
 import numpy as np
 
 
-
 def _ensure_weights(graph):
     """ensure that graphs edges have a weights value"""
     for u, v in graph.edges:
@@ -56,18 +55,18 @@ def save_dataset(graphs, filename, folder="./datasets"):
 def load_dataset(filename):
     """load a dataset from a pickle"""
     with open(filename, "rb") as f:
-        #graphs, labels = pickle.load(f)
+        # graphs, labels = pickle.load(f)
         return pickle.load(f)
-    #print(graphs)
-    #cleaned_graphs = []
-    #for i, graph in enumerate(graphs):
+    # print(graphs)
+    # cleaned_graphs = []
+    # for i, graph in enumerate(graphs):
     #    if len(graph) > MIN_NUM_NODES:
     #        graph.label = labels[i]
     #        _set_graph_id(graph, i)
     #        _set_node_features(graph)
     #        _ensure_weights(graph)
     #        cleaned_graphs.append(graph)
-    #return cleaned_graphs
+    # return cleaned_graphs
 
 
 def save_features(features, feature_info, graphs, filename="./features.pkl"):

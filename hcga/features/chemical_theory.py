@@ -32,7 +32,7 @@ class ChemicalTheory(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "CT"
     name = "chemical_theory"
-    encoding = 'networkx' 
+    encoding = "networkx"
 
     def compute_features(self):
         """

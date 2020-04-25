@@ -36,7 +36,7 @@ class CommunitiesModularity(FeatureClass):
     modes = ["medium", "slow"]
     shortname = "CM"
     name = "communities_modularity"
-    encoding = 'networkx' 
+    encoding = "networkx"
 
     def compute_features(self):
         """Compute the measures about community detection using the modularity algorithm.

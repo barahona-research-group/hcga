@@ -41,7 +41,7 @@ class CommunitiesAsyn(FeatureClass):
     modes = ["medium", "slow"]
     shortname = "CA"
     name = "communities_asyn"
-    encoding = 'networkx' 
+    encoding = "networkx"
 
     def compute_features(self):
         """Compute the measures about community detection using async fluid algorithm.

@@ -35,7 +35,7 @@ class MaximalMatching(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "MM"
     name = "MaximalMatching"
-    encoding = 'networkx' 
+    encoding = "networkx"
 
     def compute_features(self):
         """Compute the maximal matching of the network

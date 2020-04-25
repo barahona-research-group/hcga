@@ -1,9 +1,10 @@
-import numpy as np
 import networkx as nx
+import numpy as np
 
 MIN_NUM_NODES = 2
 
-class GraphCollection():
+
+class GraphCollection:
     """Contain a list of graphs."""
 
     def __init__(self):
@@ -13,11 +14,11 @@ class GraphCollection():
     def add_graph(self, graph):
         """Add a graph to the list."""
         if not isinstance(graph, Graph):
-            raise Exception('Only add class Graph to GraphCollection')
+            raise Exception("Only add class Graph to GraphCollection")
         graph.id = len(self.graphs)
         self.graphs.append(graph)
-    
-    def __iter__(self): 
+
+    def __iter__(self):
         """Makes this class iterable over the graphs."""
         self.current_graph = -1
         return self
@@ -33,7 +34,7 @@ class GraphCollection():
 
     def __len__(self):
         """Overrites the len() function to get number of enabled graphs."""
-        if not hasattr(self, 'len'):
+        if not hasattr(self, "len"):
             self.len = sum([1 for graph in self.graphs if not graph.disabled])
         return self.len
 
@@ -45,17 +46,18 @@ class GraphCollection():
         return n_node_features
 
 
-class Graph():
+class Graph:
     """Class to encode various graph structures."""
+
     def __init__(self, nodes, edges, label):
-       self.nodes = nodes
-       self.edges = edges
-       self.label = label
-       self.disabled = False
-       self.id = -1
-    
-       self._check_length()
-       self._get_n_node_features()
+        self.nodes = nodes
+        self.edges = edges
+        self.label = label
+        self.disabled = False
+        self.id = -1
+
+        self._check_length()
+        self._get_n_node_features()
 
     def _get_n_node_features(self):
         """Get the number of node features."""
@@ -64,7 +66,7 @@ class Graph():
         elif len(np.shape(self.nodes)) == 2:
             self.n_node_features = len(self.nodes[0][1])
         else:
-            raise Exception('Too many elements for node data')
+            raise Exception("Too many elements for node data")
 
     def _check_length(self):
         """Verify if the graph is large enough to be considered."""
@@ -73,31 +75,31 @@ class Graph():
         if len(self.edges) == 0:
             self.disabled = True
 
-    def get_graph(self, encoding=None):   
+    def get_graph(self, encoding=None):
         """Get usable graph structure with given encoding."""
         if encoding is None:
             return self
-        if encoding == 'networkx':
-            if not hasattr(self, '_graph_networkx'):
+        if encoding == "networkx":
+            if not hasattr(self, "_graph_networkx"):
                 self.set_networkx()
             return self._graph_networkx
-        if encoding == 'igraph':
-            raise Exception('Igraph is not yet implemented')
-        
+        if encoding == "igraph":
+            raise Exception("Igraph is not yet implemented")
+
     def set_networkx(self):
         """Set the networkx graph encoding."""
         self._graph_networkx = nx.Graph()
         if self.n_node_features == 0:
-           nodes = [(node, {'feat': [0]}) for node in self.nodes] 
+            nodes = [(node, {"feat": [0]}) for node in self.nodes]
         else:
-           nodes = [(node, {'feat': feat}) for node, feat in self.nodes] 
+            nodes = [(node, {"feat": feat}) for node, feat in self.nodes]
         self._graph_networkx.add_nodes_from(nodes)
 
         if len(self.edges[0]) == 2:
-            edges = [(edge[0], edge[1], 1. ) for edge in self.edges]
+            edges = [(edge[0], edge[1], 1.0) for edge in self.edges]
         elif len(self.edges) == 3:
             edges = self.edges
-            #edges = [(edge[0], edge[1], weight) for edge, weight in self.edges]
+            # edges = [(edge[0], edge[1], weight) for edge, weight in self.edges]
         else:
-            raise Exception('Too many elements for edge data')
+            raise Exception("Too many elements for edge data")
         self._graph_networkx.add_weighted_edges_from(edges)

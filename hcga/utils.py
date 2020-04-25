@@ -4,6 +4,7 @@ import numpy as np
 
 from hcga.graph import Graph
 
+
 def get_trivial_graph(n_node_features=0):
     """generate a grivial graph for internal purposes"""
     return Graph([0, 1, 2], [(0, 1), (1, 2), (2, 1)], 0)
@@ -11,7 +12,9 @@ def get_trivial_graph(n_node_features=0):
 
 def filter_samples(features, sample_removal=0.05):
     """ Remove samples with more than X% bad values """
-    samples_to_filter = features.index[features.isnull().sum(axis=1) / len(features.columns) > sample_removal].tolist()
+    samples_to_filter = features.index[
+        features.isnull().sum(axis=1) / len(features.columns) > sample_removal
+    ].tolist()
     features = features.drop(labels=samples_to_filter)
     return features
 

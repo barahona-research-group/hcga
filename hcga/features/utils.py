@@ -8,4 +8,4 @@ def ensure_connected(graph):
             return graph.subgraph(max(nx.connected_components(graph), key=len))
         return graph
     else:
-        raise Excpetion('ensure_conneted is not implemented for this graph type')
+        raise Excpetion("ensure_conneted is not implemented for this graph type")

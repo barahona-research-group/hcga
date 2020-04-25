@@ -2,9 +2,9 @@
 import multiprocessing
 import time
 from collections import defaultdict
+from functools import partial
 from importlib import import_module
 from pathlib import Path
-from functools import partial
 
 import networkx as nx
 import numpy as np
@@ -161,7 +161,9 @@ def gather_features(all_features_raw, list_feature_classes):
     feature_name_list = []
     for feature_class in list_feature_classes:
         feature_class_inst = feature_class()
-        for feature in all_features_raw[list(all_features_raw.keys())[0]][feature_class_inst.shortname]:
+        for feature in all_features_raw[list(all_features_raw.keys())[0]][
+            feature_class_inst.shortname
+        ]:
             feature_info = feature_class_inst.get_feature_info(feature)
             features_info[feature_info["fullname"]] = feature_info
             feature_name_list.append((feature_info["shortname"], feature_info["name"]))

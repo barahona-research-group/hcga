@@ -33,7 +33,7 @@ class NodeFeatures(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "NF"
     name = "node_features"
-    encoding = 'networkx' 
+    encoding = "networkx"
 
     def compute_features(self):
         """Compute node feature measures.

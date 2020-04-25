@@ -35,7 +35,7 @@ class ShortestPaths(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "SP"
     name = "shortest_paths"
-    encoding = 'networkx' 
+    encoding = "networkx"
 
     def compute_features(self):
         """

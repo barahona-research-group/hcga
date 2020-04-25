@@ -34,7 +34,7 @@ class Components(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "C"
     name = "components"
-    encoding = 'networkx' 
+    encoding = "networkx"
 
     def compute_features(self):
         """

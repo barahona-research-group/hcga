@@ -2,8 +2,9 @@
 import networkx as nx
 import numpy as np
 
-from hcga.io import save_dataset
 from hcga.graph import Graph, GraphCollection
+from hcga.io import save_dataset
+
 
 def _add_graph_desc(g, desc):
     """Add descrition desc to graph g as a graph attribute"""
@@ -19,7 +20,9 @@ def add_dummy_node_features(graph):
     return graph
 
 
-def make_test_dataset(folder="./datasets", add_features=False, write_to_file=True, n_graphs=5):
+def make_test_dataset(
+    folder="./datasets", add_features=False, write_to_file=True, n_graphs=5
+):
     """ Makes pickle with graphs that test robustness of hcga """
 
     graphs = []
@@ -59,11 +62,13 @@ def make_test_dataset(folder="./datasets", add_features=False, write_to_file=Tru
 
     graphs_coll = GraphCollection()
     for graph in graphs:
-        graphs_coll.add_graph(Graph(list(graph.nodes), list(graph.edges), np.random.randint(0, 2)))
+        graphs_coll.add_graph(
+            Graph(list(graph.nodes), list(graph.edges), np.random.randint(0, 2))
+        )
 
-    #for graph in graphs_coll:
+    # for graph in graphs_coll:
     #    print(graph.get_graph()[0])
     if write_to_file:
         save_dataset(graphs_coll, "TESTDATA", folder=folder)
 
-    return graphs_coll#, labels
+    return graphs_coll  # , labels

@@ -34,7 +34,7 @@ class BasicStats(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "BS"
     name = "basic_stats"
-    encoding = 'networkx' 
+    encoding = "networkx"
 
     def compute_features(self):
         """

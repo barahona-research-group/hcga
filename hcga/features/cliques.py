@@ -19,10 +19,12 @@
 # You should have received a copy of the GNU General Public License
 # along with hcga.  If not, see <http://www.gnu.org/licenses/>.
 
-from networkx.algorithms import clique
-import numpy as np
-from ..feature_class import FeatureClass, InterpretabilityScore
 from functools import lru_cache
+
+import numpy as np
+from networkx.algorithms import clique
+
+from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Cliques"
 
@@ -33,7 +35,7 @@ class Cliques(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "Cli"
     name = "cliques"
-    encoding = 'networkx' 
+    encoding = "networkx"
 
     def compute_features(self):
         """

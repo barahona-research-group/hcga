@@ -44,7 +44,6 @@ class FeatureClass:
             self.graph = None
         self.features = {}
 
-
     @classmethod
     def setup_class(
         cls, normalize_features=True, statistics_level="basic", n_node_features=0

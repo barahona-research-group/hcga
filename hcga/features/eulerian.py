@@ -32,7 +32,7 @@ class Eulerian(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "EU"
     name = "eulerian"
-    encoding = 'networkx' 
+    encoding = "networkx"
 
     def compute_features(self):
         """
