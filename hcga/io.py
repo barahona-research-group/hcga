@@ -50,7 +50,6 @@ def save_dataset(graphs, filename, folder="./datasets"):
         os.mkdir(folder)
 
     with open(os.path.join(folder, filename + ".pkl"), "wb") as f:
-        #pickle.dump([graphs, labels], f)
         pickle.dump(graphs, f)
 
 
