@@ -44,7 +44,7 @@ def load_analysis(folder="/", filename="analysis_results"):
         return pickle.load(f)
 
 
-def save_dataset(graphs, labels, filename, folder="./datasets"):
+def save_dataset(graphs, filename, folder="./datasets"):
     """Save a dataset in a pickle"""
     if not os.path.exists(folder):
         os.mkdir(folder)

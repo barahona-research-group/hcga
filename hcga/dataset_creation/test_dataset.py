@@ -64,6 +64,6 @@ def make_test_dataset(folder="./datasets", add_features=False, write_to_file=Tru
     #for graph in graphs_coll:
     #    print(graph.get_graph()[0])
     if write_to_file:
-        save_dataset(graphs_coll, labels, "TESTDATA", folder=folder)
+        save_dataset(graphs_coll, "TESTDATA", folder=folder)
 
     return graphs_coll#, labels

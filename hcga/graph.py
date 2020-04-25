@@ -87,7 +87,6 @@ class Graph():
     def set_networkx(self):
         """Set the networkx graph encoding."""
         self._graph_networkx = nx.Graph()
-
         if self.n_node_features == 0:
            nodes = [(node, {'feat': [0]}) for node in self.nodes] 
         else:
