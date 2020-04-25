@@ -35,8 +35,7 @@ class CycleBasis(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "CYB"
     name = "cycle_basis"
-    keywords = []
-    normalize_features = True
+    encoding = 'networkx' 
 
     def compute_features(self):
         """

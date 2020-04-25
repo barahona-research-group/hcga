@@ -35,8 +35,7 @@ class CentralitiesBasic(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "CB"
     name = "centralities_basic"
-    keywords = []
-    normalize_features = True
+    encoding = 'networkx' 
 
     def compute_features(self):
         """

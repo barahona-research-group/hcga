@@ -33,8 +33,7 @@ class Spectrum(FeatureClass):
     modes = ["medium", "slow"]
     shortname = "SPM"
     name = "spectrum"
-    keywords = []
-    normalize_features = True
+    encoding = 'networkx' 
 
     def compute_features(self):
         """Compute spectral measures.

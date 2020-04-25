@@ -101,5 +101,3 @@ class Graph():
         else:
             raise Exception('Too many elements for edge data')
         self._graph_networkx.add_weighted_edges_from(edges)
-        
-

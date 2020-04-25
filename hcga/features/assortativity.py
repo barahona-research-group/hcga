@@ -34,8 +34,7 @@ class Assortativity(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "AS"
     name = "assortativity"
-    keywords = []
-    normalize_features = True
+    encoding = 'networkx' 
 
     def compute_features(self):
         """

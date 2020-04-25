@@ -32,8 +32,7 @@ class SmallWorldness(FeatureClass):
     modes = ["slow"]
     shortname = "SW"
     name = "small_worldness"
-    keywords = []
-    normalize_features = True
+    encoding = 'networkx' 
 
     def compute_features(self):
         """

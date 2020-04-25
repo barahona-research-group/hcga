@@ -7,19 +7,12 @@ from hcga.graph import Graph
 def get_trivial_graph(n_node_features=0):
     """generate a grivial graph for internal purposes"""
     return Graph([0, 1, 2], [(0, 1), (1, 2), (2, 1)], 0)
-    #graph = nx.generators.classic.complete_graph(3)
-    #for u in graph.nodes:
-    #    graph.nodes[u]["feat"] = n_node_features * [0]
-    #graph.graph["id"] = 0
-    #return graph
 
 
 def filter_samples(features, sample_removal=0.05):
     """ Remove samples with more than X% bad values """
     samples_to_filter = features.index[features.isnull().sum(axis=1) / len(features.columns) > sample_removal].tolist()
     features = features.drop(labels=samples_to_filter)
-    #new_graphs = [graphs[i] for i in nan_features]
-    #nan_features = nan_features.reset_index(drop=True)
     return features
 
 

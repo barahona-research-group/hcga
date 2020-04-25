@@ -36,8 +36,7 @@ class Hits(FeatureClass):
     modes = ["medium", "slow"]
     shortname = "LAH"
     name = "Hits"
-    keywords = []
-    normalize_features = True
+    encoding = 'networkx' 
 
     def compute_features(self):
         """

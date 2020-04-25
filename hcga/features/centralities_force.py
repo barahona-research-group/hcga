@@ -33,8 +33,7 @@ class ForceCentrality(FeatureClass):
     modes = ["medium", "slow"]
     shortname = "CF"
     name = "centralities_force"
-    keywords = []
-    normalize_features = True
+    encoding = 'networkx' 
 
     def compute_features(self):
         """

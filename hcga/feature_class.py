@@ -22,7 +22,6 @@ class FeatureClass:
     modes = ["fast", "medium", "slow"]
     shortname = "TP"
     name = "template"
-    keywords = ["template"]
 
     statistics_level = "basic"
     encoding = None
@@ -40,6 +39,7 @@ class FeatureClass:
         """init function"""
         if graph is not None:
             self.graph = graph.get_graph(self.__class__.encoding)
+            self.graph_id = graph.id
         else:
             self.graph = None
         self.features = {}
@@ -63,7 +63,6 @@ class FeatureClass:
         return {
             "name": self.__class__.name,
             "shortname": self.__class__.shortname,
-            "keywords": self.__class__.keywords,
         }
 
     def _test_feature_exists(self, feature_name):
@@ -123,12 +122,13 @@ class FeatureClass:
         except (KeyboardInterrupt, SystemExit):
             sys.exit(0)
         except Exception as exc:
-            L.debug(
-                "Failed feature %s for graph %d with exception: %s",
-                feature_name,
-                self.graph.id,
-                str(exc),
-            )
+            if self.graph_id != -1:
+                L.debug(
+                    "Failed feature %s for graph %d with exception: %s",
+                    feature_name,
+                    self.graph_id,
+                    str(exc),
+                )
             if statistics in ("centrality", "clustering"):
                 return [np.nan]
             if statistics is "node_features":

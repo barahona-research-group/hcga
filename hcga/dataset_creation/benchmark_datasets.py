@@ -41,8 +41,8 @@ def make(dataset_name="ENZYMES", folder="./datasets"):
 
     save_dataset(graphs, dataset_name, folder=folder)
 
-    #shutil.rmtree(dataset_name)
-    #os.remove("{}.zip".format(dataset_name))
+    shutil.rmtree(dataset_name)
+    os.remove("{}.zip".format(dataset_name))
     print('\n')
 
 
@@ -73,7 +73,7 @@ def extract_benchmark_graphs(datadir, dataname, max_nodes=None):
 
     edge_list = defaultdict(list)
     for edge in adj_list:
-        edge_list[node_graph_ids[edge[0] - 1]].append(tuple(edge))
+        edge_list[node_graph_ids[edge[0] - 1]].append(tuple(edge - 1))
 
     node_list = defaultdict(list)
     for (node, graph_id), node_attribute in zip(node_graph_ids.items(), node_attributes):

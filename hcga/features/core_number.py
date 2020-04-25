@@ -33,8 +33,7 @@ class CoreNumber(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "CoN"
     name = "core_number"
-    keywords = []
-    normalize_features = True
+    encoding = 'networkx' 
 
     def compute_features(self):
         """

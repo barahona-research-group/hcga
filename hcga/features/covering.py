@@ -32,8 +32,7 @@ class Covering(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "CV"
     name = "covering"
-    keywords = []
-    normalize_features = True
+    encoding = 'networkx' 
 
     def compute_features(self):
         """
