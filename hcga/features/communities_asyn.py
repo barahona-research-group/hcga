@@ -38,7 +38,7 @@ class CommunitiesAsyn(FeatureClass):
     Communities Asyn class
     """
 
-    modes = ["medium", "slow"]
+    modes = ["slow"]
     shortname = "CA"
     name = "communities_asyn"
     encoding = "networkx"
