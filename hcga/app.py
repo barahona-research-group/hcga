@@ -207,7 +207,11 @@ def generate_data(dataset_name, folder):
         https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets
 
     """
-    if dataset_name == "TESTDATA":
+    if dataset_name.split('_')[0] == "SYNTH":
+        from .dataset_creation import make_synthetic
+        make_synthetic(folder=folder, graph_type=dataset_name.split('_')[1])
+
+    elif dataset_name == "TESTDATA":
         print("--- Building test dataset and creating pickle ---")
         from .dataset_creation import make_test_dataset
 
@@ -215,5 +219,7 @@ def generate_data(dataset_name, folder):
     else:
         print("---Downloading and creating pickle for {}---".format(dataset_name))
         from .dataset_creation import make_benchmark_dataset
-
-        make_benchmark_dataset(dataset_name=dataset_name, folder=folder)
+        try:
+            make_benchmark_dataset(dataset_name=dataset_name, folder=folder)
+        except Exception as e:
+            print("Could not load this benchmark dataset, exception", e)

@@ -8,49 +8,55 @@ import networkx as nx
 import numpy as np
 import wget
 
-from ..io import save_dataset
+from hcga.io import save_dataset
+from hcga.graph import Graph, GraphCollection
 
 
-def synthetic_data():
+def make(
+    folder="./datasets", write_to_file=True, graph_type="SBM",
+):
+    if graph_type == "SBM":
+        graphs = make_SBM()
 
-    graphs = [
-        nx.planted_partition_graph(
-            1, 10, rd.uniform(0.6, 1), rd.uniform(0.1, 0.4), seed=None, directed=False
-        )
-        for i in range(50)
-    ] + [
-        nx.planted_partition_graph(
-            2, 5, rd.uniform(0.6, 1), rd.uniform(0.1, 0.4), seed=None, directed=False
-        )
-        for i in range(50)
+    if write_to_file:
+        save_dataset(graphs, "SYNTH_" + graph_type, folder=folder)
+
+
+def make_SBM():
+    """Make SBM with 1, 2, 3 and 4 clusters."""
+
+    def _add_graph(label):
+        for _ in range(50):
+            graph = nx.stochastic_block_model(sizes, probs)
+            graphs.add_graph(Graph(list(graph.nodes), list(graph.edges), label))
+
+    graphs = GraphCollection()
+
+    sizes = [10, 10, 10, 10]
+    probs = [
+        [0.2, 0.05, 0.05, 0.05],
+        [0.05, 0.2, 0.05, 0.05],
+        [0.05, 0.05, 0.2, 0.05],
+        [0.05, 0.05, 0.05, 0.2],
     ]
+    _add_graph(4)
 
-    for i in range(len(graphs)):
-        if not nx.is_connected(graphs[i]):
-            if i < 50:
-                graphs[i] = nx.planted_partition_graph(
-                    1,
-                    10,
-                    rd.uniform(0.6, 1),
-                    rd.uniform(0.1, 0.4),
-                    seed=None,
-                    directed=False,
-                )
-            elif i > 50:
-                graphs[i] = nx.planted_partition_graph(
-                    2,
-                    5,
-                    rd.uniform(0.6, 1),
-                    rd.uniform(0.1, 0.4),
-                    seed=None,
-                    directed=False,
-                )
+    sizes = [13, 13, 14]
+    probs = [[0.2, 0.05, 0.05], [0.05, 0.2, 0.05], [0.05, 0.05, 0.2]]
+    _add_graph(3)
 
-    graph_class = [1 for i in range(50)] + [2 for i in range(50)]
+    sizes = [20, 20]
+    probs = [[0.2, 0.05], [0.05, 0.2]]
+    _add_graph(2)
 
-    return graphs, graph_class
+    sizes = [40]
+    probs = [[0.2]]
+    _add_graph(1)
+
+    return graphs
 
 
+### below are deprecated functions ###
 def synthetic_data_watts_strogatz(N=1000):
 
     graphs = []

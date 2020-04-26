@@ -45,7 +45,7 @@ def make(dataset_name="ENZYMES", folder="./datasets"):
     os.remove("{}.zip".format(dataset_name))
 
 
-def extract_benchmark_graphs(datadir, dataname):  #pylint: disable=too-many-locals
+def extract_benchmark_graphs(datadir, dataname):  # pylint: disable=too-many-locals
     """ Read data from https://ls11-www.cs.tu-dortmund.de/staff/morris/graphkerneldatasets
         graph index starts with 1 in file
 
