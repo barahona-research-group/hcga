@@ -73,7 +73,7 @@ def analysis(
 
     filtered_features = utils.filter_samples(features, sample_removal=0.8)
     good_features = utils.filter_features(filtered_features)
-    normed_features = normalise_feature_data(good_features)
+    normed_features = _normalise_feature_data(good_features)
     classifier = _get_classifier(classifier)
 
     if grid_search and kfold:
@@ -92,6 +92,7 @@ def analysis(
     results_folder = Path(folder) / (
         "results_interpretability_" + str(interpretability)
     )
+
     if not Path(results_folder).exists():
         os.mkdir(results_folder)
 
@@ -341,7 +342,7 @@ def _features_to_Xy(features):
     return X, y
 
 
-def normalise_feature_data(features):
+def _normalise_feature_data(features):
     """Normalise the feature matrix using sklearn scaler to remove the mean and scale to unit variance"""
     labels = features["labels"]
     normed_features = pd.DataFrame(

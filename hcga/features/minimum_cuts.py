@@ -32,7 +32,7 @@ class MinimumCuts(FeatureClass):
     Minimum cuts class
     """
 
-    modes = ["fast", "medium", "slow"]
+    modes = ["medium", "slow"]
     shortname = "MiC"
     name = "minimum_cuts"
     encoding = "networkx"

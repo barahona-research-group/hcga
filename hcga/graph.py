@@ -27,17 +27,17 @@ class GraphCollection:
     def __next__(self):
         """Get the next enabled graph."""
         self.current_graph += 1
-        if self.current_graph < len(self.graphs):
-            while self.graphs[self.current_graph].disabled:
-                self.current_graph += 1
-            return self.graphs[self.current_graph]
-        raise StopIteration
+        if self.current_graph >= len(self.graphs):
+            raise StopIteration
+        while self.graphs[self.current_graph].disabled:
+            self.current_graph += 1
+            if self.current_graph >= len(self.graphs):
+                raise StopIteration
+        return self.graphs[self.current_graph]
 
     def __len__(self):
         """Overrites the len() function to get number of enabled graphs."""
-        if not hasattr(self, "len"):
-            self.len = sum([1 for graph in self.graphs if not graph.disabled])
-        return self.len
+        return sum([1 for graph in self.graphs if not graph.disabled])
 
     def get_n_node_features(self):
         """Get the number of features of the nodes."""

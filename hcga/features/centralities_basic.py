@@ -151,7 +151,7 @@ class CentralitiesBasic(FeatureClass):
 
         # Katz centrality
         katz_centrality = lambda graph: list(
-            centrality.katz_centrality(utils.ensure_connected(graph)).values()
+            centrality.katz_centrality_numpy(utils.ensure_connected(graph)).values()
         )
         self.add_feature(
             "katz centrality",

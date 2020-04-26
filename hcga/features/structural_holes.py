@@ -27,7 +27,7 @@ featureclass_name = "StructuralHoles"
 
 
 class StructuralHoles(FeatureClass):
-    modes = ["fast", "medium", "slow"]
+    modes = ["medium", "slow"]
     shortname = "SH"
     name = "structural_holes"
     encoding = "networkx"

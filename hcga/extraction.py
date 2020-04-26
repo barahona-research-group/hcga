@@ -37,7 +37,11 @@ def extract(
             "WARNING: Runtime option enable, we will only use 10 graphs and one worker to estimate",
             "the computational time of each feature class.",
         )
-        graphs = graphs[:10]
+        selected_graphs = np.random.randint(0, len(graphs), 10)
+        print(len(selected_graphs))
+        for graph in graphs.graphs:
+            if graph.id not in selected_graphs:
+                graph.disabled = True
 
     print(
         "Extracting features from",
