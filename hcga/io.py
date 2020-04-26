@@ -1,8 +1,6 @@
 """input/output functions"""
-import csv
 import os
 import pickle
-import sys
 from pathlib import Path
 
 import numpy as np
@@ -56,6 +54,7 @@ def load_dataset(filename):
     """Load a dataset from a pickle."""
     with open(filename, "rb") as f:
         return pickle.load(f)
+
 
 def save_features(features, feature_info, graphs, filename="./features.pkl"):
     """Save the features in a pickle"""

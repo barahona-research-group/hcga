@@ -1,5 +1,4 @@
 """utils functions"""
-import networkx as nx
 import numpy as np
 
 from hcga.graph import Graph

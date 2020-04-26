@@ -1,3 +1,4 @@
+"""Classes representing single and a collection of graphs."""
 import networkx as nx
 import numpy as np
 
@@ -49,6 +50,7 @@ class GraphCollection:
         """Get the number of disabled graphs."""
         return len(self.graphs) - self.__len__()
 
+
 class Graph:
     """Class to encode various graph structures."""
 
@@ -89,7 +91,7 @@ class Graph:
             return self._graph_networkx
         if encoding == "igraph":
             raise Exception("Igraph is not yet implemented")
-        raise Exception('Graph encoding not understood')
+        raise Exception("Graph encoding not understood")
 
     def set_networkx(self):
         """Set the networkx graph encoding."""

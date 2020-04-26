@@ -27,7 +27,7 @@ def make_test_dataset(
 
     graphs = []
     # one, two and three node graphs
-    for i in range(n_graphs):
+    for _ in range(n_graphs):
         graphs.append(_add_graph_desc(nx.grid_graph([1]).copy(), "one-node graph"))
         graphs.append(_add_graph_desc(nx.grid_graph([2]).copy(), "two-node graph"))
         graphs.append(_add_graph_desc(nx.grid_graph([3]).copy(), "three-node graph"))
@@ -58,17 +58,13 @@ def make_test_dataset(
     if add_features:
         graphs = [add_dummy_node_features(graph) for graph in graphs]
 
-    labels = np.random.randint(0, 2, len(graphs))
-
     graphs_coll = GraphCollection()
     for graph in graphs:
         graphs_coll.add_graph(
             Graph(list(graph.nodes), list(graph.edges), np.random.randint(0, 2))
         )
 
-    # for graph in graphs_coll:
-    #    print(graph.get_graph()[0])
     if write_to_file:
         save_dataset(graphs_coll, "TESTDATA", folder=folder)
 
-    return graphs_coll  # , labels
+    return graphs_coll

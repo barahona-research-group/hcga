@@ -6,7 +6,6 @@ from functools import partial
 from importlib import import_module
 from pathlib import Path
 
-import networkx as nx
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
@@ -39,8 +38,14 @@ def extract(
             "the computational time of each feature class.",
         )
         graphs = graphs[:10]
-   
-    print('Extracting features from', len(graphs), 'graphs (we disabled', graphs.get_num_disabled_graphs(), 'graphs).')
+
+    print(
+        "Extracting features from",
+        len(graphs),
+        "graphs (we disabled",
+        graphs.get_num_disabled_graphs(),
+        "graphs).",
+    )
     all_features = compute_all_features(
         graphs, feat_classes, n_workers=n_workers, with_runtimes=with_runtimes,
     )
@@ -62,15 +67,14 @@ def extract(
             )
         return 0.0, 0.0
 
-    else:
-        features, features_info = gather_features(all_features, feat_classes)
-        _set_graph_labels(features, graphs)
+    features, features_info = gather_features(all_features, feat_classes)
+    _set_graph_labels(features, graphs)
 
-        print(len(features.columns), "feature extracted.")
-        good_features = utils.filter_features(features)
-        print(len(good_features.columns), "good features")
+    print(len(features.columns), "feature extracted.")
+    good_features = utils.filter_features(features)
+    print(len(good_features.columns), "good features")
 
-        return features, features_info
+    return features, features_info
 
 
 def _set_graph_labels(features, graphs):
@@ -146,7 +150,7 @@ def compute_all_features(
             ),
             graphs,
         )
-        return {
+        return {  # pylint: disable=unnecessary-comprehension
             graph_id: features
             for graph_id, features in tqdm(results, total=len(graphs))
         }

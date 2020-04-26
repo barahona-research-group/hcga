@@ -1,12 +1,10 @@
 """make benchmark datasets"""
 import os
-import re
 import shutil
 import zipfile
 from collections import defaultdict
 from pathlib import Path
 
-import networkx as nx
 import numpy as np
 import pandas as pd
 import wget
@@ -47,7 +45,7 @@ def make(dataset_name="ENZYMES", folder="./datasets"):
     os.remove("{}.zip".format(dataset_name))
 
 
-def extract_benchmark_graphs(datadir, dataname, max_nodes=None):
+def extract_benchmark_graphs(datadir, dataname):  #pylint: disable=too-many-locals
     """ Read data from https://ls11-www.cs.tu-dortmund.de/staff/morris/graphkerneldatasets
         graph index starts with 1 in file
 
