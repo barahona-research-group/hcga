@@ -46,7 +46,6 @@ class BasicStats(FeatureClass):
 
         """
 
-        # basic normalisation parameters
         n_nodes = lambda graph: len(graph)
         n_edges = lambda graph: len(graph.edges)
 

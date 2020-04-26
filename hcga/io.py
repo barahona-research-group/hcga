@@ -38,7 +38,7 @@ def save_analysis(X, explainer, shap_values, folder=".", filename="analysis_resu
 
 
 def load_analysis(folder="/", filename="analysis_results"):
-    """save results of analysis"""
+    """Save results of analysis."""
     with open(os.path.join(folder, filename + ".pkl"), "rb") as f:
         return pickle.load(f)
 
@@ -53,21 +53,9 @@ def save_dataset(graphs, filename, folder="./datasets"):
 
 
 def load_dataset(filename):
-    """load a dataset from a pickle"""
+    """Load a dataset from a pickle."""
     with open(filename, "rb") as f:
-        # graphs, labels = pickle.load(f)
         return pickle.load(f)
-    # print(graphs)
-    # cleaned_graphs = []
-    # for i, graph in enumerate(graphs):
-    #    if len(graph) > MIN_NUM_NODES:
-    #        graph.label = labels[i]
-    #        _set_graph_id(graph, i)
-    #        _set_node_features(graph)
-    #        _ensure_weights(graph)
-    #        cleaned_graphs.append(graph)
-    # return cleaned_graphs
-
 
 def save_features(features, feature_info, graphs, filename="./features.pkl"):
     """Save the features in a pickle"""
@@ -80,5 +68,5 @@ def save_features(features, feature_info, graphs, filename="./features.pkl"):
 
 
 def load_features(filename="features.pkl"):
-    """Save the features in a pickle"""
+    """Save the features in a pickle."""
     return pickle.load(open(filename, "rb"))

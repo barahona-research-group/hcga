@@ -22,7 +22,6 @@ def extract(
     statistics_level="basic",
     with_runtimes=False,
     with_node_features=False,
-    ensure_connectivity=False,
 ):
     """main function to extract features"""
     n_node_features = graphs.get_n_node_features()
@@ -34,16 +33,14 @@ def extract(
         n_node_features=n_node_features,
     )
 
-    if ensure_connectivity:
-        graphs = _ensure_connectivity(graphs)
-
     if with_runtimes:
         print(
             "WARNING: Runtime option enable, we will only use 10 graphs and one worker to estimate",
             "the computational time of each feature class.",
         )
         graphs = graphs[:10]
-
+   
+    print('Extracting features from', len(graphs), 'graphs (we disabled', graphs.get_num_disabled_graphs(), 'graphs).')
     all_features = compute_all_features(
         graphs, feat_classes, n_workers=n_workers, with_runtimes=with_runtimes,
     )
@@ -177,21 +174,3 @@ def gather_features(all_features_raw, list_feature_classes):
             f for feat in features.values() for f in feat.values()
         ]
     return all_features, features_info
-
-
-def _ensure_connectivity(graphs):
-    # take the largest connected component of the graph
-    for i, graph in enumerate(graphs):
-        if not nx.is_connected(graph):
-            print(
-                "Graph "
-                + str(i)
-                + " is not connected. Taking largest subgraph and relabelling the nodes."
-            )
-            Gcc = sorted(nx.connected_components(graph), key=len, reverse=True)
-            G0 = graph.subgraph(Gcc[0])
-            mapping = dict(zip(G0.nodes, range(0, len(G0))))
-            G0 = nx.relabel_nodes(G0, mapping)
-            G0.label = graph.label
-            graphs[i] = G0
-    return graphs

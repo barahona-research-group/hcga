@@ -8,7 +8,7 @@ class GraphCollection:
     """Contain a list of graphs."""
 
     def __init__(self):
-        """Set emptu list of graphs."""
+        """Set empty list of graphs."""
         self.graphs = []
 
     def add_graph(self, graph):
@@ -45,11 +45,15 @@ class GraphCollection:
             assert n_node_features == graph.n_node_features
         return n_node_features
 
+    def get_num_disabled_graphs(self):
+        """Get the number of disabled graphs."""
+        return len(self.graphs) - self.__len__()
 
 class Graph:
     """Class to encode various graph structures."""
 
     def __init__(self, nodes, edges, label):
+        """Set main graphs quantities."""
         self.nodes = nodes
         self.edges = edges
         self.label = label
@@ -85,6 +89,7 @@ class Graph:
             return self._graph_networkx
         if encoding == "igraph":
             raise Exception("Igraph is not yet implemented")
+        raise Exception('Graph encoding not understood')
 
     def set_networkx(self):
         """Set the networkx graph encoding."""
@@ -99,7 +104,6 @@ class Graph:
             edges = [(edge[0], edge[1], 1.0) for edge in self.edges]
         elif len(self.edges) == 3:
             edges = self.edges
-            # edges = [(edge[0], edge[1], weight) for edge, weight in self.edges]
         else:
             raise Exception("Too many elements for edge data")
         self._graph_networkx.add_weighted_edges_from(edges)

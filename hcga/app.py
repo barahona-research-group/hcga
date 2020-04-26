@@ -49,12 +49,6 @@ def cli():
     help="Use node features if any.",
 )
 @click.option(
-    "--ensure-connectivity/--no-ensure-connectivity",
-    default=False,
-    show_default=True,
-    help="Ensure only connected graphs.",
-)
-@click.option(
     "-sl",
     "--stats-level",
     default="basic",
@@ -80,7 +74,6 @@ def extract_features(
     runtimes,
     results_folder,
     node_feat,
-    ensure_connectivity,
 ):
     """Extract features from dataset of graphs and save the feature matrix, info and labels"""
     from .io import load_dataset, save_features
@@ -96,7 +89,6 @@ def extract_features(
         statistics_level=stats_level,
         with_runtimes=runtimes,
         with_node_features=node_feat,
-        ensure_connectivity=ensure_connectivity,
     )
 
     if not runtimes:
