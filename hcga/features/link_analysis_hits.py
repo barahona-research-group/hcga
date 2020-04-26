@@ -76,7 +76,7 @@ class Hits(FeatureClass):
         """
 
         def hits(graph):
-            h, a = nx.hits(ensure_connected(graph), max_iter=1000)
+            h, a = nx.hits_numpy(ensure_connected(graph))
             return list(h.values())
 
         self.add_feature(
