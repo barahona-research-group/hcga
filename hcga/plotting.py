@@ -2,9 +2,9 @@
 import os
 
 import matplotlib.pyplot as plt
+import networkx as nx
 import numpy as np
 import pandas as pd
-import networkx as nx
 import seaborn as sns
 import shap
 from scipy.cluster.hierarchy import dendrogram, linkage
@@ -141,16 +141,14 @@ def plot_feature_summary(data, graphs, folder, shap_vals=None, feat_name=None):
     graph_to_plot = []
     for graph_id in graph_ids:
         for graph in graphs:
-            if graph.graph['id'] == graph_id:
+            if graph.graph["id"] == graph_id:
                 graph_to_plot.append(graph)
-    
 
     c = sns.color_palette("hls", 5)
     for i, sample in enumerate(samples):
         print(feature_data.iloc[sample])
-        g.axhline(feature_data.iloc[sample], ls="--", color=c[i])         
-            
-        
+        g.axhline(feature_data.iloc[sample], ls="--", color=c[i])
+
         graph = graph_to_plot[i]
         pos = nx.spring_layout(graph)
         nx.draw(graph, pos, ax=ax[i + 1], node_size=5, node_color=c[i])

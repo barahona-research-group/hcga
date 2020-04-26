@@ -34,8 +34,7 @@ class DistanceMeasures(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "DM"
     name = "distance_measures"
-    keywords = []
-    normalize_features = True
+    encoding = "networkx"
 
     def compute_features(self):
         """

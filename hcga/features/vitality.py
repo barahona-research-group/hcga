@@ -30,8 +30,7 @@ class Vitality(FeatureClass):
     modes = ["slow"]
     shortname = "V"
     name = "vitality"
-    keywords = []
-    normalize_features = True
+    encoding = "networkx"
 
     def compute_features(self):
         """Compute vitality measures.

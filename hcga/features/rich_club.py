@@ -35,8 +35,7 @@ class RichClub(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "RC"
     name = "rich_club"
-    keywords = []
-    normalize_features = True
+    encoding = "networkx"
 
     def compute_features(self):
         """

@@ -2,16 +2,20 @@
 
 import logging
 import os
+from datetime import datetime
 from pathlib import Path
 
-from datetime import datetime
 import numpy as np
 import pandas as pd
 import shap
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score
-from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
+from sklearn.model_selection import (
+    RandomizedSearchCV,
+    StratifiedKFold,
+    cross_val_score,
+    train_test_split,
+)
 from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import RandomizedSearchCV
 
 from . import plotting, utils
 
@@ -67,7 +71,7 @@ def analysis(
         features, features_info, interpretability
     )
 
-    filtered_features = utils.filter_samples(features,sample_removal=0.8)
+    filtered_features = utils.filter_samples(features, sample_removal=0.8)
     good_features = utils.filter_features(filtered_features)
     normed_features = normalise_feature_data(good_features)
     classifier = _get_classifier(classifier)

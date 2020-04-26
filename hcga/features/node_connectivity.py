@@ -31,8 +31,7 @@ class NodeConnectivity(FeatureClass):
     modes = ["slow"]
     shortname = "NC"
     name = "node_connectivity"
-    keywords = []
-    normalize_features = True
+    encoding = "networkx"
 
     def compute_features(self):
         """Compute node connectivity measures.

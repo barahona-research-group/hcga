@@ -1,5 +1,3 @@
-
-
 from .analysis import analysis
 from .extraction import extract
 from .io import load_dataset, load_features, save_dataset, save_features
@@ -47,10 +45,16 @@ class Hcga:
             make_benchmark_dataset(dataset_name=dataset_name, folder=folder)
 
     def extract(
-        self, n_workers=1, mode="slow", norm=False, stats_level="basic", runtimes=False, ensure_connectivity=True, node_feat=True,
+        self,
+        n_workers=1,
+        mode="slow",
+        norm=False,
+        stats_level="basic",
+        runtimes=False,
+        ensure_connectivity=True,
+        node_feat=True,
     ):
 
-        
         features, features_info = extract(
             self.graphs,
             n_workers=int(n_workers),
@@ -72,7 +76,9 @@ class Hcga:
 
     def load_features(self, feature_file="./results/features.pkl"):
 
-        [self.features, self.features_info, self.graphs] = load_features(filename=feature_file)
+        [self.features, self.features_info, self.graphs] = load_features(
+            filename=feature_file
+        )
 
     def analyse_features(
         self,
@@ -88,7 +94,6 @@ class Hcga:
 
         self.load_features(feature_file=feature_file)
 
-        
         X, shap_values = analysis(
             self.features,
             self.features_info,
@@ -101,4 +106,3 @@ class Hcga:
             kfold=kfold,
             plot=plot,
         )
-

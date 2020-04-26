@@ -32,8 +32,7 @@ class ScaleFree(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "SF"
     name = "scale_free"
-    keywords = []
-    normalize_features = True
+    encoding = "networkx"
 
     def compute_features(self):
         """

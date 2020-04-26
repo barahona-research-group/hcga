@@ -51,8 +51,7 @@ class KComponents(FeatureClass):
     modes = ["slow"]
     shortname = "KC"
     name = "k_components"
-    keywords = []
-    normalize_features = True
+    encoding = "networkx"
 
     def compute_features(self):
         """

@@ -2,11 +2,10 @@
 import multiprocessing
 import time
 from collections import defaultdict
+from functools import partial
 from importlib import import_module
 from pathlib import Path
-from functools import partial
 
-import networkx as nx
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
@@ -22,10 +21,9 @@ def extract(
     statistics_level="basic",
     with_runtimes=False,
     with_node_features=False,
-    ensure_connectivity=False,
 ):
     """main function to extract features"""
-    n_node_features = _get_n_node_features(graphs, with_node_features)
+    n_node_features = graphs.get_n_node_features()
 
     feat_classes = get_list_feature_classes(
         mode,
@@ -34,9 +32,6 @@ def extract(
         n_node_features=n_node_features,
     )
 
-    if ensure_connectivity:
-        graphs = _ensure_connectivity(graphs)
-
     if with_runtimes:
         print(
             "WARNING: Runtime option enable, we will only use 10 graphs and one worker to estimate",
@@ -44,6 +39,13 @@ def extract(
         )
         graphs = graphs[:10]
 
+    print(
+        "Extracting features from",
+        len(graphs),
+        "graphs (we disabled",
+        graphs.get_num_disabled_graphs(),
+        "graphs).",
+    )
     all_features = compute_all_features(
         graphs, feat_classes, n_workers=n_workers, with_runtimes=with_runtimes,
     )
@@ -65,21 +67,20 @@ def extract(
             )
         return 0.0, 0.0
 
-    else:
-        features, features_info = gather_features(all_features, feat_classes)
-        _set_graph_labels(features, graphs)
+    features, features_info = gather_features(all_features, feat_classes)
+    _set_graph_labels(features, graphs)
 
-        print(len(features.columns), "feature extracted.")
-        good_features = utils.filter_features(features)
-        print(len(good_features.columns), "good features")
+    print(len(features.columns), "feature extracted.")
+    good_features = utils.filter_features(features)
+    print(len(good_features.columns), "good features")
 
-        return features, features_info
+    return features, features_info
 
 
 def _set_graph_labels(features, graphs):
     """Set graph labels to features dataframe."""
     for graph in graphs:
-        features.loc[graph.graph["id"], "labels"] = graph.label
+        features.loc[graph.id, "labels"] = graph.label
 
 
 def _load_feature_class(feature_name):
@@ -128,8 +129,8 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
             runtimes[feature_class.shortname] = time.time() - start_time
 
     if with_runtimes:
-        return graph.graph["id"], [all_features, runtimes]
-    return graph.graph["id"], all_features
+        return graph.id, [all_features, runtimes]
+    return graph.id, all_features
 
 
 def compute_all_features(
@@ -149,19 +150,21 @@ def compute_all_features(
             ),
             graphs,
         )
-        return {
+        return {  # pylint: disable=unnecessary-comprehension
             graph_id: features
             for graph_id, features in tqdm(results, total=len(graphs))
         }
 
 
 def gather_features(all_features_raw, list_feature_classes):
-    """convert the raw feature to a pandas dataframe and a dict with features infos"""
+    """Convert the raw feature to a pandas dataframe and a dict with features infos."""
     features_info = {}
     feature_name_list = []
     for feature_class in list_feature_classes:
         feature_class_inst = feature_class()
-        for feature in all_features_raw[0][feature_class_inst.shortname]:
+        for feature in all_features_raw[list(all_features_raw.keys())[0]][
+            feature_class_inst.shortname
+        ]:
             feature_info = feature_class_inst.get_feature_info(feature)
             features_info[feature_info["fullname"]] = feature_info
             feature_name_list.append((feature_info["shortname"], feature_info["name"]))
@@ -175,32 +178,3 @@ def gather_features(all_features_raw, list_feature_classes):
             f for feat in features.values() for f in feat.values()
         ]
     return all_features, features_info
-
-
-def _get_n_node_features(graphs, with_node_features=False):
-    """Get the number of features of the nodes."""
-    if not with_node_features:
-        return 0
-
-    n_node_features = len(graphs[0].nodes[list(graphs[0])[0]]["feat"])
-    for graph in graphs:
-        assert n_node_features == len(graph.nodes[list(graph)[0]]["feat"])
-    return n_node_features
-
-
-def _ensure_connectivity(graphs):
-    # take the largest connected component of the graph
-    for i, graph in enumerate(graphs):
-        if not nx.is_connected(graph):
-            print(
-                "Graph "
-                + str(i)
-                + " is not connected. Taking largest subgraph and relabelling the nodes."
-            )
-            Gcc = sorted(nx.connected_components(graph), key=len, reverse=True)
-            G0 = graph.subgraph(Gcc[0])
-            mapping = dict(zip(G0.nodes, range(0, len(G0))))
-            G0 = nx.relabel_nodes(G0, mapping)
-            G0.label = graph.label
-            graphs[i] = G0
-    return graphs

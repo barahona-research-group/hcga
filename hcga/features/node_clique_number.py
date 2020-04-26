@@ -37,8 +37,7 @@ class NodeCliqueNumber(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "CN"
     name = "node_clique_number"
-    keywords = []
-    normalize_features = True
+    encoding = "networkx"
 
     def compute_features(self):
         """

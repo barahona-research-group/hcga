@@ -1,9 +1,7 @@
 """template class for feature extraction"""
 import logging
 import sys
-from functools import partial
 
-import networkx as nx
 import numpy as np
 import scipy.stats as st
 from networkx.algorithms.community import quality
@@ -22,9 +20,9 @@ class FeatureClass:
     modes = ["fast", "medium", "slow"]
     shortname = "TP"
     name = "template"
-    keywords = ["template"]
 
     statistics_level = "basic"
+    encoding = None
     normalize_features = True
     with_node_features = False
 
@@ -37,20 +35,12 @@ class FeatureClass:
 
     def __init__(self, graph=None):
         """init function"""
-        self.graph = graph
         if graph is not None:
-            self.verify_graph()
+            self.graph = graph.get_graph(self.__class__.encoding)
+            self.graph_id = graph.id
+        else:
+            self.graph = None
         self.features = {}
-        # self.node_features = []
-
-    def verify_graph(self):
-        """make sure a graph has correct properties"""
-        if nx.is_directed(self.graph):
-            self.graph = self.graph.to_undirected()
-
-        if "id" not in self.graph.graph:
-            L.warning("An id has not been set for a graph")
-            self.graph.graph["id"] = -1
 
     @classmethod
     def setup_class(
@@ -70,7 +60,6 @@ class FeatureClass:
         return {
             "name": self.__class__.name,
             "shortname": self.__class__.shortname,
-            "keywords": self.__class__.keywords,
         }
 
     def _test_feature_exists(self, feature_name):
@@ -129,28 +118,28 @@ class FeatureClass:
             feature = feature_function(function_args)
         except (KeyboardInterrupt, SystemExit):
             sys.exit(0)
-        except Exception as exc:
-            L.debug(
-                "Failed feature %s for graph %d with exception: %s",
-                feature_name,
-                self.graph.graph["id"],
-                str(exc),
-            )
+        except Exception as exc:  # pylint: disable=broad-except
+            if self.graph_id != -1:
+                L.debug(
+                    "Failed feature %s for graph %d with exception: %s",
+                    feature_name,
+                    self.graph_id,
+                    str(exc),
+                )
             if statistics in ("centrality", "clustering"):
                 return [np.nan]
-            if statistics is "node_features":
+            if statistics == "node_features":
                 return np.array([np.nan]).reshape([-1, 1])
-            else:
-                return np.nan
+            return np.nan
 
-        if statistics is "clustering":
+        if statistics == "clustering":
             if not isinstance(feature, list):
                 raise Exception(
                     "Feature {} with clustering statistics is not a list: {}".format(
                         feature_name, feature
                     )
                 )
-            elif not isinstance(feature[0], set):
+            if not isinstance(feature[0], set):
                 raise Exception(
                     "Feature {} with clustering statistics is not a list of sets: {}".format(
                         feature_name, feature
@@ -158,7 +147,7 @@ class FeatureClass:
                 )
         elif statistics in ("centrality", "node_features"):
             expected_types = (list, np.ndarray)
-            if type(feature) not in expected_types:
+            if not isinstance(feature, expected_types):
                 raise Exception(
                     "Feature {} with statistics does not return expected type{}: {}".format(
                         feature_name, expected_types, feature
@@ -166,14 +155,10 @@ class FeatureClass:
                 )
         else:
             expected_types = (int, float, np.int32, np.int64, np.float32, np.float64)
-            if type(feature) not in expected_types:  # or not None:
+            if not isinstance(feature, expected_types):
                 raise Exception(
-                    "{} Feature {} of type {} with no statistics argument does not return expected type{}: {}".format(
-                        function_args,
-                        feature_name,
-                        type(feature),
-                        expected_types,
-                        feature,
+                    "Feature {} of type {} with no statistics does not return expected type{}: {}".format(
+                        feature_name, type(feature), expected_types, feature,
                     )
                 )
 
@@ -306,7 +291,7 @@ class FeatureClass:
         )
 
     def node_feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
-        """ Splits a nxf feature array and then computes summary statistics of each feature distribution """
+        """Computes summary statistics of each feature distribution """
         for node_feats in range(feat_dist.shape[1]):
             self.feature_statistics_basic(
                 feat_dist[:, node_feats],
@@ -515,6 +500,8 @@ class FeatureClass:
 
 
 class InterpretabilityScore:
+    """Class to represent interpretability scores of features."""
+
     min_score = 0
     max_score = 5
 
@@ -535,6 +522,7 @@ class InterpretabilityScore:
         self.set_score(score)
 
     def set_score(self, score):
+        """Set the interpretability score."""
         score_int = int(score)
         if score_int < self.min_score:
             score_int = self.min_score
@@ -543,6 +531,7 @@ class InterpretabilityScore:
         self.score = score_int
 
     def get_score(self):
+        """Get the interpretability score."""
         return self.score
 
     def __add__(self, other):

@@ -32,8 +32,7 @@ class Efficiency(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "EF"
     name = "efficiency"
-    keywords = []
-    normalize_features = True
+    encoding = "networkx"
 
     def compute_features(self):
         """

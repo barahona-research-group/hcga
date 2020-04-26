@@ -35,8 +35,7 @@ class MinimumCuts(FeatureClass):
     modes = ["fast", "medium", "slow"]
     shortname = "MiC"
     name = "minimum_cuts"
-    keywords = []
-    normalize_features = True
+    encoding = "networkx"
 
     def compute_features(self):
         """Compute the minimum cuts for the network
