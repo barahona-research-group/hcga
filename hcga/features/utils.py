@@ -10,6 +10,7 @@ def ensure_connected(graph):
     else:
         raise Excpetion("ensure_conneted is not implemented for this graph type")
 
+
 def remove_selfloops(graph):
     """Return a graph without selfloops."""
     if isinstance(graph, nx.Graph):

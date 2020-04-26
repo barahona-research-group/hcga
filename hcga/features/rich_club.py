@@ -51,7 +51,11 @@ class RichClub(FeatureClass):
         @lru_cache(maxsize=None)
         def eval_rich_club(graph):
             # extracting feature matrix
-            return list(nx.rich_club_coefficient(remove_selfloops(graph), normalized=False).values())
+            return list(
+                nx.rich_club_coefficient(
+                    remove_selfloops(graph), normalized=False
+                ).values()
+            )
 
         # k = 1
         self.add_feature(
