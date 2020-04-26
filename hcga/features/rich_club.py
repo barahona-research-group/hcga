@@ -25,6 +25,7 @@ import networkx as nx
 import numpy as np
 
 from ..feature_class import FeatureClass, InterpretabilityScore
+from .utils import remove_selfloops
 
 featureclass_name = "RichClub"
 
@@ -50,7 +51,11 @@ class RichClub(FeatureClass):
         @lru_cache(maxsize=None)
         def eval_rich_club(graph):
             # extracting feature matrix
-            return list(nx.rich_club_coefficient(graph, normalized=False).values())
+            return list(
+                nx.rich_club_coefficient(
+                    remove_selfloops(graph), normalized=False
+                ).values()
+            )
 
         # k = 1
         self.add_feature(
