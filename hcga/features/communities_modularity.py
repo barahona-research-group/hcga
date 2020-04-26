@@ -33,7 +33,7 @@ class CommunitiesModularity(FeatureClass):
     Communities Modularity propagation class
     """
 
-    modes = ["medium", "slow"]
+    modes = ["fast", "medium", "slow"]
     shortname = "CM"
     name = "communities_modularity"
     encoding = "networkx"
@@ -48,20 +48,16 @@ class CommunitiesModularity(FeatureClass):
         @lru_cache(maxsize=None)
         def eval_modularity(graph):
             """this evaluates the main function and cach it for speed up"""
-            communities = list(greedy_modularity_communities(graph))
-
-            # if a single communities, add a trivial one
-            if len(communities) == 1:
-                communities.append([{0}])
-
-            # convert frozenset to set
-            communities = [set(comm) for comm in communities]
-
-            # sort sets by size
+            communities = [set(comm) for comm in greedy_modularity_communities(graph)]
             communities.sort(key=len, reverse=True)
-
             return communities
 
+        self.add_feature(
+            "num_communities",
+            lambda graph: len(eval_modularity(graph)),
+            "Number of communities",
+            InterpretabilityScore(4),
+        )
         self.add_feature(
             "largest_commsize",
             lambda graph: len(eval_modularity(graph)[0]),
