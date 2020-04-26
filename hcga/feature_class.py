@@ -490,13 +490,6 @@ class FeatureClass:
             feat_interpret - 1,
             function_args=feat_dist,
         )
-        self.add_feature(
-            feat_name + "_bayes_confint",
-            lambda dist: st.bayes_mvs(dist)[0][1][1] - st.bayes_mvs(dist)[0][1][0],
-            "Bayes confidance interval" + compl_desc,
-            feat_interpret - 1,
-            function_args=feat_dist,
-        )
 
 
 class InterpretabilityScore:
