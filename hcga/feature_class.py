@@ -6,10 +6,13 @@ import numpy as np
 import scipy.stats as st
 from networkx.algorithms.community import quality
 
-from . import utils
+from hcga.utils import get_trivial_graph, TimeoutError, timeout_handler
 
 L = logging.getLogger("Feature exceptions")
 L.setLevel(logging.DEBUG)
+
+
+import signal, os
 
 
 class FeatureClass:
@@ -25,6 +28,7 @@ class FeatureClass:
     encoding = None
     normalize_features = True
     with_node_features = False
+    timeout = 10
 
     # Feature descriptions as class variable
     feature_descriptions = {}
@@ -44,15 +48,20 @@ class FeatureClass:
 
     @classmethod
     def setup_class(
-        cls, normalize_features=True, statistics_level="basic", n_node_features=0
+        cls,
+        normalize_features=True,
+        statistics_level="basic",
+        n_node_features=0,
+        timeout=10,
     ):
         """Initializes the class by adding descriptions for all features"""
         cls.normalize_features = normalize_features
         cls.statistics_level = statistics_level
         cls.n_node_features = n_node_features
+        cls.timeout = timeout
 
         # runs once update_feature on None graph to populate feature descriptions
-        inst = cls(utils.get_trivial_graph(n_node_features=n_node_features))
+        inst = cls(get_trivial_graph(n_node_features=n_node_features))
         inst.update_features({})
 
     def get_info(self):
@@ -115,9 +124,26 @@ class FeatureClass:
             function_args = self.graph
 
         try:
+            signal.signal(signal.SIGALRM, timeout_handler)
+            signal.alarm(int(self.__class__.timeout))
             feature = feature_function(function_args)
+            signal.alarm(0)
         except (KeyboardInterrupt, SystemExit):
             sys.exit(0)
+
+        except TimeoutError:
+            L.debug(
+                "Feature %s for graph %d took longer than %s seconds",
+                feature_name,
+                self.graph_id,
+                str(self.timeout),
+            )
+            if statistics in ("centrality", "clustering"):
+                return [np.nan]
+            if statistics == "node_features":
+                return np.array([np.nan]).reshape([-1, 1])
+            return np.nan
+
         except Exception as exc:  # pylint: disable=broad-except
             if self.graph_id != -1:
                 L.debug(

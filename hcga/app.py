@@ -56,6 +56,9 @@ def cli():
     help="Level of statistical features (basic, medium, advanced)",
 )
 @click.option(
+    "--timeout", default=10, show_default=True, help="Timeout for feature evaluations."
+)
+@click.option(
     "-of",
     "--output-file",
     default="all_features.pkl",
@@ -74,6 +77,7 @@ def extract_features(
     runtimes,
     results_folder,
     node_feat,
+    timeout,
 ):
     """Extract features from dataset of graphs and save the feature matrix, info and labels"""
     from .io import load_dataset, save_features
@@ -89,6 +93,7 @@ def extract_features(
         statistics_level=stats_level,
         with_runtimes=runtimes,
         with_node_features=node_feat,
+        timeout=timeout,
     )
 
     if not runtimes:
@@ -207,9 +212,10 @@ def generate_data(dataset_name, folder):
         https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets
 
     """
-    if dataset_name.split('_')[0] == "SYNTH":
+    if dataset_name.split("_")[0] == "SYNTH":
         from .dataset_creation import make_synthetic
-        make_synthetic(folder=folder, graph_type=dataset_name.split('_')[1])
+
+        make_synthetic(folder=folder, graph_type=dataset_name.split("_")[1])
 
     elif dataset_name == "TESTDATA":
         print("--- Building test dataset and creating pickle ---")
@@ -219,6 +225,7 @@ def generate_data(dataset_name, folder):
     else:
         print("---Downloading and creating pickle for {}---".format(dataset_name))
         from .dataset_creation import make_benchmark_dataset
+
         try:
             make_benchmark_dataset(dataset_name=dataset_name, folder=folder)
         except Exception as e:

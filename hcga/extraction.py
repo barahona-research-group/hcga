@@ -21,6 +21,7 @@ def extract(
     statistics_level="basic",
     with_runtimes=False,
     with_node_features=False,
+    timeout=10,
 ):
     """main function to extract features"""
     n_node_features = graphs.get_n_node_features()
@@ -30,6 +31,7 @@ def extract(
         normalize_features=normalize_features,
         statistics_level=statistics_level,
         n_node_features=n_node_features,
+        timeout=timeout,
     )
 
     if with_runtimes:
@@ -38,7 +40,6 @@ def extract(
             "the computational time of each feature class.",
         )
         selected_graphs = np.random.randint(0, len(graphs), 10)
-        print(len(selected_graphs))
         for graph in graphs.graphs:
             if graph.id not in selected_graphs:
                 graph.disabled = True
@@ -55,19 +56,21 @@ def extract(
     )
 
     if with_runtimes:
-        runtimes = [raw_feature[1] for raw_feature in all_features.values()]
-        list_runtimes = defaultdict(list)
-        for runtime in runtimes:
-            for feat in runtime:
-                list_runtimes[feat].append(runtime[feat])
-
-        for feat in list_runtimes:
+        runtimes = defaultdict(list)
+        for raw_feature in all_features.values():
+            for feat in raw_feature[1]:
+                runtimes[feat].append(raw_feature[1][feat])
+        feature_names, runtimes = list(runtimes.keys()), list(runtimes.values())
+        runtime_sortid = np.argsort(np.mean(runtimes, axis=1))[::-1]
+        for feat_id in runtime_sortid:
             print(
                 "Runtime of",
-                feat,
+                feature_names[feat_id],
                 "is",
-                np.round(np.mean(list_runtimes[feat]), 3),
-                "seconds per graph.",
+                np.round(np.mean(runtimes[feat_id]), 3),
+                "( std = ",
+                np.round(np.std(runtimes[feat_id]), 3),
+                ") seconds per graph.",
             )
         return 0.0, 0.0
 
@@ -94,14 +97,17 @@ def _load_feature_class(feature_name):
 
 
 def get_list_feature_classes(
-    mode="fast", normalize_features=False, statistics_level="basic", n_node_features=0
+    mode="fast",
+    normalize_features=False,
+    statistics_level="basic",
+    n_node_features=0,
+    timeout=10,
 ):
     """Generates and returns the list of feature classes to compute for a given mode"""
     feature_path = Path(__file__).parent / "features"
     non_feature_files = ["__init__", "utils"]
 
     list_feature_classes = []
-
     for f_name in feature_path.glob("*.py"):
         feature_name = f_name.stem
         if feature_name not in non_feature_files:
@@ -113,6 +119,7 @@ def get_list_feature_classes(
                     normalize_features=normalize_features,
                     statistics_level=statistics_level,
                     n_node_features=n_node_features,
+                    timeout=timeout,
                 )
     return list_feature_classes
 
