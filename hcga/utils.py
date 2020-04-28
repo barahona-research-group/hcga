@@ -4,6 +4,14 @@ import numpy as np
 from hcga.graph import Graph
 
 
+class TimeoutError(Exception):
+    """Timeout exception."""
+
+
+def timeout_handler(signum, frame):
+    raise TimeoutError
+
+
 def get_trivial_graph(n_node_features=0):
     """Generate a trivial graph for internal purposes."""
     if n_node_features > 0:

@@ -56,6 +56,9 @@ def cli():
     help="Level of statistical features (basic, medium, advanced)",
 )
 @click.option(
+    "--timeout", default=10, show_default=True, help="Timeout for feature evaluations."
+)
+@click.option(
     "-of",
     "--output-file",
     default="all_features.pkl",
@@ -74,6 +77,7 @@ def extract_features(
     runtimes,
     results_folder,
     node_feat,
+    timeout,
 ):
     """Extract features from dataset of graphs and save the feature matrix, info and labels"""
     from .io import load_dataset, save_features
@@ -89,6 +93,7 @@ def extract_features(
         statistics_level=stats_level,
         with_runtimes=runtimes,
         with_node_features=node_feat,
+        timeout=timeout,
     )
 
     if not runtimes:
