@@ -6,7 +6,13 @@ from hcga.graph import Graph
 
 def get_trivial_graph(n_node_features=0):
     """Generate a trivial graph for internal purposes."""
-    return Graph([0, 1, 2], [(0, 1), (1, 2), (2, 1)], 0)
+    if n_node_features > 0:
+        features = n_node_features * [0.0]
+        nodes = [(0, features), (1, features), (2, features)]
+    else:
+        nodes = [0, 1, 2]
+    edges = [(0, 1, 1.0), (1, 2, 1.0), (2, 1, 1.0)]
+    return Graph(nodes, edges, 0)
 
 
 def filter_samples(features, sample_removal=0.05):

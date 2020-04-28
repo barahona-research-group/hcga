@@ -46,24 +46,23 @@ class FeatureClass:
     def setup_class(
         cls, normalize_features=True, statistics_level="basic", n_node_features=0
     ):
-        """Initializes the class by adding descriptions for all features"""
+        """Initializes the class by adding descriptions for all features."""
         cls.normalize_features = normalize_features
         cls.statistics_level = statistics_level
         cls.n_node_features = n_node_features
 
-        # runs once update_feature on None graph to populate feature descriptions
         inst = cls(utils.get_trivial_graph(n_node_features=n_node_features))
         inst.update_features({})
 
     def get_info(self):
-        """return a dictionary of informations about the feature class"""
+        """return a dictionary of informations about the feature class."""
         return {
             "name": self.__class__.name,
             "shortname": self.__class__.shortname,
         }
 
     def _test_feature_exists(self, feature_name):
-        """Test if feature feature_name exists in description list"""
+        """Test if feature feature_name exists in description list."""
         if feature_name not in self.__class__.feature_descriptions:
             raise Exception(
                 "Feature {} does not exist in class {}".format(feature_name, self.name)

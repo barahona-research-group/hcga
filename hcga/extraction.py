@@ -23,7 +23,11 @@ def extract(
     with_node_features=False,
 ):
     """main function to extract features"""
-    n_node_features = graphs.get_n_node_features()
+    if not with_node_features:
+        graphs.remove_node_features()
+        n_node_features = 0
+    else:
+        n_node_features = graphs.get_n_node_features()
 
     feat_classes = get_list_feature_classes(
         mode,

@@ -50,6 +50,12 @@ class GraphCollection:
         """Get the number of disabled graphs."""
         return len(self.graphs) - self.__len__()
 
+    def remove_node_features(self):
+        for graph in self.graphs:
+            for node_id, node in enumerate(graph.nodes):
+                graph.nodes[node_id] = node[0]
+            graph.set_n_node_features()
+
 
 class Graph:
     """Class to encode various graph structures."""
@@ -63,9 +69,9 @@ class Graph:
         self.id = -1
 
         self._check_length()
-        self._get_n_node_features()
+        self.set_n_node_features()
 
-    def _get_n_node_features(self):
+    def set_n_node_features(self):
         """Get the number of node features."""
         if len(np.shape(self.nodes)) == 1:
             self.n_node_features = 0
