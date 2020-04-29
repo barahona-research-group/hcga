@@ -78,14 +78,13 @@ def extract(
             )
         return 0.0, 0.0
 
-    features, features_info = gather_features(all_features, feat_classes)
-    _set_graph_labels(features, graphs)
+    all_features_df, features_info_df = gather_features(all_features, feat_classes)
+    _set_graph_labels(all_features_df, graphs)
 
-    print(len(features.columns), "feature extracted.")
-    good_features = utils.filter_features(features)
-    print(len(good_features.columns), "good features")
+    print(len(all_features_df.columns), "feature extracted.")
+    print(len(utils.filter_features(all_features_df).columns), "valid features.")
 
-    return features, features_info
+    return all_features_df, features_info_df
 
 
 def _set_graph_labels(features, graphs):
@@ -173,23 +172,35 @@ def compute_all_features(
 
 def gather_features(all_features_raw, list_feature_classes):
     """Convert the raw feature to a pandas dataframe and a dict with features infos."""
-    features_info = {}
-    feature_name_list = []
-    for feature_class in list_feature_classes:
-        feature_class_inst = feature_class()
-        for feature in all_features_raw[list(all_features_raw.keys())[0]][
-            feature_class_inst.shortname
-        ]:
-            feature_info = feature_class_inst.get_feature_info(feature)
-            features_info[feature_info["fullname"]] = feature_info
-            feature_name_list.append((feature_info["shortname"], feature_info["name"]))
+    graphs_id = list(all_features_raw.keys())
 
+    features_data = all_features_raw[graphs_id[0]]
+    feature_name_list = [
+        (shortname, name)
+        for shortname in list(features_data.keys())
+        for name in list(features_data[shortname].keys())
+    ]
     column_indexes = pd.MultiIndex.from_tuples(
         feature_name_list, names=["feature_class", "feature_name"]
     )
-    all_features = pd.DataFrame(columns=column_indexes)
-    for graph_id, features in all_features_raw.items():
-        all_features.loc[graph_id] = [
-            f for feat in features.values() for f in feat.values()
-        ]
-    return all_features, features_info
+
+    all_features_df = pd.DataFrame(index=graphs_id, columns=column_indexes)
+    for graph_id, class_features in all_features_raw.items():
+        for feature_class, features in class_features.items():
+            all_features_df.loc[
+                graph_id, (feature_class, features.keys())
+            ] = features.values()
+
+    feature_class_inst_tmp = list_feature_classes[0]()
+    feature_tmp = list(features_data[feature_class_inst_tmp.shortname].keys())[0]
+    feature_info_keys = feature_class_inst_tmp.get_feature_info(feature_tmp).keys()
+
+    features_info_df = pd.DataFrame(index=feature_info_keys, columns=column_indexes)
+    for feature_class in list_feature_classes:
+        feature_class_inst = feature_class()
+        for feature in features_data[feature_class_inst.shortname]:
+            features_info_df[(feature_class_inst.shortname, feature)].update(
+                pd.Series(feature_class_inst.get_feature_info(feature))
+            )
+
+    return all_features_df, features_info_df
