@@ -64,28 +64,42 @@ def extract_benchmark_graphs(datadir, dataname):  # pylint: disable=too-many-loc
     with open(prefix + "_A.txt") as f:
         adj_list = pd.read_csv(
             f, sep=", ", delimiter=None, dtype=np.int, header=None
-        ).to_numpy()  # .flatten()
+        ).to_numpy()
 
     edge_list = defaultdict(list)
     for edge in adj_list:
         edge_list[node_graph_ids[edge[0] - 1]].append(tuple(edge - 1))
 
-    with open(prefix + "_node_labels.txt") as f:
-        node_labels = pd.read_csv(f, header=None).to_numpy().flatten()
-
+    if Path(prefix + "_node_labels.txt").exists():
+        with open(prefix + "_node_labels.txt") as f:
+            node_labels_orig = pd.read_csv(f, header=None).to_numpy().flatten()
+        node_labels = np.zeros([len(node_labels_orig), max(node_labels_orig)])
+        for node_label, label in zip(node_labels, node_labels_orig):
+            node_label[label - 1] = 1
     if Path(prefix + "_node_attributes.txt").exists():
         with open(prefix + "_node_attributes.txt") as f:
             node_attributes = pd.read_csv(f, header=None).to_numpy()
+
+    if node_labels is not None and node_attributes is not None:
         node_features = [
-            [node_label] + list(node_attribute)
+            list(node_label) + list(node_attribute)
             for node_label, node_attribute in zip(node_labels, node_attributes)
         ]
+    elif node_labels is not None:
+        node_features = [list(node_label) for node_label in node_labels]
+    elif node_attributes is not None:
+        node_features = node_attributes
     else:
-        node_features = [[node_label] for node_label in node_labels]
+        node_features = None
 
     node_list = defaultdict(list)
-    for (node, graph_id), node_feature in zip(node_graph_ids.items(), node_features):
-        node_list[graph_id].append(tuple([node, node_feature]))
+    if node_features is not None:
+        for (node, graph_id), node_feature in zip(
+            node_graph_ids.items(), node_features
+        ):
+            node_list[graph_id].append(tuple([node, node_feature]))
+    else:
+        node_list = node_graph_ids
 
     graphs = GraphCollection()
     for graph_id in edge_list:
