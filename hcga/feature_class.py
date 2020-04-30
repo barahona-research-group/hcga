@@ -5,6 +5,7 @@ import sys
 import numpy as np
 import scipy.stats as st
 from networkx.algorithms.community import quality
+import pandas as pd
 
 from hcga.utils import get_trivial_graph, TimeoutError, timeout_handler
 
@@ -61,7 +62,12 @@ class FeatureClass:
         cls.timeout = timeout
 
         inst = cls(get_trivial_graph(n_node_features=n_node_features))
-        inst.update_features({})
+        features = inst.get_features(all_features=True)
+        feature_info = pd.DataFrame()
+        for feature in features:
+            feat_info = inst.get_feature_info(feature)
+            feature_info[feature] = pd.Series(feat_info)
+        return feature_info
 
     def get_info(self):
         """return a dictionary of informations about the feature class."""
@@ -110,7 +116,7 @@ class FeatureClass:
                 "interpret": feature_interpret,
             }
 
-    def evaluate_feature(
+    def evaluate_feature_orig(
         self, feature_function, feature_name, function_args=None, statistics=None,
     ):
         """Evaluating a feature function and catching/raising errors."""
@@ -189,6 +195,75 @@ class FeatureClass:
 
         return feature
 
+    def evaluate_feature(
+        self, feature_function, feature_name, function_args=None, statistics=None,
+    ):
+        """Evaluating a feature function and catching/raising errors."""
+        if not callable(feature_function):
+            raise Exception(
+                "The feature function {} is not callable!".format(feature_name)
+            )
+
+        if function_args is None:
+            function_args = self.graph
+
+        try:
+            signal.signal(signal.SIGALRM, timeout_handler)
+            signal.alarm(int(self.__class__.timeout))
+            feature = feature_function(function_args)
+            signal.alarm(0)
+        except (KeyboardInterrupt, SystemExit):
+            sys.exit(0)
+
+        except TimeoutError:
+            L.debug(
+                "Feature %s for graph %d took longer than %s seconds",
+                feature_name,
+                self.graph_id,
+                str(self.timeout),
+            )
+            return None
+        except Exception as exc:  # pylint: disable=broad-except
+            if self.graph_id != -1:
+                L.debug(
+                    "Failed feature %s for graph %d with exception: %s",
+                    feature_name,
+                    self.graph_id,
+                    str(exc),
+                )
+            return None
+        if statistics == "clustering":
+            if not isinstance(feature, list):
+                raise Exception(
+                    "Feature {} with clustering statistics is not a list: {}".format(
+                        feature_name, feature
+                    )
+                )
+            if not isinstance(feature[0], set):
+                raise Exception(
+                    "Feature {} with clustering statistics is not a list of sets: {}".format(
+                        feature_name, feature
+                    )
+                )
+        elif statistics in ("centrality", "node_features"):
+            expected_types = (list, np.ndarray)
+            if not isinstance(feature, expected_types):
+                raise Exception(
+                    "Feature {} with statistics does not return expected type{}: {}".format(
+                        feature_name, expected_types, feature
+                    )
+                )
+        else:
+            expected_types = (int, float, np.int32, np.int64, np.float32, np.float64)
+            if not isinstance(feature, expected_types):
+                raise Exception(
+                    "Feature {} of type {} with no statistics does not return expected type{}: {}".format(
+                        feature_name, type(feature), expected_types, feature,
+                    )
+                )
+
+        return feature
+
     def add_feature(
         self,
         feature_name,
@@ -205,6 +280,9 @@ class FeatureClass:
             function_args=function_args,
             statistics=statistics,
         )
+        if func_result is None and not self.all_features:
+            return 0
+
         if statistics is None:
             self.features[feature_name] = func_result
             if not hasattr(feature_interpret, "get_score"):
@@ -235,7 +313,7 @@ class FeatureClass:
             "test", lambda graph: 0.0, "Test feature for the base feature class", 5
         )
 
-    def update_features(self, all_features):
+    def get_features(self, all_features=False):
         """update the feature dictionary if correct mode provided"""
         if (
             self.__class__.shortname == "TP"
@@ -244,12 +322,11 @@ class FeatureClass:
             raise Exception(
                 "Shortname not set for feature class {}".format(self.__class__.__name__)
             )
-
+        self.all_features = all_features
         self.compute_features()
         if self.normalize_features:
             self.compute_normalize_features()
-
-        all_features[self.__class__.shortname] = self.features
+        return self.features
 
     def compute_normalize_features(self):
         """triple the number of features by normalising by node and edges"""

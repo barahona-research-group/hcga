@@ -25,13 +25,19 @@ def get_trivial_graph(n_node_features=0):
 
 def filter_samples(features, sample_removal=0.05):
     """Remove samples with more than X% bad values."""
-    #samples_to_filter = features.index[
+    # samples_to_filter = features.index[
     #    features.isnull().sum(axis=1) / len(features.columns) > sample_removal
-    #].tolist()
-    #features = features.drop(labels=samples_to_filter)
-    samples_to_filter = features.index[features.isnull().sum(axis=1) / len(features.columns) > sample_removal].tolist()
+    # ].tolist()
+    # features = features.drop(labels=samples_to_filter)
+    samples_to_filter = features.index[
+        features.isnull().sum(axis=1) / len(features.columns) > sample_removal
+    ].tolist()
     features = features.drop(labels=samples_to_filter)
-    print('{} samples were removed for more than {} bad features'.format(len(samples_to_filter),sample_removal))
+    print(
+        "{} samples were removed for more than {} bad features".format(
+            len(samples_to_filter), sample_removal
+        )
+    )
     return features
 
 

@@ -56,6 +56,10 @@ class GraphCollection:
                 graph.nodes[node_id] = node[0]
             graph.set_n_node_features()
 
+    def get_graph_ids(self):
+        """Get the list of active graph ids."""
+        return [graph.id for graph in self.graphs if not graph.disabled]
+
 
 class Graph:
     """Class to encode various graph structures."""

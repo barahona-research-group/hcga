@@ -30,7 +30,7 @@ def extract(
     else:
         n_node_features = graphs.get_n_node_features()
 
-    feat_classes = get_list_feature_classes(
+    feat_classes, features_info_df = get_list_feature_classes(
         mode,
         normalize_features=normalize_features,
         statistics_level=statistics_level,
@@ -55,7 +55,7 @@ def extract(
         graphs.get_num_disabled_graphs(),
         "graphs).",
     )
-    all_features = compute_all_features(
+    all_features_df = compute_all_features(
         graphs, feat_classes, n_workers=n_workers, with_runtimes=with_runtimes,
     )
 
@@ -78,7 +78,6 @@ def extract(
             )
         return 0.0, 0.0
 
-    all_features_df, features_info_df = gather_features(all_features, feat_classes)
     _set_graph_labels(all_features_df, graphs)
 
     print(len(all_features_df.columns), "feature extracted.")
@@ -111,6 +110,10 @@ def get_list_feature_classes(
     non_feature_files = ["__init__", "utils"]
 
     list_feature_classes = []
+    column_indexes = pd.MultiIndex(
+        levels=[[], []], codes=[[], []], names=["feature_class", "feature_name"]
+    )
+    feature_info_df = pd.DataFrame(columns=column_indexes)
     for f_name in feature_path.glob("*.py"):
         feature_name = f_name.stem
         if feature_name not in non_feature_files:
@@ -118,13 +121,18 @@ def get_list_feature_classes(
             if mode in feature_class.modes or mode == "all":
                 list_feature_classes.append(feature_class)
                 # runs once update_feature with trivial graph to create class variables
-                feature_class.setup_class(
+                features_info = feature_class.setup_class(
                     normalize_features=normalize_features,
                     statistics_level=statistics_level,
                     n_node_features=n_node_features,
                     timeout=timeout,
                 )
-    return list_feature_classes
+                columns = [
+                    (feature_class.shortname, col) for col in features_info.columns
+                ]
+                feature_info_df[columns] = features_info
+
+    return list_feature_classes, feature_info_df
 
 
 def feature_extraction(graph, list_feature_classes, with_runtimes=False):
@@ -132,19 +140,26 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
     if with_runtimes:
         runtimes = {}
 
-    all_features = {}
+    column_indexes = pd.MultiIndex(
+        levels=[[], []], codes=[[], []], names=["feature_class", "feature_name"]
+    )
+    features_df = pd.DataFrame(columns=column_indexes)
     for feature_class in list_feature_classes:
         if with_runtimes:
             start_time = time.time()
 
-        feature_class(graph).update_features(all_features)
+        feat_class_inst = feature_class(graph)
+        features = pd.DataFrame(feat_class_inst.get_features(), index=[graph.id])
+        columns = [(feat_class_inst.shortname, col) for col in features.columns]
+        features_df[columns] = features
 
         if with_runtimes:
             runtimes[feature_class.shortname] = time.time() - start_time
 
     if with_runtimes:
         return graph.id, [all_features, runtimes]
-    return graph.id, all_features
+
+    return features_df
 
 
 def compute_all_features(
@@ -164,43 +179,8 @@ def compute_all_features(
             ),
             graphs,
         )
-        return {  # pylint: disable=unnecessary-comprehension
-            graph_id: features
-            for graph_id, features in tqdm(results, total=len(graphs))
-        }
 
-
-def gather_features(all_features_raw, list_feature_classes):
-    """Convert the raw feature to a pandas dataframe and a dict with features infos."""
-    graphs_id = list(all_features_raw.keys())
-
-    features_data = all_features_raw[graphs_id[0]]
-    feature_name_list = [
-        (shortname, name)
-        for shortname in list(features_data.keys())
-        for name in list(features_data[shortname].keys())
-    ]
-    column_indexes = pd.MultiIndex.from_tuples(
-        feature_name_list, names=["feature_class", "feature_name"]
-    )
-
-    all_features_df = pd.DataFrame(index=graphs_id, columns=column_indexes)
-    for graph_id, class_features in all_features_raw.items():
-        for feature_class, features in class_features.items():
-            all_features_df.loc[
-                graph_id, (feature_class, features.keys())
-            ] = features.values()
-
-    feature_class_inst_tmp = list_feature_classes[0]()
-    feature_tmp = list(features_data[feature_class_inst_tmp.shortname].keys())[0]
-    feature_info_keys = feature_class_inst_tmp.get_feature_info(feature_tmp).keys()
-
-    features_info_df = pd.DataFrame(index=feature_info_keys, columns=column_indexes)
-    for feature_class in list_feature_classes:
-        feature_class_inst = feature_class()
-        for feature in features_data[feature_class_inst.shortname]:
-            features_info_df[(feature_class_inst.shortname, feature)].update(
-                pd.Series(feature_class_inst.get_feature_info(feature))
-            )
-
-    return all_features_df, features_info_df
+        all_features_df = pd.DataFrame()
+        for features_df in tqdm(results, total=len(graphs)):
+            all_features_df = all_features_df.append(features_df)
+        return all_features_df
