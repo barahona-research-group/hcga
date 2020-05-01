@@ -67,6 +67,9 @@ def cli():
 @click.option(
     "--runtimes/--no-runtimes", default=False, show_default=True, help="Output runtimes"
 )
+@click.option(
+    "--connected/--no-connected", default=False, show_default=True, help="Remove disconnected components"
+)
 def extract_features(
     dataset,
     n_workers,
@@ -78,6 +81,7 @@ def extract_features(
     results_folder,
     node_feat,
     timeout,
+    connected,
 ):
     """Extract features from dataset of graphs and save the feature matrix, info and labels"""
     from .io import load_dataset, save_features
@@ -94,6 +98,7 @@ def extract_features(
         with_runtimes=runtimes,
         with_node_features=node_feat,
         timeout=timeout,
+        connected=connected,
     )
 
     if not runtimes:

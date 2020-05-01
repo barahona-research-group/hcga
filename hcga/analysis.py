@@ -51,9 +51,9 @@ def analysis(
     features_info,
     graphs,
     interpretability=1,
-    grid_search=True,
+    grid_search=False,
     shap=True,
-    classifier="RF",
+    classifier="XG",
     folder=".",
     kfold=True,
     plot=True,
@@ -71,7 +71,7 @@ def analysis(
         features, features_info, interpretability
     )
 
-    filtered_features = utils.filter_samples(features, sample_removal=0.8)
+    filtered_features = utils.filter_samples(features, sample_removal=0.3)
     good_features = utils.filter_features(filtered_features)
     normed_features = _normalise_feature_data(good_features)
     classifier = _get_classifier(classifier)
@@ -82,7 +82,7 @@ def analysis(
         )
     elif kfold:
         X, y, shap_values, top_features = fit_model_kfold(
-            normed_features, classifier=classifier,
+            normed_features, classifier=classifier, reduced_set_size=100,
         )
     else:
         X, y, shap_values, top_features = fit_model(
@@ -135,9 +135,9 @@ def output_csv(features, features_info, feature_importance, shap_values, folder)
             ).mean(axis=0)
 
     for feat in output_df.columns:
-        feat_fullname = feat[0] + "_" + feat[1]
-        output_df[feat]["feature_info"] = features_info[feat_fullname]["description"]
-        output_df[feat]["feature_interpretability"] = features_info[feat_fullname][
+        #feat_fullname = feat[0] + "_" + feat[1]
+        output_df[feat]["feature_info"] = features_info[feat]["description"]
+        output_df[feat]["feature_interpretability"] = features_info[feat][
             "interpretability"
         ].score
 
@@ -147,7 +147,7 @@ def output_csv(features, features_info, feature_importance, shap_values, folder)
     output_df.to_csv(os.path.join(folder, "importance_results.csv"))
 
 
-def fit_model_kfold(features, compute_shap=True, classifier=None):
+def fit_model_kfold(features, compute_shap=True, classifier=None, reduced_set_size=100):
     """shapeley analysis"""
     if classifier is None:
         raise Exception("Please provide a model for classification")
@@ -207,7 +207,7 @@ def fit_model_kfold(features, compute_shap=True, classifier=None):
     #        shap_values.append(shap_value)
     #    L.info("Reduced set: accuracy: " + str(np.round(np.mean(acc_scores), 3)))
 
-    X_reduced_corr = reduce_correlation_feature_set(X, shap_top_features, n_feats=200)
+    X_reduced_corr = reduce_correlation_feature_set(X, shap_top_features, n_feats=reduced_set_size)
 
     shap_values = []
     acc_scores = []
@@ -232,8 +232,16 @@ def fit_model_kfold(features, compute_shap=True, classifier=None):
 def compute_fold(X, y, classifier, compute_shap, indices):
     """Compute a single fold for parallel computation."""
     train_index, val_index = indices
-    X_train, X_val = X.iloc[train_index], X.iloc[val_index]
-    y_train, y_val = y.iloc[train_index], y.iloc[val_index]
+    
+    # this is so that we take the graph index rather than the pandas index
+    x_train_idx = X.index[train_index]
+    y_train_idx = y.index[train_index]
+    x_val_idx = X.index[val_index]
+    y_val_idx = y.index[val_index]   
+    
+    
+    X_train, X_val = X.loc[x_train_idx], X.loc[x_val_idx]
+    y_train, y_val = y.loc[y_train_idx], y.loc[y_val_idx]
 
     classifier.fit(
         X_train, y_train,

@@ -22,6 +22,7 @@ def extract(
     with_runtimes=False,
     with_node_features=False,
     timeout=10,
+    connected=False
 ):
     """main function to extract features"""
     if not with_node_features:
@@ -29,6 +30,9 @@ def extract(
         n_node_features = 0
     else:
         n_node_features = graphs.get_n_node_features()
+
+    if connected:
+        graphs.maximal_subgraphs()
 
     feat_classes, features_info_df = get_list_feature_classes(
         mode,
@@ -61,7 +65,7 @@ def extract(
 
     if with_runtimes:
         runtimes = defaultdict(list)
-        for raw_feature in all_features.values():
+        for raw_feature in all_features_df.values():
             for feat in raw_feature[1]:
                 runtimes[feat].append(raw_feature[1][feat])
         feature_names, runtimes = list(runtimes.keys()), list(runtimes.values())
@@ -157,7 +161,7 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
             runtimes[feature_class.shortname] = time.time() - start_time
 
     if with_runtimes:
-        return graph.id, [all_features, runtimes]
+        return graph.id, [features_df, runtimes]
 
     return features_df
 
