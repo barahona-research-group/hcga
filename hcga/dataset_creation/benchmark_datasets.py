@@ -54,6 +54,9 @@ def extract_benchmark_graphs(datadir, dataname):  # pylint: disable=too-many-loc
     """
     prefix = str(Path(datadir) / dataname)
 
+    node_attributes = None
+    node_labels = None
+
     with open(prefix + "_graph_indicator.txt") as f:
         graph_indic = pd.read_csv(f, dtype=np.int, header=None).to_numpy().flatten()
     node_graph_ids = {i: graph_id - 1 for i, graph_id in enumerate(graph_indic)}
@@ -99,7 +102,8 @@ def extract_benchmark_graphs(datadir, dataname):  # pylint: disable=too-many-loc
         ):
             node_list[graph_id].append(tuple([node, node_feature]))
     else:
-        node_list = node_graph_ids
+        for (node, graph_id) in node_graph_ids.items():
+            node_list[graph_id].append(node)
 
     graphs = GraphCollection()
     for graph_id in edge_list:
