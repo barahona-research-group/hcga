@@ -151,8 +151,12 @@ class Graph:
             
         node_list = []
         for node in self.nodes:
-            if node[0] in idx_max_subgraph:
-                node_list.append(node)       
+            if self.n_node_features == 0:
+                if node in idx_max_subgraph:
+                    node_list.append(node)
+            else:
+                if node[0] in idx_max_subgraph:
+                    node_list.append(node)  
         
         self.edges = edge_list
         self.nodes = node_list
