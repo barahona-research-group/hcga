@@ -68,7 +68,10 @@ def cli():
     "--runtimes/--no-runtimes", default=False, show_default=True, help="Output runtimes"
 )
 @click.option(
-    "--connected/--no-connected", default=False, show_default=True, help="Remove disconnected components"
+    "--connected/--no-connected",
+    default=False,
+    show_default=True,
+    help="Remove disconnected components",
 )
 def extract_features(
     dataset,

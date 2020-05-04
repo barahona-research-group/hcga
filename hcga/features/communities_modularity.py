@@ -66,14 +66,6 @@ class CommunitiesModularity(FeatureClass):
         )
 
         self.add_feature(
-            "ratio_commsize",
-            lambda graph: len(eval_modularity(graph)[0])
-            / len(eval_modularity(graph)[1]),
-            "The ratio of the largest and second largest communities using greedy modularity",
-            InterpretabilityScore(3),
-        )
-
-        self.add_feature(
             "ratio_commsize_maxmin",
             lambda graph: len(eval_modularity(graph)[0])
             / len(eval_modularity(graph)[-1]),
