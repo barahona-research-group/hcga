@@ -22,7 +22,7 @@ def extract(
     with_runtimes=False,
     with_node_features=False,
     timeout=10,
-    connected=False
+    connected=False,
 ):
     """main function to extract features"""
     if not with_node_features:

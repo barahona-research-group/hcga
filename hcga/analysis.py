@@ -135,7 +135,7 @@ def output_csv(features, features_info, feature_importance, shap_values, folder)
             ).mean(axis=0)
 
     for feat in output_df.columns:
-        #feat_fullname = feat[0] + "_" + feat[1]
+        # feat_fullname = feat[0] + "_" + feat[1]
         output_df[feat]["feature_info"] = features_info[feat]["description"]
         output_df[feat]["feature_interpretability"] = features_info[feat][
             "interpretability"
@@ -207,7 +207,9 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, reduced_set_si
     #        shap_values.append(shap_value)
     #    L.info("Reduced set: accuracy: " + str(np.round(np.mean(acc_scores), 3)))
 
-    X_reduced_corr = reduce_correlation_feature_set(X, shap_top_features, n_feats=reduced_set_size)
+    X_reduced_corr = reduce_correlation_feature_set(
+        X, shap_top_features, n_feats=reduced_set_size
+    )
 
     shap_values = []
     acc_scores = []
@@ -232,14 +234,13 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, reduced_set_si
 def compute_fold(X, y, classifier, compute_shap, indices):
     """Compute a single fold for parallel computation."""
     train_index, val_index = indices
-    
+
     # this is so that we take the graph index rather than the pandas index
     x_train_idx = X.index[train_index]
     y_train_idx = y.index[train_index]
     x_val_idx = X.index[val_index]
-    y_val_idx = y.index[val_index]   
-    
-    
+    y_val_idx = y.index[val_index]
+
     X_train, X_val = X.loc[x_train_idx], X.loc[x_val_idx]
     y_train, y_val = y.loc[y_train_idx], y.loc[y_val_idx]
 

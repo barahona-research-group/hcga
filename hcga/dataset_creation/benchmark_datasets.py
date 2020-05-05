@@ -54,61 +54,39 @@ def extract_benchmark_graphs(datadir, dataname):  # pylint: disable=too-many-loc
     """
     prefix = str(Path(datadir) / dataname)
 
-    node_attributes = None
-    node_labels = None
-
     with open(prefix + "_graph_indicator.txt") as f:
-        graph_indic = pd.read_csv(f, dtype=np.int, header=None).to_numpy().flatten()
-    node_graph_ids = {i: graph_id - 1 for i, graph_id in enumerate(graph_indic)}
+        nodes_df = pd.read_csv(f, dtype=np.int, header=None) - 1
+    nodes_df.columns = ['graph_id']
 
     with open(prefix + "_graph_labels.txt") as f:
-        graph_labels = pd.read_csv(f, header=None).to_numpy().flatten()
+        graph_labels = pd.read_csv(f, header=None)
 
+    edges_df = pd.DataFrame()
     with open(prefix + "_A.txt") as f:
-        adj_list = pd.read_csv(
-            f, sep=", ", delimiter=None, dtype=np.int, header=None
-        ).to_numpy()
+        for edges_df_next in pd.read_csv(f, sep=", ", delimiter=None, dtype=np.int, header=None, chunksize=1e6):
+           edges_df = edges_df.append(edges_df_next - 1) 
+    edges_df.columns = ['start_node', 'end_node']
+    edges_df['graph_id'] = nodes_df['graph_id'][edges_df['start_node'].to_list()].to_list()
 
-    edge_list = defaultdict(list)
-    for edge in adj_list:
-        edge_list[node_graph_ids[edge[0] - 1]].append(tuple(edge - 1))
-
+    columns = []
     if Path(prefix + "_node_labels.txt").exists():
         with open(prefix + "_node_labels.txt") as f:
-            node_labels_orig = pd.read_csv(f, header=None).to_numpy().flatten()
-        node_labels = np.zeros([len(node_labels_orig), max(node_labels_orig)])
-        for node_label, label in zip(node_labels, node_labels_orig):
-            node_label[label - 1] = 1
+            nodes_df['labels_value'] = pd.read_csv(f, header=None)
+        nodes_df['labels'] = list(pd.get_dummies(nodes_df['labels_value']).to_numpy(dtype=float))
+        columns.append('labels')
+
     if Path(prefix + "_node_attributes.txt").exists():
         with open(prefix + "_node_attributes.txt") as f:
-            node_attributes = pd.read_csv(f, header=None).to_numpy()
+            nodes_df['attributes'] = list(pd.read_csv(f, header=None).to_numpy())
+        columns.append('attributes')
 
-    if node_labels is not None and node_attributes is not None:
-        node_features = [
-            list(node_label) + list(node_attribute)
-            for node_label, node_attribute in zip(node_labels, node_attributes)
-        ]
-    elif node_labels is not None:
-        node_features = [list(node_label) for node_label in node_labels]
-    elif node_attributes is not None:
-        node_features = node_attributes
-    else:
-        node_features = None
-
-    node_list = defaultdict(list)
-    if node_features is not None:
-        for (node, graph_id), node_feature in zip(
-            node_graph_ids.items(), node_features
-        ):
-            node_list[graph_id].append(tuple([node, node_feature]))
-    else:
-        for (node, graph_id) in node_graph_ids.items():
-            node_list[graph_id].append(node)
-
+    graph_ids = list(set(nodes_df['graph_id']))
     graphs = GraphCollection()
-    for graph_id in edge_list:
+    for graph_id in graph_ids:
+        nodes = nodes_df.loc[nodes_df['graph_id'] == graph_id][columns]
+        edges = edges_df.loc[edges_df['graph_id'] == graph_id][['start_node', 'end_node']]
         graphs.add_graph(
-            Graph(node_list[graph_id], edge_list[graph_id], graph_labels[graph_id])
+            Graph(nodes, edges, graph_labels.loc[graph_id])
         )
 
     return graphs

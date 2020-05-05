@@ -63,39 +63,50 @@ class GraphCollection:
 
     def maximal_subgraphs(self):
         """ Overwrites each graph with its maximal subgraph """
-        print('Returning the maximal subgraph for each graph')
+        print("Returning the maximal subgraph for each graph")
         for graph in self.graphs:
             graph.maximal_subgraph()
-        
+
 
 class Graph:
     """Class to encode various graph structures."""
 
     def __init__(self, nodes, edges, label):
         """Set main graphs quantities."""
-        self.nodes = nodes
-        self.edges = edges
+        nodes["new_index"] = np.arange(0, len(nodes.index))
+        edges["start_node"] = nodes.new_index[edges["start_node"].to_list()].to_list()
+        edges["end_node"] = nodes.new_index[edges["end_node"].to_list()].to_list()
+        self.nodes = nodes.set_index("new_index")
+        self.edges = edges.reset_index()
+
         self.label = label
         self.disabled = False
         self.id = -1
 
         self._check_length()
-        self.set_n_node_features()
+        self.set_node_features()
 
-    def set_n_node_features(self):
+    def set_node_features(self):
         """Get the number of node features."""
-        if len(np.shape(self.nodes)) == 1:
-            self.n_node_features = 0
-        elif len(np.shape(self.nodes)) == 2:
-            self.n_node_features = len(self.nodes[0][1])
+
+        if "features" in self.nodes:
+            self.n_node_features = len(self.nodes.features.iloc[0])
         else:
-            raise Exception("Too many elements for node data")
+            if "labels" in self.nodes:
+                features = np.asarray(self.nodes["labels"].to_list())
+            if "attributes" in self.nodes:
+                features = np.concatenate(
+                    (features, np.asarray(self.nodes["attributes"].to_list())), axis=1
+                )
+            if "labels" in self.nodes or "attributes" in self.nodes:
+                self.nodes["features"] = list(features)
+            self.n_node_features = len(features[0])
 
     def _check_length(self):
         """Verify if the graph is large enough to be considered."""
-        if len(self.nodes) <= MIN_NUM_NODES:
+        if len(self.nodes.index) <= MIN_NUM_NODES:
             self.disabled = True
-        if len(self.edges) == 0:
+        if len(self.edges.index) == 0:
             self.disabled = True
 
     def get_graph(self, encoding=None):
@@ -114,41 +125,44 @@ class Graph:
         """Set the networkx graph encoding."""
         self._graph_networkx = nx.Graph()
         if self.n_node_features == 0:
-            nodes = [(node, {"feat": [0]}) for node in self.nodes]
+            nodes = [(node, {"feat": [0]}) for node, node_data in self.nodes.iterrows()]
         else:
-            nodes = [(node, {"feat": feat}) for node, feat in self.nodes]
+            nodes = [
+                (node, {"feat": node_data["features"]})
+                for node, node_data in self.nodes.iterrows()
+            ]
         self._graph_networkx.add_nodes_from(nodes)
 
-        if len(self.edges[0]) == 2:
-            edges = [(edge[0], edge[1], 1.0) for edge in self.edges]
-        elif len(self.edges) == 3:
-            edges = self.edges
-        else:
-            raise Exception("Too many elements for edge data")
+        edges = [
+            (edge["start_node"], edge["end_node"], 1.0)
+            for _, edge in self.edges.iterrows()
+        ]
         self._graph_networkx.add_weighted_edges_from(edges)
 
-    def maximal_subgraph(self):        
-       
-        row = [edge[0] for edge in self.edges]        
+    def maximal_subgraph(self):
+        raise Exception("WIP")
+        row = [edge[0] for edge in self.edges]
         col = [edge[1] for edge in self.edges]
-        
+
         # renumbering to zero required to create a scipy sparse matrix
-        renum_val = np.min([row,col])
+        renum_val = np.min([row, col])
         row = row - renum_val
         col = col - renum_val
 
         weight = np.ones(len(row))
         adj = sc.sparse.coo_matrix((weight, (row, col)))
-        n_components, labels = sc.sparse.csgraph.connected_components(csgraph=adj, return_labels=True)      
-        
+        n_components, labels = sc.sparse.csgraph.connected_components(
+            csgraph=adj, return_labels=True
+        )
+
         # returning to original numbering
-        idx_max_subgraph = np.where(labels==0)[0] + renum_val
+        idx_max_subgraph = np.where(labels == 0)[0] + renum_val
 
         edge_list = []
         for edge in self.edges:
             if edge[0] in idx_max_subgraph and edge[1] in idx_max_subgraph:
-                edge_list.append(edge)         
-            
+                edge_list.append(edge)
+
         node_list = []
         for node in self.nodes:
             if self.n_node_features == 0:
@@ -156,9 +170,7 @@ class Graph:
                     node_list.append(node)
             else:
                 if node[0] in idx_max_subgraph:
-                    node_list.append(node)  
-        
+                    node_list.append(node)
+
         self.edges = edge_list
         self.nodes = node_list
-            
-        
