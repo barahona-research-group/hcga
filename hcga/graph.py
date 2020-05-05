@@ -100,7 +100,9 @@ class Graph:
                 )
             if "labels" in self.nodes or "attributes" in self.nodes:
                 self.nodes["features"] = list(features)
-            self.n_node_features = len(features[0])
+                self.n_node_features = len(features[0])
+            else:
+                self.n_node_features = 0
 
     def _check_length(self):
         """Verify if the graph is large enough to be considered."""
