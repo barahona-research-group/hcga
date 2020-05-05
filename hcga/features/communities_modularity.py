@@ -58,19 +58,12 @@ class CommunitiesModularity(FeatureClass):
             "Number of communities",
             InterpretabilityScore(4),
         )
+
         self.add_feature(
             "largest_commsize",
             lambda graph: len(eval_modularity(graph)[0]),
             "The ratio of the largest and second largest communities using greedy modularity",
             InterpretabilityScore(4),
-        )
-
-        self.add_feature(
-            "ratio_commsize",
-            lambda graph: len(eval_modularity(graph)[0])
-            / len(eval_modularity(graph)[1]),
-            "The ratio of the largest and second largest communities using greedy modularity",
-            InterpretabilityScore(3),
         )
 
         self.add_feature(

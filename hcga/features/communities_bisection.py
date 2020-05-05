@@ -49,12 +49,6 @@ class CommunitiesBisection(FeatureClass):
         def eval_bisection(graph):
             """this evaluates the main function and cach it for speed up"""
             communities = list(kernighan_lin_bisection(graph))
-
-            # if a single communities, add a trivial one
-            if len(communities) == 1:
-                communities.append([{0}])
-
-            # sort sets by size
             communities.sort(key=len, reverse=True)
 
             return communities
@@ -64,13 +58,6 @@ class CommunitiesBisection(FeatureClass):
             lambda graph: len(eval_bisection(graph)[0]),
             "The ratio of the largest and second largest communities using bisection algorithm",
             InterpretabilityScore(4),
-        )
-
-        self.add_feature(
-            "ratio_commsize",
-            lambda graph: len(eval_bisection(graph)[0]) / len(eval_bisection(graph)[1]),
-            "The ratio of the largest and second largest communities using bisection algorithm",
-            InterpretabilityScore(3),
         )
 
         self.add_feature(
