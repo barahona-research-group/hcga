@@ -23,6 +23,7 @@ import networkx as nx
 import numpy as np
 
 from ..feature_class import FeatureClass, InterpretabilityScore
+from .utils import remove_selfloops
 
 featureclass_name = "CoreNumber"
 
@@ -45,8 +46,9 @@ class CoreNumber(FeatureClass):
 
         """
 
+
         core_number = lambda graph: list(
-            np.asarray(list(nx.core_number(graph).values()))
+            np.asarray(list(nx.core_number(remove_selfloops(graph)).values()))
         )
         self.add_feature(
             "core number",
