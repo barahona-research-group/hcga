@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
     <title>The maximal matching module &#8212; hcga 0.1 documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -45,27 +44,19 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-hcga.Operations.maximal_matching">
-<span id="the-maximal-matching-module"></span><h1>The maximal matching module<a class="headerlink" href="#module-hcga.Operations.maximal_matching" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="hcga.Operations.maximal_matching.MaximalMatching">
-<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.maximal_matching.</code><code class="sig-name descname">MaximalMatching</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/maximal_matching.html#MaximalMatching"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.maximal_matching.MaximalMatching" title="Permalink to this definition">¶</a></dt>
+  <div class="section" id="module-hcga.features.maximal_matching">
+<span id="the-maximal-matching-module"></span><h1>The maximal matching module<a class="headerlink" href="#module-hcga.features.maximal_matching" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="hcga.features.maximal_matching.MaximalMatching">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.features.maximal_matching.</code><code class="sig-name descname">MaximalMatching</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/maximal_matching.html#MaximalMatching"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.maximal_matching.MaximalMatching" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maximal matching class</p>
-<dl class="method">
-<dt id="hcga.Operations.maximal_matching.MaximalMatching.feature_extraction">
-<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/maximal_matching.html#MaximalMatching.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.maximal_matching.MaximalMatching.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt id="hcga.features.maximal_matching.MaximalMatching.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/maximal_matching.html#MaximalMatching.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.maximal_matching.MaximalMatching.compute_features" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the maximal matching of the network</p>
 <p>A matching is a subset of edges such that no edges are connected to
 the same node. It is maximal if the addition of another edge to this
 subset no longer makes it a matching.</p>
-<dl class="simple">
-<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to the maximal matching.</p>
-</dd>
-</dl>
 <dl class="simple">
 <dt>Maximal matching calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/matching.html">Networkx_maximal_matching</a></p>
 </dd>
@@ -104,7 +95,7 @@ subset no longer makes it a matching.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -130,7 +121,7 @@ subset no longer makes it a matching.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019, R. Peach, H. Palasciano and A. Arnaudon,.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>
 </html>

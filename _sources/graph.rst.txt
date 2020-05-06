@@ -1,4 +1,4 @@
 The Graph module
 ===========================================
-.. automodule:: hcga.graphs
+.. automodule:: hcga.feature_class
    :members:

@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
     <title>The k-components module &#8212; hcga 0.1 documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -45,30 +44,17 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-hcga.Operations.k_components">
-<span id="the-k-components-module"></span><h1>The k-components module<a class="headerlink" href="#module-hcga.Operations.k_components" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="hcga.Operations.k_components.kComponents">
-<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.k_components.</code><code class="sig-name descname">kComponents</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/k_components.html#kComponents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.k_components.kComponents" title="Permalink to this definition">¶</a></dt>
-<dd><p>k components class</p>
-<dl class="method">
-<dt id="hcga.Operations.k_components.kComponents.feature_extraction">
-<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/k_components.html#kComponents.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.k_components.kComponents.feature_extraction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute features related to the k components of the network</p>
-<p>A k_component is a subgraph such that every node in it is connected to
-at least k other nodes in the subgraph.</p>
-<dl class="simple">
-<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>feature_list<span class="classifier">list</span></dt><dd><p>List of features related to k components.</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>K components calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.connectivity.kcomponents.k_components.html#networkx.algorithms.connectivity.kcomponents.k_components">Networkx_kcomponents</a></p>
-</dd>
-</dl>
+  <div class="section" id="module-hcga.features.k_components">
+<span id="the-k-components-module"></span><h1>The k-components module<a class="headerlink" href="#module-hcga.features.k_components" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="hcga.features.k_components.KComponents">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.features.k_components.</code><code class="sig-name descname">KComponents</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/k_components.html#KComponents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.k_components.KComponents" title="Permalink to this definition">¶</a></dt>
+<dd><p>K Components class</p>
+<dl class="py method">
+<dt id="hcga.features.k_components.KComponents.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/k_components.html#KComponents.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.k_components.KComponents.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the k components of the network</p>
+<p>Put here the list of things that are computed, with corresponding names</p>
 </dd></dl>
 
 </dd></dl>
@@ -103,7 +89,7 @@ at least k other nodes in the subgraph.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -129,7 +115,7 @@ at least k other nodes in the subgraph.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019, R. Peach, H. Palasciano and A. Arnaudon,.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>
 </html>

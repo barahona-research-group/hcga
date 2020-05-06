@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
     <title>The rich club module &#8212; hcga 0.1 documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -45,58 +44,17 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-hcga.Operations.rich_club">
-<span id="the-rich-club-module"></span><h1>The rich club module<a class="headerlink" href="#module-hcga.Operations.rich_club" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="hcga.Operations.rich_club.RichClub">
-<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.rich_club.</code><code class="sig-name descname">RichClub</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/rich_club.html#RichClub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.rich_club.RichClub" title="Permalink to this definition">¶</a></dt>
-<dd><p>Rich club class</p>
-<dl class="method">
-<dt id="hcga.Operations.rich_club.RichClub.feature_extraction">
-<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/rich_club.html#RichClub.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.rich_club.RichClub.feature_extraction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the rich-club coefficient of the graph <cite>G</cite>.</p>
-<blockquote>
-<div><p>For each degree <em>k</em>, the <em>rich-club coefficient</em> is the ratio of the
-number of actual to the number of potential edges for nodes with
-degree greater than <em>k</em>:</p>
-<div class="math notranslate nohighlight">
-\[\phi(k) = \]</div>
-</div></blockquote>
-<p>rac{2 E_k}{N_k (N_k - 1)}</p>
-<blockquote>
-<div><p>where <cite>N_k</cite> is the number of nodes with degree larger than <em>k</em>, and
-<cite>E_k</cite> is the number of edges among those nodes.</p>
-<dl class="simple">
-<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to the rich club coefficients.</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>Rich club calculated using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/rich_club.html">Networkx_centrality</a></p>
-</dd>
-</dl>
-<p>The rich club definition and algorithm are found in <a class="footnote-reference brackets" href="#id3" id="id1">1</a>.  This
-algorithm ignores any edge weights and is not defined for directed
-graphs or graphs with parallel edges or self loops.</p>
-<p>Estimates for appropriate values of <cite>Q</cite> are found in <a class="footnote-reference brackets" href="#id4" id="id2">2</a>.</p>
-<dl class="footnote brackets">
-<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Julian J. McAuley, Luciano da Fontoura Costa,
-and Tibério S. Caetano,
-“The rich-club phenomenon across complex network hierarchies”,
-Applied Physics Letters Vol 91 Issue 8, August 2007.
-<a class="reference external" href="https://arxiv.org/abs/physics/0701290">https://arxiv.org/abs/physics/0701290</a></p>
-</dd>
-<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
-<dd><p>R. Milo, N. Kashtan, S. Itzkovitz, M. E. J. Newman, U. Alon,
-“Uniform generation of random graphs with arbitrary degree
-sequences”, 2006. <a class="reference external" href="https://arxiv.org/abs/cond-mat/0312028">https://arxiv.org/abs/cond-mat/0312028</a></p>
-</dd>
-</dl>
-</div></blockquote>
+  <div class="section" id="module-hcga.features.rich_club">
+<span id="the-rich-club-module"></span><h1>The rich club module<a class="headerlink" href="#module-hcga.features.rich_club" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="hcga.features.rich_club.RichClub">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.features.rich_club.</code><code class="sig-name descname">RichClub</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/rich_club.html#RichClub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.rich_club.RichClub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rich Club class</p>
+<dl class="py method">
+<dt id="hcga.features.rich_club.RichClub.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/rich_club.html#RichClub.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.rich_club.RichClub.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the rich club measures of the network</p>
+<p>Put here the list of things that are computed, with corresponding names</p>
 </dd></dl>
 
 </dd></dl>
@@ -131,7 +89,7 @@ sequences”, 2006. <a class="reference external" href="https://arxiv.org/abs/co
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -157,7 +115,7 @@ sequences”, 2006. <a class="reference external" href="https://arxiv.org/abs/co
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019, R. Peach, H. Palasciano and A. Arnaudon,.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>
 </html>

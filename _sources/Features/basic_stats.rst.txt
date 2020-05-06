@@ -1,4 +1,4 @@
 The basic statistics module
 ===========================================
-.. automodule:: hcga.Operations.basic_stats
+.. automodule:: hcga.features.basic_stats
    :members:

@@ -1,4 +1,4 @@
 The vitality module
-==============================
-.. automodule:: hcga.Operations.vitality
+===================
+.. automodule:: hcga.features.vitality
    :members:

@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
     <title>The clustering module &#8212; hcga 0.1 documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -45,24 +44,16 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-hcga.Operations.clustering">
-<span id="the-clustering-module"></span><h1>The clustering module<a class="headerlink" href="#module-hcga.Operations.clustering" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="hcga.Operations.clustering.Clustering">
-<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.clustering.</code><code class="sig-name descname">Clustering</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/clustering.html#Clustering"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.clustering.Clustering" title="Permalink to this definition">¶</a></dt>
+  <div class="section" id="module-hcga.features.clustering">
+<span id="the-clustering-module"></span><h1>The clustering module<a class="headerlink" href="#module-hcga.features.clustering" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="hcga.features.clustering.Clustering">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.features.clustering.</code><code class="sig-name descname">Clustering</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/clustering.html#Clustering"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.clustering.Clustering" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clustering class</p>
-<dl class="method">
-<dt id="hcga.Operations.clustering.Clustering.feature_extraction">
-<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/clustering.html#Clustering.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.clustering.Clustering.feature_extraction" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt id="hcga.features.clustering.Clustering.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/clustering.html#Clustering.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.clustering.Clustering.compute_features" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the various clustering measures.</p>
-<dl class="simple">
-<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to node clustering.</p>
-</dd>
-</dl>
 <dl class="simple">
 <dt>Implementation of networkx code:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/clustering.html">Networkx_clustering</a></p>
 </dd>
@@ -102,7 +93,7 @@
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -128,7 +119,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019, R. Peach, H. Palasciano and A. Arnaudon,.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>
 </html>

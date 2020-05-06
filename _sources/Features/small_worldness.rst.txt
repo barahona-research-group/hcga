@@ -1,4 +1,4 @@
 The small worldness module
 ==============================
-.. automodule:: hcga.Operations.small_worldness
+.. automodule:: hcga.features.small_worldness
    :members:

@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
     <title>The node connectivity module &#8212; hcga 0.1 documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -45,8 +44,44 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-hcga.Operations.node_connectivity">
-<span id="the-node-connectivity-module"></span><h1>The node connectivity module<a class="headerlink" href="#module-hcga.Operations.node_connectivity" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-hcga.features.node_connectivity">
+<span id="the-node-connectivity-module"></span><h1>The node connectivity module<a class="headerlink" href="#module-hcga.features.node_connectivity" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="hcga.features.node_connectivity.NodeConnectivity">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.features.node_connectivity.</code><code class="sig-name descname">NodeConnectivity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/node_connectivity.html#NodeConnectivity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.node_connectivity.NodeConnectivity" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="hcga.features.node_connectivity.NodeConnectivity.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/node_connectivity.html#NodeConnectivity.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.node_connectivity.NodeConnectivity.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute node connectivity measures.</p>
+<dl class="simple">
+<dt>Node connectivity is equal to the minimum number of nodes that</dt><dd><p>must be removed to disconnect G or render it trivial. If source
+and target nodes are provided, this function returns the local node
+connectivity: the minimum number of nodes that must be removed to break
+all paths from source to target in G.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Implementation of networkx code:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/connectivity/connectivity.html#node_connectivity">Networkx_node_connectivity</a></p>
+</dd>
+</dl>
+<p>This is a flow based implementation of node connectivity. The
+algorithm works by solving $O((n-delta-1+delta(delta-1)/2))$
+maximum flow problems on an auxiliary digraph. Where $delta$
+is the minimum degree of G. For details about the auxiliary
+digraph and the computation of local node connectivity see
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">local_node_connectivity()</span></code>. This implementation is based
+on algorithm 11 in <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>White, Douglas R., and Mark Newman. 2001 A Fast Algorithm for</p>
+</dd>
+</dl>
+<p>Node-Independent Paths. Santa Fe Institute Working Paper #01-07-035
+<a class="reference external" href="http://eclectic.ss.uci.edu/~drwhite/working.pdf">http://eclectic.ss.uci.edu/~drwhite/working.pdf</a></p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -77,7 +112,7 @@
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -103,7 +138,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019, R. Peach, H. Palasciano and A. Arnaudon,.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>
 </html>

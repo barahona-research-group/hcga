@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>hcga.features.node_connectivity &#8212; hcga 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">hcga 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcga.features.node_connectivity</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># This file is part of hcga.</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2019,</span>
+<span class="c1"># Robert Peach (r.peach13@imperial.ac.uk),</span>
+<span class="c1"># Alexis Arnaudon (alexis.arnaudon@epfl.ch),</span>
+<span class="c1"># https://github.com/ImperialCollegeLondon/hcga.git</span>
+<span class="c1">#</span>
+<span class="c1"># hcga is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># hcga is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with hcga.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+
+<span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;NodeConnectivity&quot;</span>
+
+
+<div class="viewcode-block" id="NodeConnectivity"><a class="viewcode-back" href="../../../Features/node_connectivity.html#hcga.features.node_connectivity.NodeConnectivity">[docs]</a><span class="k">class</span> <span class="nc">NodeConnectivity</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
+    <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;slow&quot;</span><span class="p">]</span>
+    <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;NC&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;node_connectivity&quot;</span>
+    <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;networkx&quot;</span>
+
+<div class="viewcode-block" id="NodeConnectivity.compute_features"><a class="viewcode-back" href="../../../Features/node_connectivity.html#hcga.features.node_connectivity.NodeConnectivity.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute node connectivity measures.</span>
+
+<span class="sd">        Node connectivity is equal to the minimum number of nodes that</span>
+<span class="sd">            must be removed to disconnect G or render it trivial. If source</span>
+<span class="sd">            and target nodes are provided, this function returns the local node</span>
+<span class="sd">            connectivity: the minimum number of nodes that must be removed to break</span>
+<span class="sd">            all paths from source to target in G.</span>
+
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Implementation of networkx code:</span>
+<span class="sd">            `Networkx_node_connectivity &lt;https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/connectivity/connectivity.html#node_connectivity&gt;`_</span>
+
+<span class="sd">        This is a flow based implementation of node connectivity. The</span>
+<span class="sd">        algorithm works by solving $O((n-\delta-1+\delta(\delta-1)/2))$</span>
+<span class="sd">        maximum flow problems on an auxiliary digraph. Where $\delta$</span>
+<span class="sd">        is the minimum degree of G. For details about the auxiliary</span>
+<span class="sd">        digraph and the computation of local node connectivity see</span>
+<span class="sd">        :meth:`local_node_connectivity`. This implementation is based</span>
+<span class="sd">        on algorithm 11 in [1]_.</span>
+<span class="sd">        </span>
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        .. [1] White, Douglas R., and Mark Newman. 2001 A Fast Algorithm for </span>
+<span class="sd">        Node-Independent Paths. Santa Fe Institute Working Paper #01-07-035</span>
+<span class="sd">        http://eclectic.ss.uci.edu/~drwhite/working.pdf</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">node_conn</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+            <span class="c1"># calculating node connectivity</span>
+            <span class="n">node_connectivity</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">all_pairs_node_connectivity</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+            <span class="n">N</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+
+            <span class="n">node_conn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">key1</span><span class="p">,</span> <span class="n">value1</span> <span class="ow">in</span> <span class="n">node_connectivity</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">key2</span><span class="p">,</span> <span class="n">value2</span> <span class="ow">in</span> <span class="n">value1</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">node_conn</span><span class="p">[</span><span class="n">key1</span><span class="p">,</span> <span class="n">key2</span><span class="p">]</span> <span class="o">=</span> <span class="n">value2</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">node_conn</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;node_conn&quot;</span><span class="p">,</span>
+            <span class="n">node_conn</span><span class="p">,</span>
+            <span class="s2">&quot;Node connectivity (statistics)&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;centrality&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Calculate connectivity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;node_connectivity&quot;</span><span class="p">,</span>
+            <span class="n">nx</span><span class="o">.</span><span class="n">node_connectivity</span><span class="p">,</span>
+            <span class="s2">&quot;Node connectivity&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;avg_node_connectivity&quot;</span><span class="p">,</span>
+            <span class="n">nx</span><span class="o">.</span><span class="n">average_node_connectivity</span><span class="p">,</span>
+            <span class="s2">&quot;Average node connectivity&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;edge_connectivity&quot;</span><span class="p">,</span>
+            <span class="n">nx</span><span class="o">.</span><span class="n">edge_connectivity</span><span class="p">,</span>
+            <span class="s2">&quot;Edge connectivity&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
+
+        <span class="c1"># calculate the wiener index</span>
+
+
+<span class="c1">#        self.add_feature(</span>
+<span class="c1">#            &quot;wiener_index&quot;,</span>
+<span class="c1">#            nx.wiener_index,</span>
+<span class="c1">#            &quot;Wiener index&quot;,</span>
+<span class="c1">#            InterpretabilityScore(&quot;max&quot;) - 1,</span>
+<span class="c1">#        )</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">hcga 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, R. Peach, H. Palasciano and A. Arnaudon,.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-The cycles module
+The dominating sets module
 ==============================
-.. automodule:: hcga.Operations.dominating_sets
+.. automodule:: hcga.features.dominating_sets
    :members:

@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>The cycles module &#8212; hcga 0.1 documentation</title>
+    <title>The dominating sets module &#8212; hcga 0.1 documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
@@ -36,30 +35,15 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-hcga.Operations.dominating_sets">
-<span id="the-cycles-module"></span><h1>The cycles module<a class="headerlink" href="#module-hcga.Operations.dominating_sets" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="hcga.Operations.dominating_sets.DominatingSets">
-<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.dominating_sets.</code><code class="sig-name descname">DominatingSets</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/dominating_sets.html#DominatingSets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.dominating_sets.DominatingSets" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dominating set class</p>
-<dl class="method">
-<dt id="hcga.Operations.dominating_sets.DominatingSets.feature_extraction">
-<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/dominating_sets.html#DominatingSets.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.dominating_sets.DominatingSets.feature_extraction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute dominating set measures.</p>
-<blockquote>
-<div><p>A <em>dominating set</em> for a graph with node set <em>V</em> is a subset <em>D</em> of</p>
-</div></blockquote>
-<p><em>V</em> such that every node not in <em>D</em> is adjacent to at least one
+  <div class="section" id="module-hcga.features.dominating_sets">
+<span id="the-dominating-sets-module"></span><h1>The dominating sets module<a class="headerlink" href="#module-hcga.features.dominating_sets" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="hcga.features.dominating_sets.DominatingSets">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.features.dominating_sets.</code><code class="sig-name descname">DominatingSets</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/dominating_sets.html#DominatingSets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.dominating_sets.DominatingSets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dominating sets class</p>
+<p>A <em>dominating set</em> for a graph with node set <em>V</em> is a subset <em>D</em> of
+<em>V</em> such that every node not in <em>D</em> is adjacent to at least one
 member of <em>D</em> <a href="#id9"><span class="problematic" id="id1">[1]_</span></a>.</p>
-<blockquote>
-<div><dl class="simple">
-<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>feature_list :list</dt><dd><p>List of features related to dominating sets.</p>
-</dd>
-</dl>
 <dl class="simple">
 <dt>Core number calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/dominating.html">Networkx_dominating_set</a></p>
 </dd>
@@ -73,14 +57,18 @@ member of <em>D</em> <a href="#id9"><span class="problematic" id="id1">[1]_</spa
 <a class="reference external" href="http://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf">http://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf</a></p>
 </dd>
 </dl>
-</div></blockquote>
+<dl class="py method">
+<dt id="hcga.features.dominating_sets.DominatingSets.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/dominating_sets.html#DominatingSets.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.dominating_sets.DominatingSets.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the dominating sets of the network</p>
+<p>Put here the list of things that are computed, with corresponding names</p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="function">
-<dt id="hcga.Operations.dominating_sets.maximal_matching">
-<code class="sig-prename descclassname">hcga.Operations.dominating_sets.</code><code class="sig-name descname">maximal_matching</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/dominating_sets.html#maximal_matching"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.dominating_sets.maximal_matching" title="Permalink to this definition">¶</a></dt>
+<dl class="py function">
+<dt id="hcga.features.dominating_sets.maximal_matching">
+<code class="sig-prename descclassname">hcga.features.dominating_sets.</code><code class="sig-name descname">maximal_matching</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">G</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/dominating_sets.html#maximal_matching"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.dominating_sets.maximal_matching" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a maximal matching in the graph.</p>
 <p>A matching is a subset of edges in which no node occurs more than once.
 A maximal matching cannot add more edges and still be a matching.</p>
@@ -96,9 +84,9 @@ A maximal matching cannot add more edges and still be a matching.</p>
 (i.e. no superset of M exists). It runs in $O(<a href="#id5"><span class="problematic" id="id6">|E|</span></a>)$ time.</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="hcga.Operations.dominating_sets.min_edge_dominating_set">
-<code class="sig-prename descclassname">hcga.Operations.dominating_sets.</code><code class="sig-name descname">min_edge_dominating_set</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/dominating_sets.html#min_edge_dominating_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.dominating_sets.min_edge_dominating_set" title="Permalink to this definition">¶</a></dt>
+<dl class="py function">
+<dt id="hcga.features.dominating_sets.min_edge_dominating_set">
+<code class="sig-prename descclassname">hcga.features.dominating_sets.</code><code class="sig-name descname">min_edge_dominating_set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">G</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/dominating_sets.html#min_edge_dominating_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.dominating_sets.min_edge_dominating_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns minimum cardinality edge dominating set.</p>
 <dl class="simple">
 <dt>G<span class="classifier">NetworkX graph</span></dt><dd><p>Undirected graph</p>
@@ -113,9 +101,9 @@ problem. The result is no more than 2 * OPT in terms of size of the set.
 Runtime of the algorithm is $O(<a href="#id7"><span class="problematic" id="id8">|E|</span></a>)$.</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="hcga.Operations.dominating_sets.min_weighted_dominating_set">
-<code class="sig-prename descclassname">hcga.Operations.dominating_sets.</code><code class="sig-name descname">min_weighted_dominating_set</code><span class="sig-paren">(</span><em class="sig-param">G</em>, <em class="sig-param">weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/dominating_sets.html#min_weighted_dominating_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.dominating_sets.min_weighted_dominating_set" title="Permalink to this definition">¶</a></dt>
+<dl class="py function">
+<dt id="hcga.features.dominating_sets.min_weighted_dominating_set">
+<code class="sig-prename descclassname">hcga.features.dominating_sets.</code><code class="sig-name descname">min_weighted_dominating_set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">G</span></em>, <em class="sig-param"><span class="n">weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/dominating_sets.html#min_weighted_dominating_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.dominating_sets.min_weighted_dominating_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a dominating set that approximates the minimum weight node
 dominating set.</p>
 <dl class="simple">
@@ -173,7 +161,7 @@ Springer Science &amp; Business Media, 2001.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -192,7 +180,7 @@ Springer Science &amp; Business Media, 2001.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019, R. Peach, H. Palasciano and A. Arnaudon,.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>
 </html>

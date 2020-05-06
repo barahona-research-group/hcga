@@ -1,4 +1,4 @@
 The chemical theory module
 ================================
-.. automodule:: hcga.Operations.chemical_theory
+.. automodule:: hcga.features.chemical_theory
    :members:

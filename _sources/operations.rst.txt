@@ -1,4 +1,4 @@
-The Operations module
+The Features module
 ======================
-.. automodule:: hcga.Operations.operations
+.. automodule:: hcga.features
    :members:                      

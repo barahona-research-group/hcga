@@ -1,4 +1,4 @@
 The shortest paths module
 ==============================
-.. automodule:: hcga.Operations.shortest_paths
+.. automodule:: hcga.features.shortest_paths
    :members:

@@ -1,4 +1,4 @@
 The structural holes module
 ==============================
-.. automodule:: hcga.Operations.structural_holes
+.. automodule:: hcga.features.structural_holes
    :members:

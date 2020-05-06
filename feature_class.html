@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>The feature class module &#8212; hcga 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Features" href="Features.html" />
+    <link rel="prev" title="hcga: Highly Comparative Graph Analysis" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Features.html" title="Features"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="hcga: Highly Comparative Graph Analysis"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">hcga 0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-hcga.feature_class">
+<span id="the-feature-class-module"></span><h1>The feature class module<a class="headerlink" href="#module-hcga.feature_class" title="Permalink to this headline">¶</a></h1>
+<p>template class for feature extraction</p>
+<dl class="py class">
+<dt id="hcga.feature_class.FeatureClass">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.feature_class.</code><code class="sig-name descname">FeatureClass</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>template class</p>
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.add_feature">
+<code class="sig-name descname">add_feature</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">feature_name</span></em>, <em class="sig-param"><span class="n">feature_function</span></em>, <em class="sig-param"><span class="n">feature_description</span></em>, <em class="sig-param"><span class="n">feature_interpret</span></em>, <em class="sig-param"><span class="n">function_args</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">statistics</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.add_feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.add_feature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a computed feature value and its description</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.add_feature_description">
+<em class="property">classmethod </em><code class="sig-name descname">add_feature_description</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">feature_name</span></em>, <em class="sig-param"><span class="n">feature_desc</span></em>, <em class="sig-param"><span class="n">feature_interpret</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.add_feature_description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.add_feature_description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the description to the class variable if not already there</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.clustering_statistics">
+<code class="sig-name descname">clustering_statistics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">community_partition</span></em>, <em class="sig-param"><span class="n">feat_name</span></em>, <em class="sig-param"><span class="n">feat_desc</span></em>, <em class="sig-param"><span class="n">feat_interpret</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.clustering_statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.clustering_statistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute quality of the community partitions</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>main feature extraction function</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.compute_normalize_features">
+<code class="sig-name descname">compute_normalize_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.compute_normalize_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.compute_normalize_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>triple the number of features by normalising by node and edges</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.evaluate_feature">
+<code class="sig-name descname">evaluate_feature</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">feature_function</span></em>, <em class="sig-param"><span class="n">feature_name</span></em>, <em class="sig-param"><span class="n">function_args</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">statistics</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.evaluate_feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.evaluate_feature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluating a feature function and catching/raising errors.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.evaluate_feature_orig">
+<code class="sig-name descname">evaluate_feature_orig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">feature_function</span></em>, <em class="sig-param"><span class="n">feature_name</span></em>, <em class="sig-param"><span class="n">function_args</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">statistics</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.evaluate_feature_orig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.evaluate_feature_orig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluating a feature function and catching/raising errors.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.feature_statistics">
+<code class="sig-name descname">feature_statistics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">feat_dist</span></em>, <em class="sig-param"><span class="n">feat_name</span></em>, <em class="sig-param"><span class="n">feat_desc</span></em>, <em class="sig-param"><span class="n">feat_interpret</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.feature_statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.feature_statistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes summary statistics of distributions</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.feature_statistics_advanced">
+<code class="sig-name descname">feature_statistics_advanced</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">feat_dist</span></em>, <em class="sig-param"><span class="n">feat_name</span></em>, <em class="sig-param"><span class="n">feat_desc</span></em>, <em class="sig-param"><span class="n">feat_interpret</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.feature_statistics_advanced"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.feature_statistics_advanced" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes advanced summary statistics of distributions</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.feature_statistics_basic">
+<code class="sig-name descname">feature_statistics_basic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">feat_dist</span></em>, <em class="sig-param"><span class="n">feat_name</span></em>, <em class="sig-param"><span class="n">feat_desc</span></em>, <em class="sig-param"><span class="n">feat_interpret</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.feature_statistics_basic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.feature_statistics_basic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes basic summary statistics of distributions</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.feature_statistics_medium">
+<code class="sig-name descname">feature_statistics_medium</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">feat_dist</span></em>, <em class="sig-param"><span class="n">feat_name</span></em>, <em class="sig-param"><span class="n">feat_desc</span></em>, <em class="sig-param"><span class="n">feat_interpret</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.feature_statistics_medium"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.feature_statistics_medium" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes medium summary statistics of distributions</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.get_feature_description">
+<code class="sig-name descname">get_feature_description</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">feature_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.get_feature_description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.get_feature_description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns interpretability score of the feature feature_name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.get_feature_info">
+<code class="sig-name descname">get_feature_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">feature_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.get_feature_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.get_feature_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary of information about the feature feature_name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.get_feature_interpretability">
+<code class="sig-name descname">get_feature_interpretability</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">feature_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.get_feature_interpretability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.get_feature_interpretability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns interpretability score of the feature feature_name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.get_features">
+<code class="sig-name descname">get_features</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">all_features</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.get_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.get_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>update the feature dictionary if correct mode provided</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.get_info">
+<code class="sig-name descname">get_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.get_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.get_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a dictionary of informations about the feature class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.node_feature_statistics">
+<code class="sig-name descname">node_feature_statistics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">feat_dist</span></em>, <em class="sig-param"><span class="n">feat_name</span></em>, <em class="sig-param"><span class="n">feat_desc</span></em>, <em class="sig-param"><span class="n">feat_interpret</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.node_feature_statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.node_feature_statistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes summary statistics of each feature distribution</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.FeatureClass.setup_class">
+<em class="property">classmethod </em><code class="sig-name descname">setup_class</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">normalize_features</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">statistics_level</span><span class="o">=</span><span class="default_value">'basic'</span></em>, <em class="sig-param"><span class="n">n_node_features</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#FeatureClass.setup_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.FeatureClass.setup_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes the class by adding descriptions for all features.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="hcga.feature_class.InterpretabilityScore">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.feature_class.</code><code class="sig-name descname">InterpretabilityScore</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">score</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#InterpretabilityScore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.InterpretabilityScore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to represent interpretability scores of features.</p>
+<dl class="py method">
+<dt id="hcga.feature_class.InterpretabilityScore.get_score">
+<code class="sig-name descname">get_score</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#InterpretabilityScore.get_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.InterpretabilityScore.get_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the interpretability score.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.feature_class.InterpretabilityScore.set_score">
+<code class="sig-name descname">set_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">score</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/feature_class.html#InterpretabilityScore.set_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.feature_class.InterpretabilityScore.set_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the interpretability score.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter"><em>hcga</em>: Highly Comparative Graph Analysis</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Features.html"
+                        title="next chapter">Features</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature_class.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Features.html" title="Features"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="hcga: Highly Comparative Graph Analysis"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">hcga 0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, R. Peach, H. Palasciano and A. Arnaudon,.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
     <title>Cliques modules &#8212; hcga 0.1 documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -47,89 +46,17 @@
             
   <div class="section" id="cliques-modules">
 <h1>Cliques modules<a class="headerlink" href="#cliques-modules" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-hcga.Operations.cliques">
-<span id="the-cliques-module"></span><h2>The cliques module<a class="headerlink" href="#module-hcga.Operations.cliques" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="hcga.Operations.cliques.Cliques">
-<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.cliques.</code><code class="sig-name descname">Cliques</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/cliques.html#Cliques"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.cliques.Cliques" title="Permalink to this definition">¶</a></dt>
-<dd><p>Cliques class</p>
-<dl class="method">
-<dt id="hcga.Operations.cliques.Cliques.feature_extraction">
-<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/cliques.html#Cliques.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.cliques.Cliques.feature_extraction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the clique number for the graph and the number of maximal 
-cliques</p>
-<p>A clique is the maximal subset of nodes such that all the nodes in 
-this set are connected to each other. 
-The clique number is the size of the largest clique in a graph.</p>
-<dl class="simple">
-<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to cliques.</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>Clique number calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/clique.html">Networkx</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-hcga.Operations.node_clique_number">
-<span id="the-clique-number-module"></span><h2>The clique number module<a class="headerlink" href="#module-hcga.Operations.node_clique_number" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="hcga.Operations.node_clique_number.NodeCliqueNumber">
-<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.node_clique_number.</code><code class="sig-name descname">NodeCliqueNumber</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/node_clique_number.html#NodeCliqueNumber"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.node_clique_number.NodeCliqueNumber" title="Permalink to this definition">¶</a></dt>
-<dd><p>Node clique number class</p>
-<dl class="method">
-<dt id="hcga.Operations.node_clique_number.NodeCliqueNumber.feature_extraction">
-<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/node_clique_number.html#NodeCliqueNumber.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.node_clique_number.NodeCliqueNumber.feature_extraction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the maximal clique containing each node, i.e passing through
-that node.</p>
-<dl class="simple">
-<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to clique number.</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>Clique number calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/clique.html">Networkx_clique</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-hcga.Operations.node_number_of_cliques">
-<span id="the-number-of-cliques-module"></span><h2>The number of cliques module<a class="headerlink" href="#module-hcga.Operations.node_number_of_cliques" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="hcga.Operations.node_number_of_cliques.NodeNumberOfCliques">
-<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.node_number_of_cliques.</code><code class="sig-name descname">NodeNumberOfCliques</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/node_number_of_cliques.html#NodeNumberOfCliques"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.node_number_of_cliques.NodeNumberOfCliques" title="Permalink to this definition">¶</a></dt>
-<dd><p>Node number of cliques class</p>
-<dl class="method">
-<dt id="hcga.Operations.node_number_of_cliques.NodeNumberOfCliques.feature_extraction">
-<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/node_number_of_cliques.html#NodeNumberOfCliques.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.node_number_of_cliques.NodeNumberOfCliques.feature_extraction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the number of maximal cliques for each node in the graph,
-i.e passing through that node</p>
-<dl class="simple">
-<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to the number of maximal cliques for
-each node.</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>Number of cliques calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/clique.html">Networkx_cliques</a></p>
-</dd>
-</dl>
+<div class="section" id="module-hcga.features.cliques">
+<span id="the-cliques-module"></span><h2>The cliques module<a class="headerlink" href="#module-hcga.features.cliques" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="hcga.features.cliques.Cliques">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.features.cliques.</code><code class="sig-name descname">Cliques</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/cliques.html#Cliques"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.cliques.Cliques" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic stats class</p>
+<dl class="py method">
+<dt id="hcga.features.cliques.Cliques.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/cliques.html#Cliques.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.cliques.Cliques.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute some clique based measures for the network</p>
+<p>Put here the list of things that are computed, with corresponding names</p>
 </dd></dl>
 
 </dd></dl>
@@ -146,9 +73,7 @@ each node.</p>
   <h3><a href="../index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Cliques modules</a><ul>
-<li><a class="reference internal" href="#module-hcga.Operations.cliques">The cliques module</a></li>
-<li><a class="reference internal" href="#module-hcga.Operations.node_clique_number">The clique number module</a></li>
-<li><a class="reference internal" href="#module-hcga.Operations.node_number_of_cliques">The number of cliques module</a></li>
+<li><a class="reference internal" href="#module-hcga.features.cliques">The cliques module</a></li>
 </ul>
 </li>
 </ul>
@@ -175,7 +100,7 @@ each node.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -201,7 +126,7 @@ each node.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019, R. Peach, H. Palasciano and A. Arnaudon,.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>
 </html>

@@ -1,4 +1,4 @@
 The maximal matching module
 ==============================
-.. automodule:: hcga.Operations.maximal_matching
+.. automodule:: hcga.features.maximal_matching
    :members:

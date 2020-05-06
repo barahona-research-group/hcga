@@ -1,4 +1,4 @@
 The node connectivity module
 ==============================
-.. automodule:: hcga.Operations.node_connectivity
+.. automodule:: hcga.features.node_connectivity
    :members:

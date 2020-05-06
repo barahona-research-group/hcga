@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
     <title>The spectrum module &#8212; hcga 0.1 documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -45,89 +44,19 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="the-spectrum-module">
-<h1>The spectrum module<a class="headerlink" href="#the-spectrum-module" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-hcga.Operations.spectrum_adjacency">
-<span id="the-spectrum-adjacency-module"></span><h2>The spectrum adjacency module<a class="headerlink" href="#module-hcga.Operations.spectrum_adjacency" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="hcga.Operations.spectrum_adjacency.SpectrumAdjacency">
-<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.spectrum_adjacency.</code><code class="sig-name descname">SpectrumAdjacency</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/spectrum_adjacency.html#SpectrumAdjacency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.spectrum_adjacency.SpectrumAdjacency" title="Permalink to this definition">¶</a></dt>
-<dd><p>Spectral adjacency class</p>
-<dl class="method">
-<dt id="hcga.Operations.spectrum_adjacency.SpectrumAdjacency.feature_extraction">
-<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/spectrum_adjacency.html#SpectrumAdjacency.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.spectrum_adjacency.SpectrumAdjacency.feature_extraction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute measures of the spectrum of the adjacency matrix</p>
-<dl class="simple">
-<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to spectrum of the adjacency matrix</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>Spectral adjacency calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/generated/networkx.linalg.spectrum.adjacency_spectrum.html#networkx.linalg.spectrum.adjacency_spectrum">Networkx_spectrum_adjacency</a></p>
-</dd>
-</dl>
+  <div class="section" id="module-hcga.features.spectrum">
+<span id="the-spectrum-module"></span><h1>The spectrum module<a class="headerlink" href="#module-hcga.features.spectrum" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="hcga.features.spectrum.Spectrum">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.features.spectrum.</code><code class="sig-name descname">Spectrum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/spectrum.html#Spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.spectrum.Spectrum" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="hcga.features.spectrum.Spectrum.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/spectrum.html#Spectrum.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.spectrum.Spectrum.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute spectral measures.</p>
 </dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-hcga.Operations.spectrum_laplacian">
-<span id="the-spectrum-laplacian-module"></span><h2>The spectrum laplacian module<a class="headerlink" href="#module-hcga.Operations.spectrum_laplacian" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="hcga.Operations.spectrum_laplacian.SpectrumLaplacian">
-<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.spectrum_laplacian.</code><code class="sig-name descname">SpectrumLaplacian</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/spectrum_laplacian.html#SpectrumLaplacian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.spectrum_laplacian.SpectrumLaplacian" title="Permalink to this definition">¶</a></dt>
-<dd><p>Spectrum Laplacian class</p>
-<dl class="method">
-<dt id="hcga.Operations.spectrum_laplacian.SpectrumLaplacian.feature_extraction">
-<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/spectrum_laplacian.html#SpectrumLaplacian.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.spectrum_laplacian.SpectrumLaplacian.feature_extraction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute measures of the spectrum of the Laplacian matrix</p>
-<dl class="simple">
-<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to spectrum of the adjacency matrix</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>Spectral Laplacian calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/generated/networkx.linalg.spectrum.laplacian_spectrum.html">Networkx_spectrum_Laplacian</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-hcga.Operations.spectrum_modularity">
-<span id="the-spectrum-modularity-module"></span><h2>The spectrum modularity module<a class="headerlink" href="#module-hcga.Operations.spectrum_modularity" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="hcga.Operations.spectrum_modularity.SpectrumModularity">
-<em class="property">class </em><code class="sig-prename descclassname">hcga.Operations.spectrum_modularity.</code><code class="sig-name descname">SpectrumModularity</code><span class="sig-paren">(</span><em class="sig-param">G</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/spectrum_modularity.html#SpectrumModularity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.spectrum_modularity.SpectrumModularity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Spectrum modularity class</p>
-<dl class="method">
-<dt id="hcga.Operations.spectrum_modularity.SpectrumModularity.feature_extraction">
-<code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/Operations/spectrum_modularity.html#SpectrumModularity.feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.Operations.spectrum_modularity.SpectrumModularity.feature_extraction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute measures of the spectrum of the modularity matrix</p>
-<dl class="simple">
-<dt>G<span class="classifier">graph</span></dt><dd><p>A networkx graph</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>feature_list<span class="classifier">dict</span></dt><dd><p>Dictionary of features related to spectrum of the modularity matrix</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>Spectral modularity calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/generated/networkx.linalg.spectrum.modularity_spectrum.html">Networkx_spectrum_modularity</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</div>
 </div>
 
 
@@ -136,16 +65,6 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">The spectrum module</a><ul>
-<li><a class="reference internal" href="#module-hcga.Operations.spectrum_adjacency">The spectrum adjacency module</a></li>
-<li><a class="reference internal" href="#module-hcga.Operations.spectrum_laplacian">The spectrum laplacian module</a></li>
-<li><a class="reference internal" href="#module-hcga.Operations.spectrum_modularity">The spectrum modularity module</a></li>
-</ul>
-</li>
-</ul>
-
   <h4>Previous topic</h4>
   <p class="topless"><a href="sparsification.html"
                         title="previous chapter">The sparsification module</a></p>
@@ -168,7 +87,7 @@
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -194,7 +113,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019, R. Peach, H. Palasciano and A. Arnaudon,.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>
 </html>
