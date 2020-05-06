@@ -11,7 +11,7 @@ This is the official repository of *hcga*, a highly comparative graph analysis t
 
 Navigate to the main folder simply type:
 
-```pip install -e .```
+```pip install .```
 
 ## Documentation
 
@@ -28,17 +28,19 @@ R. Peach, H. Palasciano, A. Arnaudon, M. Barahona, et al. “hcga: Highly Compar
 
 ## Run test file
 
-In the example folder, the script ``run.py`` can be used to run the examples of the paper, simply as 
+In the example folder, the script ``run.py`` can be used to run the examples of the paper, simply get the dataset
+``` hcga get_data DATASET```
+then extract features with
+```./run.sh .datasets/DATASET```
+and run analysis suite with
+```./analysis.sh DATASET```
 
-```./run.sh DATASET```
-
-where ``DATASET`` can be one of 
+In the paper, we used ``DATASET`` as one of 
 * ``ENZYMES``
 * ``DD``
 * ``COLLAB``
 * ``PROTEINS``
 * ``REDDIT-MULTI-12K``
-* ``NEURONS``
 
 More comments are in the scripts for some parameters choices. 
 
