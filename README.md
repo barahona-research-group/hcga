@@ -15,14 +15,14 @@ Navigate to the main folder simply type:
 
 ## Documentation
 
-See https://imperialcollegelondon.github.io/hcga/ for the documentation. 
+See https://barahona-research-group.github.io/hcga/ for the documentation. 
 
 ## Cite
 
 Please cite our paper if you use this code in your own work:
 
 ```
-R. Peach, H. Palasciano, A. Arnaudon, M. Barahona, “hcga: Highly Comparative Graph Analysis for graph phenotyping”, In preparation, 2019
+R. Peach, H. Palasciano, A. Arnaudon, M. Barahona, et al. “hcga: Highly Comparative Graph Analysis for graph phenotyping”, In preparation, 2019
 
 ```
 
