@@ -8,7 +8,7 @@ This is to be done the first time, then the next to upate it.
 1) Create a folder called hcga-docs near the hcga git folder (same level):
 ``` mkdir hcga-docs```
 2) Clone the hcga repo in subfolder html: 
-```git clone https://github.com/ImperialCollegeLondon/hcga.git html```
+```git clone https://github.com/barahona-research-group/hcga.git html```
 3) move into it: 
 ```cd html```
 4) Switch branches to gh-pages:
@@ -17,11 +17,10 @@ git branch gh-pages
 git symbolic-ref HEAD refs/heads/gh-pages  # auto-switches branches to gh-pages
 rm .git/index
 git clean -fdx
-git branch
 ```
 
 ## Update the doc
-1) in the main repo (hcg), do
+1) in the main repo (hcga), do
 ```
 cd docs
 make html
