@@ -234,7 +234,4 @@ def generate_data(dataset_name, folder):
         print("---Downloading and creating pickle for {}---".format(dataset_name))
         from .dataset_creation import make_benchmark_dataset
 
-        try:
-            make_benchmark_dataset(dataset_name=dataset_name, folder=folder)
-        except Exception as e:
-            print("Could not load this benchmark dataset, exception", e)
+        make_benchmark_dataset(dataset_name=dataset_name, folder=folder)

@@ -1,6 +1,6 @@
 """utils functions"""
 import numpy as np
-
+import pandas as pd
 from hcga.graph import Graph
 
 
@@ -14,12 +14,12 @@ def timeout_handler(signum, frame):
 
 def get_trivial_graph(n_node_features=0):
     """Generate a trivial graph for internal purposes."""
+    nodes = pd.DataFrame([0, 1, 2])
     if n_node_features > 0:
-        features = n_node_features * [0.0]
-        nodes = [(0, features), (1, features), (2, features)]
-    else:
-        nodes = [0, 1, 2]
-    edges = [(0, 1, 1.0), (1, 2, 1.0), (2, 1, 1.0)]
+        nodes["features"] = 3 * [n_node_features * [0.0]]
+    edges = pd.DataFrame()
+    edges["start_node"] = [0, 1, 2]
+    edges["end_node"] = [1, 2, 0]
     return Graph(nodes, edges, 0)
 
 

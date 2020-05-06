@@ -58,6 +58,7 @@ class CommunitiesModularity(FeatureClass):
             "Number of communities",
             InterpretabilityScore(4),
         )
+
         self.add_feature(
             "largest_commsize",
             lambda graph: len(eval_modularity(graph)[0]),

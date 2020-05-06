@@ -2,6 +2,11 @@
 
 This is the official repository of *hcga*, a highly comparative graph analysis toolbox. It performs a massive feature extraction from a set of graphs, and applies supervised classification methods. 
 
+<p align="center">
+  <img src="https://github.com/barahona-research-group/hcga/blob/master/docs/artwork/hcga_workflow.png" width="800" />
+</p>
+
+
 ## Installation
 
 Navigate to the main folder simply type:
@@ -10,14 +15,14 @@ Navigate to the main folder simply type:
 
 ## Documentation
 
-See https://imperialcollegelondon.github.io/hcga/ for the documentation. 
+See https://barahona-research-group.github.io/hcga/ for the documentation. 
 
 ## Cite
 
 Please cite our paper if you use this code in your own work:
 
 ```
-R. Peach, H. Palasciano, A. Arnaudon, M. Barahona, “hcga: Highly Comparative Graph Analysis for graph phenotyping”, In preparation, 2019
+R. Peach, H. Palasciano, A. Arnaudon, M. Barahona, et al. “hcga: Highly Comparative Graph Analysis for graph phenotyping”, In preparation, 2019
 
 ```
 
