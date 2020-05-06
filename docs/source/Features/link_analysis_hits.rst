@@ -1,4 +1,4 @@
 The link analysis hits module
 ==============================
-.. automodule:: hcga.Operations.link_analysis_hits
+.. automodule:: hcga.features.link_analysis_hits
    :members:

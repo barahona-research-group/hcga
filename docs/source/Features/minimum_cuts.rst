@@ -1,4 +1,4 @@
 The minimum cuts module
 ==============================
-.. automodule:: hcga.Operations.minimum_cuts
+.. automodule:: hcga.features.minimum_cuts
    :members:

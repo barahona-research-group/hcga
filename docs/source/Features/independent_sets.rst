@@ -1,4 +1,4 @@
 The independent sets module
 ==============================
-.. automodule:: hcga.Operations.independent_sets
+.. automodule:: hcga.features.independent_sets
    :members:

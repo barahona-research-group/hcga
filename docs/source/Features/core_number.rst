@@ -1,4 +1,4 @@
 The core_number module
 ==============================
-.. automodule:: hcga.Operations.core_number
+.. automodule:: hcga.features.core_number
    :members:

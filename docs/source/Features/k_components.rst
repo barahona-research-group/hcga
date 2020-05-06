@@ -1,4 +1,4 @@
 The k-components module
 ==============================
-.. automodule:: hcga.Operations.k_components
+.. automodule:: hcga.features.k_components
    :members:

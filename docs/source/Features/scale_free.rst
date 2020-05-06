@@ -1,4 +1,4 @@
 The scale free module
 ==============================
-.. automodule:: hcga.Operations.scale_free
+.. automodule:: hcga.features.scale_free
    :members:
