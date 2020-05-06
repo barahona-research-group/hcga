@@ -1,4 +1,4 @@
 The efficiency module
 ==============================
-.. automodule:: hcga.Operations.efficiency
+.. automodule:: hcga.features.efficiency
    :members:

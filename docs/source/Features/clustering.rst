@@ -1,4 +1,4 @@
 The clustering module
 ==============================
-.. automodule:: hcga.Operations.clustering
+.. automodule:: hcga.features.clustering
    :members:

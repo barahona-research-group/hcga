@@ -2,6 +2,7 @@
 import networkx as nx
 import numpy as np
 import scipy as sc
+from tqdm import tqdm
 
 MIN_NUM_NODES = 2
 
@@ -64,6 +65,7 @@ class GraphCollection:
     def maximal_subgraphs(self):
         """ Overwrites each graph with its maximal subgraph """
         print("Returning the maximal subgraph for each graph")
+
         for graph in self.graphs:
             graph.maximal_subgraph()
 
@@ -142,17 +144,17 @@ class Graph:
         self._graph_networkx.add_weighted_edges_from(edges)
 
     def maximal_subgraph(self):
+        """Overwrite the graph with its maximal subgraph."""
         raise Exception("WIP")
         row = [edge[0] for edge in self.edges]
         col = [edge[1] for edge in self.edges]
 
         # renumbering to zero required to create a scipy sparse matrix
         renum_val = np.min([row, col])
-        row = row - renum_val
-        col = col - renum_val
+        row -= renum_val
+        col -= renum_val
 
-        weight = np.ones(len(row))
-        adj = sc.sparse.coo_matrix((weight, (row, col)))
+        adj = sc.sparse.coo_matrix((np.ones(len(row)), (row, col)))
         n_components, labels = sc.sparse.csgraph.connected_components(
             csgraph=adj, return_labels=True
         )
@@ -160,19 +162,14 @@ class Graph:
         # returning to original numbering
         idx_max_subgraph = np.where(labels == 0)[0] + renum_val
 
-        edge_list = []
-        for edge in self.edges:
-            if edge[0] in idx_max_subgraph and edge[1] in idx_max_subgraph:
-                edge_list.append(edge)
+        self.edges = [
+            edge
+            for edge in self.edges
+            if edge[0] in idx_max_subgraph and edge[1] in idx_max_subgraph
+        ]
 
-        node_list = []
-        for node in self.nodes:
-            if self.n_node_features == 0:
-                if node in idx_max_subgraph:
-                    node_list.append(node)
-            else:
-                if node[0] in idx_max_subgraph:
-                    node_list.append(node)
+        if self.n_node_features == 0:
+            self.nodes = [node for node in self.nodes if node in idx_max_subgraph]
+        else:
+            self.nodes = [node for node in self.nodes if node[0] in idx_max_subgraph]
 
-        self.edges = edge_list
-        self.nodes = node_list

@@ -74,8 +74,7 @@ Documentation of the API of *hcga*.
 .. toctree::
    :maxdepth: 3
 
-   graph
-   operations
+   feature_class 
    Features
 
 

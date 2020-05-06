@@ -1,5 +1,5 @@
 The assortativity module
 =============================================
-.. automodule:: hcga.Operations.assortativity
+.. automodule:: hcga.features.assortativity
    :members:
 

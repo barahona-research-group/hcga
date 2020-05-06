@@ -1,4 +1,4 @@
 The rich club module
 ==============================
-.. automodule:: hcga.Operations.rich_club
+.. automodule:: hcga.features.rich_club
    :members:
