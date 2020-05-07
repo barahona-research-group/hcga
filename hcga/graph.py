@@ -4,6 +4,7 @@ import numpy as np
 import scipy as sc
 
 MIN_NUM_NODES = 2
+MIN_NUM_EDGES = 1
 
 
 class GraphCollection:
@@ -110,7 +111,7 @@ class Graph:
         """Verify if the graph is large enough to be considered."""
         if len(self.nodes.index) <= MIN_NUM_NODES:
             self.disabled = True
-        if not self.edges.index:
+        if len(self.edges.index) <= MIN_NUM_EDGES:
             self.disabled = True
 
     def get_graph(self, encoding=None):

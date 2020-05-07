@@ -1,6 +1,7 @@
 """make test datasets"""
 import networkx as nx
 import numpy as np
+import pandas as pd
 
 from hcga.graph import Graph, GraphCollection
 from hcga.io import save_dataset
@@ -58,9 +59,12 @@ def make(folder="./datasets", add_features=False, write_to_file=True, n_graphs=5
 
     graphs_coll = GraphCollection()
     for graph in graphs:
-        graphs_coll.add_graph(
-            Graph(list(graph.nodes), list(graph.edges), np.random.randint(0, 2))
-        )
+        nodes = pd.DataFrame(list(graph.nodes))
+        edges = pd.DataFrame(columns=['start_node', 'end_node'])
+        for i, edge in enumerate(graph.edges):
+            edges.loc[i, 'start_node'] = edge[0]
+            edges.loc[i, 'end_node'] = edge[1]
+        graphs_coll.add_graph(Graph(nodes, edges, np.random.randint(0, 2)))
 
     if write_to_file:
         save_dataset(graphs_coll, "TESTDATA", folder=folder)
