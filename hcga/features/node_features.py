@@ -11,6 +11,7 @@ featureclass_name = "NodeFeatures"
 
 class NodeFeatures(FeatureClass):
     """Node Features class."""
+
     modes = ["fast", "medium", "slow"]
     shortname = "NF"
     name = "node_features"

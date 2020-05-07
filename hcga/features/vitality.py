@@ -8,6 +8,7 @@ featureclass_name = "Vitality"
 
 class Vitality(FeatureClass):
     """Vitality class."""
+
     modes = ["slow"]
     shortname = "V"
     name = "vitality"

@@ -8,6 +8,7 @@ featureclass_name = "StructuralHoles"
 
 class StructuralHoles(FeatureClass):
     """Structural Holes class."""
+
     modes = ["medium", "slow"]
     shortname = "SH"
     name = "structural_holes"

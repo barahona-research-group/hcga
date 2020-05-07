@@ -22,6 +22,8 @@ from . import plotting, utils
 L = logging.getLogger(__name__)
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 
+# pylint: disable-all
+
 
 def _get_classifier(classifier):
     """Get a classifier."""

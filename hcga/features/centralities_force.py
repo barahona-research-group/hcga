@@ -1,9 +1,10 @@
 """Force centrality class."""
 import numpy as np
+
 try:
     from fa2 import ForceAtlas2
 except ImportError:
-    print('Install ForceAtlas2 if you want to use force centrality')
+    print("Install ForceAtlas2 if you want to use force centrality")
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 

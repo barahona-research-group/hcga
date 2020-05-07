@@ -94,7 +94,9 @@ class CommunitiesAsyn(FeatureClass):
 
 
 @py_random_state(3)
-def asyn_fluidc(G, k, max_iter=100, seed=None):  # noqa, pylint: disable=too-many-locals,too-many-branches,too-many-statements
+def asyn_fluidc(
+    G, k, max_iter=100, seed=None
+):  # noqa, pylint: disable=too-many-locals,too-many-branches,too-many-statements
     """This function is adapted from networks directly."""
     # Initial checks
     if not isinstance(k, int):

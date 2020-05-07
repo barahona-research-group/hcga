@@ -9,7 +9,7 @@ import seaborn as sns
 import shap
 from scipy.cluster.hierarchy import dendrogram, linkage
 
-# matplotlib.use("agg")
+# pylint: disable-all
 
 
 def shap_plots(X, y, shap_values, folder, graphs, max_feats=20):

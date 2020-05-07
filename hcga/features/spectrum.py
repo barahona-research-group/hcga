@@ -10,6 +10,7 @@ featureclass_name = "Spectrum"
 
 class Spectrum(FeatureClass):
     """Spectrum class."""
+
     modes = ["medium", "slow"]
     shortname = "SPM"
     name = "spectrum"

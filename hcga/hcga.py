@@ -2,6 +2,8 @@ from .analysis import analysis
 from .extraction import extract
 from .io import load_dataset, load_features, save_dataset, save_features
 
+# pylint: disable-all
+
 
 class Hcga:
     """hcga standard object class.
