@@ -1,10 +1,8 @@
 """Node clique number class."""
-import networkx as nx
-import numpy as np
 from networkx.algorithms import clique
 
 from ..feature_class import FeatureClass, InterpretabilityScore
-from . import utils
+from .utils import ensure_connected
 
 featureclass_name = "NodeCliqueNumber"
 
@@ -29,7 +27,7 @@ class NodeCliqueNumber(FeatureClass):
         self.add_feature(
             "clique sizes",
             lambda graph: list(
-                clique.node_clique_number(utils.ensure_connected(graph)).values()
+                clique.node_clique_number(ensure_connected(graph)).values()
             ),
             "the distribution of clique sizes",
             InterpretabilityScore(3),

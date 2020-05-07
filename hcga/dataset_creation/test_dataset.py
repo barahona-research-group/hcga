@@ -35,13 +35,13 @@ def make(folder="./datasets", add_features=False, write_to_file=True, n_graphs=5
     G.add_node(0)
     G.add_node(1, weight=2)
     G.add_node(2, weight=3)
-    for i in range(n_graphs):
+    for _ in range(n_graphs):
         graphs.append(_add_graph_desc(G.copy(), "graph without edges"))
 
     # directed graph no weights
     G = nx.DiGraph()
     G.add_nodes_from(range(100, 110))
-    for i in range(n_graphs):
+    for _ in range(n_graphs):
         graphs.append(_add_graph_desc(G.copy(), "directed graph with no weights"))
 
     # directed graph weighted
@@ -49,7 +49,7 @@ def make(folder="./datasets", add_features=False, write_to_file=True, n_graphs=5
     H = nx.path_graph(10)
     G.add_nodes_from(H)
     G.add_edges_from(H.edges)
-    for i in range(n_graphs):
+    for _ in range(n_graphs):
         graphs.append(_add_graph_desc(G.copy(), "directed graph weighted"))
 
     # adding features to all

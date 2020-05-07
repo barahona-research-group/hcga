@@ -1,7 +1,5 @@
 """Dominating sets class."""
-from functools import lru_cache
 import networkx as nx
-import numpy as np
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 
@@ -110,7 +108,7 @@ def min_weighted_dominating_set(G, weight=None):
 
     """
     # The unique dominating set for the null graph is the empty set.
-    if len(G) == 0:
+    if len(G) == 0:  # pylint: disable=len-as-condition
         return set()
 
     # This is the dominating set that will eventually be returned.

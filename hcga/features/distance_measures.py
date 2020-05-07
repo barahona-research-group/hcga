@@ -1,6 +1,5 @@
 """Distance Measures class."""
 import networkx as nx
-import numpy as np
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 from .utils import ensure_connected

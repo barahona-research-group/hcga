@@ -1,12 +1,6 @@
 """make synthetic datasets: WIP!!"""
-import os
-import re
-import shutil
-import zipfile
-
 import networkx as nx
 import numpy as np
-import wget
 
 from hcga.io import save_dataset
 from hcga.graph import Graph, GraphCollection
@@ -17,6 +11,7 @@ np.random.seed(0)
 def make(
     folder="./datasets", write_to_file=True, graph_type="SBM",
 ):
+    """Make dataset."""
     if graph_type == "SBM":
         graphs = make_SBM()
     else:
@@ -62,7 +57,7 @@ def make_SBM():
 
 # below are deprecated functions
 def synthetic_data_watts_strogatz(N=1000):
-
+    """small world."""
     graphs = []
     graph_labels = []
 
@@ -77,6 +72,7 @@ def synthetic_data_watts_strogatz(N=1000):
 
 
 def synthetic_data_powerlaw_cluster(N=1000):
+    """powerlaw."""
     graphs = []
     graph_labels = []
 
@@ -91,12 +87,13 @@ def synthetic_data_powerlaw_cluster(N=1000):
 
 
 def synthetic_data_sbm(N=1000):
+    """sbm"""
     graphs = []
     graph_labels = []
 
     import random
 
-    for i in range(int(N / 2)):
+    for _ in range(int(N / 2)):
         G = nx.stochastic_block_model(
             [random.randint(10, 30), random.randint(10, 30), random.randint(10, 30)],
             [[0.6, 0.1, 0.1], [0.1, 0.6, 0.1], [0.1, 0.1, 0.6]],
@@ -104,7 +101,7 @@ def synthetic_data_sbm(N=1000):
         graphs.append(G)
         graph_labels.append(1)
 
-    for i in range(int(N / 2)):
+    for _ in range(int(N / 2)):
         G = nx.stochastic_block_model(
             [random.randint(20, 40), random.randint(20, 40)], [[0.6, 0.1], [0.1, 0.6]]
         )

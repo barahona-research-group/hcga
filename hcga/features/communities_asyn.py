@@ -93,9 +93,9 @@ class CommunitiesAsyn(FeatureClass):
             )
 
 
-# this function is adapted from networks directly
 @py_random_state(3)
-def asyn_fluidc(G, k, max_iter=100, seed=None):
+def asyn_fluidc(G, k, max_iter=100, seed=None):  # noqa, pylint: disable=too-many-locals,too-many-branches,too-many-statements
+    """This function is adapted from networks directly."""
     # Initial checks
     if not isinstance(k, int):
         raise NetworkXError("k must be an integer.")
@@ -140,7 +140,7 @@ def asyn_fluidc(G, k, max_iter=100, seed=None):
                     continue
             # Check which is the community with highest density
             new_com = -1
-            if len(com_counter.keys()) > 0:
+            if com_counter.keys():
                 max_freq = max(com_counter.values())
                 best_communities = [
                     com

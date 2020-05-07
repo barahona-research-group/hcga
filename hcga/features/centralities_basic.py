@@ -1,6 +1,6 @@
 """Centralities class."""
-import networkx as nx
 import numpy as np
+import networkx as nx
 from networkx.algorithms import centrality
 
 from ..feature_class import FeatureClass, InterpretabilityScore
@@ -64,10 +64,9 @@ class CentralitiesBasic(FeatureClass):
 
         # Edge betweenness centrality
         def edge_betweenness_centrality(graph):
-            if len(graph.edges) > 0:
+            if graph.edges:
                 return list(centrality.edge_betweenness_centrality(graph).values())
-            else:
-                return [np.nan]
+            return [np.nan]
 
         self.add_feature(
             "edge betweenness centrality",
