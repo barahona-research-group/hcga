@@ -1,4 +1,4 @@
-"""import basic functions"""
+"""import basic functions."""
 
 from .analysis import analysis
 

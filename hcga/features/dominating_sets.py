@@ -1,26 +1,5 @@
-# -*- coding: utf-8 -*-
-# This file is part of hcga.
-#
-# Copyright (C) 2019,
-# Robert Peach (r.peach13@imperial.ac.uk),
-# Alexis Arnaudon (alexis.arnaudon@epfl.ch),
-# https://github.com/ImperialCollegeLondon/hcga.git
-#
-# hcga is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# hcga is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with hcga.  If not, see <http://www.gnu.org/licenses/>.
-
+"""Dominating sets class."""
 from functools import lru_cache
-
 import networkx as nx
 import numpy as np
 
@@ -30,8 +9,8 @@ featureclass_name = "DominatingSets"
 
 
 class DominatingSets(FeatureClass):
-    """Dominating sets class
-    
+    """Dominating sets class.
+
     A *dominating set* for a graph with node set *V* is a subset *D* of
     *V* such that every node not in *D* is adjacent to at least one
     member of *D* [1]_.
@@ -40,12 +19,12 @@ class DominatingSets(FeatureClass):
     ----------
 
 
-
     Notes
     -----
     Core number calculations using networkx:
-        `Networkx_dominating_set <https://networkx.github.io/documentation/stable/reference/algorithms/dominating.html>`_
-        
+        `Networkx_dominating_set <https://networkx.github.io/documentation/\
+        stable/reference/algorithms/dominating.html>`_
+
 
     References
     ----------
@@ -53,7 +32,6 @@ class DominatingSets(FeatureClass):
 
     .. [2] Abdol-Hossein Esfahanian. Connectivity Algorithms.
         http://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf
-    
     """
 
     modes = ["fast", "medium", "slow"]
@@ -62,13 +40,11 @@ class DominatingSets(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """
-        Compute the dominating sets of the network
+        """Compute the dominating sets of the network.
 
         Computed statistics
         -----
         Put here the list of things that are computed, with corresponding names
-
         """
 
         self.add_feature(
@@ -141,12 +117,10 @@ def min_weighted_dominating_set(G, weight=None):
     dom_set = set()
 
     def _cost(node_and_neighborhood):
-        """Returns the cost-effectiveness of greedily choosing the given
-        node.
+        """Returns the cost-effectiveness of greedily choosing the given node.
 
         `node_and_neighborhood` is a two-tuple comprising a node and its
         closed neighborhood.
-
         """
         v, neighborhood = node_and_neighborhood
         return G.nodes[v].get(weight, 1) / len(neighborhood - dom_set)

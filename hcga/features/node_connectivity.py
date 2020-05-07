@@ -1,24 +1,4 @@
-# -*- coding: utf-8 -*-
-# This file is part of hcga.
-#
-# Copyright (C) 2019,
-# Robert Peach (r.peach13@imperial.ac.uk),
-# Alexis Arnaudon (alexis.arnaudon@epfl.ch),
-# https://github.com/ImperialCollegeLondon/hcga.git
-#
-# hcga is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# hcga is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with hcga.  If not, see <http://www.gnu.org/licenses/>.
-
+"""Node connectivity class."""
 import networkx as nx
 import numpy as np
 
@@ -28,6 +8,8 @@ featureclass_name = "NodeConnectivity"
 
 
 class NodeConnectivity(FeatureClass):
+    """Node connectivity class."""
+
     modes = ["slow"]
     shortname = "NC"
     name = "node_connectivity"
@@ -46,7 +28,8 @@ class NodeConnectivity(FeatureClass):
         Notes
         -----
         Implementation of networkx code:
-            `Networkx_node_connectivity <https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/connectivity/connectivity.html#node_connectivity>`_
+            `Networkx_node_connectivity <https://networkx.github.io/documentation/stable/_modules/\
+            networkx/algorithms/connectivity/connectivity.html#node_connectivity>`_
 
         This is a flow based implementation of node connectivity. The
         algorithm works by solving $O((n-\delta-1+\delta(\delta-1)/2))$
@@ -55,13 +38,12 @@ class NodeConnectivity(FeatureClass):
         digraph and the computation of local node connectivity see
         :meth:`local_node_connectivity`. This implementation is based
         on algorithm 11 in [1]_.
-        
+
         References
         ----------
-        .. [1] White, Douglas R., and Mark Newman. 2001 A Fast Algorithm for 
+        .. [1] White, Douglas R., and Mark Newman. 2001 A Fast Algorithm for
         Node-Independent Paths. Santa Fe Institute Working Paper #01-07-035
         http://eclectic.ss.uci.edu/~drwhite/working.pdf
-
         """
 
         def node_conn(graph):

@@ -56,37 +56,43 @@ def extract_benchmark_graphs(datadir, dataname):  # pylint: disable=too-many-loc
 
     with open(prefix + "_graph_indicator.txt") as f:
         nodes_df = pd.read_csv(f, dtype=np.int, header=None) - 1
-    nodes_df.columns = ['graph_id']
+    nodes_df.columns = ["graph_id"]
 
     with open(prefix + "_graph_labels.txt") as f:
         graph_labels = pd.read_csv(f, header=None)
 
     edges_df = pd.DataFrame()
     with open(prefix + "_A.txt") as f:
-        for edges_df_next in pd.read_csv(f, sep=", ", delimiter=None, dtype=np.int, header=None, chunksize=1e6):
-           edges_df = edges_df.append(edges_df_next - 1) 
-    edges_df.columns = ['start_node', 'end_node']
-    edges_df['graph_id'] = nodes_df['graph_id'][edges_df['start_node'].to_list()].to_list()
+        for edges_df_next in pd.read_csv(
+            f, sep=", ", delimiter=None, dtype=np.int, header=None, chunksize=1e6
+        ):
+            edges_df = edges_df.append(edges_df_next - 1)
+    edges_df.columns = ["start_node", "end_node"]
+    edges_df["graph_id"] = nodes_df["graph_id"][
+        edges_df["start_node"].to_list()
+    ].to_list()
 
     columns = []
     if Path(prefix + "_node_labels.txt").exists():
         with open(prefix + "_node_labels.txt") as f:
-            nodes_df['labels_value'] = pd.read_csv(f, header=None)
-        nodes_df['labels'] = list(pd.get_dummies(nodes_df['labels_value']).to_numpy(dtype=float))
-        columns.append('labels')
+            nodes_df["labels_value"] = pd.read_csv(f, header=None)
+        nodes_df["labels"] = list(
+            pd.get_dummies(nodes_df["labels_value"]).to_numpy(dtype=float)
+        )
+        columns.append("labels")
 
     if Path(prefix + "_node_attributes.txt").exists():
         with open(prefix + "_node_attributes.txt") as f:
-            nodes_df['attributes'] = list(pd.read_csv(f, header=None).to_numpy())
-        columns.append('attributes')
+            nodes_df["attributes"] = list(pd.read_csv(f, header=None).to_numpy())
+        columns.append("attributes")
 
-    graph_ids = list(set(nodes_df['graph_id']))
+    graph_ids = list(set(nodes_df["graph_id"]))
     graphs = GraphCollection()
     for graph_id in graph_ids:
-        nodes = nodes_df.loc[nodes_df['graph_id'] == graph_id][columns]
-        edges = edges_df.loc[edges_df['graph_id'] == graph_id][['start_node', 'end_node']]
-        graphs.add_graph(
-            Graph(nodes, edges, graph_labels.loc[graph_id])
-        )
+        nodes = nodes_df.loc[nodes_df["graph_id"] == graph_id][columns]
+        edges = edges_df.loc[edges_df["graph_id"] == graph_id][
+            ["start_node", "end_node"]
+        ]
+        graphs.add_graph(Graph(nodes, edges, graph_labels.loc[graph_id]))
 
     return graphs

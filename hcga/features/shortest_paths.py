@@ -1,26 +1,5 @@
-# -*- coding: utf-8 -*-
-# This file is part of hcga.
-#
-# Copyright (C) 2019,
-# Robert Peach (r.peach13@imperial.ac.uk),
-# Alexis Arnaudon (alexis.arnaudon@epfl.ch),
-# https://github.com/ImperialCollegeLondon/hcga.git
-#
-# hcga is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# hcga is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with hcga.  If not, see <http://www.gnu.org/licenses/>.
-
+"""Shortest paths class."""
 from functools import lru_cache
-
 import networkx as nx
 import numpy as np
 
@@ -30,7 +9,7 @@ featureclass_name = "ShortestPaths"
 
 
 class ShortestPaths(FeatureClass):
-    """ Shortest paths class """
+    """Shortest paths class."""
 
     modes = ["fast", "medium", "slow"]
     shortname = "SP"
@@ -38,16 +17,13 @@ class ShortestPaths(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """
-        Compute the shortest path measures of the network
+        """Compute the shortest path measures of the network.
 
         Notes
         -----
-        
+
         References
         ----------
-
-
         """
 
         @lru_cache(maxsize=None)
@@ -62,7 +38,8 @@ class ShortestPaths(FeatureClass):
         self.add_feature(
             "largest_shortest_path",
             largest_shortest_path,
-            "For each node we compute the shortest paths to every other node. We then find the longest 'shortest path' for each node.",
+            "For each node we compute the shortest paths to every other node. \
+            We then find the longest 'shortest path' for each node.",
             InterpretabilityScore(3),
             statistics="centrality",
         )
@@ -75,7 +52,8 @@ class ShortestPaths(FeatureClass):
         self.add_feature(
             "mean_shortest_path",
             mean_shortest_path,
-            "For each node we compute the shortest paths to every other node. We then find the mean of the 'shortest paths' for each node.",
+            "For each node we compute the shortest paths to every other node. \
+            We then find the mean of the 'shortest paths' for each node.",
             InterpretabilityScore(3),
             statistics="centrality",
         )

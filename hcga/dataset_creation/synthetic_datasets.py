@@ -13,13 +13,14 @@ from hcga.graph import Graph, GraphCollection
 
 np.random.seed(0)
 
+
 def make(
     folder="./datasets", write_to_file=True, graph_type="SBM",
 ):
     if graph_type == "SBM":
         graphs = make_SBM()
     else:
-        raise Exception('This type of synthetic dataset is not yet implemented')
+        raise Exception("This type of synthetic dataset is not yet implemented")
     if write_to_file:
         save_dataset(graphs, "SYNTH_" + graph_type, folder=folder)
 
@@ -27,6 +28,7 @@ def make(
 def make_SBM():
     """Make SBM with 1, 2, 3 and 4 clusters."""
     n_graphs = 10
+
     def _add_graph(label):
         for _ in range(n_graphs):
             graph = nx.stochastic_block_model(sizes, probs)
@@ -58,7 +60,7 @@ def make_SBM():
     return graphs
 
 
-### below are deprecated functions ###
+# below are deprecated functions
 def synthetic_data_watts_strogatz(N=1000):
 
     graphs = []

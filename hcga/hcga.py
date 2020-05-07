@@ -8,11 +8,10 @@ class Hcga:
 
     Parameters
     ----------
-
     """
 
     def __init__(self):
-        """init function"""
+        """init function."""
 
     def load_data(
         self,
@@ -31,7 +30,7 @@ class Hcga:
             self.graphs = load_dataset(dataset)
 
     def generate_data(self, dataset_name="ENZYMES", folder="./datasets"):
-        """ generate benchmark data """
+        """generate benchmark data."""
 
         if dataset_name == "TESTDATA":
             print("--- Building test dataset and creating pickle ---")

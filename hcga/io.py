@@ -1,4 +1,4 @@
-"""input/output functions"""
+"""input/output functions."""
 import os
 import pickle
 from pathlib import Path
@@ -7,7 +7,7 @@ import numpy as np
 
 
 def _ensure_weights(graph):
-    """ensure that graphs edges have a weights value"""
+    """ensure that graphs edges have a weights value."""
     for u, v in graph.edges:
         if "weight" not in graph[u][v]:
             graph[u][v]["weight"] = 1.0
@@ -20,14 +20,14 @@ def _set_node_features(graph):
             graph.nodes[node]["feat"] = [0]
 
         feat_shape = np.shape(graph.nodes[node]["feat"])
-        if len(feat_shape) == 0:
+        if not feat_shape:
             graph.nodes[node]["feat"] = [graph.nodes[node]["feat"]]
         elif len(feat_shape) > 1:
             raise Exception("Please provide flat node features vector.")
 
 
 def save_analysis(X, explainer, shap_values, folder=".", filename="analysis_results"):
-    """save results of analysis"""
+    """save results of analysis."""
     if not Path(folder).exists():
         os.mkdir(folder)
 
@@ -42,7 +42,7 @@ def load_analysis(folder="/", filename="analysis_results"):
 
 
 def save_dataset(graphs, filename, folder="./datasets"):
-    """Save a dataset in a pickle"""
+    """Save a dataset in a pickle."""
     if not os.path.exists(folder):
         os.mkdir(folder)
 
@@ -57,7 +57,7 @@ def load_dataset(filename):
 
 
 def save_features(features, feature_info, graphs, filename="./features.pkl"):
-    """Save the features in a pickle"""
+    """Save the features in a pickle."""
     if not Path(filename).parent.is_dir():
         Path(filename).parent.mkdir()
 

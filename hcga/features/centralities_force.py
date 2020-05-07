@@ -1,26 +1,9 @@
-# -*- coding: utf-8 -*-
-# This file is part of hcga.
-#
-# Copyright (C) 2019,
-# Robert Peach (r.peach13@imperial.ac.uk),
-# Alexis Arnaudon (alexis.arnaudon@epfl.ch),
-# https://github.com/ImperialCollegeLondon/hcga.git
-#
-# hcga is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# hcga is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with hcga.  If not, see <http://www.gnu.org/licenses/>.
-
+"""Force centrality class."""
 import numpy as np
-from fa2 import ForceAtlas2
+try:
+    from fa2 import ForceAtlas2
+except ImportError:
+    print('Install ForceAtlas2 if you want to use force centrality')
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 
@@ -28,7 +11,7 @@ featureclass_name = "ForceCentrality"
 
 
 class ForceCentrality(FeatureClass):
-    """Basic stats class"""
+    """Force centrality class."""
 
     modes = ["medium", "slow"]
     shortname = "CF"
@@ -36,13 +19,11 @@ class ForceCentrality(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """
-        Compute some standard centrality measures for the network
+        """Compute some standard centrality measures for the network.
 
         Computed statistics
         -----
         Put here the list of things that are computed, with corresponding names
-
         """
 
         # number of times to average force centrality
@@ -69,7 +50,8 @@ class ForceCentrality(FeatureClass):
         self.add_feature(
             "force_centrality",
             force_centrality,
-            "Force centrality is the distance from the centre of mass of the network - larger values indicate further from the centre",
+            "Force centrality is the distance from the centre of mass of the network \
+            , larger values indicate further from the centre",
             InterpretabilityScore(4),
             statistics="centrality",
         )

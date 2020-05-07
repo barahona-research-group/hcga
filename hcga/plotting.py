@@ -1,4 +1,4 @@
-"""plotting functions"""
+"""plotting functions."""
 import os
 
 import matplotlib.pyplot as plt
@@ -13,7 +13,7 @@ from scipy.cluster.hierarchy import dendrogram, linkage
 
 
 def shap_plots(X, y, shap_values, folder, graphs, max_feats=20):
-    """plot summary"""
+    """plot summary."""
     custom_bar_ranking_plot(shap_values, X, folder, max_feats=max_feats)
     custom_dot_summary_plot(shap_values, X, folder, max_feats=max_feats)
     plot_dendogram_shap(shap_values, X, folder, max_feats=max_feats)
@@ -22,14 +22,12 @@ def shap_plots(X, y, shap_values, folder, graphs, max_feats=20):
 
 
 def custom_bar_ranking_plot(shap_vals, data, folder, max_feats):
-    """
-    Function for customizing and saving SHAP summary bar plot. 
+    """Function for customizing and saving SHAP summary bar plot.
 
     Arguments:
     shap_vals = SHAP values list generated from explainer
     data      = data to explain
     max_feats = number of features to display
-
     """
     plt.rcParams.update({"font.size": 14})
     shap.summary_plot(
@@ -44,14 +42,12 @@ def custom_bar_ranking_plot(shap_vals, data, folder, max_feats):
 
 
 def custom_dot_summary_plot(shap_vals, data, folder, max_feats):
-    """
-    Function for customizing and saving SHAP summary dot plot. 
+    """Function for customizing and saving SHAP summary dot plot.
 
     Arguments:
     shap_vals = SHAP values list generated from explainer
     data      = data to explain
     max_feats = number of features to display
-
     """
     num_classes = len(shap_vals)
     for i in range(num_classes):
@@ -108,7 +104,7 @@ def plot_dendogram_shap(shap_vals, data, folder, max_feats=20):
 
 
 def plot_feature_summary(data, graphs, folder, shap_vals=None, feat_name=None):
-    """ for a given feature id, plot the feature summary """
+    """for a given feature id, plot the feature summary."""
 
     if not feat_name:
         shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
@@ -165,9 +161,7 @@ def plot_feature_summary(data, graphs, folder, shap_vals=None, feat_name=None):
 
 
 def plot_shap_violin(shap_vals, data, labels, folder, max_feats=20):
-    """
-    Plot the violins of a feature
-    """
+    """Plot the violins of a feature."""
     shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
     top_feat_idx = shap_mean.argsort()[::-1][:max_feats]
 
@@ -197,8 +191,7 @@ def plot_shap_violin(shap_vals, data, labels, folder, max_feats=20):
 
 
 def custom_violin_summary_plot(shap_vals, data, max_feats):
-    """
-    Function for customizing and saving SHAP violin plot. 
+    """Function for customizing and saving SHAP violin plot.
 
     Arguments:
     shap_vals = SHAP values list generated from explainer
@@ -226,14 +219,14 @@ def custom_violin_summary_plot(shap_vals, data, max_feats):
 
 
 def basic_plots(X, top_features, folder="."):
-    """main function to plot sklearn analysis"""
+    """main function to plot sklearn analysis."""
     # TODO: add other functions, with argument in this one to select what to plot
 
     plot_feature_importance(X, top_features, folder=folder)
 
 
 def plot_feature_importance(X, top_features, folder=".", ext=".svg"):
-    """plot the feature importances from sklearn computation"""
+    """plot the feature importances from sklearn computation."""
     mean_features = np.mean(np.array(top_features), axis=0)
     rank_features = np.argsort(mean_features)[::-1]
 
@@ -280,9 +273,7 @@ def plot_heatmap_top_features():
 
 
 def plot_top_features(X, top_feats, feature_names, image_folder, threshold=0.9):
-    """
-    Plot the dendogram, heatmap and importance distribution of top features
-    """
+    """Plot the dendogram, heatmap and importance distribution of top features."""
 
     mean_importance = np.mean(np.asarray(top_feats), 0)
     sorted_mean_importance = np.sort(mean_importance)[::-1]
@@ -344,9 +335,7 @@ def plot_top_features(X, top_feats, feature_names, image_folder, threshold=0.9):
 def top_features_importance_plot(
     g, X, top_feat_indices, feature_names, y, name="xgboost", image_folder="images"
 ):
-    """ 
-    Plot the top feature importances
-    """
+    """Plot the top feature importances."""
 
     import matplotlib.cm as cm
     import random
@@ -368,9 +357,7 @@ def top_features_importance_plot(
 def plot_violin_feature(
     g, X, y, feature_id, feature_names, name="xgboost", image_folder="images"
 ):
-    """
-    Plot the violins of a feature
-    """
+    """Plot the violins of a feature."""
 
     import random
 

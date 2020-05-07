@@ -1,4 +1,4 @@
-"""functions to extract features from graphs"""
+"""functions to extract features from graphs."""
 import multiprocessing
 import time
 from collections import defaultdict
@@ -13,7 +13,7 @@ from tqdm import tqdm
 from . import utils
 
 
-def extract(
+def extract(  # pylint: disable=too-many-arguments
     graphs,
     n_workers,
     mode="fast",
@@ -24,7 +24,7 @@ def extract(
     timeout=10,
     connected=False,
 ):
-    """main function to extract features"""
+    """main function to extract features."""
     if not with_node_features:
         graphs.remove_node_features()
         n_node_features = 0
@@ -64,22 +64,7 @@ def extract(
     )
 
     if with_runtimes:
-        runtimes = defaultdict(list)
-        for raw_feature in all_features_df.values():
-            for feat in raw_feature[1]:
-                runtimes[feat].append(raw_feature[1][feat])
-        feature_names, runtimes = list(runtimes.keys()), list(runtimes.values())
-        runtime_sortid = np.argsort(np.mean(runtimes, axis=1))[::-1]
-        for feat_id in runtime_sortid:
-            print(
-                "Runtime of",
-                feature_names[feat_id],
-                "is",
-                np.round(np.mean(runtimes[feat_id]), 3),
-                "( std = ",
-                np.round(np.std(runtimes[feat_id]), 3),
-                ") seconds per graph.",
-            )
+        _print_runtimes(all_features_df)
         return 0.0, 0.0
 
     _set_graph_labels(all_features_df, graphs)
@@ -90,6 +75,26 @@ def extract(
     return all_features_df, features_info_df
 
 
+def _print_runtimes(all_features_df):
+    """Print sorted runtimes."""
+    runtimes = defaultdict(list)
+    for raw_feature in all_features_df.values():
+        for feat in raw_feature[1]:
+            runtimes[feat].append(raw_feature[1][feat])
+    feature_names, runtimes = list(runtimes.keys()), list(runtimes.values())
+    runtime_sortid = np.argsort(np.mean(runtimes, axis=1))[::-1]
+    for feat_id in runtime_sortid:
+        print(
+            "Runtime of",
+            feature_names[feat_id],
+            "is",
+            np.round(np.mean(runtimes[feat_id]), 3),
+            "( std = ",
+            np.round(np.std(runtimes[feat_id]), 3),
+            ") seconds per graph.",
+        )
+
+
 def _set_graph_labels(features, graphs):
     """Set graph labels to features dataframe."""
     for graph in graphs:
@@ -97,7 +102,7 @@ def _set_graph_labels(features, graphs):
 
 
 def _load_feature_class(feature_name):
-    """load the feature class from feature name"""
+    """load the feature class from feature name."""
     feature_module = import_module("hcga.features." + feature_name)
     return getattr(feature_module, feature_module.featureclass_name)
 
@@ -109,7 +114,7 @@ def get_list_feature_classes(
     n_node_features=0,
     timeout=10,
 ):
-    """Generates and returns the list of feature classes to compute for a given mode"""
+    """Generates and returns the list of feature classes to compute for a given mode."""
     feature_path = Path(__file__).parent / "features"
     non_feature_files = ["__init__", "utils"]
 
@@ -140,7 +145,7 @@ def get_list_feature_classes(
 
 
 def feature_extraction(graph, list_feature_classes, with_runtimes=False):
-    """extract features from a single graph"""
+    """extract features from a single graph."""
     if with_runtimes:
         runtimes = {}
 
@@ -169,7 +174,7 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
 def compute_all_features(
     graphs, list_feature_classes, n_workers=1, with_runtimes=False,
 ):
-    """compute the feature from all graphs"""
+    """compute the feature from all graphs."""
     print("Computing features for {} graphs:".format(len(graphs)))
     if with_runtimes:
         n_workers = 1

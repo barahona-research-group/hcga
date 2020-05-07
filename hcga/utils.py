@@ -1,4 +1,4 @@
-"""utils functions"""
+"""utils functions."""
 import numpy as np
 import pandas as pd
 from hcga.graph import Graph
@@ -9,6 +9,7 @@ class TimeoutError(Exception):
 
 
 def timeout_handler(signum, frame):
+    """Function to raise timeout exception."""
     raise TimeoutError
 
 

@@ -1,4 +1,4 @@
-""" hcga app with click module """
+"""hcga app with click module."""
 import os
 import warnings
 from pathlib import Path
@@ -7,10 +7,12 @@ import click
 
 warnings.simplefilter("ignore")
 
+# pylint: disable=too-many-arguments,too-many-locals
+
 
 @click.group()
 def cli():
-    """init app"""
+    """init app."""
 
 
 @cli.command("extract_features")
@@ -86,7 +88,7 @@ def extract_features(
     timeout,
     connected,
 ):
-    """Extract features from dataset of graphs and save the feature matrix, info and labels"""
+    """Extract features from dataset of graphs and save the feature matrix, info and labels."""
     from .io import load_dataset, save_features
     from .extraction import extract
 
@@ -178,7 +180,7 @@ def feature_analysis(
     plot,
     interpretability,
 ):
-    """Analysis of the features extracted in feature_file"""
+    """Analysis of the features extracted in feature_file."""
     from .io import load_features
 
     from .analysis import analysis
@@ -187,7 +189,7 @@ def feature_analysis(
     feature_filename = results_folder / feature_file
     features, features_info, graphs = load_features(filename=feature_filename)
 
-    X, shap_values = analysis(
+    analysis(
         features,
         features_info,
         graphs,
@@ -211,14 +213,13 @@ def feature_analysis(
     help="Location to save dataset",
 )
 def generate_data(dataset_name, folder):
-    """Generate the benchmark or test data
+    """Generate the benchmark or test data.
 
     Dataset_name can be either:
         - TESTDATA: to generate synthetic dataset for testing
-        - DD, ENZYMES, REDDIT-MULTI-12K, PROTEINS, MUTAG, 
+        - DD, ENZYMES, REDDIT-MULTI-12K, PROTEINS, MUTAG,
         or any other dataset hosted on
         https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets
-
     """
     if dataset_name.split("_")[0] == "SYNTH":
         from .dataset_creation import make_synthetic
