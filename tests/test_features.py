@@ -7,7 +7,7 @@ import warnings
 
 warnings.simplefilter("ignore")
 
-test_feature_classes = get_list_feature_classes(mode="all", statistics_level="advanced")
+test_feature_classes, _ = get_list_feature_classes(mode="all", statistics_level="advanced")
 
 def test_shortname_definition():
     """test if the class shortname has been set"""
@@ -29,15 +29,13 @@ def test_shortnames_unique():
 
 def test_compute_features():
     """test if the features are computable"""
-    from generate_test_dataset import make_test_dataset
+    from hcga.dataset_creation import make_test_dataset
 
-    test_graphs, test_labels = make_test_dataset(write_to_file=False, n_graphs=1)
+    test_graphs = make_test_dataset(write_to_file=False, n_graphs=1)
     for feature_class in test_feature_classes:
         for graph in test_graphs:
-            print('Trying:', graph.graph['description'])
             feature_inst = feature_class(graph)
-            feature_inst.compute_features()
-            assert len(feature_inst.features) > 0
+            feature_inst.get_features()
 
 
 def test_trivial_graph():
@@ -47,8 +45,7 @@ def test_trivial_graph():
     graph = get_trivial_graph()
     for feature_class in test_feature_classes:
         feature_inst = feature_class(graph)
-        feature_inst.compute_features()
-        assert len(feature_inst.features) > 0
+        feature_inst.get_features()
 
 
 

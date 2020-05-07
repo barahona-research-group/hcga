@@ -1,26 +1,6 @@
-# -*- coding: utf-8 -*-
-# This file is part of hcga.
-#
-# Copyright (C) 2019,
-# Robert Peach (r.peach13@imperial.ac.uk),
-# Alexis Arnaudon (alexis.arnaudon@epfl.ch),
-# https://github.com/ImperialCollegeLondon/hcga.git
-#
-# hcga is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# hcga is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with hcga.  If not, see <http://www.gnu.org/licenses/>.
-
-import networkx as nx
+"""Centralities class."""
 import numpy as np
+import networkx as nx
 from networkx.algorithms import centrality
 
 from ..feature_class import FeatureClass, InterpretabilityScore
@@ -30,7 +10,7 @@ featureclass_name = "CentralitiesBasic"
 
 
 class CentralitiesBasic(FeatureClass):
-    """Basic stats class"""
+    """Centralities class."""
 
     modes = ["fast", "medium", "slow"]
     shortname = "CB"
@@ -38,13 +18,11 @@ class CentralitiesBasic(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """
-        Compute some standard centrality measures for the network
+        """Compute some standard centrality measures for the network.
 
-        Computed statistics    
+        Computed statistics
         -----
         Put here the list of things that are computed, with corresponding names
-
         """
 
         # Degree centrality
@@ -66,7 +44,8 @@ class CentralitiesBasic(FeatureClass):
         self.add_feature(
             "betweenness centrality",
             betweenness_centrality,
-            "Betweenness centrality of a node v is the sum of the fraction of all-pairs shortest paths that pass through v",
+            "Betweenness centrality of a node v is the sum of the fraction of \
+            all-pairs shortest paths that pass through v",
             InterpretabilityScore(5),
             statistics="centrality",
         )
@@ -85,15 +64,15 @@ class CentralitiesBasic(FeatureClass):
 
         # Edge betweenness centrality
         def edge_betweenness_centrality(graph):
-            if len(graph.edges) > 0:
+            if graph.edges:
                 return list(centrality.edge_betweenness_centrality(graph).values())
-            else:
-                return [np.nan]
+            return [np.nan]
 
         self.add_feature(
             "edge betweenness centrality",
             edge_betweenness_centrality,
-            "Betweenness centrality of an edge e is the sum of the fraction of all-pairs shortest paths that pass through e",
+            "Betweenness centrality of an edge e is the sum of the fraction of \
+            all-pairs shortest paths that pass through e",
             InterpretabilityScore(4),
             statistics="centrality",
         )
@@ -105,7 +84,8 @@ class CentralitiesBasic(FeatureClass):
         self.add_feature(
             "harmonic centrality",
             harmonic_centrality,
-            "Harmonic centrality of a node u is the sum of the reciprocal of the shortest path distances from all other nodes to u",
+            "Harmonic centrality of a node u is the sum of the reciprocal \
+            of the shortest path distances from all other nodes to u",
             InterpretabilityScore(4),
             statistics="centrality",
         )
@@ -117,7 +97,8 @@ class CentralitiesBasic(FeatureClass):
         self.add_feature(
             "subgraph centrality",
             subgraph_centrality,
-            "The subgraph centrality for a node is the sum of weighted closed walks of all lengths starting and ending at that node.",
+            "The subgraph centrality for a node is the sum of weighted closed walks \
+            of all lengths starting and ending at that node.",
             InterpretabilityScore(3),
             statistics="centrality",
         )
@@ -130,7 +111,8 @@ class CentralitiesBasic(FeatureClass):
         self.add_feature(
             "second order centrality",
             second_order_centrality,
-            "The second order centrality of a given node is the standard deviation of the return times to that node of a perpetual random walk on G",
+            "The second order centrality of a given node is the standard deviation \
+            of the return times to that node of a perpetual random walk on G",
             InterpretabilityScore(4),
             statistics="centrality",
         )
@@ -144,7 +126,8 @@ class CentralitiesBasic(FeatureClass):
         self.add_feature(
             "eigenvector centrality",
             eigenvector_centrality,
-            "Eigenvector centrality computes the centrality for a node based on the centrality of its neighbors",
+            "Eigenvector centrality computes the centrality for a node based \
+            on the centrality of its neighbors",
             InterpretabilityScore(4),
             statistics="centrality",
         )
@@ -156,7 +139,8 @@ class CentralitiesBasic(FeatureClass):
         self.add_feature(
             "katz centrality",
             katz_centrality,
-            "Generalisation of eigenvector centrality - Katz centrality computes the centrality for a node based on the centrality of its neighbors",
+            "Generalisation of eigenvector centrality - Katz centrality computes the \
+            centrality for a node based on the centrality of its neighbors",
             InterpretabilityScore(4),
             statistics="centrality",
         )
@@ -166,7 +150,8 @@ class CentralitiesBasic(FeatureClass):
         self.add_feature(
             "pagerank",
             pagerank,
-            "The pagerank computes a ranking of the nodes in the graph based on the structure of the incoming links. ",
+            "The pagerank computes a ranking of the nodes in the graph based on \
+            the structure of the incoming links. ",
             InterpretabilityScore(4),
             statistics="centrality",
         )

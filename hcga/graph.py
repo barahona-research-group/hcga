@@ -2,9 +2,9 @@
 import networkx as nx
 import numpy as np
 import scipy as sc
-from tqdm import tqdm
 
 MIN_NUM_NODES = 2
+MIN_NUM_EDGES = 1
 
 
 class GraphCollection:
@@ -53,6 +53,7 @@ class GraphCollection:
         return len(self.graphs) - self.__len__()
 
     def remove_node_features(self):
+        """Remove the node features."""
         for graph in self.graphs:
             for node_id, node in enumerate(graph.nodes):
                 graph.nodes[node_id] = node[0]
@@ -63,7 +64,7 @@ class GraphCollection:
         return [graph.id for graph in self.graphs if not graph.disabled]
 
     def maximal_subgraphs(self):
-        """ Overwrites each graph with its maximal subgraph """
+        """Overwrites each graph with its maximal subgraph."""
         print("Returning the maximal subgraph for each graph")
 
         for graph in self.graphs:
@@ -110,7 +111,7 @@ class Graph:
         """Verify if the graph is large enough to be considered."""
         if len(self.nodes.index) <= MIN_NUM_NODES:
             self.disabled = True
-        if len(self.edges.index) == 0:
+        if len(self.edges.index) <= MIN_NUM_EDGES:
             self.disabled = True
 
     def get_graph(self, encoding=None):
@@ -145,7 +146,6 @@ class Graph:
 
     def maximal_subgraph(self):
         """Overwrite the graph with its maximal subgraph."""
-        raise Exception("WIP")
         row = [edge[0] for edge in self.edges]
         col = [edge[1] for edge in self.edges]
 
@@ -172,4 +172,4 @@ class Graph:
             self.nodes = [node for node in self.nodes if node in idx_max_subgraph]
         else:
             self.nodes = [node for node in self.nodes if node[0] in idx_max_subgraph]
-
+        raise Exception("WIP")

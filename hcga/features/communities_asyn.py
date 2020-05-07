@@ -1,24 +1,4 @@
-# -*- coding: utf-8 -*-
-# This file is part of hcga.
-#
-# Copyright (C) 2019,
-# Robert Peach (r.peach13@imperial.ac.uk),
-# Alexis Arnaudon (alexis.arnaudon@epfl.ch),
-# https://github.com/ImperialCollegeLondon/hcga.git
-#
-# hcga is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# hcga is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with hcga.  If not, see <http://www.gnu.org/licenses/>.
-
+"""Communities Asyn class."""
 from collections import Counter
 from functools import lru_cache
 
@@ -34,9 +14,7 @@ featureclass_name = "CommunitiesAsyn"
 
 
 class CommunitiesAsyn(FeatureClass):
-    """
-    Communities Asyn class
-    """
+    """Communities Asyn class."""
 
     modes = ["slow"]
     shortname = "CA"
@@ -53,7 +31,7 @@ class CommunitiesAsyn(FeatureClass):
 
         @lru_cache(maxsize=None)
         def eval_asyn(graph, num_comms):
-            """this evaluates the main function and cach it for speed up"""
+            """this evaluates the main function and cach it for speed up."""
             return asyn_fluidc(utils.ensure_connected(graph), int(num_comms))
 
         num_communities = np.linspace(2, 10, 5)
@@ -115,9 +93,11 @@ class CommunitiesAsyn(FeatureClass):
             )
 
 
-# this function is adapted from networks directly
 @py_random_state(3)
-def asyn_fluidc(G, k, max_iter=100, seed=None):
+def asyn_fluidc(
+    G, k, max_iter=100, seed=None
+):  # noqa, pylint: disable=too-many-locals,too-many-branches,too-many-statements
+    """This function is adapted from networks directly."""
     # Initial checks
     if not isinstance(k, int):
         raise NetworkXError("k must be an integer.")
@@ -162,7 +142,7 @@ def asyn_fluidc(G, k, max_iter=100, seed=None):
                     continue
             # Check which is the community with highest density
             new_com = -1
-            if len(com_counter.keys()) > 0:
+            if com_counter.keys():
                 max_freq = max(com_counter.values())
                 best_communities = [
                     com

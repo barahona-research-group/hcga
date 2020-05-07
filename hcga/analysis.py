@@ -1,4 +1,4 @@
-"""function for analysis of graph features"""
+"""function for analysis of graph features."""
 
 import logging
 import os
@@ -21,6 +21,8 @@ from . import plotting, utils
 
 L = logging.getLogger(__name__)
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
+
+# pylint: disable-all
 
 
 def _get_classifier(classifier):
@@ -60,12 +62,11 @@ def analysis(
     max_feats=20,
 ):
     """Main function to classify graphs and plot results.
-    
-    Parameters 
+
+    Parameters
     -----
     interpretability: an integer in range 1-5
         1 is all features, 5 is features with interpretability=5
-    
     """
     features, features_info = filter_interpretable(
         features, features_info, interpretability
@@ -112,7 +113,7 @@ def analysis(
 
 
 def output_csv(features, features_info, feature_importance, shap_values, folder):
-    """save csv file with analysis data"""
+    """save csv file with analysis data."""
     X, y = _features_to_Xy(features)
 
     index_rows = [
@@ -148,7 +149,7 @@ def output_csv(features, features_info, feature_importance, shap_values, folder)
 
 
 def fit_model_kfold(features, compute_shap=True, classifier=None, reduced_set_size=100):
-    """shapeley analysis"""
+    """shapeley analysis."""
     if classifier is None:
         raise Exception("Please provide a model for classification")
 
@@ -263,7 +264,7 @@ def compute_fold(X, y, classifier, compute_shap, indices):
 
 
 def fit_model(features, compute_shap=True, classifier=None):
-    """shapeley analysis"""
+    """shapeley analysis."""
 
     explainer = None
     shap_values = None
@@ -345,14 +346,14 @@ def fit_grid_search(features, compute_shap=True, classifier=None):
 
 
 def _features_to_Xy(features):
-    """decompose features dataframe to X and y"""
+    """decompose features dataframe to X and y."""
     X = features.drop(columns=["labels"])
     y = features["labels"]
     return X, y
 
 
 def _normalise_feature_data(features):
-    """Normalise the feature matrix using sklearn scaler to remove the mean and scale to unit variance"""
+    """Normalise the feature matrix using sklearn scaler to remove the mean and scale to unit variance."""
     labels = features["labels"]
     normed_features = pd.DataFrame(
         StandardScaler().fit_transform(features), columns=features.columns

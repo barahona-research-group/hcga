@@ -1,6 +1,7 @@
-"""template class for feature extraction"""
+"""template class for feature extraction."""
 import logging
 import sys
+import signal
 
 import numpy as np
 import scipy.stats as st
@@ -13,11 +14,8 @@ L = logging.getLogger("Feature exceptions")
 L.setLevel(logging.DEBUG)
 
 
-import signal, os
-
-
 class FeatureClass:
-    """template class"""
+    """template class."""
 
     # Class variables that describe the feature,
     # They should be defined for all child features
@@ -35,11 +33,11 @@ class FeatureClass:
     feature_descriptions = {}
 
     def __init_subclass__(cls):
-        """Initialise class variables to default for each child class"""
+        """Initialise class variables to default for each child class."""
         cls.feature_descriptions = {}
 
     def __init__(self, graph=None):
-        """init function"""
+        """init function."""
         if graph is not None:
             self.graph = graph.get_graph(self.__class__.encoding)
             self.graph_id = graph.id
@@ -84,7 +82,7 @@ class FeatureClass:
             )
 
     def get_feature_info(self, feature_name):
-        """Returns a dictionary of information about the feature feature_name"""
+        """Returns a dictionary of information about the feature feature_name."""
         self._test_feature_exists(feature_name)
         feature_dict = self.__class__.feature_descriptions[feature_name]
         feature_info = self.get_info()
@@ -96,27 +94,27 @@ class FeatureClass:
         return feature_info
 
     def get_feature_description(self, feature_name):
-        """Returns interpretability score of the feature feature_name"""
+        """Returns interpretability score of the feature feature_name."""
         self._test_feature_exists(feature_name)
         feat_dict = self.__class__.feature_descriptions[feature_name]
         return feat_dict["desc"]
 
     def get_feature_interpretability(self, feature_name):
-        """Returns interpretability score of the feature feature_name"""
+        """Returns interpretability score of the feature feature_name."""
         self._test_feature_exists(feature_name)
         feat_dict = self.__class__.feature_descriptions[feature_name]
         return feat_dict["interpret"]
 
     @classmethod
     def add_feature_description(cls, feature_name, feature_desc, feature_interpret):
-        """Adds the description to the class variable if not already there"""
+        """Adds the description to the class variable if not already there."""
         if feature_name not in cls.feature_descriptions:
             cls.feature_descriptions[feature_name] = {
                 "desc": feature_desc,
                 "interpret": feature_interpret,
             }
 
-    def evaluate_feature_orig(
+    def evaluate_feature(  # pylint: disable=too-many-branches
         self, feature_function, feature_name, function_args=None, statistics=None,
     ):
         """Evaluating a feature function and catching/raising errors."""
@@ -133,85 +131,7 @@ class FeatureClass:
             signal.alarm(int(self.__class__.timeout))
             feature = feature_function(function_args)
             signal.alarm(0)
-        except (KeyboardInterrupt, SystemExit):
-            sys.exit(0)
-
-        except TimeoutError:
-            L.debug(
-                "Feature %s for graph %d took longer than %s seconds",
-                feature_name,
-                self.graph_id,
-                str(self.timeout),
-            )
-            if statistics in ("centrality", "clustering"):
-                return [np.nan]
-            if statistics == "node_features":
-                return np.array([np.nan]).reshape([-1, 1])
-            return np.nan
-
-        except Exception as exc:  # pylint: disable=broad-except
-            if self.graph_id != -1:
-                L.debug(
-                    "Failed feature %s for graph %d with exception: %s",
-                    feature_name,
-                    self.graph_id,
-                    str(exc),
-                )
-            if statistics in ("centrality", "clustering"):
-                return [np.nan]
-            if statistics == "node_features":
-                return np.array([np.nan]).reshape([-1, 1])
-            return np.nan
-
-        if statistics == "clustering":
-            if not isinstance(feature, list):
-                raise Exception(
-                    "Feature {} with clustering statistics is not a list: {}".format(
-                        feature_name, feature
-                    )
-                )
-            if not isinstance(feature[0], set):
-                raise Exception(
-                    "Feature {} with clustering statistics is not a list of sets: {}".format(
-                        feature_name, feature
-                    )
-                )
-        elif statistics in ("centrality", "node_features"):
-            expected_types = (list, np.ndarray)
-            if not isinstance(feature, expected_types):
-                raise Exception(
-                    "Feature {} with statistics does not return expected type{}: {}".format(
-                        feature_name, expected_types, feature
-                    )
-                )
-        else:
-            expected_types = (int, float, np.int32, np.int64, np.float32, np.float64)
-            if not isinstance(feature, expected_types):
-                raise Exception(
-                    "Feature {} of type {} with no statistics does not return expected type{}: {}".format(
-                        feature_name, type(feature), expected_types, feature,
-                    )
-                )
-
-        return feature
-
-    def evaluate_feature(
-        self, feature_function, feature_name, function_args=None, statistics=None,
-    ):
-        """Evaluating a feature function and catching/raising errors."""
-        if not callable(feature_function):
-            raise Exception(
-                "The feature function {} is not callable!".format(feature_name)
-            )
-
-        if function_args is None:
-            function_args = self.graph
-
-        try:
-            signal.signal(signal.SIGALRM, timeout_handler)
-            signal.alarm(int(self.__class__.timeout))
-            feature = feature_function(function_args)
-            signal.alarm(0)
+            return feature
         except (KeyboardInterrupt, SystemExit):
             sys.exit(0)
 
@@ -262,9 +182,7 @@ class FeatureClass:
                     )
                 )
 
-        return feature
-
-    def add_feature(
+    def add_feature(  # pylint: disable=inconsistent-return-statements
         self,
         feature_name,
         feature_function,
@@ -273,7 +191,7 @@ class FeatureClass:
         function_args=None,
         statistics=None,
     ):
-        """Adds a computed feature value and its description"""
+        """Adds a computed feature value and its description."""
         func_result = self.evaluate_feature(
             feature_function,
             feature_name,
@@ -308,13 +226,13 @@ class FeatureClass:
             )
 
     def compute_features(self):
-        """main feature extraction function"""
+        """main feature extraction function."""
         self.add_feature(
             "test", lambda graph: 0.0, "Test feature for the base feature class", 5
         )
 
     def get_features(self, all_features=False):
-        """update the feature dictionary if correct mode provided"""
+        """update the feature dictionary if correct mode provided."""
         if (
             self.__class__.shortname == "TP"
             and self.__class__.__name__ != "FeatureClass"
@@ -329,7 +247,7 @@ class FeatureClass:
         return self.features
 
     def compute_normalize_features(self):
-        """triple the number of features by normalising by node and edges"""
+        """triple the number of features by normalising by node and edges."""
 
         interpretability_downgrade = 1
         for feature_name in list(self.features.keys()):
@@ -351,7 +269,7 @@ class FeatureClass:
     def clustering_statistics(
         self, community_partition, feat_name, feat_desc, feat_interpret
     ):
-        """ Compute quality of the community partitions """
+        """Compute quality of the community partitions."""
         compl_desc = " of the partition of " + feat_desc
 
         self.add_feature(
@@ -393,7 +311,7 @@ class FeatureClass:
         )
 
     def node_feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
-        """Computes summary statistics of each feature distribution """
+        """Computes summary statistics of each feature distribution."""
         for node_feats in range(feat_dist.shape[1]):
             self.feature_statistics_basic(
                 feat_dist[:, node_feats],
@@ -403,7 +321,7 @@ class FeatureClass:
             )
 
     def feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
-        """Computes summary statistics of distributions"""
+        """Computes summary statistics of distributions."""
 
         self.feature_statistics_basic(feat_dist, feat_name, feat_desc, feat_interpret)
 
@@ -421,7 +339,7 @@ class FeatureClass:
             )
 
     def feature_statistics_basic(self, feat_dist, feat_name, feat_desc, feat_interpret):
-        """Computes basic summary statistics of distributions"""
+        """Computes basic summary statistics of distributions."""
         compl_desc = " of the distribution of " + feat_desc
 
         self.add_feature(
@@ -470,7 +388,7 @@ class FeatureClass:
     def feature_statistics_medium(
         self, feat_dist, feat_name, feat_desc, feat_interpret
     ):
-        """Computes medium summary statistics of distributions"""
+        """Computes medium summary statistics of distributions."""
         compl_desc = " of the distribution of " + feat_desc
 
         self.add_feature(
@@ -505,7 +423,7 @@ class FeatureClass:
     def feature_statistics_advanced(
         self, feat_dist, feat_name, feat_desc, feat_interpret
     ):
-        """Computes advanced summary statistics of distributions"""
+        """Computes advanced summary statistics of distributions."""
         compl_desc = " of the distribution of " + feat_desc
 
         self.add_feature(
@@ -601,8 +519,7 @@ class InterpretabilityScore:
     max_score = 5
 
     def __init__(self, score):
-        """
-        Init function for InterpretabilityScore
+        """Init function for InterpretabilityScore.
 
         Parameters
         ----------

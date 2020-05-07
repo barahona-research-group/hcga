@@ -1,24 +1,4 @@
-# -*- coding: utf-8 -*-
-# This file is part of hcga.
-#
-# Copyright (C) 2019,
-# Robert Peach (r.peach13@imperial.ac.uk),
-# Alexis Arnaudon (alexis.arnaudon@epfl.ch),
-# https://github.com/ImperialCollegeLondon/hcga.git
-#
-# hcga is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# hcga is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with hcga.  If not, see <http://www.gnu.org/licenses/>.
-
+"""Chemical theory class."""
 import networkx as nx
 
 from ..feature_class import FeatureClass, InterpretabilityScore
@@ -27,7 +7,7 @@ featureclass_name = "ChemicalTheory"
 
 
 class ChemicalTheory(FeatureClass):
-    """Chemical theory class"""
+    """Chemical theory class."""
 
     modes = ["fast", "medium", "slow"]
     shortname = "CT"
@@ -35,13 +15,11 @@ class ChemicalTheory(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """
-        Compute some chemical theory measures for the network
+        """Compute some chemical theory measures for the network.
 
         Computed statistics
         -----
         Put here the list of things that are computed, with corresponding names
-
         """
 
         wiener_index = lambda graph: nx.wiener_index(graph)

@@ -1,6 +1,7 @@
 """make test datasets"""
 import networkx as nx
 import numpy as np
+import pandas as pd
 
 from hcga.graph import Graph, GraphCollection
 from hcga.io import save_dataset
@@ -35,13 +36,13 @@ def make(folder="./datasets", add_features=False, write_to_file=True, n_graphs=5
     G.add_node(0)
     G.add_node(1, weight=2)
     G.add_node(2, weight=3)
-    for i in range(n_graphs):
+    for _ in range(n_graphs):
         graphs.append(_add_graph_desc(G.copy(), "graph without edges"))
 
     # directed graph no weights
     G = nx.DiGraph()
     G.add_nodes_from(range(100, 110))
-    for i in range(n_graphs):
+    for _ in range(n_graphs):
         graphs.append(_add_graph_desc(G.copy(), "directed graph with no weights"))
 
     # directed graph weighted
@@ -49,7 +50,7 @@ def make(folder="./datasets", add_features=False, write_to_file=True, n_graphs=5
     H = nx.path_graph(10)
     G.add_nodes_from(H)
     G.add_edges_from(H.edges)
-    for i in range(n_graphs):
+    for _ in range(n_graphs):
         graphs.append(_add_graph_desc(G.copy(), "directed graph weighted"))
 
     # adding features to all
@@ -58,9 +59,12 @@ def make(folder="./datasets", add_features=False, write_to_file=True, n_graphs=5
 
     graphs_coll = GraphCollection()
     for graph in graphs:
-        graphs_coll.add_graph(
-            Graph(list(graph.nodes), list(graph.edges), np.random.randint(0, 2))
-        )
+        nodes = pd.DataFrame(list(graph.nodes))
+        edges = pd.DataFrame(columns=['start_node', 'end_node'])
+        for i, edge in enumerate(graph.edges):
+            edges.loc[i, 'start_node'] = edge[0]
+            edges.loc[i, 'end_node'] = edge[1]
+        graphs_coll.add_graph(Graph(nodes, edges, np.random.randint(0, 2)))
 
     if write_to_file:
         save_dataset(graphs_coll, "TESTDATA", folder=folder)
