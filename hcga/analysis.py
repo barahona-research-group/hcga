@@ -173,15 +173,12 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, reduced_set_si
         acc_scores.append(acc_score)
         shap_values.append(shap_value)
 
-    #    with multiprocessing.Pool(n_splits) as pool:
-    #        for top_feature, acc_score, shap_value in pool.imap(
-    #            partial(compute_fold, X, y, classifier, compute_shap), indices_all
-    #        ):
-    #            top_features.append(top_feature)
-    #            acc_scores.append(acc_score)
-    #            shap_values.append(shap_value)
-
-    L.info("accuracy: " + str(np.round(np.mean(acc_scores), 3)))
+    L.info(
+        "Accuracy: {} +/- {}".format( 
+                str(np.round(np.mean(acc_scores), 3)) , 
+                str(np.round(np.std(acc_scores), 3))
+                )
+    )
 
     # taking average of folds
     if any(isinstance(el, list) for el in shap_values):
@@ -195,18 +192,6 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, reduced_set_si
 
     shap_top_features = np.sum(np.mean(np.abs(shap_fold_average), axis=1), axis=0)
 
-    #    X_reduced = reduce_feature_set(X, top_features, importance_threshold=0.95)
-    #    top_features = []
-    #    shap_values = []
-    #    acc_scores = []
-    #    compute_shap = False
-    #    indices_all = (indices for indices in folds.split(X, y=y))
-    #    for indices in indices_all:
-    #        top_feature, acc_score = compute_fold(X_reduced, y, classifier, compute_shap, indices)
-    #        top_features.append(top_feature)
-    #        acc_scores.append(acc_score)
-    #        shap_values.append(shap_value)
-    #    L.info("Reduced set: accuracy: " + str(np.round(np.mean(acc_scores), 3)))
 
     X_reduced_corr = reduce_correlation_feature_set(
         X, shap_top_features, n_feats=reduced_set_size
@@ -223,8 +208,10 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, reduced_set_si
         acc_scores.append(acc_score)
 
     L.info(
-        "Reduced set via correlation: accuracy: "
-        + str(np.round(np.mean(acc_scores), 3))
+        "Reduced set via correlation: accuracy: {} +/- {}".format( 
+                str(np.round(np.mean(acc_scores), 3)) , 
+                str(np.round(np.std(acc_scores), 3))
+                )
     )
 
     # mean_shap_values = list(np.mean(shap_values, axis=0))
@@ -364,7 +351,7 @@ def _normalise_feature_data(features):
 
 
 def _number_folds(y):
-    counts = np.bincount(y)
+    counts = y.value_counts()
     n_splits = int(np.min(counts[counts > 0]) / 2)
     return np.clip(n_splits, 2, 10)
 
@@ -439,3 +426,6 @@ def timer(start_time=None):
             "\n Time taken: %i hours %i minutes and %s seconds."
             % (thour, tmin, round(tsec, 2))
         )
+
+
+

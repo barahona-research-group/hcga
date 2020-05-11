@@ -96,10 +96,12 @@ def _print_runtimes(all_features_df):
 
 
 def _set_graph_labels(features, graphs):
-    """Set graph labels to features dataframe."""
+    """Set graph labels to features dataframe."""    
     for graph in graphs:
-        features.loc[graph.id, "labels"] = graph.label
-
+        if isinstance(graph.label,int):
+            features.loc[graph.id, "labels"] = graph.label
+        else:
+            features.loc[graph.id, "labels"] = graph.label[0]
 
 def _load_feature_class(feature_name):
     """load the feature class from feature name."""
