@@ -37,29 +37,8 @@
           <div class="body" role="main">
             
   <h1>Source code for hcga.features.link_analysis_hits</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="c1"># This file is part of hcga.</span>
-<span class="c1">#</span>
-<span class="c1"># Copyright (C) 2019,</span>
-<span class="c1"># Robert Peach (r.peach13@imperial.ac.uk),</span>
-<span class="c1"># Alexis Arnaudon (alexis.arnaudon@epfl.ch),</span>
-<span class="c1"># https://github.com/ImperialCollegeLondon/hcga.git</span>
-<span class="c1">#</span>
-<span class="c1"># hcga is free software: you can redistribute it and/or modify</span>
-<span class="c1"># it under the terms of the GNU General Public License as published by</span>
-<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
-<span class="c1"># (at your option) any later version.</span>
-<span class="c1">#</span>
-<span class="c1"># hcga is distributed in the hope that it will be useful,</span>
-<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
-<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
-<span class="c1"># GNU General Public License for more details.</span>
-<span class="c1">#</span>
-<span class="c1"># You should have received a copy of the GNU General Public License</span>
-<span class="c1"># along with hcga.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
-
+<span></span><span class="sd">&quot;&quot;&quot;HITS hubs class.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">ensure_connected</span>
@@ -68,9 +47,7 @@
 
 
 <div class="viewcode-block" id="Hits"><a class="viewcode-back" href="../../../Features/link_analysis_hits.html#hcga.features.link_analysis_hits.Hits">[docs]</a><span class="k">class</span> <span class="nc">Hits</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    HITS hubs class</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;HITS hubs class.&quot;&quot;&quot;</span>
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;slow&quot;</span><span class="p">]</span>
     <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;LAH&quot;</span>
@@ -78,9 +55,8 @@
     <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;networkx&quot;</span>
 
 <div class="viewcode-block" id="Hits.compute_features"><a class="viewcode-back" href="../../../Features/link_analysis_hits.html#hcga.features.link_analysis_hits.Hits.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Computes measures based on the HITS hubs </span>
-<span class="sd">        </span>
+        <span class="sd">&quot;&quot;&quot;Computes measures based on the HITS hubs.</span>
+
 <span class="sd">        The HITS algorithm computes two numbers for a node [1]_ [2]_.</span>
 <span class="sd">        Authorities estimates the node value based on the incoming links.</span>
 <span class="sd">        Hubs estimates the node value based on outgoing links.</span>
@@ -89,18 +65,19 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">                Hits calculations using networkx:</span>
-<span class="sd">            `Networkx_hits &lt;https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.link_analysis.hits_alg.hits.html#networkx.algorithms.link_analysis.hits_alg.hits&gt;`_</span>
-<span class="sd">        </span>
-<span class="sd"> </span>
+<span class="sd">            `Networkx_hits &lt;https://networkx.github.io/documentation/stable/reference/algorithms/generated/\</span>
+<span class="sd">            networkx.algorithms.link_analysis.hits_alg.hits.html#networkx.algorithms.link_analysis.hits_alg.hits&gt;`_</span>
+
+
 <span class="sd">        The eigenvector calculation is done by the power iteration method</span>
 <span class="sd">        and has no guarantee of convergence.  The iteration will stop</span>
 <span class="sd">        after max_iter iterations or an error tolerance of</span>
 <span class="sd">        number_of_nodes(G)*tol has been reached.</span>
-<span class="sd">    </span>
+
 <span class="sd">        The HITS algorithm was designed for directed graphs but this</span>
 <span class="sd">        algorithm does not check if the input graph is directed and will</span>
 <span class="sd">        execute on undirected graphs.</span>
-<span class="sd">    </span>
+
 <span class="sd">        References</span>
 <span class="sd">        ----------</span>
 <span class="sd">        .. [1] A. Langville and C. Meyer,</span>
@@ -111,11 +88,10 @@
 <span class="sd">           Journal of the ACM 46 (5): 604-32, 1999.</span>
 <span class="sd">           doi:10.1145/324133.324140.</span>
 <span class="sd">           http://www.cs.cornell.edu/home/kleinber/auth.pdf.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">hits</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
-            <span class="n">h</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">hits_numpy</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
+            <span class="n">h</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">hits_numpy</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
             <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>

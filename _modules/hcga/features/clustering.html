@@ -37,27 +37,7 @@
           <div class="body" role="main">
             
   <h1>Source code for hcga.features.clustering</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="c1"># This file is part of hcga.</span>
-<span class="c1">#</span>
-<span class="c1"># Copyright (C) 2019,</span>
-<span class="c1"># Robert Peach (r.peach13@imperial.ac.uk),</span>
-<span class="c1"># Alexis Arnaudon (alexis.arnaudon@epfl.ch),</span>
-<span class="c1"># https://github.com/ImperialCollegeLondon/hcga.git</span>
-<span class="c1">#</span>
-<span class="c1"># hcga is free software: you can redistribute it and/or modify</span>
-<span class="c1"># it under the terms of the GNU General Public License as published by</span>
-<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
-<span class="c1"># (at your option) any later version.</span>
-<span class="c1">#</span>
-<span class="c1"># hcga is distributed in the hope that it will be useful,</span>
-<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
-<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
-<span class="c1"># GNU General Public License for more details.</span>
-<span class="c1">#</span>
-<span class="c1"># You should have received a copy of the GNU General Public License</span>
-<span class="c1"># along with hcga.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
-
+<span></span><span class="sd">&quot;&quot;&quot;Clustering class.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -67,9 +47,7 @@
 
 
 <div class="viewcode-block" id="Clustering"><a class="viewcode-back" href="../../../Features/clustering.html#hcga.features.clustering.Clustering">[docs]</a><span class="k">class</span> <span class="nc">Clustering</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Clustering class</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Clustering class.&quot;&quot;&quot;</span>
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;slow&quot;</span><span class="p">]</span>
     <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;Clu&quot;</span>
@@ -82,10 +60,10 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        Implementation of networkx code:</span>
-<span class="sd">            `Networkx_clustering &lt;https://networkx.github.io/documentation/stable/reference/algorithms/clustering.html&gt;`_</span>
+<span class="sd">            `Networkx_clustering &lt;https://networkx.github.io/documentation/stable\</span>
+<span class="sd">            /reference/algorithms/clustering.html&gt;`_</span>
 
 <span class="sd">        We followed the same structure as networkx for implementing clustering features.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">triang</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">triangles</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>

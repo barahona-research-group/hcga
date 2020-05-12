@@ -37,29 +37,8 @@
           <div class="body" role="main">
             
   <h1>Source code for hcga.features.communities_labelprop</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="c1"># This file is part of hcga.</span>
-<span class="c1">#</span>
-<span class="c1"># Copyright (C) 2019,</span>
-<span class="c1"># Robert Peach (r.peach13@imperial.ac.uk),</span>
-<span class="c1"># Alexis Arnaudon (alexis.arnaudon@epfl.ch),</span>
-<span class="c1"># https://github.com/ImperialCollegeLondon/hcga.git</span>
-<span class="c1">#</span>
-<span class="c1"># hcga is free software: you can redistribute it and/or modify</span>
-<span class="c1"># it under the terms of the GNU General Public License as published by</span>
-<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
-<span class="c1"># (at your option) any later version.</span>
-<span class="c1">#</span>
-<span class="c1"># hcga is distributed in the hope that it will be useful,</span>
-<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
-<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
-<span class="c1"># GNU General Public License for more details.</span>
-<span class="c1">#</span>
-<span class="c1"># You should have received a copy of the GNU General Public License</span>
-<span class="c1"># along with hcga.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
-
+<span></span><span class="sd">&quot;&quot;&quot;Communities Label propagation class.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
-
 <span class="kn">from</span> <span class="nn">networkx.algorithms.community</span> <span class="kn">import</span> <span class="n">label_propagation_communities</span>
 
 <span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
@@ -68,9 +47,7 @@
 
 
 <div class="viewcode-block" id="CommunitiesLabelPropagation"><a class="viewcode-back" href="../../../Features/communities.html#hcga.features.communities_labelprop.CommunitiesLabelPropagation">[docs]</a><span class="k">class</span> <span class="nc">CommunitiesLabelPropagation</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Communities Label propagation class</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Communities Label propagation class.&quot;&quot;&quot;</span>
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;slow&quot;</span><span class="p">]</span>
     <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;CLP&quot;</span>
@@ -86,14 +63,8 @@
 
         <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">eval_labelprop</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;this evaluates the main function and cach it for speed up&quot;&quot;&quot;</span>
+            <span class="sd">&quot;&quot;&quot;this evaluates the main function and cach it for speed up.&quot;&quot;&quot;</span>
             <span class="n">communities</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">label_propagation_communities</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
-
-            <span class="c1"># if a single communities, add a trivial one</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">communities</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">communities</span><span class="o">.</span><span class="n">append</span><span class="p">([{</span><span class="mi">0</span><span class="p">}])</span>
-
-            <span class="c1"># sort sets by size</span>
             <span class="n">communities</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
             <span class="k">return</span> <span class="n">communities</span>
@@ -103,13 +74,6 @@
             <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_labelprop</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span>
             <span class="s2">&quot;The ratio of the largest and second largest communities using label propagation&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
-        <span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
-            <span class="s2">&quot;ratio_commsize&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_labelprop</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_labelprop</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="mi">1</span><span class="p">]),</span>
-            <span class="s2">&quot;The ratio of the largest and second largest communities using label propagation&quot;</span><span class="p">,</span>
-            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>

@@ -37,27 +37,7 @@
           <div class="body" role="main">
             
   <h1>Source code for hcga.features.small_worldness</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="c1"># This file is part of hcga.</span>
-<span class="c1">#</span>
-<span class="c1"># Copyright (C) 2019,</span>
-<span class="c1"># Robert Peach (r.peach13@imperial.ac.uk),</span>
-<span class="c1"># Alexis Arnaudon (alexis.arnaudon@epfl.ch),</span>
-<span class="c1"># https://github.com/ImperialCollegeLondon/hcga.git</span>
-<span class="c1">#</span>
-<span class="c1"># hcga is free software: you can redistribute it and/or modify</span>
-<span class="c1"># it under the terms of the GNU General Public License as published by</span>
-<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
-<span class="c1"># (at your option) any later version.</span>
-<span class="c1">#</span>
-<span class="c1"># hcga is distributed in the hope that it will be useful,</span>
-<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
-<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
-<span class="c1"># GNU General Public License for more details.</span>
-<span class="c1">#</span>
-<span class="c1"># You should have received a copy of the GNU General Public License</span>
-<span class="c1"># along with hcga.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
-
+<span></span><span class="sd">&quot;&quot;&quot;Small worldness class.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
 <span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
@@ -66,7 +46,7 @@
 
 
 <div class="viewcode-block" id="SmallWorldness"><a class="viewcode-back" href="../../../Features/small_worldness.html#hcga.features.small_worldness.SmallWorldness">[docs]</a><span class="k">class</span> <span class="nc">SmallWorldness</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Small worldness class &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Small worldness class.&quot;&quot;&quot;</span>
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;slow&quot;</span><span class="p">]</span>
     <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;SW&quot;</span>
@@ -74,23 +54,22 @@
     <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;networkx&quot;</span>
 
 <div class="viewcode-block" id="SmallWorldness.compute_features"><a class="viewcode-back" href="../../../Features/small_worldness.html#hcga.features.small_worldness.SmallWorldness.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute the small world measures of the network</span>
+        <span class="sd">&quot;&quot;&quot;Compute the small world measures of the network.</span>
 
 <span class="sd">        The small-world coefficient of a graph G is:</span>
-<span class="sd">    </span>
+
 <span class="sd">        omega = Lr/L - C/Cl</span>
-<span class="sd">    </span>
+
 <span class="sd">        where C and L are respectively the average clustering coefficient and</span>
 <span class="sd">        average shortest path length of G. Lr is the average shortest path length</span>
 <span class="sd">        of an equivalent random graph and Cl is the average clustering coefficient</span>
 <span class="sd">        of an equivalent lattice graph.</span>
-<span class="sd">    </span>
+
 <span class="sd">        The small-world coefficient (omega) ranges between -1 and 1. Values close</span>
 <span class="sd">        to 0 means the G features small-world characteristics. Values close to -1</span>
 <span class="sd">        means G has a lattice shape whereas values close to 1 means G is a random</span>
 <span class="sd">        graph.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        G : graph</span>
@@ -102,16 +81,16 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        Small world calculations using networkx:</span>
-<span class="sd">            `Networkx_omega &lt;https://networkx.github.io/documentation/latest/_modules/networkx/algorithms/smallworld.html#omega&gt;`_</span>
-<span class="sd">        </span>
+<span class="sd">            `Networkx_omega &lt;https://networkx.github.io/documentation/latest/\</span>
+<span class="sd">            _modules/networkx/algorithms/smallworld.html#omega&gt;`_</span>
+
 <span class="sd">        The implementation is adapted from the algorithm by Telesford et al. [1]_.</span>
-<span class="sd">    </span>
+
 <span class="sd">        References</span>
 <span class="sd">        ----------</span>
 <span class="sd">        .. [1] Telesford, Joyce, Hayasaka, Burdette, and Laurienti (2011).</span>
 <span class="sd">               &quot;The Ubiquity of Small-World Networks&quot;.</span>
-<span class="sd">               Brain Connectivity. 1 (0038): 367-75.  </span>
-<span class="sd">               </span>
+<span class="sd">               Brain Connectivity. 1 (0038): 367-75.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># omega metric</span>

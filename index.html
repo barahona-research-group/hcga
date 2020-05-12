@@ -16,7 +16,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="The feature class module" href="feature_class.html" /> 
+    <link rel="next" title="The cli app" href="app.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -28,7 +28,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature_class.html" title="The feature class module"
+          <a href="app.html" title="The cli app"
              accesskey="N">next</a> |</li>
         <li class="nav-item nav-item-0"><a href="#">hcga 0.1 documentation</a> &#187;</li> 
       </ul>
@@ -48,27 +48,89 @@ This code comes with the companion paper <a class="reference internal" href="#hc
 <p>To install the dev version from <a class="reference external" href="https://github.com/imperialcollegelondon/hcga/">GitHub</a> with the commands:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/ImperialCollegeLondon/hcga.git
 $ cd hcga
-$ pip install -e .
+$ pip install .
 </pre></div>
 </div>
-<p>There is no release version yet, but stay tuned for more!</p>
+<p>There is no PyPi release version yet, but stay tuned for more!</p>
 </div>
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<p>In the example folder, the script <code class="docutils literal notranslate"><span class="pre">run.py</span></code> can be used to run the examples of the paper, simply as</p>
-<p><code class="docutils literal notranslate"><span class="pre">`./run.sh</span> <span class="pre">DATASET`</span></code></p>
+<p><em>hcga</em> has three main steps:</p>
+<ol class="arabic simple">
+<li><p>create dataset of graphs</p></li>
+<li><p>extract features from them</p></li>
+<li><p>use the features for classification of other analysis</p></li>
+</ol>
+<div class="section" id="create-a-dataset">
+<h3>1. Create a dataset<a class="headerlink" href="#create-a-dataset" title="Permalink to this headline">¶</a></h3>
+<p>Benchmarks datasets from <a class="reference external" href="https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets">Graphkernel</a> can be loaded directly with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ hcga get_data DATASET
+</pre></div>
+</div>
 <dl class="simple">
-<dt>where <code class="docutils literal notranslate"><span class="pre">DATASET</span></code> can be one of</dt><dd><ul class="simple">
+<dt>where for example, <code class="docutils literal notranslate"><span class="pre">DATASET</span></code> can be one of</dt><dd><ul class="simple">
 <li><p>ENZYMES</p></li>
 <li><p>DD</p></li>
 <li><p>COLLAB</p></li>
 <li><p>PROTEINS</p></li>
 <li><p>REDDIT-MULTI-12K</p></li>
-<li><p>NEURONS</p></li>
 </ul>
 </dd>
 </dl>
-<p>More comments are in the scripts for some parameters choices.</p>
+<p>To create custom dataset, one must load it in the <code class="docutils literal notranslate"><span class="pre">hcga.graph.GraphCollection</span></code> data structure as follow:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">hcga.graph</span> <span class="kn">import</span> <span class="n">Graph</span><span class="p">,</span> <span class="n">GraphCollection</span>
+<span class="kn">from</span> <span class="nn">hcga.io</span> <span class="kn">import</span> <span class="n">save_dataset</span>
+
+<span class="c1"># create edges dataframe with columns names (required)</span>
+<span class="n">edges</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>  <span class="c1"># list of edges with node indices</span>
+<span class="n">edges_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;start_node&#39;</span><span class="p">,</span> <span class="s1">&#39;end_node&#39;</span><span class="p">])</span>
+
+<span class="c1"># create nodes dataframe</span>
+<span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">nodes_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">nodes</span><span class="p">)</span>
+
+<span class="c1"># optional: node labels and attributes</span>
+<span class="c1"># set labels, use one-hot vector (should be a list for each node)</span>
+<span class="n">nodes_df</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+<span class="c1"># any list for each node (should be of the same length)</span>
+<span class="n">nodes_df</span><span class="p">[</span><span class="s1">&#39;attributes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]]</span>
+
+<span class="c1"># create graph colllection object</span>
+<span class="n">graphs</span> <span class="o">=</span> <span class="n">GraphCollection</span><span class="p">()</span>
+
+<span class="c1"># add new graph to the collection</span>
+<span class="n">graph_label</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># graph_label should be an integer</span>
+<span class="n">graphs</span><span class="o">.</span><span class="n">add_graph</span><span class="p">(</span><span class="n">Graph</span><span class="p">(</span><span class="n">nodes_df</span><span class="p">,</span> <span class="n">edges_df</span><span class="p">,</span> <span class="n">graph_label</span><span class="p">)</span>
+
+<span class="c1"># save dataset to file &#39;./dataset.pkl&#39;</span>
+<span class="n">save_dataset</span><span class="p">(</span><span class="n">graphs</span><span class="p">,</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="extract-features">
+<h3>2. Extract features<a class="headerlink" href="#extract-features" title="Permalink to this headline">¶</a></h3>
+<p>Once a dataset is created, features can be extracted using for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ hcga extract_features dataset.pkl --mode fast --timeout 10 --n-workers 4
+</pre></div>
+</div>
+<p>we refer to the hcga app documentation for more details, but the options here mean:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--mode</span> <span class="pre">fast</span></code>: only extract simple features (other options include <code class="docutils literal notranslate"><span class="pre">medium/slow</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--timeout</span> <span class="pre">10</span></code>: stop features computation after 10 seconds (this prevents some features to get stuck)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--n-workers</span> <span class="pre">4</span></code>: set the number of workers in multiprocessing</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--runtime</span></code>: this option runs a small set of graphs and ouput estimated times for each feature</p></li>
+</ul>
+</div>
+<div class="section" id="classifiy-graphs">
+<h3>3. Classifiy graphs<a class="headerlink" href="#classifiy-graphs" title="Permalink to this headline">¶</a></h3>
+<p>Finally, to use the extracted features to classify graphs with respect to their labels, one use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ hcga feature_analysis dataset --interpretability 1
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">dataset</span></code> is the name of the dataset, and <code class="docutils literal notranslate"><span class="pre">--interpretability</span> <span class="pre">1</span></code> selects the features with all interpretabilities. Choices range from <code class="docutils literal notranslate"><span class="pre">1-5</span></code>, where <code class="docutils literal notranslate"><span class="pre">5</span></code> only uses most interpretable features.</p>
+</div>
 </div>
 <div class="section" id="citing">
 <h2>Citing<a class="headerlink" href="#citing" title="Permalink to this headline">¶</a></h2>
@@ -77,18 +139,21 @@ $ pip install -e .
 <div class="section" id="credits">
 <h2>Credits<a class="headerlink" href="#credits" title="Permalink to this headline">¶</a></h2>
 <p>The code is still a preliminary version, and written by us.</p>
+</div>
 <div class="section" id="original-authors">
-<h3>Original authors:<a class="headerlink" href="#original-authors" title="Permalink to this headline">¶</a></h3>
+<h2>Original authors:<a class="headerlink" href="#original-authors" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Robert Peach, GitHub: <a class="reference external" href="https://github.com/peach-lucien">peach-lucien</a></p></li>
 <li><p>Alexis Arnaudon, GitHub: <a class="reference external" href="https://github.com/arnaudon">arnaudon</a></p></li>
-<li><p>Henry Palasciano, GitHub: <a class="reference external" href="https://github.com/henrypalasciano">henrypalasciano</a></p></li>
 </ul>
 </div>
 <div class="section" id="contributors">
-<h3>Contributors:<a class="headerlink" href="#contributors" title="Permalink to this headline">¶</a></h3>
+<h2>Contributors:<a class="headerlink" href="#contributors" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Henry Palasciano, GitHub: <a class="reference external" href="https://github.com/henrypalasciano">henrypalasciano</a></p></li>
+<li><p>Nathan Bernier, GitHub: <a class="reference external" href="https://github.com/nrbernier">nrbernier</a></p></li>
+</ul>
 <p>Any contributors are welcome, please contact us if interested.</p>
-</div>
 </div>
 <div class="section" id="bibliography">
 <h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline">¶</a></h2>
@@ -103,12 +168,12 @@ $ pip install -e .
 </dd>
 </dl>
 </div>
-</div>
 <div class="section" id="api-documentation">
-<h1>API documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
+<h2>API documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
 <p>Documentation of the API of <em>hcga</em>.</p>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="app.html">The cli app</a></li>
 <li class="toctree-l1"><a class="reference internal" href="feature_class.html">The feature class module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Features.html">Features</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Features/basic_stats.html">The basic statistics module</a></li>
@@ -163,12 +228,13 @@ $ pip install -e .
 </div>
 </div>
 <div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
+</div>
 </div>
 
 
@@ -181,23 +247,26 @@ $ pip install -e .
   <ul>
 <li><a class="reference internal" href="#"><em>hcga</em>: Highly Comparative Graph Analysis</a><ul>
 <li><a class="reference internal" href="#installation">Installation</a></li>
-<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#usage">Usage</a><ul>
+<li><a class="reference internal" href="#create-a-dataset">1. Create a dataset</a></li>
+<li><a class="reference internal" href="#extract-features">2. Extract features</a></li>
+<li><a class="reference internal" href="#classifiy-graphs">3. Classifiy graphs</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#citing">Citing</a></li>
-<li><a class="reference internal" href="#credits">Credits</a><ul>
+<li><a class="reference internal" href="#credits">Credits</a></li>
 <li><a class="reference internal" href="#original-authors">Original authors:</a></li>
 <li><a class="reference internal" href="#contributors">Contributors:</a></li>
-</ul>
-</li>
 <li><a class="reference internal" href="#bibliography">Bibliography</a></li>
-</ul>
-</li>
 <li><a class="reference internal" href="#api-documentation">API documentation</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
+</li>
+</ul>
 
   <h4>Next topic</h4>
-  <p class="topless"><a href="feature_class.html"
-                        title="next chapter">The feature class module</a></p>
+  <p class="topless"><a href="app.html"
+                        title="next chapter">The cli app</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -229,7 +298,7 @@ $ pip install -e .
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature_class.html" title="The feature class module"
+          <a href="app.html" title="The cli app"
              >next</a> |</li>
         <li class="nav-item nav-item-0"><a href="#">hcga 0.1 documentation</a> &#187;</li> 
       </ul>
