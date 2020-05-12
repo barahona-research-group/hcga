@@ -63,7 +63,7 @@ def extract_benchmark_graphs(datadir, dataname):  # pylint: disable=too-many-loc
     edges_df = pd.DataFrame()
     with open(prefix + "_A.txt") as f:
         for edges_df_next in pd.read_csv(
-            f, sep=", ", delimiter=None, dtype=np.int, header=None, chunksize=1e6
+            f, sep=",", delimiter=None, dtype=np.int, header=None, chunksize=1e6
         ):
             edges_df = edges_df.append(edges_df_next - 1)
     edges_df.columns = ["start_node", "end_node"]
