@@ -3,11 +3,14 @@ import pytest
 import numpy as np
 
 from hcga.extraction import get_list_feature_classes
-import warnings 
+import warnings
 
 warnings.simplefilter("ignore")
 
-test_feature_classes, _ = get_list_feature_classes(mode="all", statistics_level="advanced")
+test_feature_classes, _ = get_list_feature_classes(
+    mode="all", statistics_level="advanced"
+)
+
 
 def test_shortname_definition():
     """test if the class shortname has been set"""
@@ -46,12 +49,3 @@ def test_trivial_graph():
     for feature_class in test_feature_classes:
         feature_inst = feature_class(graph)
         feature_inst.get_features()
-
-
-
-
-
-
-
-
-

@@ -72,17 +72,29 @@ class GraphCollection:
 
 
 class Graph:
-    """Class to encode various graph structures."""
+    """Class to encode a generic graph structure for hcga."""
 
-    def __init__(self, nodes, edges, label):
-        """Set main graphs quantities."""
+    def __init__(self, nodes, edges, label, label_name=None):
+        """Set main graphs quantities.
+       
+        Args:
+            nodes (DataFrame): node dataframe, index as node id, and optional
+                label and attributes columns (with lists elements)
+            edges (DataFrame): edge dataframe, with two columns 'start_node'
+                and 'end_node' with id corresponding to indices in nodes
+            label (int): label of the graph, it has to be an integer
+            label_name (any): name or other information on the graph label
+        """
         nodes["new_index"] = np.arange(0, len(nodes.index))
         edges["start_node"] = nodes.new_index[edges["start_node"].to_list()].to_list()
         edges["end_node"] = nodes.new_index[edges["end_node"].to_list()].to_list()
         self.nodes = nodes.set_index("new_index")
         self.edges = edges.reset_index()
 
+        if not isinstance(label, int):
+            raise Exception('Please provide an integer lable, and use the attribute label_name')
         self.label = label
+        self.label_name = label_name
         self.disabled = False
         self.id = -1
 
@@ -90,17 +102,20 @@ class Graph:
         self.set_node_features()
 
     def set_node_features(self):
-        """Get the number of node features."""
-
+        """Set the node features and get the dimension of features."""
         if "features" in self.nodes:
             self.n_node_features = len(self.nodes.features.iloc[0])
         else:
             if "labels" in self.nodes:
-                features = np.asarray(self.nodes["labels"].to_list())
+                features_lab = np.asarray(self.nodes["labels"].to_list())
             if "attributes" in self.nodes:
-                features = np.concatenate(
-                    (features, np.asarray(self.nodes["attributes"].to_list())), axis=1
-                )
+                features_attr = np.asarray(self.nodes["attributes"].to_list())
+            if "labels" in self.nodes and "attributes" in self.nodes:
+                features = np.concatenate((features_lab, features_attr), axis=1)
+            if "labels" in self.nodes and "attributes" not in self.nodes:
+                features = features_lab
+            if "labels" not in self.nodes and "attributes" in self.nodes:
+                features = features_attr
             if "labels" in self.nodes or "attributes" in self.nodes:
                 self.nodes["features"] = list(features)
                 self.n_node_features = len(features[0])
@@ -115,7 +130,9 @@ class Graph:
             self.disabled = True
 
     def get_graph(self, encoding=None):
-        """Get usable graph structure with given encoding."""
+        """Get usable graph structure with given encoding.
+        
+        For now, only networkx is implemented."""
         if encoding is None:
             return self
         if encoding == "networkx":
@@ -146,30 +163,20 @@ class Graph:
 
     def maximal_subgraph(self):
         """Overwrite the graph with its maximal subgraph."""
-        row = [edge[0] for edge in self.edges]
-        col = [edge[1] for edge in self.edges]
+        n_nodes = len(self.nodes.index)
+        n_edges = len(self.edges.index)
+        adj = sc.sparse.coo_matrix((np.ones(n_edges), (self.edges.start_node.to_numpy(), self.edges.end_node.to_numpy())), shape = [n_nodes, n_nodes])
 
-        # renumbering to zero required to create a scipy sparse matrix
-        renum_val = np.min([row, col])
-        row -= renum_val
-        col -= renum_val
-
-        adj = sc.sparse.coo_matrix((np.ones(len(row)), (row, col)))
         n_components, labels = sc.sparse.csgraph.connected_components(
             csgraph=adj, return_labels=True
         )
+        if n_components == 1:
+            return None 
 
-        # returning to original numbering
-        idx_max_subgraph = np.where(labels == 0)[0] + renum_val
+        largest_cc_label = np.argmax(np.unique(labels, return_counts=True)[1])
 
-        self.edges = [
-            edge
-            for edge in self.edges
-            if edge[0] in idx_max_subgraph and edge[1] in idx_max_subgraph
-        ]
+        drop_nodes = np.where(labels == largest_cc_label)[0]
+        self.nodes = self.nodes.drop(drop_nodes)
 
-        if self.n_node_features == 0:
-            self.nodes = [node for node in self.nodes if node in idx_max_subgraph]
-        else:
-            self.nodes = [node for node in self.nodes if node[0] in idx_max_subgraph]
-        raise Exception("WIP")
+        drop_edges = [edge_id for edge_id, edge in self.edges.iterrows() if edge.start_node in drop_nodes and edge.end_node in drop_nodes]
+        self.edges = self.edges.drop(drop_edges)

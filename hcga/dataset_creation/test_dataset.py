@@ -60,10 +60,10 @@ def make(folder="./datasets", add_features=False, write_to_file=True, n_graphs=5
     graphs_coll = GraphCollection()
     for graph in graphs:
         nodes = pd.DataFrame(list(graph.nodes))
-        edges = pd.DataFrame(columns=['start_node', 'end_node'])
+        edges = pd.DataFrame(columns=["start_node", "end_node"])
         for i, edge in enumerate(graph.edges):
-            edges.loc[i, 'start_node'] = edge[0]
-            edges.loc[i, 'end_node'] = edge[1]
+            edges.loc[i, "start_node"] = edge[0]
+            edges.loc[i, "end_node"] = edge[1]
         graphs_coll.add_graph(Graph(nodes, edges, np.random.randint(0, 2)))
 
     if write_to_file:
