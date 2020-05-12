@@ -7,21 +7,11 @@ build/
 
 dist/
 
-docs/source/
-
 hcga\.egg-info/
 
 hcga/__pycache__/
 
-Operations/__pycache__/
 
-TestData/__pycache__/
-
-hcga/\.ipynb_checkpoints/
-
-examples/TestData/feature_set\.pkl
-
-examples/Images/*
 
 **/.DS_Store
 **/.ipynb_checkpoints
