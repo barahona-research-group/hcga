@@ -96,11 +96,15 @@ class Graph:
             self.n_node_features = len(self.nodes.features.iloc[0])
         else:
             if "labels" in self.nodes:
-                features = np.asarray(self.nodes["labels"].to_list())
+                features_lab = np.asarray(self.nodes["labels"].to_list())
             if "attributes" in self.nodes:
-                features = np.concatenate(
-                    (features, np.asarray(self.nodes["attributes"].to_list())), axis=1
-                )
+                features_attr = np.asarray(self.nodes["attributes"].to_list())
+            if "labels" in self.nodes and "attributes" in self.nodes:
+                features = np.concatenate((features_lab, features_attr), axis=1)
+            if "labels" in self.nodes and "attributes" not in self.nodes:
+                features = features_lab
+            if "labels" not in self.nodes and "attributes" in self.nodes:
+                features = features_attr
             if "labels" in self.nodes or "attributes" in self.nodes:
                 self.nodes["features"] = list(features)
                 self.n_node_features = len(features[0])
