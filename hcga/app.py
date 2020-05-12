@@ -53,7 +53,7 @@ def cli():
 @click.option(
     "-sl",
     "--stats-level",
-    default="basic",
+    default="advanced",
     show_default=True,
     help="Level of statistical features (basic, medium, advanced)",
 )

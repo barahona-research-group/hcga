@@ -19,6 +19,7 @@
 #
 import os
 import sys
+import alabaster
 sys.path.insert(0, os.path.abspath('../../'))
 
 
@@ -39,7 +40,8 @@ extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-    'sphinx.ext.autodoc']
+    'sphinx.ext.autodoc',
+    'alabaster']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -91,7 +93,10 @@ todo_include_todos = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'classic' #'alabaster'
+#html_theme = 'classic' #'alabaster'
+html_theme_path = [alabaster.get_path()]
+html_theme = 'alabaster'
+
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -120,7 +125,7 @@ html_theme = 'classic' #'alabaster'
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'hcgadoc'
+#htmlhelp_basename = 'hcgadoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
