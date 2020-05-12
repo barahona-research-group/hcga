@@ -174,10 +174,9 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, reduced_set_si
         shap_values.append(shap_value)
 
     L.info(
-        "Accuracy: {} +/- {}".format( 
-                str(np.round(np.mean(acc_scores), 3)) , 
-                str(np.round(np.std(acc_scores), 3))
-                )
+        "Accuracy: {} +/- {}".format(
+            str(np.round(np.mean(acc_scores), 3)), str(np.round(np.std(acc_scores), 3))
+        )
     )
 
     # taking average of folds
@@ -191,7 +190,6 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, reduced_set_si
         shap_fold_average = [np.mean(shap_values, axis=0)]
 
     shap_top_features = np.sum(np.mean(np.abs(shap_fold_average), axis=1), axis=0)
-
 
     X_reduced_corr = reduce_correlation_feature_set(
         X, shap_top_features, n_feats=reduced_set_size
@@ -208,10 +206,9 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, reduced_set_si
         acc_scores.append(acc_score)
 
     L.info(
-        "Reduced set via correlation: accuracy: {} +/- {}".format( 
-                str(np.round(np.mean(acc_scores), 3)) , 
-                str(np.round(np.std(acc_scores), 3))
-                )
+        "Reduced set via correlation: accuracy: {} +/- {}".format(
+            str(np.round(np.mean(acc_scores), 3)), str(np.round(np.std(acc_scores), 3))
+        )
     )
 
     # mean_shap_values = list(np.mean(shap_values, axis=0))
@@ -410,8 +407,9 @@ def filter_interpretable(features, features_info, interpretability):
     for feat in list(features_info.keys()):
         score = features_info[feat]["interpretability"].score
         if score < interpretability:
-            features = features.drop(columns=[feat])
-            del features_info[feat]
+            if feat in features.columns:
+                features = features.drop(columns=[feat])
+                del features_info[feat]
     return features, features_info
 
 
@@ -426,6 +424,3 @@ def timer(start_time=None):
             "\n Time taken: %i hours %i minutes and %s seconds."
             % (thour, tmin, round(tsec, 2))
         )
-
-
-

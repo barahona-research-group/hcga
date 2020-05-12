@@ -38,20 +38,20 @@ class CycleBasis(FeatureClass):
 
         self.add_feature(
             "average_cycle_length",
-            lambda graph: np.mean([len(l) for l in eval_cycle_basis(graph)]),
+            lambda graph: np.mean([len(cycle) for cycle in eval_cycle_basis(graph)]),
             "The average length of cycles in the graph",
             InterpretabilityScore(3),
         )
 
         self.add_feature(
             "minimum_cycle_length",
-            lambda graph: np.min([len(l) for l in eval_cycle_basis(graph)]),
+            lambda graph: np.min([len(cycle) for cycle in eval_cycle_basis(graph)]),
             "The minimum length of cycles in the graph",
             InterpretabilityScore(3),
         )
 
         ratio_nodes_cycle = lambda graph: len(
-            np.unique([x for l in eval_cycle_basis(graph) for x in l])
+            np.unique([node for cycle in eval_cycle_basis(graph) for node in cycle])
         ) / len(graph)
         self.add_feature(
             "ratio_nodes_cycle",
