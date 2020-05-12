@@ -1,5 +1,4 @@
 """function for analysis of graph features."""
-
 import logging
 import os
 from datetime import datetime
@@ -63,10 +62,9 @@ def analysis(
 ):
     """Main function to classify graphs and plot results.
 
-    Parameters
-    -----
-    interpretability: an integer in range 1-5
-        1 is all features, 5 is features with interpretability=5
+    Args:
+        interpretability: an integer in range 1-5
+            1 is all features, 5 is features with interpretability=5
     """
     features, features_info = filter_interpretable(
         features, features_info, interpretability
