@@ -138,7 +138,11 @@ Documentation of the API of *hcga*.
    :maxdepth: 3
 
    app
+   hcga
+   graph
    feature_class 
+   extraction
+   analysis
    Features
 
 

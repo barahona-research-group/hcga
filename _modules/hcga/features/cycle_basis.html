@@ -71,20 +71,20 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;average_cycle_length&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">eval_cycle_basis</span><span class="p">(</span><span class="n">graph</span><span class="p">)]),</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">cycle</span><span class="p">)</span> <span class="k">for</span> <span class="n">cycle</span> <span class="ow">in</span> <span class="n">eval_cycle_basis</span><span class="p">(</span><span class="n">graph</span><span class="p">)]),</span>
             <span class="s2">&quot;The average length of cycles in the graph&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;minimum_cycle_length&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">eval_cycle_basis</span><span class="p">(</span><span class="n">graph</span><span class="p">)]),</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">cycle</span><span class="p">)</span> <span class="k">for</span> <span class="n">cycle</span> <span class="ow">in</span> <span class="n">eval_cycle_basis</span><span class="p">(</span><span class="n">graph</span><span class="p">)]),</span>
             <span class="s2">&quot;The minimum length of cycles in the graph&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="n">ratio_nodes_cycle</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">eval_cycle_basis</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l</span><span class="p">])</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">([</span><span class="n">node</span> <span class="k">for</span> <span class="n">cycle</span> <span class="ow">in</span> <span class="n">eval_cycle_basis</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">cycle</span><span class="p">])</span>
         <span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;ratio_nodes_cycle&quot;</span><span class="p">,</span>
@@ -112,7 +112,11 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../app.html">The cli app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hcga.html">The hcga class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../graph.html">The graph data structure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../feature_class.html">The feature class module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../extraction.html">The extraction module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">The analysis module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Features.html">Features</a></li>
 </ul>
 

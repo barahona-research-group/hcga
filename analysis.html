@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>The analysis module &#8212; hcga 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Features" href="Features.html" />
+    <link rel="prev" title="The extraction module" href="extraction.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-hcga.analysis">
+<span id="the-analysis-module"></span><h1>The analysis module<a class="headerlink" href="#module-hcga.analysis" title="Permalink to this headline">¶</a></h1>
+<p>function for analysis of graph features.</p>
+<dl class="py function">
+<dt id="hcga.analysis.analysis">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">analysis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">features_info</span></em>, <em class="sig-param"><span class="n">graphs</span></em>, <em class="sig-param"><span class="n">interpretability</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">grid_search</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">shap</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">classifier</span><span class="o">=</span><span class="default_value">'XG'</span></em>, <em class="sig-param"><span class="n">folder</span><span class="o">=</span><span class="default_value">'.'</span></em>, <em class="sig-param"><span class="n">kfold</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">plot</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">max_feats</span><span class="o">=</span><span class="default_value">20</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main function to classify graphs and plot results.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>interpretability: an integer in range 1-5</dt><dd><p>1 is all features, 5 is features with interpretability=5</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis.compute_fold">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">compute_fold</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">classifier</span></em>, <em class="sig-param"><span class="n">compute_shap</span></em>, <em class="sig-param"><span class="n">indices</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#compute_fold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.compute_fold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a single fold for parallel computation.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis.filter_interpretable">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">filter_interpretable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">features_info</span></em>, <em class="sig-param"><span class="n">interpretability</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#filter_interpretable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.filter_interpretable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get only features with certain interpretability.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis.fit_model">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">fit_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">compute_shap</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">classifier</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#fit_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.fit_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>shapeley analysis.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis.fit_model_kfold">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">fit_model_kfold</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">compute_shap</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">classifier</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">reduced_set_size</span><span class="o">=</span><span class="default_value">100</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#fit_model_kfold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.fit_model_kfold" title="Permalink to this definition">¶</a></dt>
+<dd><p>shapeley analysis.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis.output_csv">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">output_csv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">features_info</span></em>, <em class="sig-param"><span class="n">feature_importance</span></em>, <em class="sig-param"><span class="n">shap_values</span></em>, <em class="sig-param"><span class="n">folder</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#output_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.output_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>save csv file with analysis data.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis.reduce_correlation_feature_set">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">reduce_correlation_feature_set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">shap_top_features</span></em>, <em class="sig-param"><span class="n">n_feats</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.99</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#reduce_correlation_feature_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.reduce_correlation_feature_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduce the feature set by taking uncorrelated features.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis.reduce_feature_set">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">reduce_feature_set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">top_features</span></em>, <em class="sig-param"><span class="n">importance_threshold</span><span class="o">=</span><span class="default_value">0.5</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#reduce_feature_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.reduce_feature_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduce the feature set.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">hcga</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="app.html">The cli app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hcga.html">The hcga class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">The graph data structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feature_class.html">The feature class module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extraction.html">The extraction module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The analysis module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Features.html">Features</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="extraction.html" title="previous chapter">The extraction module</a></li>
+      <li>Next: <a href="Features.html" title="next chapter">Features</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/analysis.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
