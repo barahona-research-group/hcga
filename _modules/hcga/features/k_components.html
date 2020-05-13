@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>hcga.features.k_components &#8212; hcga 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for hcga.features.k_components</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;K Components class.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+
+<span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+
+<span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;KComponents&quot;</span>
+
+
+<div class="viewcode-block" id="KComponents"><a class="viewcode-back" href="../../../Features/k_components.html#hcga.features.k_components.KComponents">[docs]</a><span class="k">class</span> <span class="nc">KComponents</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;K Components class.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;slow&quot;</span><span class="p">]</span>
+    <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;KC&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;k_components&quot;</span>
+    <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;networkx&quot;</span>
+
+<div class="viewcode-block" id="KComponents.compute_features"><a class="viewcode-back" href="../../../Features/k_components.html#hcga.features.k_components.KComponents.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the k components of the network.</span>
+
+<span class="sd">        Computed statistics</span>
+<span class="sd">        -----</span>
+<span class="sd">        Put here the list of things that are computed, with corresponding names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">eval_kcomponents</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;this evaluates the main function and cach it for speed up.&quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">nx</span><span class="o">.</span><span class="n">k_components</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;num_connectivity_levels_k&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_kcomponents</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+            <span class="s2">&quot;The number of connectivity levels k in the input graphs&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;max_num_components&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">max</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">eval_kcomponents</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()]),</span>
+            <span class="s2">&quot;The maximum number of componenets at any value of k&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;size_max_k_component&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="n">eval_kcomponents</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="nb">len</span><span class="p">(</span><span class="n">eval_kcomponents</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">keys</span><span class="p">())][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;The number of nodes of the component corresponding to the largest k&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;size_2_component&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_kcomponents</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="s2">&quot;The number of nodes in k=2 component&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+        <span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">hcga</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../app.html">The cli app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hcga.html">The hcga class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../graph.html">The graph data structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../feature_class.html">The feature class module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../extraction.html">The extraction module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">The analysis module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Features.html">Features</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

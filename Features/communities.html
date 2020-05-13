@@ -1,0 +1,3816 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Communities modules &#8212; hcga 0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Components modules" href="components.html" />
+    <link rel="prev" title="The clustering module" href="clustering.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="communities-modules">
+<h1>Communities modules<a class="headerlink" href="#communities-modules" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-hcga.features.communities_modularity">
+<span id="the-modularity-communities-module"></span><h2>The modularity communities module<a class="headerlink" href="#module-hcga.features.communities_modularity" title="Permalink to this headline">¶</a></h2>
+<p>Communities Modularity propagation class.</p>
+<dl class="py class">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.features.communities_modularity.</code><code class="sig-name descname">CommunitiesModularity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/communities_modularity.html#CommunitiesModularity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Communities Modularity propagation class.</dt><dd><p>This class produces the following features:</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.num_communities">
+<code class="sig-name descname">num_communities</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.num_communities" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – num_communities</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_num_communities</p></li>
+<li><p><strong>description</strong> – Number of communities</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.largest_commsize">
+<code class="sig-name descname">largest_commsize</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.largest_commsize" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – largest_commsize</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_largest_commsize</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using greedy modularity</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.ratio_commsize_maxmin">
+<code class="sig-name descname">ratio_commsize_maxmin</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.ratio_commsize_maxmin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_commsize_maxmin</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_ratio_commsize_maxmin</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using greedy modularity</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_modularity">
+<code class="sig-name descname">communities_modularity</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_modularity" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_modularity</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_modularity</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition using greedy modularity algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_coverage">
+<code class="sig-name descname">communities_coverage</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_coverage" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_coverage</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_coverage</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition using greedy modularity algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_performance">
+<code class="sig-name descname">communities_performance</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_performance" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_performance</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_performance</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition using greedy modularity algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_inter_community_edges">
+<code class="sig-name descname">communities_inter_community_edges</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_inter_community_edges" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_inter_community_edges</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_inter_community_edges</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition using greedy modularity algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_inter_community_non_edges">
+<code class="sig-name descname">communities_inter_community_non_edges</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_inter_community_non_edges" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_inter_community_non_edges</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_inter_community_non_edges</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition using greedy modularity algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_intra_community_edges">
+<code class="sig-name descname">communities_intra_community_edges</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_intra_community_edges" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_intra_community_edges</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_intra_community_edges</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition using greedy modularity algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.num_communities_N">
+<code class="sig-name descname">num_communities_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.num_communities_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – num_communities_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_num_communities_N</p></li>
+<li><p><strong>description</strong> – Number of communities, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.num_communities_E">
+<code class="sig-name descname">num_communities_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.num_communities_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – num_communities_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_num_communities_E</p></li>
+<li><p><strong>description</strong> – Number of communities, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.largest_commsize_N">
+<code class="sig-name descname">largest_commsize_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.largest_commsize_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – largest_commsize_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_largest_commsize_N</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using greedy modularity, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.largest_commsize_E">
+<code class="sig-name descname">largest_commsize_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.largest_commsize_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – largest_commsize_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_largest_commsize_E</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using greedy modularity, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.ratio_commsize_maxmin_N">
+<code class="sig-name descname">ratio_commsize_maxmin_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.ratio_commsize_maxmin_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_commsize_maxmin_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_ratio_commsize_maxmin_N</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using greedy modularity, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.ratio_commsize_maxmin_E">
+<code class="sig-name descname">ratio_commsize_maxmin_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.ratio_commsize_maxmin_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_commsize_maxmin_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_ratio_commsize_maxmin_E</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using greedy modularity, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_modularity_N">
+<code class="sig-name descname">communities_modularity_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_modularity_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_modularity_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_modularity_N</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_modularity_E">
+<code class="sig-name descname">communities_modularity_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_modularity_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_modularity_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_modularity_E</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_coverage_N">
+<code class="sig-name descname">communities_coverage_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_coverage_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_coverage_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_coverage_N</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_coverage_E">
+<code class="sig-name descname">communities_coverage_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_coverage_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_coverage_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_coverage_E</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_performance_N">
+<code class="sig-name descname">communities_performance_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_performance_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_performance_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_performance_N</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_performance_E">
+<code class="sig-name descname">communities_performance_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_performance_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_performance_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_performance_E</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_inter_community_edges_N">
+<code class="sig-name descname">communities_inter_community_edges_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_inter_community_edges_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_inter_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_inter_community_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_inter_community_edges_E">
+<code class="sig-name descname">communities_inter_community_edges_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_inter_community_edges_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_inter_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_inter_community_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_inter_community_non_edges_N">
+<code class="sig-name descname">communities_inter_community_non_edges_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_inter_community_non_edges_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_inter_community_non_edges_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_inter_community_non_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_inter_community_non_edges_E">
+<code class="sig-name descname">communities_inter_community_non_edges_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_inter_community_non_edges_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_inter_community_non_edges_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_inter_community_non_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_intra_community_edges_N">
+<code class="sig-name descname">communities_intra_community_edges_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_intra_community_edges_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_intra_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_intra_community_edges_N</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_intra_community_edges_E">
+<code class="sig-name descname">communities_intra_community_edges_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_intra_community_edges_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_intra_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_intra_community_edges_E</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Initialise a feature class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>graph</strong> (<a class="reference internal" href="../graph.html#hcga.graph.Graph" title="hcga.graph.Graph"><em>Graph</em></a>) – graph for initialisation, converted to given encoding</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/communities_modularity.html#CommunitiesModularity.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the measures about community detection using the modularity algorithm.</p>
+<p class="rubric">Notes</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcga.features.communities_asyn">
+<span id="the-asyn-fluid-communities-module"></span><h2>The asyn fluid communities module<a class="headerlink" href="#module-hcga.features.communities_asyn" title="Permalink to this headline">¶</a></h2>
+<p>Communities Asyn class.</p>
+<dl class="py class">
+<dt id="hcga.features.communities_asyn.CommunitiesAsyn">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.features.communities_asyn.</code><code class="sig-name descname">CommunitiesAsyn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/communities_asyn.html#CommunitiesAsyn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.communities_asyn.CommunitiesAsyn" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Communities Asyn class.</dt><dd><p>This class produces the following features:</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">sum_density_c=2.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – sum_density_c=2.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_sum_density_c=2.0</p></li>
+<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ratio_density_c=2.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_density_c=2.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_ratio_density_c=2.0</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_most_dense_c=2.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_most_dense_c=2.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_most_dense_c=2.0</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_least_dense_c=2.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_least_dense_c=2.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_least_dense_c=2.0</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_modularity</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_modularity</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_modularity</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_coverage</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_coverage</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_coverage</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_performance</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_performance</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_performance</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_inter_community_edges</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_inter_community_edges</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_inter_community_edges</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_inter_community_non_edges</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_inter_community_non_edges</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_inter_community_non_edges</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_intra_community_edges</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_intra_community_edges</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_intra_community_edges</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">sum_density_c=4.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – sum_density_c=4.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_sum_density_c=4.0</p></li>
+<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ratio_density_c=4.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_density_c=4.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_ratio_density_c=4.0</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_most_dense_c=4.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_most_dense_c=4.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_most_dense_c=4.0</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_least_dense_c=4.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_least_dense_c=4.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_least_dense_c=4.0</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_modularity</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_modularity</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_modularity</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_coverage</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_coverage</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_coverage</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_performance</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_performance</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_performance</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_inter_community_edges</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_inter_community_edges</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_inter_community_edges</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_inter_community_non_edges</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_inter_community_non_edges</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_inter_community_non_edges</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_intra_community_edges</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_intra_community_edges</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_intra_community_edges</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">sum_density_c=6.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – sum_density_c=6.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_sum_density_c=6.0</p></li>
+<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ratio_density_c=6.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_density_c=6.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_ratio_density_c=6.0</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_most_dense_c=6.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_most_dense_c=6.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_most_dense_c=6.0</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_least_dense_c=6.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_least_dense_c=6.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_least_dense_c=6.0</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_modularity</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_modularity</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_modularity</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_coverage</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_coverage</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_coverage</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_performance</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_performance</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_performance</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_inter_community_edges</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_inter_community_edges</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_inter_community_edges</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_inter_community_non_edges</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_inter_community_non_edges</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_inter_community_non_edges</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_intra_community_edges</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_intra_community_edges</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_intra_community_edges</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">sum_density_c=8.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – sum_density_c=8.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_sum_density_c=8.0</p></li>
+<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ratio_density_c=8.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_density_c=8.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_ratio_density_c=8.0</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_most_dense_c=8.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_most_dense_c=8.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_most_dense_c=8.0</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_least_dense_c=8.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_least_dense_c=8.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_least_dense_c=8.0</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_modularity</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_modularity</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_modularity</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_coverage</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_coverage</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_coverage</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_performance</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_performance</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_performance</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_inter_community_edges</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_inter_community_edges</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_inter_community_edges</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_inter_community_non_edges</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_inter_community_non_edges</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_inter_community_non_edges</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_intra_community_edges</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_intra_community_edges</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_intra_community_edges</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">sum_density_c=10.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – sum_density_c=10.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_sum_density_c=10.0</p></li>
+<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ratio_density_c=10.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_density_c=10.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_ratio_density_c=10.0</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_most_dense_c=10.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_most_dense_c=10.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_most_dense_c=10.0</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_least_dense_c=10.0</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_least_dense_c=10.0</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_least_dense_c=10.0</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_modularity</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_modularity</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_modularity</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_coverage</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_coverage</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_coverage</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_performance</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_performance</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_performance</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_inter_community_edges</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_inter_community_edges</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_inter_community_edges</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_inter_community_non_edges</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_inter_community_non_edges</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_inter_community_non_edges</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_intra_community_edges</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_intra_community_edges</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_intra_community_edges</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">sum_density_c=2.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – sum_density_c=2.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_sum_density_c=2.0_N</p></li>
+<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">sum_density_c=2.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – sum_density_c=2.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_sum_density_c=2.0_E</p></li>
+<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ratio_density_c=2.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_density_c=2.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_ratio_density_c=2.0_N</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ratio_density_c=2.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_density_c=2.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_ratio_density_c=2.0_E</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_most_dense_c=2.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_most_dense_c=2.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_most_dense_c=2.0_N</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_most_dense_c=2.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_most_dense_c=2.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_most_dense_c=2.0_E</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_least_dense_c=2.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_least_dense_c=2.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_least_dense_c=2.0_N</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_least_dense_c=2.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_least_dense_c=2.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_least_dense_c=2.0_E</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_modularity_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_modularity_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_modularity_N</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_modularity_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_modularity_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_modularity_E</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_coverage_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_coverage_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_coverage_N</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_coverage_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_coverage_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_coverage_E</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_performance_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_performance_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_performance_N</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_performance_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_performance_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_performance_E</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_inter_community_edges_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_inter_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_inter_community_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_inter_community_edges_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_inter_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_inter_community_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_inter_community_non_edges_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_inter_community_non_edges_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_inter_community_non_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_inter_community_non_edges_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_inter_community_non_edges_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_inter_community_non_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_intra_community_edges_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_intra_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_intra_community_edges_N</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=2.0_intra_community_edges_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=2.0_intra_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=2.0_intra_community_edges_E</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">sum_density_c=4.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – sum_density_c=4.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_sum_density_c=4.0_N</p></li>
+<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">sum_density_c=4.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – sum_density_c=4.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_sum_density_c=4.0_E</p></li>
+<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ratio_density_c=4.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_density_c=4.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_ratio_density_c=4.0_N</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ratio_density_c=4.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_density_c=4.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_ratio_density_c=4.0_E</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_most_dense_c=4.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_most_dense_c=4.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_most_dense_c=4.0_N</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_most_dense_c=4.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_most_dense_c=4.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_most_dense_c=4.0_E</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_least_dense_c=4.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_least_dense_c=4.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_least_dense_c=4.0_N</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_least_dense_c=4.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_least_dense_c=4.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_least_dense_c=4.0_E</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_modularity_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_modularity_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_modularity_N</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_modularity_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_modularity_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_modularity_E</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_coverage_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_coverage_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_coverage_N</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_coverage_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_coverage_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_coverage_E</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_performance_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_performance_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_performance_N</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_performance_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_performance_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_performance_E</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_inter_community_edges_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_inter_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_inter_community_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_inter_community_edges_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_inter_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_inter_community_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_inter_community_non_edges_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_inter_community_non_edges_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_inter_community_non_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_inter_community_non_edges_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_inter_community_non_edges_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_inter_community_non_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_intra_community_edges_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_intra_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_intra_community_edges_N</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=4.0_intra_community_edges_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=4.0_intra_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=4.0_intra_community_edges_E</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">sum_density_c=6.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – sum_density_c=6.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_sum_density_c=6.0_N</p></li>
+<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">sum_density_c=6.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – sum_density_c=6.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_sum_density_c=6.0_E</p></li>
+<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ratio_density_c=6.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_density_c=6.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_ratio_density_c=6.0_N</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ratio_density_c=6.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_density_c=6.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_ratio_density_c=6.0_E</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_most_dense_c=6.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_most_dense_c=6.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_most_dense_c=6.0_N</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_most_dense_c=6.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_most_dense_c=6.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_most_dense_c=6.0_E</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_least_dense_c=6.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_least_dense_c=6.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_least_dense_c=6.0_N</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_least_dense_c=6.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_least_dense_c=6.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_least_dense_c=6.0_E</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_modularity_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_modularity_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_modularity_N</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_modularity_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_modularity_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_modularity_E</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_coverage_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_coverage_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_coverage_N</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_coverage_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_coverage_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_coverage_E</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_performance_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_performance_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_performance_N</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_performance_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_performance_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_performance_E</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_inter_community_edges_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_inter_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_inter_community_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_inter_community_edges_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_inter_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_inter_community_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_inter_community_non_edges_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_inter_community_non_edges_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_inter_community_non_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_inter_community_non_edges_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_inter_community_non_edges_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_inter_community_non_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_intra_community_edges_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_intra_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_intra_community_edges_N</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=6.0_intra_community_edges_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=6.0_intra_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=6.0_intra_community_edges_E</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">sum_density_c=8.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – sum_density_c=8.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_sum_density_c=8.0_N</p></li>
+<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">sum_density_c=8.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – sum_density_c=8.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_sum_density_c=8.0_E</p></li>
+<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ratio_density_c=8.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_density_c=8.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_ratio_density_c=8.0_N</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ratio_density_c=8.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_density_c=8.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_ratio_density_c=8.0_E</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_most_dense_c=8.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_most_dense_c=8.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_most_dense_c=8.0_N</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_most_dense_c=8.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_most_dense_c=8.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_most_dense_c=8.0_E</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_least_dense_c=8.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_least_dense_c=8.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_least_dense_c=8.0_N</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_least_dense_c=8.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_least_dense_c=8.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_least_dense_c=8.0_E</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_modularity_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_modularity_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_modularity_N</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_modularity_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_modularity_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_modularity_E</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_coverage_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_coverage_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_coverage_N</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_coverage_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_coverage_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_coverage_E</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_performance_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_performance_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_performance_N</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_performance_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_performance_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_performance_E</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_inter_community_edges_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_inter_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_inter_community_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_inter_community_edges_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_inter_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_inter_community_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_inter_community_non_edges_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_inter_community_non_edges_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_inter_community_non_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_inter_community_non_edges_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_inter_community_non_edges_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_inter_community_non_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_intra_community_edges_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_intra_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_intra_community_edges_N</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=8.0_intra_community_edges_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=8.0_intra_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=8.0_intra_community_edges_E</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">sum_density_c=10.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – sum_density_c=10.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_sum_density_c=10.0_N</p></li>
+<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">sum_density_c=10.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – sum_density_c=10.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_sum_density_c=10.0_E</p></li>
+<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ratio_density_c=10.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_density_c=10.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_ratio_density_c=10.0_N</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ratio_density_c=10.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_density_c=10.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_ratio_density_c=10.0_E</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_most_dense_c=10.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_most_dense_c=10.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_most_dense_c=10.0_N</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_most_dense_c=10.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_most_dense_c=10.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_most_dense_c=10.0_E</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_least_dense_c=10.0_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_least_dense_c=10.0_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_least_dense_c=10.0_N</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">len_least_dense_c=10.0_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – len_least_dense_c=10.0_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_len_least_dense_c=10.0_E</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_modularity_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_modularity_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_modularity_N</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_modularity_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_modularity_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_modularity_E</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_coverage_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_coverage_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_coverage_N</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_coverage_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_coverage_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_coverage_E</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_performance_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_performance_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_performance_N</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_performance_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_performance_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_performance_E</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_inter_community_edges_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_inter_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_inter_community_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_inter_community_edges_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_inter_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_inter_community_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_inter_community_non_edges_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_inter_community_non_edges_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_inter_community_non_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_inter_community_non_edges_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_inter_community_non_edges_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_inter_community_non_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_intra_community_edges_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_intra_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_intra_community_edges_N</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">partition_c=10.0_intra_community_edges_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_c=10.0_intra_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CA</p></li>
+<li><p><strong>fullname</strong> – CA_partition_c=10.0_intra_community_edges_E</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Initialise a feature class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>graph</strong> (<a class="reference internal" href="../graph.html#hcga.graph.Graph" title="hcga.graph.Graph"><em>Graph</em></a>) – graph for initialisation, converted to given encoding</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="hcga.features.communities_asyn.CommunitiesAsyn.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/communities_asyn.html#CommunitiesAsyn.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.communities_asyn.CommunitiesAsyn.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the measures about community detection using async fluid algorithm.</p>
+<p class="rubric">Notes</p>
+<p>Currently hardcoded the number of communities tried:  np.linspace(2, 20, 10)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.communities_asyn.asyn_fluidc">
+<code class="sig-prename descclassname">hcga.features.communities_asyn.</code><code class="sig-name descname">asyn_fluidc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">G</span></em>, <em class="sig-param"><span class="n">k</span></em>, <em class="sig-param"><span class="n">max_iter</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/communities_asyn.html#asyn_fluidc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.communities_asyn.asyn_fluidc" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is adapted from networks directly.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcga.features.communities_bisection">
+<span id="the-bisection-communities-module"></span><h2>The bisection communities module<a class="headerlink" href="#module-hcga.features.communities_bisection" title="Permalink to this headline">¶</a></h2>
+<p>Communities Bisection class.</p>
+<dl class="py class">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.features.communities_bisection.</code><code class="sig-name descname">CommunitiesBisection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/communities_bisection.html#CommunitiesBisection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Communities Bisection class.</dt><dd><p>This class produces the following features:</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.largest_commsize">
+<code class="sig-name descname">largest_commsize</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.largest_commsize" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – largest_commsize</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_largest_commsize</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using bisection algorithm</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_modularity">
+<code class="sig-name descname">partition_modularity</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_modularity" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_modularity</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_modularity</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition for kernighan lin bisection algorithm</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_coverage">
+<code class="sig-name descname">partition_coverage</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_coverage" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_coverage</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_coverage</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition for kernighan lin bisection algorithm</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_performance">
+<code class="sig-name descname">partition_performance</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_performance" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_performance</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_performance</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition for kernighan lin bisection algorithm</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_inter_community_edges">
+<code class="sig-name descname">partition_inter_community_edges</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_inter_community_edges" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_inter_community_edges</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_inter_community_edges</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition for kernighan lin bisection algorithm</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_inter_community_non_edges">
+<code class="sig-name descname">partition_inter_community_non_edges</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_inter_community_non_edges" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_inter_community_non_edges</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_inter_community_non_edges</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition for kernighan lin bisection algorithm</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_intra_community_edges">
+<code class="sig-name descname">partition_intra_community_edges</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_intra_community_edges" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_intra_community_edges</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_intra_community_edges</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition for kernighan lin bisection algorithm</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.largest_commsize_N">
+<code class="sig-name descname">largest_commsize_N</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.largest_commsize_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – largest_commsize_N</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_largest_commsize_N</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using bisection algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.largest_commsize_E">
+<code class="sig-name descname">largest_commsize_E</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.largest_commsize_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – largest_commsize_E</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_largest_commsize_E</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using bisection algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_modularity_N">
+<code class="sig-name descname">partition_modularity_N</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_modularity_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_modularity_N</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_modularity_N</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition for kernighan lin bisection algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_modularity_E">
+<code class="sig-name descname">partition_modularity_E</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_modularity_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_modularity_E</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_modularity_E</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition for kernighan lin bisection algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_coverage_N">
+<code class="sig-name descname">partition_coverage_N</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_coverage_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_coverage_N</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_coverage_N</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition for kernighan lin bisection algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_coverage_E">
+<code class="sig-name descname">partition_coverage_E</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_coverage_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_coverage_E</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_coverage_E</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition for kernighan lin bisection algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_performance_N">
+<code class="sig-name descname">partition_performance_N</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_performance_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_performance_N</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_performance_N</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition for kernighan lin bisection algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_performance_E">
+<code class="sig-name descname">partition_performance_E</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_performance_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_performance_E</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_performance_E</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition for kernighan lin bisection algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_inter_community_edges_N">
+<code class="sig-name descname">partition_inter_community_edges_N</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_inter_community_edges_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_inter_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_inter_community_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition for kernighan lin bisection algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_inter_community_edges_E">
+<code class="sig-name descname">partition_inter_community_edges_E</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_inter_community_edges_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_inter_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_inter_community_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition for kernighan lin bisection algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_inter_community_non_edges_N">
+<code class="sig-name descname">partition_inter_community_non_edges_N</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_inter_community_non_edges_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_inter_community_non_edges_N</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_inter_community_non_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition for kernighan lin bisection algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_inter_community_non_edges_E">
+<code class="sig-name descname">partition_inter_community_non_edges_E</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_inter_community_non_edges_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_inter_community_non_edges_E</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_inter_community_non_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition for kernighan lin bisection algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_intra_community_edges_N">
+<code class="sig-name descname">partition_intra_community_edges_N</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_intra_community_edges_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_intra_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_intra_community_edges_N</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition for kernighan lin bisection algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.partition_intra_community_edges_E">
+<code class="sig-name descname">partition_intra_community_edges_E</code><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.partition_intra_community_edges_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – partition_intra_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CBI</p></li>
+<li><p><strong>fullname</strong> – CBI_partition_intra_community_edges_E</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition for kernighan lin bisection algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Initialise a feature class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>graph</strong> (<a class="reference internal" href="../graph.html#hcga.graph.Graph" title="hcga.graph.Graph"><em>Graph</em></a>) – graph for initialisation, converted to given encoding</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="hcga.features.communities_bisection.CommunitiesBisection.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/communities_bisection.html#CommunitiesBisection.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the measures about community detection using bisection algorithm.</p>
+<p class="rubric">Notes</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcga.features.communities_labelprop">
+<span id="the-label-propagation-communities-module"></span><h2>The label propagation communities module<a class="headerlink" href="#module-hcga.features.communities_labelprop" title="Permalink to this headline">¶</a></h2>
+<p>Communities Label propagation class.</p>
+<dl class="py class">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.features.communities_labelprop.</code><code class="sig-name descname">CommunitiesLabelPropagation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/communities_labelprop.html#CommunitiesLabelPropagation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Communities Label propagation class.</dt><dd><p>This class produces the following features:</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.largest_commsize">
+<code class="sig-name descname">largest_commsize</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.largest_commsize" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – largest_commsize</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_largest_commsize</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using label propagation</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.ratio_commsize_maxmin">
+<code class="sig-name descname">ratio_commsize_maxmin</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.ratio_commsize_maxmin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_commsize_maxmin</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_ratio_commsize_maxmin</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using label propagation</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_modularity">
+<code class="sig-name descname">communities_modularity</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_modularity" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_modularity</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_modularity</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition using label propagation algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_coverage">
+<code class="sig-name descname">communities_coverage</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_coverage" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_coverage</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_coverage</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition using label propagation algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_performance">
+<code class="sig-name descname">communities_performance</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_performance" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_performance</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_performance</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition using label propagation algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_inter_community_edges">
+<code class="sig-name descname">communities_inter_community_edges</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_inter_community_edges" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_inter_community_edges</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_inter_community_edges</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition using label propagation algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_inter_community_non_edges">
+<code class="sig-name descname">communities_inter_community_non_edges</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_inter_community_non_edges" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_inter_community_non_edges</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_inter_community_non_edges</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition using label propagation algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_intra_community_edges">
+<code class="sig-name descname">communities_intra_community_edges</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_intra_community_edges" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_intra_community_edges</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_intra_community_edges</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition using label propagation algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.largest_commsize_N">
+<code class="sig-name descname">largest_commsize_N</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.largest_commsize_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – largest_commsize_N</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_largest_commsize_N</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using label propagation, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.largest_commsize_E">
+<code class="sig-name descname">largest_commsize_E</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.largest_commsize_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – largest_commsize_E</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_largest_commsize_E</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using label propagation, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.ratio_commsize_maxmin_N">
+<code class="sig-name descname">ratio_commsize_maxmin_N</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.ratio_commsize_maxmin_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_commsize_maxmin_N</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_ratio_commsize_maxmin_N</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using label propagation, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.ratio_commsize_maxmin_E">
+<code class="sig-name descname">ratio_commsize_maxmin_E</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.ratio_commsize_maxmin_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_commsize_maxmin_E</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_ratio_commsize_maxmin_E</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using label propagation, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_modularity_N">
+<code class="sig-name descname">communities_modularity_N</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_modularity_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_modularity_N</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_modularity_N</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition using label propagation algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_modularity_E">
+<code class="sig-name descname">communities_modularity_E</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_modularity_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_modularity_E</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_modularity_E</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition using label propagation algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_coverage_N">
+<code class="sig-name descname">communities_coverage_N</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_coverage_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_coverage_N</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_coverage_N</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition using label propagation algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_coverage_E">
+<code class="sig-name descname">communities_coverage_E</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_coverage_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_coverage_E</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_coverage_E</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition using label propagation algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_performance_N">
+<code class="sig-name descname">communities_performance_N</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_performance_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_performance_N</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_performance_N</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition using label propagation algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_performance_E">
+<code class="sig-name descname">communities_performance_E</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_performance_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_performance_E</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_performance_E</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition using label propagation algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_inter_community_edges_N">
+<code class="sig-name descname">communities_inter_community_edges_N</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_inter_community_edges_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_inter_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_inter_community_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition using label propagation algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_inter_community_edges_E">
+<code class="sig-name descname">communities_inter_community_edges_E</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_inter_community_edges_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_inter_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_inter_community_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition using label propagation algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_inter_community_non_edges_N">
+<code class="sig-name descname">communities_inter_community_non_edges_N</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_inter_community_non_edges_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_inter_community_non_edges_N</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_inter_community_non_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition using label propagation algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_inter_community_non_edges_E">
+<code class="sig-name descname">communities_inter_community_non_edges_E</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_inter_community_non_edges_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_inter_community_non_edges_E</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_inter_community_non_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition using label propagation algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_intra_community_edges_N">
+<code class="sig-name descname">communities_intra_community_edges_N</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_intra_community_edges_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_intra_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_intra_community_edges_N</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition using label propagation algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_intra_community_edges_E">
+<code class="sig-name descname">communities_intra_community_edges_E</code><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.communities_intra_community_edges_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_intra_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CLP</p></li>
+<li><p><strong>fullname</strong> – CLP_communities_intra_community_edges_E</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition using label propagation algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Initialise a feature class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>graph</strong> (<a class="reference internal" href="../graph.html#hcga.graph.Graph" title="hcga.graph.Graph"><em>Graph</em></a>) – graph for initialisation, converted to given encoding</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/communities_labelprop.html#CommunitiesLabelPropagation.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the measures about community detection using label propagation algorithm.</p>
+<p class="rubric">Notes</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hcga</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../app.html">The cli app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hcga.html">The hcga class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graph.html">The graph data structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../feature_class.html">The feature class module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extraction.html">The extraction module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysis.html">The analysis module</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="basic_stats.html">The basic statistics module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="assortativity.html">The assortativity module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="centrality.html">Centrality modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chemical_theory.html">The chemical theory module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cliques.html">Cliques modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering.html">The clustering module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Communities modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-hcga.features.communities_modularity">The modularity communities module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-hcga.features.communities_asyn">The asyn fluid communities module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-hcga.features.communities_bisection">The bisection communities module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-hcga.features.communities_labelprop">The label propagation communities module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="components.html">Components modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core_number.html">The core_number module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cycle_basis.html">The cycle basis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distance_measures.html">The disttance measure module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dominating_sets.html">The dominating sets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efficiency.html">The efficiency module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eulerian.html">The eulerian module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efficiency.html">The efficiency module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="independent_sets.html">The independent sets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="k_components.html">The k-components module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_analysis_hits.html">The link analysis hits module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maximal_matching.html">The maximal matching module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="minimum_cuts.html">The minimum cuts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node_clique_number.html">The node clique numnber module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node_connectivity.html">The node connectivity module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node_features.html">The node features module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rich_club.html">The rich club module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scale_free.html">The scale free module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shortest_paths.html">The shortest paths module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="small_worldness.html">The small worldness module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structural_holes.html">The structural holes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spectrum.html">The spectrum module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vitality.html">The vitality module</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../Features.html">Features</a><ul>
+      <li>Previous: <a href="clustering.html" title="previous chapter">The clustering module</a></li>
+      <li>Next: <a href="components.html" title="next chapter">Components modules</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/Features/communities.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
