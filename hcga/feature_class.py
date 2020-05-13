@@ -32,12 +32,29 @@ class FeatureClass:
     # Feature descriptions as class variable
     feature_descriptions = {}
 
+    def _get_doc(cls):
+        f_info = cls.setup_class()
+        doc_string = '\n This class produces the following features:\n'
+        _indent = '    '
+        for feature in f_info.columns:
+            if f_info.loc['shortname', feature] == cls.shortname:
+                doc_string += 'Attributes: \n'
+                doc_string += _indent + feature + ': \n'
+                doc_string += 2 * _indent + 'Args: \n'
+                for data in f_info[feature].index:
+                    doc_string += 3 * _indent + str(data) + ': ' + str(f_info.loc[data, feature]) + '\n'
+        return doc_string
+
     def __init_subclass__(cls):
         """Initialise class variables to default for each child class."""
         cls.feature_descriptions = {}
+        cls.__doc__ += cls._get_doc(cls)
 
     def __init__(self, graph=None):
-        """init function."""
+        """Initialise a feature class.
+        
+        Args:
+            graph (Graph): graph for initialisation, converted to given encoding """
         if graph is not None:
             self.graph = graph.get_graph(self.__class__.encoding)
             self.graph_id = graph.id
@@ -65,6 +82,7 @@ class FeatureClass:
         for feature in features:
             feat_info = inst.get_feature_info(feature)
             feature_info[feature] = pd.Series(feat_info)
+
         return feature_info
 
     def get_info(self):
@@ -521,11 +539,8 @@ class InterpretabilityScore:
     def __init__(self, score):
         """Init function for InterpretabilityScore.
 
-        Parameters
-        ----------
-        score: number or {'min', 'max'}
-            value of score to set
-            will be shrunk to be within [min_score, max_score]
+        Args: 
+            score: (int/{'min', 'max'} value of score to set
         """
         if score == "max":
             score = self.max_score

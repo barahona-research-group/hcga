@@ -16,12 +16,6 @@ class Assortativity(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute the assortativity of the network structure.
-
-        Computed statistics
-        -----
-        Put here the list of things that are computed, with corresponding names
-        """
 
         # Adding basic node and edge numbers
         self.add_feature(
@@ -48,3 +42,4 @@ class Assortativity(FeatureClass):
             InterpretabilityScore(4),
             statistics="centrality",
         )
+

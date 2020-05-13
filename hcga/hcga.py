@@ -6,11 +6,7 @@ from .io import load_dataset, load_features, save_dataset, save_features
 
 
 class Hcga:
-    """hcga standard object class.
-
-    Parameters
-    ----------
-    """
+    """hcga standard object class."""
 
     def __init__(self):
         """init function."""

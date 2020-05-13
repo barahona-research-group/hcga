@@ -78,10 +78,10 @@ class Graph:
         """Set main graphs quantities.
        
         Args:
-            nodes (DataFrame): node dataframe, index as node id, and optional
-        label and attributes columns (with lists elements)
-            edges (DataFrame): edge dataframe, with two columns 'start_node'
-        and 'end_node' with id corresponding to indices in nodes
+            nodes (DataFrame): node dataframe, index as node id, and optional 
+                label and attributes columns (with lists elements)
+            edges (DataFrame): edge dataframe, with two columns 'start_node' and 'end_node' 
+                with id corresponding to indices in nodes
             label (int): label of the graph, it has to be an integer
             label_name (any): name or other information on the graph label
         """
