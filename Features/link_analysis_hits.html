@@ -38,6 +38,7 @@
 <dl class="py class">
 <dt id="hcga.features.link_analysis_hits.Hits">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.link_analysis_hits.</code><code class="sig-name descname">Hits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/link_analysis_hits.html#Hits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.link_analysis_hits.Hits" title="Permalink to this definition">¶</a></dt>
+<<<<<<< HEAD
 <dd><dl class="simple">
 <dt>HITS hubs class.</dt><dd><p>This class produces the following features:</p>
 </dd>
@@ -336,6 +337,9 @@
 <dd class="field-odd"><p><strong>graph</strong> (<a class="reference internal" href="../graph.html#hcga.graph.Graph" title="hcga.graph.Graph"><em>Graph</em></a>) – graph for initialisation, converted to given encoding</p>
 </dd>
 </dl>
+=======
+<dd><p>HITS hubs class.</p>
+>>>>>>> 1fabbe758d7fb18431c3d41496e97d7caaa19452
 <dl class="py method">
 <dt id="hcga.features.link_analysis_hits.Hits.compute_features">
 <code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/link_analysis_hits.html#Hits.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.link_analysis_hits.Hits.compute_features" title="Permalink to this definition">¶</a></dt>
@@ -343,10 +347,18 @@
 <p>The HITS algorithm computes two numbers for a node <a class="footnote-reference brackets" href="#id3" id="id1">1</a> <a class="footnote-reference brackets" href="#id4" id="id2">2</a>.
 Authorities estimates the node value based on the incoming links.
 Hubs estimates the node value based on outgoing links.</p>
+<<<<<<< HEAD
 <p class="rubric">Notes</p>
 <p>Hits calculations using networkx:</p>
 <blockquote>
 <div><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.link_analysis.hits_alg.hits.html#networkx.algorithms.link_analysis.hits_alg.hits">Networkx_hits</a></p>
+=======
+<blockquote>
+<div><blockquote>
+<div><p>Hits calculations using networkx:</p>
+</div></blockquote>
+<p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.link_analysis.hits_alg.hits.html#networkx.algorithms.link_analysis.hits_alg.hits">Networkx_hits</a></p>
+>>>>>>> 1fabbe758d7fb18431c3d41496e97d7caaa19452
 </div></blockquote>
 <p>The eigenvector calculation is done by the power iteration method
 and has no guarantee of convergence.  The iteration will stop
@@ -355,7 +367,10 @@ number_of_nodes(G)*tol has been reached.</p>
 <p>The HITS algorithm was designed for directed graphs but this
 algorithm does not check if the input graph is directed and will
 execute on undirected graphs.</p>
+<<<<<<< HEAD
 <p class="rubric">References</p>
+=======
+>>>>>>> 1fabbe758d7fb18431c3d41496e97d7caaa19452
 <dl class="footnote brackets">
 <dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
 <dd><p>A. Langville and C. Meyer,
@@ -395,11 +410,15 @@ http://www.cs.cornell.edu/home/kleinber/auth.pdf.</p>
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../app.html">The cli app</a></li>
+<<<<<<< HEAD
 <li class="toctree-l1"><a class="reference internal" href="../hcga.html">The hcga class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../graph.html">The graph data structure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../feature_class.html">The feature class module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../extraction.html">The extraction module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../analysis.html">The analysis module</a></li>
+=======
+<li class="toctree-l1"><a class="reference internal" href="../feature_class.html">The feature class module</a></li>
+>>>>>>> 1fabbe758d7fb18431c3d41496e97d7caaa19452
 <li class="toctree-l1 current"><a class="reference internal" href="../Features.html">Features</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="basic_stats.html">The basic statistics module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="assortativity.html">The assortativity module</a></li>

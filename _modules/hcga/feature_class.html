@@ -65,6 +65,7 @@
     <span class="c1"># Feature descriptions as class variable</span>
     <span class="n">feature_descriptions</span> <span class="o">=</span> <span class="p">{}</span>
 
+<<<<<<< HEAD
     <span class="k">def</span> <span class="nf">_get_doc</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="n">f_info</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">setup_class</span><span class="p">()</span>
         <span class="n">doc_string</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> This class produces the following features:</span><span class="se">\n</span><span class="s1">&#39;</span>
@@ -89,6 +90,14 @@
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
 <span class="sd">            graph (Graph): graph for initialisation, converted to given encoding &quot;&quot;&quot;</span>
+=======
+    <span class="k">def</span> <span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialise class variables to default for each child class.&quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">feature_descriptions</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;init function.&quot;&quot;&quot;</span>
+>>>>>>> 1fabbe758d7fb18431c3d41496e97d7caaa19452
         <span class="k">if</span> <span class="n">graph</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">get_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">graph_id</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">id</span>
@@ -116,7 +125,10 @@
         <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
             <span class="n">feat_info</span> <span class="o">=</span> <span class="n">inst</span><span class="o">.</span><span class="n">get_feature_info</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
             <span class="n">feature_info</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">feat_info</span><span class="p">)</span>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1fabbe758d7fb18431c3d41496e97d7caaa19452
         <span class="k">return</span> <span class="n">feature_info</span></div>
 
 <div class="viewcode-block" id="FeatureClass.get_info"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass.get_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -573,8 +585,16 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">score</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Init function for InterpretabilityScore.</span>
 
+<<<<<<< HEAD
 <span class="sd">        Args: </span>
 <span class="sd">            score: (int/{&#39;min&#39;, &#39;max&#39;} value of score to set</span>
+=======
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        score: number or {&#39;min&#39;, &#39;max&#39;}</span>
+<span class="sd">            value of score to set</span>
+<span class="sd">            will be shrunk to be within [min_score, max_score]</span>
+>>>>>>> 1fabbe758d7fb18431c3d41496e97d7caaa19452
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">score</span> <span class="o">==</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span>
             <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_score</span>

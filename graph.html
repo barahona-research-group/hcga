@@ -40,6 +40,7 @@
 <em class="property">class </em><code class="sig-prename descclassname">hcga.graph.</code><code class="sig-name descname">Graph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em>, <em class="sig-param"><span class="n">edges</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">label_name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#Graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.Graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class to encode a generic graph structure for hcga.</p>
 <p>Set main graphs quantities.</p>
+<<<<<<< HEAD
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -50,6 +51,15 @@ with id corresponding to indices in nodes</p></li>
 <li><p><strong>label</strong> (<em>int</em>) – label of the graph, it has to be an integer</p></li>
 <li><p><strong>label_name</strong> (<em>any</em>) – name or other information on the graph label</p></li>
 </ul>
+=======
+<dl class="simple">
+<dt>Args:</dt><dd><p>nodes (DataFrame): node dataframe, index as node id, and optional</p>
+</dd>
+<dt>label and attributes columns (with lists elements)</dt><dd><p>edges (DataFrame): edge dataframe, with two columns ‘start_node’</p>
+</dd>
+<dt>and ‘end_node’ with id corresponding to indices in nodes</dt><dd><p>label (int): label of the graph, it has to be an integer
+label_name (any): name or other information on the graph label</p>
+>>>>>>> 1fabbe758d7fb18431c3d41496e97d7caaa19452
 </dd>
 </dl>
 <dl class="py method">

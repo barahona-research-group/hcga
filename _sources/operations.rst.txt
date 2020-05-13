@@ -1,0 +1,4 @@
+The Features module
+======================
+.. automodule:: hcga.features
+   :members:                      

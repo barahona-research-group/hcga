@@ -39,9 +39,13 @@
 <dt id="hcga.features.dominating_sets.DominatingSets">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.dominating_sets.</code><code class="sig-name descname">DominatingSets</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/dominating_sets.html#DominatingSets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.dominating_sets.DominatingSets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dominating sets class.</p>
+<<<<<<< HEAD
 <blockquote>
 <div><blockquote>
 <div><p>A <em>dominating set</em> for a graph with node set <em>V</em> is a subset <em>D</em> of
+=======
+<p>A <em>dominating set</em> for a graph with node set <em>V</em> is a subset <em>D</em> of
+>>>>>>> 1fabbe758d7fb18431c3d41496e97d7caaa19452
 <em>V</em> such that every node not in <em>D</em> is adjacent to at least one
 member of <em>D</em> <a href="#id9"><span class="problematic" id="id1">[1]_</span></a>.</p>
 <dl class="simple">
@@ -57,6 +61,7 @@ member of <em>D</em> <a href="#id9"><span class="problematic" id="id1">[1]_</spa
 <a class="reference external" href="http://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf">http://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf</a></p>
 </dd>
 </dl>
+<<<<<<< HEAD
 </div></blockquote>
 <p>This class produces the following features:</p>
 </div></blockquote>
@@ -210,6 +215,8 @@ member of <em>D</em> <a href="#id9"><span class="problematic" id="id1">[1]_</spa
 <dd class="field-odd"><p><strong>graph</strong> (<a class="reference internal" href="../graph.html#hcga.graph.Graph" title="hcga.graph.Graph"><em>Graph</em></a>) – graph for initialisation, converted to given encoding</p>
 </dd>
 </dl>
+=======
+>>>>>>> 1fabbe758d7fb18431c3d41496e97d7caaa19452
 <dl class="py method">
 <dt id="hcga.features.dominating_sets.DominatingSets.compute_features">
 <code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/dominating_sets.html#DominatingSets.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.dominating_sets.DominatingSets.compute_features" title="Permalink to this definition">¶</a></dt>
@@ -225,6 +232,7 @@ member of <em>D</em> <a href="#id9"><span class="problematic" id="id1">[1]_</spa
 <dd><p>Find a maximal matching in the graph.</p>
 <p>A matching is a subset of edges in which no node occurs more than once.
 A maximal matching cannot add more edges and still be a matching.</p>
+<<<<<<< HEAD
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>G</strong> (<em>NetworkX graph</em>) – Undirected graph</p>
@@ -237,6 +245,16 @@ A maximal matching cannot add more edges and still be a matching.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
+=======
+<dl class="simple">
+<dt>G<span class="classifier">NetworkX graph</span></dt><dd><p>Undirected graph</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>matching<span class="classifier">set</span></dt><dd><p>A maximal matching of the graph.</p>
+</dd>
+</dl>
+>>>>>>> 1fabbe758d7fb18431c3d41496e97d7caaa19452
 <p>The algorithm greedily selects a maximal matching M of the graph G
 (i.e. no superset of M exists). It runs in $O(<a href="#id5"><span class="problematic" id="id6">|E|</span></a>)$ time.</p>
 </dd></dl>
@@ -245,6 +263,7 @@ A maximal matching cannot add more edges and still be a matching.</p>
 <dt id="hcga.features.dominating_sets.min_edge_dominating_set">
 <code class="sig-prename descclassname">hcga.features.dominating_sets.</code><code class="sig-name descname">min_edge_dominating_set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">G</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/dominating_sets.html#min_edge_dominating_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.dominating_sets.min_edge_dominating_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns minimum cardinality edge dominating set.</p>
+<<<<<<< HEAD
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>G</strong> (<em>NetworkX graph</em>) – Undirected graph</p>
@@ -257,6 +276,16 @@ A maximal matching cannot add more edges and still be a matching.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
+=======
+<dl class="simple">
+<dt>G<span class="classifier">NetworkX graph</span></dt><dd><p>Undirected graph</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>min_edge_dominating_set<span class="classifier">set</span></dt><dd><p>Returns a set of dominating edges whose size is no more than 2 * OPT.</p>
+</dd>
+</dl>
+>>>>>>> 1fabbe758d7fb18431c3d41496e97d7caaa19452
 <p>The algorithm computes an approximate solution to the edge dominating set
 problem. The result is no more than 2 * OPT in terms of size of the set.
 Runtime of the algorithm is $O(<a href="#id7"><span class="problematic" id="id8">|E|</span></a>)$.</p>
@@ -267,6 +296,7 @@ Runtime of the algorithm is $O(<a href="#id7"><span class="problematic" id="id8"
 <code class="sig-prename descclassname">hcga.features.dominating_sets.</code><code class="sig-name descname">min_weighted_dominating_set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">G</span></em>, <em class="sig-param"><span class="n">weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/dominating_sets.html#min_weighted_dominating_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.dominating_sets.min_weighted_dominating_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a dominating set that approximates the minimum weight node
 dominating set.</p>
+<<<<<<< HEAD
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -278,15 +308,31 @@ node. If not provided, each node is assumed to have weight one.</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>min_weight_dominating_set</strong> – A set of nodes, the sum of whose weights is no more than <cite>(log
+=======
+<dl class="simple">
+<dt>G<span class="classifier">NetworkX graph</span></dt><dd><p>Undirected graph.</p>
+</dd>
+<dt>weight<span class="classifier">string</span></dt><dd><p>The node attribute storing the weight of an node. If provided,
+the node attribute with this key must be a number for each
+node. If not provided, each node is assumed to have weight one.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>min_weight_dominating_set<span class="classifier">set</span></dt><dd><p>A set of nodes, the sum of whose weights is no more than <cite>(log
+>>>>>>> 1fabbe758d7fb18431c3d41496e97d7caaa19452
 w(V)) w(V^*)</cite>, where <cite>w(V)</cite> denotes the sum of the weights of
 each node in the graph and <cite>w(V^*)</cite> denotes the sum of the
 weights of each node in the minimum weight dominating set.</p>
 </dd>
+<<<<<<< HEAD
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>set</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
+=======
+</dl>
+>>>>>>> 1fabbe758d7fb18431c3d41496e97d7caaa19452
 <p>This algorithm computes an approximate minimum weighted dominating
 set for the graph <cite>G</cite>. The returned solution has weight <cite>(log
 w(V)) w(V^*)</cite>, where <cite>w(V)</cite> denotes the sum of the weights of each
@@ -294,7 +340,10 @@ node in the graph and <cite>w(V^*)</cite> denotes the sum of the weights of
 each node in the minimum weight dominating set for the graph.</p>
 <p>This implementation of the algorithm runs in $O(m)$ time, where $m$
 is the number of edges in the graph.</p>
+<<<<<<< HEAD
 <p class="rubric">References</p>
+=======
+>>>>>>> 1fabbe758d7fb18431c3d41496e97d7caaa19452
 <dl class="footnote brackets">
 <dt class="label" id="id4"><span class="brackets">1</span></dt>
 <dd><p>Vazirani, Vijay V.
@@ -325,11 +374,15 @@ Springer Science &amp; Business Media, 2001.</p>
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../app.html">The cli app</a></li>
+<<<<<<< HEAD
 <li class="toctree-l1"><a class="reference internal" href="../hcga.html">The hcga class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../graph.html">The graph data structure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../feature_class.html">The feature class module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../extraction.html">The extraction module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../analysis.html">The analysis module</a></li>
+=======
+<li class="toctree-l1"><a class="reference internal" href="../feature_class.html">The feature class module</a></li>
+>>>>>>> 1fabbe758d7fb18431c3d41496e97d7caaa19452
 <li class="toctree-l1 current"><a class="reference internal" href="../Features.html">Features</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="basic_stats.html">The basic statistics module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="assortativity.html">The assortativity module</a></li>
