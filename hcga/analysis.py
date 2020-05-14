@@ -31,16 +31,16 @@ def _get_classifier(classifier):
         if classifier == "RF":
             from sklearn.ensemble import RandomForestClassifier
 
-            print("... Using RandomForest classifier ...")
+            L.info("... Using RandomForest classifier ...")
             return RandomForestClassifier(n_estimators=1000, max_depth=30)
         if classifier == "XG":
             from xgboost import XGBClassifier
 
-            print("... Using Xgboost classifier ...")
+            L.info("... Using Xgboost classifier ...")
 
             return XGBClassifier()
         if classifier == "LGBM":
-            print("... Using LGBM classifier ...")
+            L.info("... Using LGBM classifier ...")
             from lightgbm import LGBMClassifier
 
             return LGBMClassifier()
@@ -60,35 +60,42 @@ def analysis(
     kfold=True,
     plot=True,
     max_feats=20,
+    graph_removal=0.3,
+    reduced_set_size=100,
+    reduced_set_max_correlation=0.9,
 ):
-    """Main function to classify graphs and plot results.
+    """Main function to classify graphs and plot results."""
+    L.info("{} total features".format(len(features.columns)))
 
-    Parameters
-    -----
-    interpretability: an integer in range 1-5
-        1 is all features, 5 is features with interpretability=5
-    """
+    features = utils.filter_graphs(features, graph_removal=graph_removal)
+    features = utils.filter_features(features)
+    L.info("{} valid features".format(len(features.columns)))
+
     features, features_info = filter_interpretable(
         features, features_info, interpretability
     )
+    L.info(
+        "{} with interpretability {}".format(len(features.columns), interpretability)
+    )
 
-    filtered_features = utils.filter_samples(features, sample_removal=0.3)
-    good_features = utils.filter_features(filtered_features)
-    normed_features = _normalise_feature_data(good_features)
+    features = _normalise_feature_data(features)
     classifier = _get_classifier(classifier)
 
     if grid_search and kfold:
+        L.info("Using grid_search  and kfold")
         X, y, shap_values, top_features = fit_grid_search(
-            normed_features, classifier=classifier,
+            features, classifier=classifier,
         )
     elif kfold:
+        L.info("Using kfold")
         X, y, shap_values, top_features = fit_model_kfold(
-            normed_features, classifier=classifier, reduced_set_size=100,
+            features,
+            classifier=classifier,
+            reduced_set_size=reduced_set_size,
+            reduced_set_max_correlation=reduced_set_max_correlation,
         )
     else:
-        X, y, shap_values, top_features = fit_model(
-            normed_features, classifier=classifier,
-        )
+        X, y, shap_values, top_features = fit_model(features, classifier=classifier,)
 
     results_folder = Path(folder) / (
         "results_interpretability_" + str(interpretability)
@@ -105,9 +112,7 @@ def analysis(
         else:
             plotting.basic_plots(X, top_features, results_folder)
 
-    output_csv(
-        normed_features, features_info, top_features, shap_values, results_folder
-    )
+    output_csv(features, features_info, top_features, shap_values, results_folder)
 
     return X, shap_values
 
@@ -148,8 +153,14 @@ def output_csv(features, features_info, feature_importance, shap_values, folder)
     output_df.to_csv(os.path.join(folder, "importance_results.csv"))
 
 
-def fit_model_kfold(features, compute_shap=True, classifier=None, reduced_set_size=100):
-    """shapeley analysis."""
+def fit_model_kfold(
+    features,
+    compute_shap=True,
+    classifier=None,
+    reduced_set_size=100,
+    reduced_set_max_correlation=0.9,
+):
+    """Classify graphs with kfold."""
     if classifier is None:
         raise Exception("Please provide a model for classification")
 
@@ -159,15 +170,13 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, reduced_set_si
     L.info("Using " + str(n_splits) + " splits")
 
     folds = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=1)
-    indices_all = (indices for indices in folds.split(X, y=y))
 
     top_features = []
     shap_values = []
     acc_scores = []
-
-    for indices in indices_all:
+    for indices in folds.split(X, y=y):
         top_feature, acc_score, shap_value = compute_fold(
-            X, y, classifier, compute_shap, indices
+            X, y, classifier, indices, compute_shap
         )
         top_features.append(top_feature)
         acc_scores.append(acc_score)
@@ -180,7 +189,7 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, reduced_set_si
     )
 
     # taking average of folds
-    if any(isinstance(el, list) for el in shap_values):
+    if any(isinstance(shap_value, list) for shap_value in shap_values):
         shap_fold_average = np.mean(shap_values, axis=0)
         shap_fold_average = [
             shap_fold_average[label, :, :]
@@ -192,31 +201,30 @@ def fit_model_kfold(features, compute_shap=True, classifier=None, reduced_set_si
     shap_top_features = np.sum(np.mean(np.abs(shap_fold_average), axis=1), axis=0)
 
     X_reduced_corr = reduce_correlation_feature_set(
-        X, shap_top_features, n_feats=reduced_set_size
+        X,
+        shap_top_features,
+        n_top_features=reduced_set_size,
+        alpha=reduced_set_max_correlation,
     )
 
     shap_values = []
     acc_scores = []
-    compute_shap = False
     indices_all = (indices for indices in folds.split(X, y=y))
     for indices in indices_all:
-        top_feature, acc_score = compute_fold(
-            X_reduced_corr, y, classifier, compute_shap, indices
+        top_feature, acc_score, _ = compute_fold(
+            X_reduced_corr, y, classifier, indices, compute_shap=False
         )
         acc_scores.append(acc_score)
 
     L.info(
-        "Reduced set via correlation: accuracy: {} +/- {}".format(
+        "Accuracy with reduced set: {} +/- {}".format(
             str(np.round(np.mean(acc_scores), 3)), str(np.round(np.std(acc_scores), 3))
         )
     )
-
-    # mean_shap_values = list(np.mean(shap_values, axis=0))
-
     return X, y, shap_fold_average, top_features
 
 
-def compute_fold(X, y, classifier, compute_shap, indices):
+def compute_fold(X, y, classifier, indices, compute_shap=True):
     """Compute a single fold for parallel computation."""
     train_index, val_index = indices
 
@@ -229,9 +237,7 @@ def compute_fold(X, y, classifier, compute_shap, indices):
     X_train, X_val = X.loc[x_train_idx], X.loc[x_val_idx]
     y_train, y_val = y.loc[y_train_idx], y.loc[y_val_idx]
 
-    classifier.fit(
-        X_train, y_train,
-    )
+    classifier.fit(X_train, y_train)
     top_features = classifier.feature_importances_
 
     acc_score = accuracy_score(y_val, classifier.predict(X_val))
@@ -244,7 +250,7 @@ def compute_fold(X, y, classifier, compute_shap, indices):
         shap_values = explainer.shap_values(X, check_additivity=False)
         return top_features, acc_score, shap_values
     else:
-        return top_features, acc_score
+        return top_features, acc_score, None
 
 
 def fit_model(features, compute_shap=True, classifier=None):
@@ -353,25 +359,28 @@ def _number_folds(y):
     return np.clip(n_splits, 2, 10)
 
 
-def reduce_correlation_feature_set(X, shap_top_features, n_feats=100, alpha=0.99):
+def reduce_correlation_feature_set(
+    X, shap_top_features, n_top_features=100, alpha=0.99
+):
     """Reduce the feature set by taking uncorrelated features."""
-
-    rank_feat = np.argsort(shap_top_features)[::-1]
+    rank_feat_ids = np.argsort(shap_top_features)[::-1]
     # loop over and add those with minimal correlation
-    _feats = [rank_feat[0]]
+    selected_features = [rank_feat_ids[0]]
     corr_matrix = np.corrcoef(X.T)
-    for i in rank_feat:
-        # feat_idx = rank_feat[i]
+    for rank_feat_id in rank_feat_ids:
         # find if there is a correlation larger than alpha
-        if not (corr_matrix[_feats, i] > alpha).any():
-            _feats.append(i)
-        if len(_feats) > n_feats:
+        if not (corr_matrix[selected_features, rank_feat_id] > alpha).any():
+            selected_features.append(rank_feat_id)
+        if len(selected_features) > n_top_features:
             break
 
-    print(n_feats, " of features with <0.99 correlation.")
+    L.info(
+        "Now using a reduced set of {} features with < {} correlation.".format(
+            len(selected_features), alpha
+        )
+    )
 
-    X_reduced = X[X.columns[_feats]]
-    return X_reduced
+    return X[X.columns[selected_features]]
 
 
 def reduce_feature_set(X, top_features, importance_threshold=0.5):
