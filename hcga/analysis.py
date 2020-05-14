@@ -2,7 +2,7 @@
 
 import logging
 import os
-from datetime import datetime
+import time
 from pathlib import Path
 
 import numpy as np
@@ -23,6 +23,67 @@ L = logging.getLogger(__name__)
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 
 # pylint: disable-all
+
+
+def _features_to_Xy(features):
+    """decompose features dataframe to X and y."""
+    X = features.drop(columns=["labels"])
+    y = features["labels"]
+    return X, y
+
+
+def _normalise_feature_data(features):
+    """Normalise the feature matrix using sklearn scaler to remove the mean and scale to unit variance."""
+    labels = features["labels"]
+    normed_features = pd.DataFrame(
+        StandardScaler().fit_transform(features), columns=features.columns
+    )
+    normed_features.index = features.index
+    normed_features["labels"] = labels
+    return normed_features
+
+
+def _number_folds(y):
+    """Get number of folds."""
+    counts = y.value_counts()
+    n_splits = int(np.min(counts[counts > 0]) / 2)
+    return np.clip(n_splits, 2, 10)
+
+
+def _reduce_correlation_feature_set(
+    X, shap_top_features, n_top_features=100, alpha=0.99
+):
+    """Reduce the feature set by taking uncorrelated features."""
+    rank_feat_ids = np.argsort(shap_top_features)[::-1]
+    # loop over and add those with minimal correlation
+    selected_features = [rank_feat_ids[0]]
+    corr_matrix = np.corrcoef(X.T)
+    for rank_feat_id in rank_feat_ids:
+        # find if there is a correlation larger than alpha
+        if not (corr_matrix[selected_features, rank_feat_id] > alpha).any():
+            selected_features.append(rank_feat_id)
+        if len(selected_features) > n_top_features:
+            break
+
+    L.info(
+        "Now using a reduced set of {} features with < {} correlation.".format(
+            len(selected_features), alpha
+        )
+    )
+
+    return X[X.columns[selected_features]]
+
+
+def _filter_interpretable(features, features_info, interpretability):
+    """Get only features with certain interpretability."""
+    interpretability = min(5, interpretability)
+    for feat in list(features_info.keys()):
+        score = features_info[feat]["interpretability"].score
+        if score < interpretability:
+            if feat in features.columns:
+                features = features.drop(columns=[feat])
+                del features_info[feat]
+    return features, features_info
 
 
 def _get_classifier(classifier):
@@ -71,7 +132,7 @@ def analysis(
     features = utils.filter_features(features)
     L.info("{} valid features".format(len(features.columns)))
 
-    features, features_info = filter_interpretable(
+    features, features_info = _filter_interpretable(
         features, features_info, interpretability
     )
     L.info(
@@ -90,12 +151,15 @@ def analysis(
         L.info("Using kfold")
         X, y, shap_values, top_features = fit_model_kfold(
             features,
+            compute_shap=shap,
             classifier=classifier,
             reduced_set_size=reduced_set_size,
             reduced_set_max_correlation=reduced_set_max_correlation,
         )
     else:
-        X, y, shap_values, top_features = fit_model(features, classifier=classifier,)
+        X, y, shap_values, top_features = fit_model(
+            features, classifier=classifier, compute_shap=shap
+        )
 
     results_folder = Path(folder) / (
         "results_interpretability_" + str(interpretability)
@@ -200,7 +264,7 @@ def fit_model_kfold(
 
     shap_top_features = np.sum(np.mean(np.abs(shap_fold_average), axis=1), axis=0)
 
-    X_reduced_corr = reduce_correlation_feature_set(
+    X_reduced_corr = _reduce_correlation_feature_set(
         X,
         shap_top_features,
         n_top_features=reduced_set_size,
@@ -253,7 +317,7 @@ def compute_fold(X, y, classifier, indices, compute_shap=True):
         return top_features, acc_score, None
 
 
-def fit_model(features, compute_shap=True, classifier=None):
+def fit_model(features, classifier, compute_shap=True):
     """shapeley analysis."""
 
     explainer = None
@@ -279,7 +343,7 @@ def fit_model(features, compute_shap=True, classifier=None):
 
     acc_scores = accuracy_score(y_test, classifier.predict(X_test))
 
-    L.info("accuracy: " + str(acc_scores))
+    L.info("Accuracy: " + str(acc_scores))
 
     return X, y, explainer, shap_values, top_features
 
@@ -323,9 +387,10 @@ def fit_grid_search(features, compute_shap=True, classifier=None):
         n_jobs=-1,
     )
 
-    start_time = timer(None)
+    start_time = time.time()
     model.fit(X, y)
-    timer(start_time)  # timing ends here for "start_time" variable
+    L.info(time.time() - start_time, "seconds")
+
     optimal_model = model.best_estimator_
 
     X, y, mean_shap_values, top_features = fit_model_kfold(
@@ -333,103 +398,3 @@ def fit_grid_search(features, compute_shap=True, classifier=None):
     )
 
     return X, y, mean_shap_values, top_features
-
-
-def _features_to_Xy(features):
-    """decompose features dataframe to X and y."""
-    X = features.drop(columns=["labels"])
-    y = features["labels"]
-    return X, y
-
-
-def _normalise_feature_data(features):
-    """Normalise the feature matrix using sklearn scaler to remove the mean and scale to unit variance."""
-    labels = features["labels"]
-    normed_features = pd.DataFrame(
-        StandardScaler().fit_transform(features), columns=features.columns
-    )
-    normed_features.index = features.index
-    normed_features["labels"] = labels
-    return normed_features
-
-
-def _number_folds(y):
-    counts = y.value_counts()
-    n_splits = int(np.min(counts[counts > 0]) / 2)
-    return np.clip(n_splits, 2, 10)
-
-
-def reduce_correlation_feature_set(
-    X, shap_top_features, n_top_features=100, alpha=0.99
-):
-    """Reduce the feature set by taking uncorrelated features."""
-    rank_feat_ids = np.argsort(shap_top_features)[::-1]
-    # loop over and add those with minimal correlation
-    selected_features = [rank_feat_ids[0]]
-    corr_matrix = np.corrcoef(X.T)
-    for rank_feat_id in rank_feat_ids:
-        # find if there is a correlation larger than alpha
-        if not (corr_matrix[selected_features, rank_feat_id] > alpha).any():
-            selected_features.append(rank_feat_id)
-        if len(selected_features) > n_top_features:
-            break
-
-    L.info(
-        "Now using a reduced set of {} features with < {} correlation.".format(
-            len(selected_features), alpha
-        )
-    )
-
-    return X[X.columns[selected_features]]
-
-
-def reduce_feature_set(X, top_features, importance_threshold=0.5):
-    """Reduce the feature set."""
-
-    # rank_feat = np.argsort(shap_top_features)[::-1]
-    mean_importance = np.mean(np.array(top_features), axis=0)
-    rank_feat = np.argsort(mean_importance)[::-1]
-    n_feat = len(
-        np.where(
-            np.cumsum(mean_importance[rank_feat])
-            < importance_threshold * mean_importance.sum()
-        )[0]
-    )
-    n_feat = max(3, n_feat)
-
-    # n_feat = 2*np.int(np.sqrt(X.shape[1]))
-
-    rank_feat = rank_feat[:n_feat]
-
-    # print(n_feat, " features used in reduced feature set")
-
-    print(n_feat, "to get {} of total importance".format(importance_threshold))
-
-    X_reduced = X[X.columns[rank_feat]]
-
-    return X_reduced
-
-
-def filter_interpretable(features, features_info, interpretability):
-    """Get only features with certain interpretability."""
-    interpretability = min(5, interpretability)
-    for feat in list(features_info.keys()):
-        score = features_info[feat]["interpretability"].score
-        if score < interpretability:
-            if feat in features.columns:
-                features = features.drop(columns=[feat])
-                del features_info[feat]
-    return features, features_info
-
-
-def timer(start_time=None):
-    if not start_time:
-        start_time = datetime.now()
-        return start_time
-    elif start_time:
-        thour, temp_sec = divmod((datetime.now() - start_time).total_seconds(), 3600)
-        tmin, tsec = divmod(temp_sec, 60)
-        print(
-            "\n Time taken: %i hours %i minutes and %s seconds."
-            % (thour, tmin, round(tsec, 2))
-        )
