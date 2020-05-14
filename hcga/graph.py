@@ -76,7 +76,7 @@ class Graph:
 
     def __init__(self, nodes, edges, label, label_name=None):
         """Set main graphs quantities.
-       
+
         Args:
             nodes (DataFrame): node dataframe, index as node id, and optional
                 label and attributes columns (with lists elements)
@@ -133,7 +133,7 @@ class Graph:
 
     def get_graph(self, encoding=None):
         """Get usable graph structure with given encoding.
-        
+
         For now, only networkx is implemented."""
         if encoding is None:
             return self
@@ -179,7 +179,7 @@ class Graph:
             csgraph=adj, return_labels=True
         )
         if n_components == 1:
-            return None
+            return
 
         largest_cc_label = np.argmax(np.unique(labels, return_counts=True)[1])
 

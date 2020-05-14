@@ -8,11 +8,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import shap
-from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score
+from sklearn.metrics import accuracy_score
 from sklearn.model_selection import (
     RandomizedSearchCV,
     StratifiedKFold,
-    cross_val_score,
     train_test_split,
 )
 from sklearn.preprocessing import StandardScaler
@@ -22,7 +21,7 @@ from . import plotting, utils
 L = logging.getLogger(__name__)
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 
-# pylint: disable-all
+# pylint: disable=too-many-locals,too-many-arguments
 
 
 def _features_to_Xy(features):
@@ -66,9 +65,9 @@ def _reduce_correlation_feature_set(
             break
 
     L.info(
-        "Now using a reduced set of {} features with < {} correlation.".format(
-            len(selected_features), alpha
-        )
+        "Now using a reduced set of %s features with < %s correlation.",
+        str(len(selected_features)),
+        str(alpha),
     )
 
     return X[X.columns[selected_features]]
@@ -115,7 +114,7 @@ def analysis(
     graphs,
     interpretability=1,
     grid_search=False,
-    shap=True,
+    compute_shap=True,
     classifier="XG",
     folder=".",
     kfold=True,
@@ -126,17 +125,17 @@ def analysis(
     reduced_set_max_correlation=0.9,
 ):
     """Main function to classify graphs and plot results."""
-    L.info("{} total features".format(len(features.columns)))
+    L.info("%s total features", str(len(features.columns)))
 
     features = utils.filter_graphs(features, graph_removal=graph_removal)
     features = utils.filter_features(features)
-    L.info("{} valid features".format(len(features.columns)))
+    L.info("%s valid features", str(len(features.columns)))
 
     features, features_info = _filter_interpretable(
         features, features_info, interpretability
     )
     L.info(
-        "{} with interpretability {}".format(len(features.columns), interpretability)
+        "%s with interpretability %s", str(len(features.columns)), str(interpretability)
     )
 
     features = _normalise_feature_data(features)
@@ -144,21 +143,19 @@ def analysis(
 
     if grid_search and kfold:
         L.info("Using grid_search  and kfold")
-        X, y, shap_values, top_features = fit_grid_search(
-            features, classifier=classifier,
-        )
+        X, y, shap_values, top_features = fit_grid_search(features, classifier,)
     elif kfold:
         L.info("Using kfold")
-        X, y, shap_values, top_features = fit_model_kfold(
+        X, y, top_features, shap_values = fit_model_kfold(
             features,
-            compute_shap=shap,
-            classifier=classifier,
+            classifier,
+            compute_shap=compute_shap,
             reduced_set_size=reduced_set_size,
             reduced_set_max_correlation=reduced_set_max_correlation,
         )
     else:
-        X, y, shap_values, top_features = fit_model(
-            features, classifier=classifier, compute_shap=shap
+        X, y, top_features, shap_values = fit_model(
+            features, classifier, compute_shap=compute_shap
         )
 
     results_folder = Path(folder) / (
@@ -169,7 +166,7 @@ def analysis(
         os.mkdir(results_folder)
 
     if plot:
-        if shap:
+        if compute_shap:
             plotting.shap_plots(
                 X, y, shap_values, results_folder, graphs, max_feats=max_feats
             )
@@ -183,7 +180,7 @@ def analysis(
 
 def output_csv(features, features_info, feature_importance, shap_values, folder):
     """save csv file with analysis data."""
-    X, y = _features_to_Xy(features)
+    X, _ = _features_to_Xy(features)
 
     index_rows = [
         "feature_info",
@@ -219,8 +216,8 @@ def output_csv(features, features_info, feature_importance, shap_values, folder)
 
 def fit_model_kfold(
     features,
+    classifier,
     compute_shap=True,
-    classifier=None,
     reduced_set_size=100,
     reduced_set_max_correlation=0.9,
 ):
@@ -231,7 +228,7 @@ def fit_model_kfold(
     X, y = _features_to_Xy(features)
 
     n_splits = _number_folds(y)
-    L.info("Using " + str(n_splits) + " splits")
+    L.info("Using %s splits", str(n_splits))
 
     folds = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=1)
 
@@ -247,9 +244,9 @@ def fit_model_kfold(
         shap_values.append(shap_value)
 
     L.info(
-        "Accuracy: {} +/- {}".format(
-            str(np.round(np.mean(acc_scores), 3)), str(np.round(np.std(acc_scores), 3))
-        )
+        "Accuracy: %s +/- %s",
+        str(np.round(np.mean(acc_scores), 3)),
+        str(np.round(np.std(acc_scores), 3)),
     )
 
     # taking average of folds
@@ -281,11 +278,11 @@ def fit_model_kfold(
         acc_scores.append(acc_score)
 
     L.info(
-        "Accuracy with reduced set: {} +/- {}".format(
-            str(np.round(np.mean(acc_scores), 3)), str(np.round(np.std(acc_scores), 3))
-        )
+        "Accuracy with reduced set: %s +/- %s",
+        str(np.round(np.mean(acc_scores), 3)),
+        str(np.round(np.std(acc_scores), 3)),
     )
-    return X, y, shap_fold_average, top_features
+    return X, y, top_features, shap_fold_average
 
 
 def compute_fold(X, y, classifier, indices, compute_shap=True):
@@ -305,7 +302,7 @@ def compute_fold(X, y, classifier, indices, compute_shap=True):
     top_features = classifier.feature_importances_
 
     acc_score = accuracy_score(y_val, classifier.predict(X_val))
-    L.info("Fold accuracy: --- {0:.3f} ---".format(acc_score))
+    L.info("Fold accuracy: --- %s ---", str(np.round(acc_score, 3)))
 
     if compute_shap:
         explainer = shap.TreeExplainer(
@@ -313,8 +310,7 @@ def compute_fold(X, y, classifier, indices, compute_shap=True):
         )
         shap_values = explainer.shap_values(X, check_additivity=False)
         return top_features, acc_score, shap_values
-    else:
-        return top_features, acc_score, None
+    return top_features, acc_score, None
 
 
 def fit_model(features, classifier, compute_shap=True):
@@ -340,23 +336,24 @@ def fit_model(features, classifier, compute_shap=True):
             classifier, feature_perturbation="interventional"
         )
         shap_values = explainer.shap_values(X_test, check_additivity=False)
-
+    else:
+        shap_values = None
     acc_scores = accuracy_score(y_test, classifier.predict(X_test))
 
-    L.info("Accuracy: " + str(acc_scores))
+    L.info("Accuracy: %s", str(acc_scores))
 
-    return X, y, explainer, shap_values, top_features
+    return X, y, top_features, shap_values
 
 
-def fit_grid_search(features, compute_shap=True, classifier=None):
-
+def fit_grid_search(features, classifier):
+    """Classify using a grid search, slow and WIP."""
     if classifier is None:
         raise Exception("Please provide a model for classification")
 
     X, y = _features_to_Xy(features)
 
     n_splits = _number_folds(y)
-    L.info("Using " + str(n_splits) + " splits")
+    L.info("Using %s splits", str(n_splits))
 
     n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=10)]
     max_depth = [5, 10, 15, 20, 25, 30, 35, 50, 70, 100]
@@ -394,7 +391,7 @@ def fit_grid_search(features, compute_shap=True, classifier=None):
     optimal_model = model.best_estimator_
 
     X, y, mean_shap_values, top_features = fit_model_kfold(
-        features, compute_shap=True, classifier=optimal_model
+        features, optimal_model, compute_shap=True,
     )
 
     return X, y, mean_shap_values, top_features

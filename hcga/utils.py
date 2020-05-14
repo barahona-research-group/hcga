@@ -1,7 +1,7 @@
-"""utils functions."""
+"""Utils functions."""
+import logging
 import numpy as np
 import pandas as pd
-import logging
 
 from hcga.graph import Graph
 
@@ -35,9 +35,9 @@ def filter_graphs(features, graph_removal=0.05):
     ].tolist()
     features = features.drop(labels=samples_to_filter)
     L.info(
-        "{} graphs were removed for more than {} fraction of bad features".format(
-            len(samples_to_filter), graph_removal
-        )
+        "%s graphs were removed for more than %s fraction of bad features",
+        str(len(samples_to_filter)),
+        str(graph_removal),
     )
     return features
 

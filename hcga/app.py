@@ -196,7 +196,7 @@ def feature_analysis(
         interpretability=interpretability,
         grid_search=grid_search,
         folder=results_folder,
-        shap=shap,
+        compute_shap=shap,
         classifier=classifier,
         kfold=kfold,
         plot=plot,
