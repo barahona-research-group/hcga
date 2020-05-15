@@ -18,12 +18,6 @@ class Cliques(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute some clique based measures for the network.
-
-        Computed statistics
-        -----
-        Put here the list of things that are computed, with corresponding names
-        """
 
         # graph clique number
         self.add_feature(

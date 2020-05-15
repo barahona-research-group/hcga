@@ -15,15 +15,6 @@ class Covering(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute some measures for graph covering.
-
-        Computed statistics
-        -----
-        Put here the list of things that are computed, with corresponding names
-
-        Notes
-        -----
-        """
 
         self.add_feature(
             "min_edge_cover",

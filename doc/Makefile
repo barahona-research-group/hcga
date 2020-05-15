@@ -2,7 +2,7 @@
 #
 
 # You can set these variables from the command line.
-SPHINXOPTS    = # -W  # treats warning as srrors
+SPHINXOPTS    = #-W  # treats warning as srrors
 SPHINXBUILD   = sphinx-build
 SPHINXPROJ    = hcga
 SOURCEDIR     = source

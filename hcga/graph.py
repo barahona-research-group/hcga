@@ -76,11 +76,11 @@ class Graph:
 
     def __init__(self, nodes, edges, label, label_name=None):
         """Set main graphs quantities.
-       
+
         Args:
-            nodes (DataFrame): node dataframe, index as node id, and optional 
+            nodes (DataFrame): node dataframe, index as node id, and optional
                 label and attributes columns (with lists elements)
-            edges (DataFrame): edge dataframe, with two columns 'start_node' and 'end_node' 
+            edges (DataFrame): edge dataframe, with two columns 'start_node' and 'end_node'
                 with id corresponding to indices in nodes
             label (int): label of the graph, it has to be an integer
             label_name (any): name or other information on the graph label
@@ -92,7 +92,9 @@ class Graph:
         self.edges = edges.reset_index()
 
         if not isinstance(label, int):
-            raise Exception('Please provide an integer lable, and use the attribute label_name')
+            raise Exception(
+                "Please provide an integer lable, and use the attribute label_name"
+            )
         self.label = label
         self.label_name = label_name
         self.disabled = False
@@ -131,7 +133,7 @@ class Graph:
 
     def get_graph(self, encoding=None):
         """Get usable graph structure with given encoding.
-        
+
         For now, only networkx is implemented."""
         if encoding is None:
             return self
@@ -165,18 +167,28 @@ class Graph:
         """Overwrite the graph with its maximal subgraph."""
         n_nodes = len(self.nodes.index)
         n_edges = len(self.edges.index)
-        adj = sc.sparse.coo_matrix((np.ones(n_edges), (self.edges.start_node.to_numpy(), self.edges.end_node.to_numpy())), shape = [n_nodes, n_nodes])
+        adj = sc.sparse.coo_matrix(
+            (
+                np.ones(n_edges),
+                (self.edges.start_node.to_numpy(), self.edges.end_node.to_numpy()),
+            ),
+            shape=[n_nodes, n_nodes],
+        )
 
         n_components, labels = sc.sparse.csgraph.connected_components(
             csgraph=adj, return_labels=True
         )
         if n_components == 1:
-            return None 
+            return
 
         largest_cc_label = np.argmax(np.unique(labels, return_counts=True)[1])
 
         drop_nodes = np.where(labels == largest_cc_label)[0]
         self.nodes = self.nodes.drop(drop_nodes)
 
-        drop_edges = [edge_id for edge_id, edge in self.edges.iterrows() if edge.start_node in drop_nodes and edge.end_node in drop_nodes]
+        drop_edges = [
+            edge_id
+            for edge_id, edge in self.edges.iterrows()
+            if edge.start_node in drop_nodes and edge.end_node in drop_nodes
+        ]
         self.edges = self.edges.drop(drop_edges)

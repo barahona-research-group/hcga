@@ -17,13 +17,6 @@ class CycleBasis(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute the cycle basis of the network.
-
-        Computed statistics
-        -----
-        Put here the list of things that are computed, with corresponding names
-        """
-
         @lru_cache(maxsize=None)
         def eval_cycle_basis(graph):
             """this evaluates the main function and cach it for speed up."""

@@ -8,7 +8,12 @@ featureclass_name = "MinimumCuts"
 
 
 class MinimumCuts(FeatureClass):
-    """Minimum cuts class."""
+    """Minimum cuts class.
+
+    Calculations using networkx:
+        `Networkx_minimum_cuts <https://networkx.github.io/documentation/stable/\
+        reference/algorithms/connectivity.html>`_
+    """
 
     modes = ["medium", "slow"]
     shortname = "MiC"
@@ -16,14 +21,7 @@ class MinimumCuts(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute the minimum cuts for the network.
 
-        Notes
-        -----
-        Calculations using networkx:
-            `Networkx_minimum_cuts <https://networkx.github.io/documentation/stable/\
-            reference/algorithms/connectivity.html>`_
-        """
         self.add_feature(
             "min_node_cut_size'",
             lambda graph: len(nx.minimum_node_cut(ensure_connected(graph))),

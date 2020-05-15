@@ -17,12 +17,6 @@ class CoreNumber(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute the core number of the network.
-
-        Computed statistics
-        -----
-        Put here the list of things that are computed, with corresponding names
-        """
 
         core_number = lambda graph: list(
             np.asarray(list(nx.core_number(remove_selfloops(graph)).values()))

@@ -16,12 +16,6 @@ class CommunitiesLabelPropagation(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute the measures about community detection using label propagation algorithm.
-
-        Notes
-        -----
-        """
-
         @lru_cache(maxsize=None)
         def eval_labelprop(graph):
             """this evaluates the main function and cach it for speed up."""

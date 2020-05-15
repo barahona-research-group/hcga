@@ -22,13 +22,6 @@ class CommunitiesAsyn(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute the measures about community detection using async fluid algorithm.
-
-        Notes
-        -----
-        Currently hardcoded the number of communities tried:  np.linspace(2, 20, 10)
-        """
-
         @lru_cache(maxsize=None)
         def eval_asyn(graph, num_comms):
             """this evaluates the main function and cach it for speed up."""

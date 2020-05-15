@@ -8,20 +8,7 @@ featureclass_name = "KComponents"
 
 
 class KComponents(FeatureClass):
-    """K Components class.
-
-    Parameters
-    ----------
-
-
-
-    Notes
-    -----
-
-
-    References
-    ----------
-    """
+    """K Components class."""
 
     modes = ["slow"]
     shortname = "KC"
@@ -29,13 +16,6 @@ class KComponents(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute the k components of the network.
-
-        Computed statistics
-        -----
-        Put here the list of things that are computed, with corresponding names
-        """
-
         @lru_cache(maxsize=None)
         def eval_kcomponents(graph):
             """this evaluates the main function and cach it for speed up."""

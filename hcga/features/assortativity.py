@@ -8,7 +8,11 @@ featureclass_name = "Assortativity"
 
 
 class Assortativity(FeatureClass):
-    """Assortativity class."""
+    """Assortativity class.
+
+    Uses networkx, see `https://networkx.github.io/documentation/networkx-2.4/reference/\
+        algorithms/assortativity.html`
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "AS"
@@ -16,7 +20,6 @@ class Assortativity(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         # Adding basic node and edge numbers
         self.add_feature(
             "degree_assortativity_coeff",
@@ -42,4 +45,3 @@ class Assortativity(FeatureClass):
             InterpretabilityScore(4),
             statistics="centrality",
         )
-

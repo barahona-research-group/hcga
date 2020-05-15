@@ -17,15 +17,6 @@ class ShortestPaths(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute the shortest path measures of the network.
-
-        Notes
-        -----
-
-        References
-        ----------
-        """
-
         @lru_cache(maxsize=None)
         def eval_shortest_paths(graph):
             return nx.shortest_path(graph)

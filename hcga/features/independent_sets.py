@@ -7,20 +7,7 @@ featureclass_name = "IndependentSets"
 
 
 class IndependentSets(FeatureClass):
-    """Independent sets class.
-
-    Parameters
-    ----------
-
-
-
-    Notes
-    -----
-
-
-    References
-    ----------
-    """
+    """Independent sets class."""
 
     modes = ["fast", "medium", "slow"]
     shortname = "IS"
@@ -28,12 +15,6 @@ class IndependentSets(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute the independent sets of the network.
-
-        Computed statistics
-        -----
-        Put here the list of things that are computed, with corresponding names
-        """
 
         self.add_feature(
             "size_max_indep_set",

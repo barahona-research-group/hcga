@@ -19,13 +19,6 @@ class RichClub(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute the rich club measures of the network.
-
-        Computed statistics
-        -----
-        Put here the list of things that are computed, with corresponding names
-        """
-
         @lru_cache(maxsize=None)
         def eval_rich_club(graph):
             # extracting feature matrix

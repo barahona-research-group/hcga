@@ -10,7 +10,11 @@ featureclass_name = "CentralitiesBasic"
 
 
 class CentralitiesBasic(FeatureClass):
-    """Centralities class."""
+    """Centralities class.
+
+    Uses networkx, see 'https://networkx.github.io/documentation/stable/reference/\
+        algorithms/centrality.html`
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "CB"
@@ -18,13 +22,6 @@ class CentralitiesBasic(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute some standard centrality measures for the network.
-
-        Computed statistics
-        -----
-        Put here the list of things that are computed, with corresponding names
-        """
-
         # Degree centrality
         degree_centrality = lambda graph: list(
             centrality.degree_centrality(graph).values()
