@@ -108,7 +108,7 @@
     <span class="k">return</span> <span class="n">all_features_df</span><span class="p">,</span> <span class="n">features_info_df</span></div>
 
 
-<span class="k">def</span> <span class="nf">_print_runtimes</span><span class="p">(</span><span class="n">all_features_df</span><span class="p">):</span>
+<div class="viewcode-block" id="_print_runtimes"><a class="viewcode-back" href="../../extraction.html#hcga.extraction._print_runtimes">[docs]</a><span class="k">def</span> <span class="nf">_print_runtimes</span><span class="p">(</span><span class="n">all_features_df</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Print sorted runtimes.&quot;&quot;&quot;</span>
     <span class="n">runtimes</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">raw_feature</span> <span class="ow">in</span> <span class="n">all_features_df</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -125,22 +125,22 @@
             <span class="s2">&quot;( std = &quot;</span><span class="p">,</span>
             <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">runtimes</span><span class="p">[</span><span class="n">feat_id</span><span class="p">]),</span> <span class="mi">3</span><span class="p">),</span>
             <span class="s2">&quot;) seconds per graph.&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">_set_graph_labels</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">graphs</span><span class="p">):</span>
+<div class="viewcode-block" id="_set_graph_labels"><a class="viewcode-back" href="../../extraction.html#hcga.extraction._set_graph_labels">[docs]</a><span class="k">def</span> <span class="nf">_set_graph_labels</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">graphs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Set graph labels to features dataframe.&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">graph</span> <span class="ow">in</span> <span class="n">graphs</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="n">features</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">graph</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">label</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">features</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">graph</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">label</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">features</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">graph</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">label</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
-<span class="k">def</span> <span class="nf">_load_feature_class</span><span class="p">(</span><span class="n">feature_name</span><span class="p">):</span>
+<div class="viewcode-block" id="_load_feature_class"><a class="viewcode-back" href="../../extraction.html#hcga.extraction._load_feature_class">[docs]</a><span class="k">def</span> <span class="nf">_load_feature_class</span><span class="p">(</span><span class="n">feature_name</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;load the feature class from feature name.&quot;&quot;&quot;</span>
     <span class="n">feature_module</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;hcga.features.&quot;</span> <span class="o">+</span> <span class="n">feature_name</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">feature_module</span><span class="p">,</span> <span class="n">feature_module</span><span class="o">.</span><span class="n">featureclass_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">feature_module</span><span class="p">,</span> <span class="n">feature_module</span><span class="o">.</span><span class="n">featureclass_name</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_list_feature_classes"><a class="viewcode-back" href="../../extraction.html#hcga.extraction.get_list_feature_classes">[docs]</a><span class="k">def</span> <span class="nf">get_list_feature_classes</span><span class="p">(</span>

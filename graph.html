@@ -53,6 +53,12 @@ with id corresponding to indices in nodes</p></li>
 </dd>
 </dl>
 <dl class="py method">
+<dt id="hcga.graph.Graph._check_length">
+<code class="sig-name descname">_check_length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#Graph._check_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.Graph._check_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify if the graph is large enough to be considered.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="hcga.graph.Graph.get_graph">
 <code class="sig-name descname">get_graph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">encoding</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#Graph.get_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.Graph.get_graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get usable graph structure with given encoding.</p>
@@ -84,6 +90,24 @@ with id corresponding to indices in nodes</p></li>
 <em class="property">class </em><code class="sig-prename descclassname">hcga.graph.</code><code class="sig-name descname">GraphCollection</code><a class="reference internal" href="_modules/hcga/graph.html#GraphCollection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.GraphCollection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Contain a list of graphs.</p>
 <p>Set empty list of graphs.</p>
+<dl class="py method">
+<dt id="hcga.graph.GraphCollection.__iter__">
+<code class="sig-name descname">__iter__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#GraphCollection.__iter__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.GraphCollection.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes this class iterable over the graphs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.graph.GraphCollection.__len__">
+<code class="sig-name descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#GraphCollection.__len__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.GraphCollection.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrites the len() function to get number of enabled graphs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.graph.GraphCollection.__next__">
+<code class="sig-name descname">__next__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#GraphCollection.__next__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.GraphCollection.__next__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the next enabled graph.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt id="hcga.graph.GraphCollection.add_graph">
 <code class="sig-name descname">add_graph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#GraphCollection.add_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.GraphCollection.add_graph" title="Permalink to this definition">¶</a></dt>

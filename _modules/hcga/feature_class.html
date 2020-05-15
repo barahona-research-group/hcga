@@ -78,10 +78,10 @@
                     <span class="n">doc_string</span> <span class="o">+=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">_indent</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">f_info</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="p">,</span> <span class="n">feature</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
         <span class="k">return</span> <span class="n">doc_string</span>
 
-    <span class="k">def</span> <span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<div class="viewcode-block" id="FeatureClass.__init_subclass__"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass.__init_subclass__">[docs]</a>    <span class="k">def</span> <span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialise class variables to default for each child class.&quot;&quot;&quot;</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">feature_descriptions</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">+=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_doc</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">+=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_doc</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialise a feature class.</span>
@@ -125,12 +125,12 @@
             <span class="s2">&quot;shortname&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">shortname</span><span class="p">,</span>
         <span class="p">}</span></div>
 
-    <span class="k">def</span> <span class="nf">_test_feature_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">):</span>
+<div class="viewcode-block" id="FeatureClass._test_feature_exists"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass._test_feature_exists">[docs]</a>    <span class="k">def</span> <span class="nf">_test_feature_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test if feature feature_name exists in description list.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">feature_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">feature_descriptions</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
                 <span class="s2">&quot;Feature </span><span class="si">{}</span><span class="s2"> does not exist in class </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">feature_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="p">)</span></div>
 
 <div class="viewcode-block" id="FeatureClass.get_feature_info"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass.get_feature_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_feature_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns a dictionary of information about the feature feature_name.&quot;&quot;&quot;</span>

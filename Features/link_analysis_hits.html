@@ -38,10 +38,16 @@
 <dl class="py class">
 <dt id="hcga.features.link_analysis_hits.Hits">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.link_analysis_hits.</code><code class="sig-name descname">Hits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/link_analysis_hits.html#Hits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.link_analysis_hits.Hits" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>HITS hubs class.</dt><dd><p>This class produces the following features:</p>
+<dd><p>HITS hubs class.</p>
+<blockquote>
+<div><blockquote>
+<div><dl class="simple">
+<dt>Hits calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.link_analysis.hits_alg.hits.html#networkx.algorithms.link_analysis.hits_alg.hits">Networkx_hits</a></p>
 </dd>
 </dl>
+</div></blockquote>
+<p>This class produces the following features:</p>
+</div></blockquote>
 <dl class="py attribute">
 <dt id="hcga.features.link_analysis_hits.Hits.Hits_mean">
 <code class="sig-name descname">Hits_mean</code><a class="headerlink" href="#hcga.features.link_analysis_hits.Hits.Hits_mean" title="Permalink to this definition">¶</a></dt>
@@ -339,37 +345,7 @@
 <dl class="py method">
 <dt id="hcga.features.link_analysis_hits.Hits.compute_features">
 <code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/link_analysis_hits.html#Hits.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.link_analysis_hits.Hits.compute_features" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes measures based on the HITS hubs.</p>
-<p>The HITS algorithm computes two numbers for a node <a class="footnote-reference brackets" href="#id3" id="id1">1</a> <a class="footnote-reference brackets" href="#id4" id="id2">2</a>.
-Authorities estimates the node value based on the incoming links.
-Hubs estimates the node value based on outgoing links.</p>
-<p class="rubric">Notes</p>
-<p>Hits calculations using networkx:</p>
-<blockquote>
-<div><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.link_analysis.hits_alg.hits.html#networkx.algorithms.link_analysis.hits_alg.hits">Networkx_hits</a></p>
-</div></blockquote>
-<p>The eigenvector calculation is done by the power iteration method
-and has no guarantee of convergence.  The iteration will stop
-after max_iter iterations or an error tolerance of
-number_of_nodes(G)*tol has been reached.</p>
-<p>The HITS algorithm was designed for directed graphs but this
-algorithm does not check if the input graph is directed and will
-execute on undirected graphs.</p>
-<p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>A. Langville and C. Meyer,
-“A survey of eigenvector methods of web information retrieval.”
-<a class="reference external" href="http://citeseer.ist.psu.edu/713792.html">http://citeseer.ist.psu.edu/713792.html</a></p>
-</dd>
-<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
-<dd><p>Jon Kleinberg,
-Authoritative sources in a hyperlinked environment
-Journal of the ACM 46 (5): 604-32, 1999.
-doi:10.1145/324133.324140.
-http://www.cs.cornell.edu/home/kleinber/auth.pdf.</p>
-</dd>
-</dl>
+<dd><p>main feature extraction function.</p>
 </dd></dl>
 
 </dd></dl>

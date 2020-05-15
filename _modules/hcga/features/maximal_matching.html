@@ -40,7 +40,12 @@
 
 
 <div class="viewcode-block" id="MaximalMatching"><a class="viewcode-back" href="../../../Features/maximal_matching.html#hcga.features.maximal_matching.MaximalMatching">[docs]</a><span class="k">class</span> <span class="nc">MaximalMatching</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Maximal matching class.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Maximal matching class.</span>
+<span class="sd">    </span>
+<span class="sd">    Maximal matching calculations using networkx:</span>
+<span class="sd">        `Networkx_maximal_matching &lt;https://networkx.github.io/documentation/stable/\</span>
+<span class="sd">        reference/algorithms/matching.html&gt;`_</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fast&quot;</span><span class="p">,</span> <span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;slow&quot;</span><span class="p">]</span>
     <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;MM&quot;</span>
@@ -48,19 +53,6 @@
     <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;networkx&quot;</span>
 
 <div class="viewcode-block" id="MaximalMatching.compute_features"><a class="viewcode-back" href="../../../Features/maximal_matching.html#hcga.features.maximal_matching.MaximalMatching.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compute the maximal matching of the network.</span>
-
-<span class="sd">        A matching is a subset of edges such that no edges are connected to</span>
-<span class="sd">        the same node. It is maximal if the addition of another edge to this</span>
-<span class="sd">        subset no longer makes it a matching.</span>
-
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        Maximal matching calculations using networkx:</span>
-<span class="sd">            `Networkx_maximal_matching &lt;https://networkx.github.io/documentation/stable/\</span>
-<span class="sd">            reference/algorithms/matching.html&gt;`_</span>
-<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;maximal_matching&quot;</span><span class="p">,</span>

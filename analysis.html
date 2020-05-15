@@ -36,6 +36,24 @@
 <span id="the-analysis-module"></span><h1>The analysis module<a class="headerlink" href="#module-hcga.analysis" title="Permalink to this headline">¶</a></h1>
 <p>function for analysis of graph features.</p>
 <dl class="py function">
+<dt id="hcga.analysis._features_to_Xy">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_features_to_Xy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_features_to_Xy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._features_to_Xy" title="Permalink to this definition">¶</a></dt>
+<dd><p>decompose features dataframe to X and y.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis._get_classifier">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_get_classifier</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classifier</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_get_classifier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._get_classifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a classifier.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis._normalise_feature_data">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_normalise_feature_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_normalise_feature_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._normalise_feature_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalise the feature matrix using sklearn scaler to remove the mean and scale to unit variance.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt id="hcga.analysis.analysis">
 <code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">analysis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">features_info</span></em>, <em class="sig-param"><span class="n">graphs</span></em>, <em class="sig-param"><span class="n">interpretability</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">grid_search</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">shap</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">classifier</span><span class="o">=</span><span class="default_value">'XG'</span></em>, <em class="sig-param"><span class="n">folder</span><span class="o">=</span><span class="default_value">'.'</span></em>, <em class="sig-param"><span class="n">kfold</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">plot</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">max_feats</span><span class="o">=</span><span class="default_value">20</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.analysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main function to classify graphs and plot results.</p>

@@ -41,22 +41,7 @@
 <dd><p>Dominating sets class.</p>
 <blockquote>
 <div><blockquote>
-<div><p>A <em>dominating set</em> for a graph with node set <em>V</em> is a subset <em>D</em> of
-<em>V</em> such that every node not in <em>D</em> is adjacent to at least one
-member of <em>D</em> <a href="#id9"><span class="problematic" id="id1">[1]_</span></a>.</p>
-<dl class="simple">
-<dt>Core number calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/dominating.html">Networkx_dominating_set</a></p>
-</dd>
-</dl>
-<dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets">1</span></dt>
-<dd><p><a class="reference external" href="https://en.wikipedia.org/wiki/Dominating_set">https://en.wikipedia.org/wiki/Dominating_set</a></p>
-</dd>
-<dt class="label" id="id3"><span class="brackets">2</span></dt>
-<dd><p>Abdol-Hossein Esfahanian. Connectivity Algorithms.
-<a class="reference external" href="http://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf">http://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf</a></p>
-</dd>
-</dl>
+<div><p>Uses networkx: <a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/dominating.html">Networkx_dominating_set</a></p>
 </div></blockquote>
 <p>This class produces the following features:</p>
 </div></blockquote>
@@ -213,8 +198,7 @@ member of <em>D</em> <a href="#id9"><span class="problematic" id="id1">[1]_</spa
 <dl class="py method">
 <dt id="hcga.features.dominating_sets.DominatingSets.compute_features">
 <code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/dominating_sets.html#DominatingSets.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.dominating_sets.DominatingSets.compute_features" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the dominating sets of the network.</p>
-<p>Put here the list of things that are computed, with corresponding names</p>
+<dd><p>main feature extraction function.</p>
 </dd></dl>
 
 </dd></dl>
@@ -222,86 +206,19 @@ member of <em>D</em> <a href="#id9"><span class="problematic" id="id1">[1]_</spa
 <dl class="py function">
 <dt id="hcga.features.dominating_sets.maximal_matching">
 <code class="sig-prename descclassname">hcga.features.dominating_sets.</code><code class="sig-name descname">maximal_matching</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">G</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/dominating_sets.html#maximal_matching"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.dominating_sets.maximal_matching" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find a maximal matching in the graph.</p>
-<p>A matching is a subset of edges in which no node occurs more than once.
-A maximal matching cannot add more edges and still be a matching.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>G</strong> (<em>NetworkX graph</em>) – Undirected graph</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>matching</strong> – A maximal matching of the graph.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>set</p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The algorithm greedily selects a maximal matching M of the graph G
-(i.e. no superset of M exists). It runs in $O(<a href="#id5"><span class="problematic" id="id6">|E|</span></a>)$ time.</p>
+<dd><p>Taken from networkx.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="hcga.features.dominating_sets.min_edge_dominating_set">
 <code class="sig-prename descclassname">hcga.features.dominating_sets.</code><code class="sig-name descname">min_edge_dominating_set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">G</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/dominating_sets.html#min_edge_dominating_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.dominating_sets.min_edge_dominating_set" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns minimum cardinality edge dominating set.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>G</strong> (<em>NetworkX graph</em>) – Undirected graph</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>min_edge_dominating_set</strong> – Returns a set of dominating edges whose size is no more than 2 * OPT.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>set</p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The algorithm computes an approximate solution to the edge dominating set
-problem. The result is no more than 2 * OPT in terms of size of the set.
-Runtime of the algorithm is $O(<a href="#id7"><span class="problematic" id="id8">|E|</span></a>)$.</p>
+<dd><p>Taken from networkx.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="hcga.features.dominating_sets.min_weighted_dominating_set">
 <code class="sig-prename descclassname">hcga.features.dominating_sets.</code><code class="sig-name descname">min_weighted_dominating_set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">G</span></em>, <em class="sig-param"><span class="n">weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/dominating_sets.html#min_weighted_dominating_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.dominating_sets.min_weighted_dominating_set" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a dominating set that approximates the minimum weight node
-dominating set.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>G</strong> (<em>NetworkX graph</em>) – Undirected graph.</p></li>
-<li><p><strong>weight</strong> (<em>string</em>) – The node attribute storing the weight of an node. If provided,
-the node attribute with this key must be a number for each
-node. If not provided, each node is assumed to have weight one.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>min_weight_dominating_set</strong> – A set of nodes, the sum of whose weights is no more than <cite>(log
-w(V)) w(V^*)</cite>, where <cite>w(V)</cite> denotes the sum of the weights of
-each node in the graph and <cite>w(V^*)</cite> denotes the sum of the
-weights of each node in the minimum weight dominating set.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>set</p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>This algorithm computes an approximate minimum weighted dominating
-set for the graph <cite>G</cite>. The returned solution has weight <cite>(log
-w(V)) w(V^*)</cite>, where <cite>w(V)</cite> denotes the sum of the weights of each
-node in the graph and <cite>w(V^*)</cite> denotes the sum of the weights of
-each node in the minimum weight dominating set for the graph.</p>
-<p>This implementation of the algorithm runs in $O(m)$ time, where $m$
-is the number of edges in the graph.</p>
-<p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id4"><span class="brackets">1</span></dt>
-<dd><p>Vazirani, Vijay V.
-<em>Approximation Algorithms</em>.
-Springer Science &amp; Business Media, 2001.</p>
-</dd>
-</dl>
+<dd><p>Taken from netoworkx.</p>
 </dd></dl>
 
 </div>

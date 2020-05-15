@@ -49,16 +49,6 @@
     <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;networkx&quot;</span>
 
 <div class="viewcode-block" id="Clustering.compute_features"><a class="viewcode-back" href="../../../Features/clustering.html#hcga.features.clustering.Clustering.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compute the various clustering measures.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        Implementation of networkx code:</span>
-<span class="sd">            `Networkx_clustering &lt;https://networkx.github.io/documentation/stable\</span>
-<span class="sd">            /reference/algorithms/clustering.html&gt;`_</span>
-
-<span class="sd">        We followed the same structure as networkx for implementing clustering features.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">triang</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">triangles</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>

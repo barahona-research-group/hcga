@@ -38,10 +38,16 @@
 <dl class="py class">
 <dt id="hcga.features.scale_free.ScaleFree">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.scale_free.</code><code class="sig-name descname">ScaleFree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/scale_free.html#ScaleFree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.scale_free.ScaleFree" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Scale Free class.</dt><dd><p>This class produces the following features:</p>
+<dd><p>Scale Free class.</p>
+<blockquote>
+<div><blockquote>
+<div><dl class="simple">
+<dt>Scale free calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/smetric.html#s_metric">Networkx_scale free</a></p>
 </dd>
 </dl>
+</div></blockquote>
+<p>This class produces the following features:</p>
+</div></blockquote>
 <dl class="py attribute">
 <dt id="hcga.features.scale_free.ScaleFree.s_metric">
 <code class="sig-name descname">s_metric</code><a class="headerlink" href="#hcga.features.scale_free.ScaleFree.s_metric" title="Permalink to this definition">¶</a></dt>
@@ -99,25 +105,7 @@
 <dl class="py method">
 <dt id="hcga.features.scale_free.ScaleFree.compute_features">
 <code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/scale_free.html#ScaleFree.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.scale_free.ScaleFree.compute_features" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the scale free measures of the network.</p>
-<p class="rubric">Notes</p>
-<p>Scale free calculations using networkx:</p>
-<blockquote>
-<div><p><a class="reference external" href="https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/smetric.html#s_metric">Networkx_scale free</a></p>
-</div></blockquote>
-<p>The s-metric is defined as the sum of the products deg(u)*deg(v)
-for every edge (u,v) in G. If norm is provided construct the
-s-max graph and compute it’s s_metric, and return the normalized
-s value</p>
-<p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id1"><span class="brackets">1</span></dt>
-<dd><p>Lun Li, David Alderson, John C. Doyle, and Walter Willinger,
-Towards a Theory of Scale-Free Graphs:
-Definition, Properties, and  Implications (Extended Version), 2005.
-<a class="reference external" href="https://arxiv.org/abs/cond-mat/0501169">https://arxiv.org/abs/cond-mat/0501169</a></p>
-</dd>
-</dl>
+<dd><p>main feature extraction function.</p>
 </dd></dl>
 
 </dd></dl>
