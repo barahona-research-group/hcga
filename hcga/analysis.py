@@ -112,17 +112,17 @@ def analysis(
     features,
     features_info,
     graphs,
-    interpretability=1,
-    grid_search=False,
-    compute_shap=True,
-    classifier="XG",
     folder=".",
-    kfold=True,
-    plot=True,
-    max_feats=20,
     graph_removal=0.3,
+    interpretability=1,
+    classifier="XG",
+    kfold=True,
+    compute_shap=True,
     reduced_set_size=100,
     reduced_set_max_correlation=0.9,
+    grid_search=False,
+    plot=True,
+    max_feats_plot=20,
 ):
     """Main function to classify graphs and plot results."""
     L.info("%s total features", str(len(features.columns)))
@@ -168,7 +168,7 @@ def analysis(
     if plot:
         if compute_shap:
             plotting.shap_plots(
-                X, y, shap_values, results_folder, graphs, max_feats=max_feats
+                X, y, shap_values, results_folder, graphs, max_feats=max_feats_plot
             )
         else:
             plotting.basic_plots(X, top_features, results_folder)

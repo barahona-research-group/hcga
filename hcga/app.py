@@ -136,23 +136,10 @@ def extract_features(
     help="Location of features",
 )
 @click.option(
-    "--shap/--no-shap",
-    default=True,
+    "--graph-removal",
+    default=0.3,
     show_default=True,
-    help="True or False whether to compute shap values",
-)
-@click.option(
-    "--grid-search/--no-grid-search",
-    default=False,
-    show_default=True,
-    help="True or False whether to use grid search",
-)
-@click.option(
-    "-c",
-    "--classifier",
-    default="XG",
-    show_default=True,
-    help="classifier feature analysis (RF, LGBM, XG)",
+    help="Fraction of failed features to remove a graph from dataset.",
 )
 @click.option(
     "-i",
@@ -161,7 +148,38 @@ def extract_features(
     show_default=True,
     help="Interpretability of feature to consider",
 )
+@click.option(
+    "-c",
+    "--classifier",
+    default="XG",
+    show_default=True,
+    help="classifier feature analysis (RF, LGBM, XG)",
+)
 @click.option("--kfold/--no-kfold", default=True, show_default=True, help="use K-fold")
+@click.option(
+    "--shap/--no-shap",
+    default=True,
+    show_default=True,
+    help="True or False whether to compute shap values",
+)
+@click.option(
+    "--reduced-set-size",
+    default=100,
+    show_default=True,
+    help="Number of uncorrelated top features to consider in top reduced feature classificaion.",
+)
+@click.option(
+    "--reduced-set-max-correlation",
+    default=0.9,
+    show_default=True,
+    help="Maximum correlation to allow for selection of top features for reduced feature classification.",
+)
+@click.option(
+    "--grid-search/--no-grid-search",
+    default=False,
+    show_default=True,
+    help="True or False whether to use grid search",
+)
 @click.option(
     "-p/-np",
     "--plot/--no-plot",
@@ -169,21 +187,30 @@ def extract_features(
     show_default=True,
     help="Optionnaly plot analysis results",
 )
+@click.option(
+    "--max-feats-plot",
+    default=20,
+    show_default=True,
+    help="Number of top features to plot with violins.",
+)
 def feature_analysis(
     dataset,
     results_folder,
     feature_file,
-    shap,
-    grid_search,
+    graph_removal,
+    interpretability,
     classifier,
     kfold,
+    shap,
+    reduced_set_size,
+    reduced_set_max_correlation,
+    grid_search,
     plot,
-    interpretability,
+    max_feats_plot,
 ):
     """Analysis of the features extracted in feature_file."""
-    from .io import load_features
-
-    from .analysis import analysis
+    from hcga.io import load_features
+    from hcga.analysis import analysis
 
     results_folder = Path(results_folder) / dataset
     feature_filename = results_folder / feature_file
@@ -193,13 +220,17 @@ def feature_analysis(
         features,
         features_info,
         graphs,
-        interpretability=interpretability,
-        grid_search=grid_search,
         folder=results_folder,
-        compute_shap=shap,
+        graph_removal=graph_removal,
+        interpretability=interpretability,
         classifier=classifier,
         kfold=kfold,
+        compute_shap=shap,
+        reduced_set_size=reduced_set_size,
+        reduced_set_max_correlation=reduced_set_max_correlation,
+        grid_search=grid_search,
         plot=plot,
+        max_feats_plot=max_feats_plot,
     )
 
 
