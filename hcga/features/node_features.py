@@ -18,16 +18,6 @@ class NodeFeatures(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute node feature measures.
-
-        Notes
-        -----
-
-
-        References
-        ----------
-        """
-
         @lru_cache(maxsize=None)
         def get_feature_matrix(graph):
             """Extracting feature matrix."""

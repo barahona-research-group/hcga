@@ -17,12 +17,6 @@ class BasicStats(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute some basic stats of the network.
-
-        Computed statistics
-        -----
-        Put here the list of things that are computed, with corresponding names
-        """
 
         n_nodes = lambda graph: len(graph)
         n_edges = lambda graph: len(graph.edges)

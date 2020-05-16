@@ -1,4 +1,4 @@
-"""hcga app with click module."""
+"""Hcga app module."""
 import os
 import warnings
 from pathlib import Path

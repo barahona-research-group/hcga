@@ -15,12 +15,6 @@ class Efficiency(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute the efficiency measures of the network.
-
-        Computed statistics
-        -----
-        Put here the list of things that are computed, with corresponding names
-        """
 
         # local effiency
         self.add_feature(

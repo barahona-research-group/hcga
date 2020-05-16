@@ -1,5 +1,4 @@
 """function for analysis of graph features."""
-
 import logging
 import os
 import time

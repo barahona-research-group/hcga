@@ -15,15 +15,6 @@ class Vitality(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute vitality measures.
-
-        Notes
-        -----
-
-
-        References
-        ----------
-        """
 
         # distribution of vitality
         self.add_feature(

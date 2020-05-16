@@ -15,12 +15,6 @@ class Eulerian(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute the Eulerian measures of the network.
-
-        Computed statistics
-        -----
-        Put here the list of things that are computed, with corresponding names
-        """
 
         # checking if eulerian
         self.add_feature(

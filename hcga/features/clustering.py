@@ -16,16 +16,6 @@ class Clustering(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute the various clustering measures.
-
-        Notes
-        -----
-        Implementation of networkx code:
-            `Networkx_clustering <https://networkx.github.io/documentation/stable\
-            /reference/algorithms/clustering.html>`_
-
-        We followed the same structure as networkx for implementing clustering features.
-        """
 
         triang = lambda graph: np.asarray(list(nx.triangles(graph).values())).mean()
         self.add_feature(

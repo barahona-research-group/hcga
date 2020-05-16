@@ -15,12 +15,6 @@ class ChemicalTheory(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute some chemical theory measures for the network.
-
-        Computed statistics
-        -----
-        Put here the list of things that are computed, with corresponding names
-        """
 
         wiener_index = lambda graph: nx.wiener_index(graph)
         self.add_feature(

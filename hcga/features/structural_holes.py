@@ -15,15 +15,6 @@ class StructuralHoles(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute structural holes measures.
-
-        Notes
-        -----
-
-
-        References
-        ----------
-        """
 
         # distribution of structural holes constraint
         self.add_feature(

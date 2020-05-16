@@ -13,7 +13,7 @@ Installation
 
 To install the dev version from `GitHub <https://github.com/imperialcollegelondon/hcga/>`_ with the commands::
 
-       $ git clone https://github.com/ImperialCollegeLondon/hcga.git
+       $ git clone git@github.com:barahona-research-group/hcga.git 
        $ cd hcga
        $ pip install .
 
@@ -138,7 +138,11 @@ Documentation of the API of *hcga*.
    :maxdepth: 3
 
    app
+   hcga
+   graph
    feature_class 
+   extraction
+   analysis
    Features
 
 

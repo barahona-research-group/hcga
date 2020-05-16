@@ -20,12 +20,6 @@ class ForceCentrality(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute some standard centrality measures for the network.
-
-        Computed statistics
-        -----
-        Put here the list of things that are computed, with corresponding names
-        """
 
         # number of times to average force centrality
         n_force = 20

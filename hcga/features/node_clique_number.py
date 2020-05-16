@@ -8,7 +8,11 @@ featureclass_name = "NodeCliqueNumber"
 
 
 class NodeCliqueNumber(FeatureClass):
-    """Node clique number class."""
+    """Node clique number class.
+
+    Clique number calculations using networkx:
+        `Networkx_clique <https://networkx.github.io/documentation/stable/reference/algorithms/clique.html>`_
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "CN"
@@ -16,13 +20,6 @@ class NodeCliqueNumber(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute the maximal clique containing each node, i.e passing through that node.
-
-        Notes
-        -----
-        Clique number calculations using networkx:
-            `Networkx_clique <https://networkx.github.io/documentation/stable/reference/algorithms/clique.html>`_
-        """
 
         self.add_feature(
             "clique sizes",

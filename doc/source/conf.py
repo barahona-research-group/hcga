@@ -32,16 +32,31 @@ sys.path.insert(0, os.path.abspath('../../'))
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc',
+extensions = [
+    'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
+    'sphinx.ext.autosummary',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
     'alabaster']
+
+
+# Napoleon settings
+napoleon_google_docstring = True
+napoleon_include_init_with_doc = False
+napoleon_include_private_with_doc = True
+napoleon_include_special_with_doc = True
+napoleon_use_admonition_for_examples = False
+napoleon_use_admonition_for_notes = False
+napoleon_use_admonition_for_references = False
+napoleon_use_ivar = False
+napoleon_use_param = True
+napoleon_use_rtype = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -87,6 +102,10 @@ pygments_style = 'sphinx'
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
 
+autosummary_generate = True
+autodoc_default_flags = ['show-inheritance']
+autoclass_content = 'both'
+
 
 # -- Options for HTML output ----------------------------------------------
 
@@ -96,8 +115,10 @@ todo_include_todos = True
 #html_theme = 'classic' #'alabaster'
 html_theme_path = [alabaster.get_path()]
 html_theme = 'alabaster'
+#html_theme = 'sphinx_rtd_theme'
 
 
+autoclass_content = 'both'
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.

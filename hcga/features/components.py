@@ -8,7 +8,11 @@ featureclass_name = "Components"
 
 
 class Components(FeatureClass):
-    """Components class."""
+    """Components class.
+
+    Components calculations using network: `Networkx_components <https://networkx.github.io/\
+        documentation/stable/reference/algorithms/component.html>`_
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "C"
@@ -16,19 +20,6 @@ class Components(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute some measured regarding the number of components in the network.
-
-        This only computes for directed graphs.
-
-        Computed statistics
-        -----
-        Put here the list of things that are computed, with corresponding names
-
-        Notes
-        -----
-        Components calculations using networkx:
-            `Networkx_components <https://networkx.github.io/documentation/stable/reference/algorithms/component.html>`_
-        """
 
         self.add_feature(
             "is_connected",

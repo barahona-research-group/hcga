@@ -16,12 +16,6 @@ class CommunitiesBisection(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        """Compute the measures about community detection using bisection algorithm.
-
-        Notes
-        -----
-        """
-
         @lru_cache(maxsize=None)
         def eval_bisection(graph):
             """this evaluates the main function and cach it for speed up."""
