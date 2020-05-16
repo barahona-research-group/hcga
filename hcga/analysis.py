@@ -178,40 +178,24 @@ def analysis(
     return X, shap_values
 
 
-def output_csv(features, features_info, feature_importance, shap_values, folder):
+def output_csv(features_df, features_info_df, feature_importance, shap_values, folder):
     """save csv file with analysis data."""
-    X, _ = _features_to_Xy(features)
+    result_df = features_info_df.copy()
+    result_df.loc["feature_importance", features_df.columns[:-1]] = np.vstack(
+        feature_importance
+    ).mean(axis=0)
+    result_df.loc["shap_average", features_df.columns[:-1]] = np.sum(
+        np.mean(np.abs(shap_values), axis=1), axis=0
+    )
 
-    index_rows = [
-        "feature_info",
-        "feature_interpretability",
-        "feature_importance",
-        "shap_average",
-    ]
-    output_df = pd.DataFrame(columns=X.columns, index=index_rows)
-
-    output_df.loc["feature_importance"] = np.vstack(feature_importance).mean(axis=0)
-
-    output_df.loc["shap_average"] = np.sum(np.mean(np.abs(shap_values), axis=1), axis=0)
-
-    # looping over shap values for each class
     if len(shap_values) > 1:
         for i, shap_class in enumerate(shap_values):
-            output_df.loc["shap_importance: class {}".format(i)] = np.vstack(
-                shap_class
-            ).mean(axis=0)
+            result_df.loc[
+                "shap_importance: class {}".format(i), features_df.columns[:-1]
+            ] = np.vstack(shap_class).mean(axis=0)
 
-    for feat in output_df.columns:
-        # feat_fullname = feat[0] + "_" + feat[1]
-        output_df[feat]["feature_info"] = features_info[feat]["description"]
-        output_df[feat]["feature_interpretability"] = features_info[feat][
-            "interpretability"
-        ].score
-
-    # sort by shap average
-    output_df = output_df.T.sort_values("shap_average", ascending=False).T
-
-    output_df.to_csv(os.path.join(folder, "importance_results.csv"))
+    result_df = result_df.sort_values("shap_average", axis=1, ascending=False)
+    result_df.to_csv(os.path.join(folder, "importance_results.csv"))
 
 
 def fit_model_kfold(
