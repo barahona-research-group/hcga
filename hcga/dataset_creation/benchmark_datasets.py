@@ -92,6 +92,6 @@ def extract_benchmark_graphs(datadir, dataname):  # pylint: disable=too-many-loc
         edges = edges_df.loc[edges_df["graph_id"] == graph_id][
             ["start_node", "end_node"]
         ]
-        graphs.add_graph(Graph(nodes, edges, graph_labels.loc[graph_id]))
+        graphs.add_graph(Graph(nodes, edges, int(graph_labels.loc[graph_id][0])))
 
     return graphs
