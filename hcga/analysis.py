@@ -14,6 +14,7 @@ from sklearn.model_selection import (
     train_test_split,
 )
 from sklearn.preprocessing import StandardScaler
+import itertools
 
 from . import plotting, utils
 
@@ -145,7 +146,7 @@ def analysis(
         X, y, shap_values, top_features = fit_grid_search(features, classifier,)
     elif kfold:
         L.info("Using kfold")
-        X, y, top_features, shap_values = fit_model_kfold(
+        X, y, top_features, shap_values, acc_scores = fit_model_kfold(
             features,
             classifier,
             compute_shap=compute_shap,
@@ -195,6 +196,37 @@ def output_csv(features_df, features_info_df, feature_importance, shap_values, f
 
     result_df = result_df.sort_values("shap_average", axis=1, ascending=False)
     result_df.to_csv(os.path.join(folder, "importance_results.csv"))
+
+
+def classify_pairwise(
+    features,
+    classifier,
+    compute_shap=False,
+    reduced_set_size=100,
+    reduced_set_max_correlation=0.9,
+):
+
+    """Classify graphs with kfold."""
+    if classifier is None:
+        raise Exception("Please provide a model for classification")
+
+    X, y = _features_to_Xy(features)
+    class_pairs = list(itertools.combinations(y.unique(), 2))
+    accuracy_matrix = pd.DataFrame(columns=y.unique(), index=y.unique())
+    for pair in class_pairs:
+        X_sub = X[y.isin(class_pairs[0])]
+        y_sub = y[y.isin(class_pairs[0])]
+        X_sub = X_sub.merge(y_sub, left_index=True, right_index=True)
+        a, b, top_features, shap_values, acc_scores = fit_model_kfold(
+            X_sub,
+            classifier,
+            compute_shap=compute_shap,
+            reduced_set_size=reduced_set_size,
+            reduced_set_max_correlation=reduced_set_max_correlation,
+        )
+        accuracy_matrix.loc[pair[0], pair[1]] = np.round(np.mean(acc_scores), 3)
+
+    return accuracy_matrix
 
 
 def fit_model_kfold(
@@ -265,7 +297,7 @@ def fit_model_kfold(
         str(np.round(np.mean(acc_scores), 3)),
         str(np.round(np.std(acc_scores), 3)),
     )
-    return X, y, top_features, shap_fold_average
+    return X, y, top_features, shap_fold_average, acc_scores
 
 
 def compute_fold(X, y, classifier, indices, compute_shap=True):
