@@ -123,7 +123,6 @@ def analysis(
     grid_search=False,
     plot=True,
     max_feats_plot=20,
-    pairwise_classification=False,
 ):
     """Main function to classify graphs and plot results."""
     L.info("%s total features", str(len(features.columns)))
@@ -147,13 +146,13 @@ def analysis(
         X, y, shap_values, top_features = fit_grid_search(features, classifier,)
     elif kfold:
         L.info("Using kfold")
-        X, y, top_features, shap_values = fit_model_kfold(
+        X, y, top_features, shap_values, acc_scores = fit_model_kfold(
             features,
             classifier,
             compute_shap=compute_shap,
             reduced_set_size=reduced_set_size,
             reduced_set_max_correlation=reduced_set_max_correlation,
-        )     
+        )
     else:
         X, y, top_features, shap_values = fit_model(
             features, classifier, compute_shap=compute_shap
@@ -199,7 +198,6 @@ def output_csv(features_df, features_info_df, feature_importance, shap_values, f
     result_df.to_csv(os.path.join(folder, "importance_results.csv"))
 
 
-
 def classify_pairwise(
     features,
     classifier,
@@ -207,29 +205,29 @@ def classify_pairwise(
     reduced_set_size=100,
     reduced_set_max_correlation=0.9,
 ):
-    
+
     """Classify graphs with kfold."""
     if classifier is None:
         raise Exception("Please provide a model for classification")
 
-    X, y = _features_to_Xy(features)        
-    class_pairs = list(itertools.combinations(y.unique(), 2))    
-    accuracy_matrix = pd.DataFrame(columns=y.unique(),index=y.unique())    
+    X, y = _features_to_Xy(features)
+    class_pairs = list(itertools.combinations(y.unique(), 2))
+    accuracy_matrix = pd.DataFrame(columns=y.unique(), index=y.unique())
     for pair in class_pairs:
         X_sub = X[y.isin(class_pairs[0])]
         y_sub = y[y.isin(class_pairs[0])]
-        X_sub = X_sub.merge(y_sub, left_index=True, right_index=True)        
+        X_sub = X_sub.merge(y_sub, left_index=True, right_index=True)
         a, b, top_features, shap_values, acc_scores = fit_model_kfold(
             X_sub,
             classifier,
             compute_shap=compute_shap,
             reduced_set_size=reduced_set_size,
             reduced_set_max_correlation=reduced_set_max_correlation,
-        )       
-        accuracy_matrix.loc[pair[0],pair[1]] = np.round(np.mean(acc_scores), 3)
-    
+        )
+        accuracy_matrix.loc[pair[0], pair[1]] = np.round(np.mean(acc_scores), 3)
+
     return accuracy_matrix
- 
+
 
 def fit_model_kfold(
     features,

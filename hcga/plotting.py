@@ -9,20 +9,22 @@ import seaborn as sns
 import shap
 from scipy.cluster.hierarchy import dendrogram, linkage
 from matplotlib.backends.backend_pdf import PdfPages
+
 # pylint: disable-all
 
 
 def shap_plots(X, y, shap_values, folder, graphs, max_feats=20):
     """plot summary."""
-    pp  = PdfPages(os.path.join(folder, "analysis_report.pdf"))
-    
+    pp = PdfPages(os.path.join(folder, "analysis_report.pdf"))
+
     pp = custom_bar_ranking_plot(shap_values, X, folder, pp, max_feats=max_feats)
     pp = custom_dot_summary_plot(shap_values, X, folder, pp, max_feats=max_feats)
     pp = plot_dendogram_shap(shap_values, X, folder, pp, max_feats=max_feats)
-    pp =plot_shap_violin(shap_values, X, y, folder, pp, max_feats=max_feats)
+    pp = plot_shap_violin(shap_values, X, y, folder, pp, max_feats=max_feats)
     pp = plot_feature_summary(X, graphs, folder, pp, shap_values)
-    
+
     pp.close()
+
 
 def custom_bar_ranking_plot(shap_vals, data, folder, pp, max_feats):
     """Function for customizing and saving SHAP summary bar plot.
@@ -44,6 +46,7 @@ def custom_bar_ranking_plot(shap_vals, data, folder, pp, max_feats):
     plt.savefig(os.path.join(folder, "shap_bar_rank.png"), dpi=200)
     pp.savefig(fig)
     return pp
+
 
 def custom_dot_summary_plot(shap_vals, data, folder, pp, max_feats):
     """Function for customizing and saving SHAP summary dot plot.
@@ -72,6 +75,7 @@ def custom_dot_summary_plot(shap_vals, data, folder, pp, max_feats):
         pp.savefig(fig)
     return pp
 
+
 def plot_dendogram_shap(shap_vals, data, folder, pp, max_feats=20):
     from matplotlib.gridspec import GridSpec
 
@@ -95,14 +99,20 @@ def plot_dendogram_shap(shap_vals, data, folder, pp, max_feats=20):
 
     dn = dendrogram(Z, ax=ax[0])
     ax[0].xaxis.set_ticklabels([])
-    sns.heatmap(cor2, ax=ax[2], linewidth=0.5, cbar_ax=ax[1], cbar_kws={'label': 'Absolute Correlation Coefficient'})
-    gs = GridSpec(2, 2, height_ratios=[1, 3],width_ratios=[15,1])
+    sns.heatmap(
+        cor2,
+        ax=ax[2],
+        linewidth=0.5,
+        cbar_ax=ax[1],
+        cbar_kws={"label": "Absolute Correlation Coefficient"},
+    )
+    gs = GridSpec(2, 2, height_ratios=[1, 3], width_ratios=[15, 1])
 
-    ax[0].set_position(gs[0,0].get_position(f))
-    ax[1].set_position(gs[1,1].get_position(f))
-    ax[2].set_position(gs[1,0].get_position(f))
+    ax[0].set_position(gs[0, 0].get_position(f))
+    ax[1].set_position(gs[1, 1].get_position(f))
+    ax[2].set_position(gs[1, 0].get_position(f))
 
-    ax[0].set_ylabel('Euclidean Distance')
+    ax[0].set_ylabel("Euclidean Distance")
 
     ax[0].title.set_text("Top {} features heatmap and dendogram".format(max_feats))
     plt.savefig(
@@ -111,9 +121,10 @@ def plot_dendogram_shap(shap_vals, data, folder, pp, max_feats=20):
     pp.savefig(f)
     return pp
 
+
 def plot_feature_summary(data, graphs, folder, pp, shap_vals=None, feat_name=None):
     """for a given feature id, plot the feature summary."""
-    
+
     if not feat_name:
         shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
 
@@ -129,32 +140,41 @@ def plot_feature_summary(data, graphs, folder, pp, shap_vals=None, feat_name=Non
     ax.append(plt.subplot(grid[2, 2]))
     ax.append(plt.subplot(grid[1, 2]))
     ax.append(plt.subplot(grid[0, 2]))
-    g = sns.violinplot(
-        data=feature_data, ax=ax[0], palette="muted", width=1
-    )
+    g = sns.violinplot(data=feature_data, ax=ax[0], palette="muted", width=1)
 
     c = sns.color_palette("hls", 5)
     for i, sample in enumerate(samples):
-        graph_id = feature_data.index[sample]#.index.tolist()
-        graph_to_plot = graphs.graphs[graph_id]        
+        graph_id = feature_data.index[sample]  # .index.tolist()
+        graph_to_plot = graphs.graphs[graph_id]
         g.axhline(feature_data.iloc[sample], ls="--", color=c[i])
 
         graph = graph_to_plot.get_graph("networkx")
         pos = nx.spring_layout(graph)
-        nx.draw(graph, pos, ax=ax[i + 1], node_size=5, node_color=[c[i] for n in range(len(graph))])
+        nx.draw(
+            graph,
+            pos,
+            ax=ax[i + 1],
+            node_size=5,
+            node_color=[c[i] for n in range(len(graph))],
+        )
         ax[i + 1].set_title(
-            "Graph ID: {}, class: {}".format(feature_data.index[sample],graph_to_plot.label[0]), fontsize="small"
+            "Graph ID: {}, class: {}".format(
+                feature_data.index[sample], graph_to_plot.label[0]
+            ),
+            fontsize="small",
         )
 
     fig.suptitle(
         "Feature: {}".format(feature_data.name)
     )  # or plt.suptitle('Main title')
     plt.savefig(
-        os.path.join(folder, "feature_{}_summary.png".format(feature_data.name[1])), dpi=200
+        os.path.join(folder, "feature_{}_summary.png".format(feature_data.name[1])),
+        dpi=200,
     )
-    
+
     pp.savefig(fig)
     return pp
+
 
 def plot_shap_violin(shap_vals, data, labels, folder, pp, max_feats=20):
     """Plot the violins of a feature."""
@@ -186,6 +206,7 @@ def plot_shap_violin(shap_vals, data, labels, folder, pp, max_feats=20):
     plt.savefig(os.path.join(folder, "shap_violins_top20.png"), dpi=200)
     pp.savefig(fig)
     return pp
+
 
 def custom_violin_summary_plot(shap_vals, data, max_feats):
     """Function for customizing and saving SHAP violin plot.
