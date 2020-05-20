@@ -159,7 +159,7 @@ def plot_feature_summary(data, graphs, folder, pp, shap_vals=None, feat_name=Non
         )
         ax[i + 1].set_title(
             "Graph ID: {}, class: {}".format(
-                feature_data.index[sample], graph_to_plot.label[0]
+                feature_data.index[sample], graph_to_plot.label
             ),
             fontsize="small",
         )

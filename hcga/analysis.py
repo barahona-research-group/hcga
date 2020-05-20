@@ -94,16 +94,17 @@ def _get_classifier(classifier):
             L.info("... Using RandomForest classifier ...")
             return RandomForestClassifier(n_estimators=1000, max_depth=30)
         if classifier == "XG":
-            from xgboost import XGBClassifier
+            from sklearn.ensemble import GradientBoostingClassifier 
 
             L.info("... Using Xgboost classifier ...")
+            return GradientBoostingClassifier()
 
-            return XGBClassifier()
         if classifier == "LGBM":
-            L.info("... Using LGBM classifier ...")
             from lightgbm import LGBMClassifier
 
+            L.info("... Using LGBM classifier ...")
             return LGBMClassifier()
+
         raise Exception("Unknown classifier type: {}".format(classifier))
     return classifier
 
