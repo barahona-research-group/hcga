@@ -46,13 +46,14 @@ class Hcga:
         n_workers=1,
         mode="slow",
         norm=False,
-        stats_level="basic",
+        stats_level="advanced",
         runtimes=False,
-        ensure_connectivity=True,
         node_feat=True,
+        timeout=10,
+        connected=True,
     ):
 
-        features, features_info = extract(
+        self.features, self.features_info = extract(
             self.graphs,
             n_workers=int(n_workers),
             mode=mode,
@@ -60,7 +61,8 @@ class Hcga:
             statistics_level=stats_level,
             with_runtimes=runtimes,
             with_node_features=node_feat,
-            ensure_connectivity=ensure_connectivity,
+            timeout=timeout,
+            connected=connected,
         )
 
         self.save_features()
@@ -68,7 +70,7 @@ class Hcga:
     def save_features(self, feature_file="./results/features.pkl"):
 
         save_features(
-            self.features, self.features_info, filename=feature_file,
+            self.features, self.features_info, self.graphs, filename=feature_file,
         )
 
     def load_features(self, feature_file="./results/features.pkl"):
@@ -81,12 +83,16 @@ class Hcga:
         self,
         feature_file="./results/features.pkl",
         results_folder="./results",
+        graph_removal=0.3,
         interpretability=1,
-        shap=True,
-        grid_search=False,
-        classifier="RF",
+        classifier="XG",
         kfold=True,
+        compute_shap=True,
+        reduced_set_size=100,
+        reduced_set_max_correlation=0.9,
+        grid_search=False,
         plot=True,
+        max_feats_plot=20,
     ):
 
         self.load_features(feature_file=feature_file)
@@ -95,11 +101,15 @@ class Hcga:
             self.features,
             self.features_info,
             self.graphs,
-            interpretability=interpretability,
-            grid_search=grid_search,
             folder=results_folder,
-            shap=shap,
+            graph_removal=graph_removal,
+            interpretability=interpretability,
             classifier=classifier,
             kfold=kfold,
+            compute_shap=compute_shap,
+            reduced_set_size=reduced_set_size,
+            reduced_set_max_correlation=reduced_set_max_correlation,
+            grid_search=False,
             plot=plot,
+            max_feats_plot=max_feats_plot,
         )
