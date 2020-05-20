@@ -13,14 +13,19 @@ from matplotlib.backends.backend_pdf import PdfPages
 # pylint: disable-all
 
 
-def shap_plots(X, y, shap_values, folder, graphs, max_feats=20):
+def shap_plots(X, y, shap_values, folder, graphs, analysis_type, max_feats=20):
     """plot summary."""
     pp = PdfPages(os.path.join(folder, "analysis_report.pdf"))
 
     pp = custom_bar_ranking_plot(shap_values, X, folder, pp, max_feats=max_feats)
     pp = custom_dot_summary_plot(shap_values, X, folder, pp, max_feats=max_feats)
     pp = plot_dendogram_shap(shap_values, X, folder, pp, max_feats=max_feats)
-    pp = plot_shap_violin(shap_values, X, y, folder, pp, max_feats=max_feats)
+
+    if analysis_type=='classification':
+        pp = plot_shap_violin(shap_values, X, y, folder, pp, max_feats=max_feats)
+    elif analysis_type=='regression':
+        pp = plot_trend(shap_values, X, y, folder, pp, max_feats=max_feats)
+    
     pp = plot_feature_summary(X, graphs, folder, pp, shap_values)
 
     pp.close()
@@ -158,7 +163,7 @@ def plot_feature_summary(data, graphs, folder, pp, shap_vals=None, feat_name=Non
             node_color=[c[i] for n in range(len(graph))],
         )
         ax[i + 1].set_title(
-            "Graph ID: {}, class: {}".format(
+            "Graph ID: {}, y-label: {}".format(
                 feature_data.index[sample], graph_to_plot.label[0]
             ),
             fontsize="small",
@@ -207,6 +212,40 @@ def plot_shap_violin(shap_vals, data, labels, folder, pp, max_feats=20):
     pp.savefig(fig)
     return pp
 
+
+def plot_trend(shap_vals, data, labels, folder, pp, max_feats=20):
+    """Plot the violins of a feature."""
+    shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
+    top_feat_idx = shap_mean.argsort()[::-1][:max_feats]
+
+    ncols = 4
+    nrows = int(np.ceil(len(top_feat_idx) / ncols))
+    fig, axes = plt.subplots(nrows=nrows, ncols=ncols, dpi=120, figsize=(20, 14))
+
+    for ax, top_feat in zip(axes.flatten(), top_feat_idx):
+        feature_data = data[data.columns[top_feat]].values
+
+        sns.scatterplot(feature_data,labels,ax=ax,palette="muted")
+        ax.set(xlabel=data.columns[top_feat], ylabel="y-label")
+
+        ax.tick_params(axis="both", which="major", labelsize=5)
+
+        ax.xaxis.get_label().set_fontsize(7)
+        ax.yaxis.get_label().set_fontsize(7)
+
+    plt.subplots_adjust(top=0.9, bottom=0.1, hspace=0.3, wspace=0.2)
+    plt.savefig(os.path.join(folder, "shap_trend_top20.png"), dpi=200)
+    pp.savefig(fig)
+    return pp
+
+
+
+def pca_plot(features,pca): 
+    """ plot pca of data """
+    X = pca.transform(features)
+    plt.scatter(X[:,0], X[:,1])
+    plt.xlabel('PC1')
+    plt.ylabel('PC2')
 
 def custom_violin_summary_plot(shap_vals, data, max_feats):
     """Function for customizing and saving SHAP violin plot.
@@ -403,3 +442,5 @@ def plot_violin_feature(
         + ".svg",
         bbox_inches="tight",
     )
+
+

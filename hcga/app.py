@@ -136,6 +136,12 @@ def extract_features(
     help="Location of features",
 )
 @click.option(
+    "--analysis-type",
+    default='classification',
+    show_default=True,
+    help="classification/regression/unsupervised.",
+)
+@click.option(
     "--graph-removal",
     default=0.3,
     show_default=True,
@@ -149,11 +155,11 @@ def extract_features(
     help="Interpretability of feature to consider",
 )
 @click.option(
-    "-c",
-    "--classifier",
+    "-m",
+    "--model",
     default="XG",
     show_default=True,
-    help="classifier feature analysis (RF, LGBM, XG)",
+    help="model for feature analysis (RF, LGBM, XG)",
 )
 @click.option("--kfold/--no-kfold", default=True, show_default=True, help="use K-fold")
 @click.option(
@@ -197,9 +203,10 @@ def feature_analysis(
     dataset,
     results_folder,
     feature_file,
+    analysis_type,
     graph_removal,
     interpretability,
-    classifier,
+    model,
     kfold,
     shap,
     reduced_set_size,
@@ -220,10 +227,11 @@ def feature_analysis(
         features,
         features_info,
         graphs,
+        analysis_type,
         folder=results_folder,
         graph_removal=graph_removal,
         interpretability=interpretability,
-        classifier=classifier,
+        model=model,
         kfold=kfold,
         compute_shap=shap,
         reduced_set_size=reduced_set_size,

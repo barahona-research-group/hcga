@@ -98,8 +98,10 @@ def _print_runtimes(all_features_df):
 def _set_graph_labels(features, graphs):
     """Set graph labels to features dataframe."""
     for graph in graphs:
-        if isinstance(graph.label, int):
+        if isinstance(graph.label, (int, float)):
             features.loc[graph.id, "labels"] = graph.label
+        if not graph.label:
+            features.loc[graph.id, "labels"] = None
         else:
             features.loc[graph.id, "labels"] = graph.label[0]
 
