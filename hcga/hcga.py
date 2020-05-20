@@ -41,8 +41,6 @@ class Hcga:
 
             make_benchmark_dataset(dataset_name=dataset_name, folder=folder)
 
-
-
     def extract(
         self,
         n_workers=1,
@@ -54,8 +52,7 @@ class Hcga:
         timeout=10,
         connected=True,
     ):
-        
-        
+
         self.features, self.features_info = extract(
             self.graphs,
             n_workers=int(n_workers),
@@ -93,7 +90,7 @@ class Hcga:
         compute_shap=True,
         reduced_set_size=100,
         reduced_set_max_correlation=0.9,
-        grid_search=False,        
+        grid_search=False,
         plot=True,
         max_feats_plot=20,
     ):
@@ -116,4 +113,3 @@ class Hcga:
             plot=plot,
             max_feats_plot=max_feats_plot,
         )
-

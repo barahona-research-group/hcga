@@ -3,6 +3,7 @@ import logging
 import os
 import time
 from pathlib import Path
+import itertools
 
 import numpy as np
 import pandas as pd
@@ -14,7 +15,6 @@ from sklearn.model_selection import (
     train_test_split,
 )
 from sklearn.preprocessing import StandardScaler
-import itertools
 
 from . import plotting, utils
 
@@ -146,7 +146,7 @@ def analysis(
         X, y, shap_values, top_features = fit_grid_search(features, classifier,)
     elif kfold:
         L.info("Using kfold")
-        X, y, top_features, shap_values, acc_scores = fit_model_kfold(
+        X, y, top_features, shap_values, _ = fit_model_kfold(
             features,
             classifier,
             compute_shap=compute_shap,
@@ -217,7 +217,7 @@ def classify_pairwise(
         X_sub = X[y.isin(class_pairs[0])]
         y_sub = y[y.isin(class_pairs[0])]
         X_sub = X_sub.merge(y_sub, left_index=True, right_index=True)
-        a, b, top_features, shap_values, acc_scores = fit_model_kfold(
+        _, _, _, _, acc_scores = fit_model_kfold(
             X_sub,
             classifier,
             compute_shap=compute_shap,
@@ -405,7 +405,7 @@ def fit_grid_search(features, classifier):
 
     optimal_model = model.best_estimator_
 
-    X, y, mean_shap_values, top_features = fit_model_kfold(
+    X, y, mean_shap_values, top_features, _ = fit_model_kfold(
         features, optimal_model, compute_shap=True,
     )
 
