@@ -89,12 +89,12 @@ class Graph:
         nodes["new_index"] = np.arange(0, len(nodes.index))
         edges["start_node"] = nodes.new_index[edges["start_node"].to_list()].to_list()
         edges["end_node"] = nodes.new_index[edges["end_node"].to_list()].to_list()
-        
-        if 'weight' in edges:
+
+        if "weight" in edges:
             edges["weight"] = nodes.new_index[edges["weight"].to_list()].to_list()
         else:
             edges["weight"] = nodes.new_index[np.ones(len(edges)).tolist()].to_list()
-            
+
         self.nodes = nodes.set_index("new_index")
         self.edges = edges.reset_index()
 
