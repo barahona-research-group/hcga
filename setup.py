@@ -16,7 +16,6 @@ setup(
         "statsmodels",
         "sklearn",
         "fa2",
-        "xgboost",
         "seaborn",
         "lightgbm",
         "shap",
