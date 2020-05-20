@@ -94,7 +94,7 @@ def _get_classifier(classifier):
             L.info("... Using RandomForest classifier ...")
             return RandomForestClassifier(n_estimators=1000, max_depth=30)
         if classifier == "XG":
-            from sklearn.ensemble import GradientBoostingClassifier 
+            from sklearn.ensemble import GradientBoostingClassifier
 
             L.info("... Using Xgboost classifier ...")
             return GradientBoostingClassifier()
