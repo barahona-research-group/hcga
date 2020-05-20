@@ -81,13 +81,20 @@ class Graph:
             nodes (DataFrame): node dataframe, index as node id, and optional
                 label and attributes columns (with lists elements)
             edges (DataFrame): edge dataframe, with two columns 'start_node' and 'end_node'
-                with id corresponding to indices in nodes
+                with id corresponding to indices in nodes. And a third optional column 'weight'
+                which if absent all edges will default to weight 1.
             label (int): label of the graph, it has to be an integer
             label_name (any): name or other information on the graph label
         """
         nodes["new_index"] = np.arange(0, len(nodes.index))
         edges["start_node"] = nodes.new_index[edges["start_node"].to_list()].to_list()
         edges["end_node"] = nodes.new_index[edges["end_node"].to_list()].to_list()
+        
+        if 'weight' in edges:
+            edges["weight"] = nodes.new_index[edges["weight"].to_list()].to_list()
+        else:
+            edges["weight"] = nodes.new_index[np.ones(len(edges)).tolist()].to_list()
+            
         self.nodes = nodes.set_index("new_index")
         self.edges = edges.reset_index()
 
@@ -158,7 +165,7 @@ class Graph:
         self._graph_networkx.add_nodes_from(nodes)
 
         edges = [
-            (edge["start_node"], edge["end_node"], 1.0)
+            (edge["start_node"], edge["end_node"], edge["weight"])
             for _, edge in self.edges.iterrows()
         ]
         self._graph_networkx.add_weighted_edges_from(edges)
