@@ -163,8 +163,9 @@ def plot_feature_summary(data, graphs, folder, pp, shap_vals=None, feat_name=Non
             node_color=[c[i] for n in range(len(graph))],
         )
         ax[i + 1].set_title(
-            "Graph ID: {}, y-label: {}".format(
-                feature_data.index[sample], graph_to_plot.label[0]
+
+            "Graph ID: {}, class: {}".format(
+                feature_data.index[sample], graph_to_plot.label
             ),
             fontsize="small",
         )
