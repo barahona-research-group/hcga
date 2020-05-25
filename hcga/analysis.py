@@ -1,21 +1,21 @@
 """function for analysis of graph features."""
+import itertools
 import logging
 import os
 import time
 from pathlib import Path
-import itertools
 
 import numpy as np
 import pandas as pd
 import shap
+from sklearn.decomposition import PCA
 from sklearn.metrics import accuracy_score, explained_variance_score
 from sklearn.model_selection import (
+    KFold,
     RandomizedSearchCV,
     StratifiedKFold,
-    KFold,
     train_test_split,
 )
-from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
 from . import plotting, utils
@@ -81,6 +81,7 @@ def _reduce_correlation_feature_set(
 
 
 def print_accuracy(acc_scores, analysis_type):
+    """Display accuracies of classifications."""
     if analysis_type == "classification":
         L.info(
             "Accuracy: %s +/- %s",
@@ -107,7 +108,9 @@ def _filter_interpretable(features, features_info, interpretability):
     return features, features_info
 
 
-def _get_model(model, analysis_type):
+def _get_model(
+    model, analysis_type="classification"
+):  # pylint: disable=too-many-return-statements
     """Get a model."""
     if isinstance(model, str):
         if model == "RF":
@@ -128,6 +131,7 @@ def _get_model(model, analysis_type):
 
                 L.info("... Using Xgboost classifier ...")
                 return XGBClassifier()
+
             if analysis_type == "regression":
                 from xgboost import XGBRegressor
 
@@ -182,11 +186,11 @@ def analysis(
     )
 
     features = _normalise_feature_data(features)
-    classifier = _get_classifier(classifier)
+    classifier = _get_model(model)
 
     if grid_search and kfold:
         L.info("Using grid_search  and kfold")
-        X, y, shap_values, top_features = fit_grid_search(features, classifier,)
+        X, y, shap_values, top_features = fit_grid_search(features, classifier)
     elif kfold:
         L.info("Using kfold")
         X, y, top_features, shap_values, _ = fit_model_kfold(
@@ -209,16 +213,15 @@ def analysis(
 
     if analysis_type == "unsupervised":
         unsupervised_learning(features, features_info, graphs)
-        return
     else:
         model = _get_model(model, analysis_type)
 
         if grid_search and kfold:
             L.info("Using grid_search  and kfold")
-            X, y, shap_values, top_features = fit_grid_search(features, model,)
+            X, y, shap_values, top_features = fit_grid_search(features, model)
         elif kfold:
             L.info("Using kfold")
-            X, y, top_features, shap_values, acc_scores = fit_model_kfold(
+            X, y, top_features, shap_values, _ = fit_model_kfold(
                 features,
                 model,
                 analysis_type,
@@ -228,7 +231,7 @@ def analysis(
             )
         else:
             X, y, top_features, shap_values = fit_model(
-                features, model, analysis_type, compute_shap=compute_shap
+                features, model, analysis_type, compute_shap
             )
 
         results_folder = Path(folder) / (
@@ -259,14 +262,11 @@ def analysis(
 
 def unsupervised_learning(features, features_info, graphs):
     """ implementing some basic unsupervised approaches to the data """
-
     pca = PCA(n_components=2)
     pca.fit(features)
     print("Variance of PC component 1: {}".format(pca.explained_variance_ratio_[0]))
     print("Variance of PC component 2: {}".format(pca.explained_variance_ratio_[1]))
     plotting.pca_plot(features, pca)
-
-    return
 
 
 def output_csv(features_df, features_info_df, feature_importance, shap_values, folder):
