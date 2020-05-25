@@ -21,11 +21,11 @@ def shap_plots(X, y, shap_values, folder, graphs, analysis_type, max_feats=20):
     pp = custom_dot_summary_plot(shap_values, X, folder, pp, max_feats=max_feats)
     pp = plot_dendogram_shap(shap_values, X, folder, pp, max_feats=max_feats)
 
-    if analysis_type=='classification':
+    if analysis_type == "classification":
         pp = plot_shap_violin(shap_values, X, y, folder, pp, max_feats=max_feats)
-    elif analysis_type=='regression':
+    elif analysis_type == "regression":
         pp = plot_trend(shap_values, X, y, folder, pp, max_feats=max_feats)
-    
+
     pp = plot_feature_summary(X, graphs, folder, pp, shap_values)
 
     pp.close()
@@ -163,7 +163,6 @@ def plot_feature_summary(data, graphs, folder, pp, shap_vals=None, feat_name=Non
             node_color=[c[i] for n in range(len(graph))],
         )
         ax[i + 1].set_title(
-
             "Graph ID: {}, class: {}".format(
                 feature_data.index[sample], graph_to_plot.label
             ),
@@ -226,7 +225,7 @@ def plot_trend(shap_vals, data, labels, folder, pp, max_feats=20):
     for ax, top_feat in zip(axes.flatten(), top_feat_idx):
         feature_data = data[data.columns[top_feat]].values
 
-        sns.scatterplot(feature_data,labels,ax=ax,palette="muted")
+        sns.scatterplot(feature_data, labels, ax=ax, palette="muted")
         ax.set(xlabel=data.columns[top_feat], ylabel="y-label")
 
         ax.tick_params(axis="both", which="major", labelsize=5)
@@ -240,13 +239,13 @@ def plot_trend(shap_vals, data, labels, folder, pp, max_feats=20):
     return pp
 
 
-
-def pca_plot(features,pca): 
+def pca_plot(features, pca):
     """ plot pca of data """
     X = pca.transform(features)
-    plt.scatter(X[:,0], X[:,1])
-    plt.xlabel('PC1')
-    plt.ylabel('PC2')
+    plt.scatter(X[:, 0], X[:, 1])
+    plt.xlabel("PC1")
+    plt.ylabel("PC2")
+
 
 def custom_violin_summary_plot(shap_vals, data, max_feats):
     """Function for customizing and saving SHAP violin plot.
@@ -443,5 +442,3 @@ def plot_violin_feature(
         + ".svg",
         bbox_inches="tight",
     )
-
-

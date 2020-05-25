@@ -85,7 +85,7 @@ class Hcga:
         results_folder="./results",
         graph_removal=0.3,
         interpretability=1,
-        analysis_type='classification',
+        analysis_type="classification",
         model="XG",
         kfold=True,
         compute_shap=True,

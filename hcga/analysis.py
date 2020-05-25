@@ -8,7 +8,7 @@ import itertools
 import numpy as np
 import pandas as pd
 import shap
-from sklearn.metrics import (accuracy_score, explained_variance_score)
+from sklearn.metrics import accuracy_score, explained_variance_score
 from sklearn.model_selection import (
     RandomizedSearchCV,
     StratifiedKFold,
@@ -37,15 +37,15 @@ def _normalise_feature_data(features,):
     """Normalise the feature matrix using sklearn scaler to remove the mean and scale to unit variance."""
     if "labels" in features:
         labels = features["labels"]
-        
+
     normed_features = pd.DataFrame(
         StandardScaler().fit_transform(features), columns=features.columns
     )
     normed_features.index = features.index
-    
+
     if "labels" in features:
         normed_features["labels"] = labels
-        
+
     return normed_features
 
 
@@ -79,20 +79,21 @@ def _reduce_correlation_feature_set(
 
     return X[X.columns[selected_features]]
 
-def print_accuracy(acc_scores,analysis_type):
-    if analysis_type=='classification':
+
+def print_accuracy(acc_scores, analysis_type):
+    if analysis_type == "classification":
         L.info(
             "Accuracy: %s +/- %s",
             str(np.round(np.mean(acc_scores), 3)),
             str(np.round(np.std(acc_scores), 3)),
         )
-    elif analysis_type=='regression':
+    elif analysis_type == "regression":
         L.info(
             "Explained Variance: %s +/- %s",
             str(np.round(np.mean(acc_scores), 3)),
             str(np.round(np.std(acc_scores), 3)),
         )
-        
+
 
 def _filter_interpretable(features, features_info, interpretability):
     """Get only features with certain interpretability."""
@@ -106,39 +107,45 @@ def _filter_interpretable(features, features_info, interpretability):
     return features, features_info
 
 
-def _get_model(model,analysis_type):
+def _get_model(model, analysis_type):
     """Get a model."""
-    if isinstance(model, str):        
+    if isinstance(model, str):
         if model == "RF":
-            if analysis_type == 'classification':
+            if analysis_type == "classification":
                 from sklearn.ensemble import RandomForestClassifier
+
                 L.info("... Using RandomForest classifier ...")
                 return RandomForestClassifier(n_estimators=1000, max_depth=30)
-            if analysis_type == 'regression':
+            if analysis_type == "regression":
                 from sklearn.ensemble import RandomForestRegressor
+
                 L.info("... Using RandomForest regressor ...")
                 return RandomForestRegressor(n_estimators=1000, max_depth=30)
-            
+
         if model == "XG":
-            if analysis_type == 'classification':
+            if analysis_type == "classification":
                 from xgboost import XGBClassifier
+
                 L.info("... Using Xgboost classifier ...")
                 return XGBClassifier()
-            if analysis_type == 'regression':
+            if analysis_type == "regression":
                 from xgboost import XGBRegressor
+
                 L.info("... Using Xgboost regressor ...")
-                return XGBRegressor()       
-        
+                return XGBRegressor()
+
         if model == "LGBM":
-            if analysis_type == 'classification':
+            if analysis_type == "classification":
                 L.info("... Using LGBM classifier ...")
                 from lightgbm import LGBMClassifier
+
                 return LGBMClassifier()
-            if analysis_type == 'regression':
+            if analysis_type == "regression":
                 L.info("... Using LGBM regressor ...")
                 from lightgbm import LGBMRegressor
+
                 return LGBMRegressor()
-            
+
         raise Exception("Unknown model type: {}".format(model))
     return model
 
@@ -147,7 +154,7 @@ def analysis(
     features,
     features_info,
     graphs,
-    analysis_type='classification',
+    analysis_type="classification",
     folder=".",
     graph_removal=0.3,
     interpretability=1,
@@ -173,7 +180,6 @@ def analysis(
     L.info(
         "%s with interpretability %s", str(len(features.columns)), str(interpretability)
     )
-
 
     features = _normalise_feature_data(features)
     classifier = _get_classifier(classifier)
@@ -201,12 +207,12 @@ def analysis(
 
     features = _normalise_feature_data(features)
 
-    if analysis_type=='unsupervised':
-        unsupervised_learning(features,features_info,graphs)
-        return 
+    if analysis_type == "unsupervised":
+        unsupervised_learning(features, features_info, graphs)
+        return
     else:
-        model = _get_model(model,analysis_type)
-    
+        model = _get_model(model, analysis_type)
+
         if grid_search and kfold:
             L.info("Using grid_search  and kfold")
             X, y, shap_values, top_features = fit_grid_search(features, model,)
@@ -224,37 +230,44 @@ def analysis(
             X, y, top_features, shap_values = fit_model(
                 features, model, analysis_type, compute_shap=compute_shap
             )
-    
+
         results_folder = Path(folder) / (
             "results_interpretability_" + str(interpretability)
         )
-    
+
         if not Path(results_folder).exists():
             os.mkdir(results_folder)
-    
+
         if plot:
             if compute_shap:
                 plotting.shap_plots(
-                    X, y, shap_values, results_folder, graphs, analysis_type, max_feats=max_feats_plot
+                    X,
+                    y,
+                    shap_values,
+                    results_folder,
+                    graphs,
+                    analysis_type,
+                    max_feats=max_feats_plot,
                 )
             else:
                 plotting.basic_plots(X, top_features, results_folder)
-    
+
         output_csv(features, features_info, top_features, shap_values, results_folder)
-    
+
         return X, shap_values
 
 
-def unsupervised_learning(features,features_info,graphs):
-    """ implementing some basic unsupervised approaches to the data """   
-       
+def unsupervised_learning(features, features_info, graphs):
+    """ implementing some basic unsupervised approaches to the data """
+
     pca = PCA(n_components=2)
-    pca.fit(features)    
-    print('Variance of PC component 1: {}'.format(pca.explained_variance_ratio_[0]))
-    print('Variance of PC component 2: {}'.format(pca.explained_variance_ratio_[1]))
-    plotting.pca_plot(features,pca)
-    
+    pca.fit(features)
+    print("Variance of PC component 1: {}".format(pca.explained_variance_ratio_[0]))
+    print("Variance of PC component 2: {}".format(pca.explained_variance_ratio_[1]))
+    plotting.pca_plot(features, pca)
+
     return
+
 
 def output_csv(features_df, features_info_df, feature_importance, shap_values, folder):
     """save csv file with analysis data."""
@@ -321,11 +334,11 @@ def fit_model_kfold(
 
     X, y = _features_to_Xy(features)
 
-    if analysis_type=='classification':
+    if analysis_type == "classification":
         n_splits = _number_folds(y)
         L.info("Using %s splits", str(n_splits))
         folds = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=1)
-    elif analysis_type=='regression':
+    elif analysis_type == "regression":
         n_splits = 10
         folds = KFold(n_splits=n_splits, shuffle=True, random_state=1)
 
@@ -340,7 +353,7 @@ def fit_model_kfold(
         acc_scores.append(acc_score)
         shap_values.append(shap_value)
 
-    print_accuracy(acc_scores,analysis_type)
+    print_accuracy(acc_scores, analysis_type)
 
     # taking average of folds
     if any(isinstance(shap_value, list) for shap_value in shap_values):
@@ -393,21 +406,19 @@ def compute_fold(X, y, model, indices, analysis_type, compute_shap=True):
 
     model.fit(X_train, y_train)
     top_features = model.feature_importances_
-    
-    if analysis_type =='classification':
+
+    if analysis_type == "classification":
         acc_score = accuracy_score(y_val, model.predict(X_val))
         L.info("Fold accuracy: --- %s ---", str(np.round(acc_score, 3)))
-    elif analysis_type =='regression':
+    elif analysis_type == "regression":
         acc_score = explained_variance_score(y_val, model.predict(X_val))
-        L.info("Explained Variance: --- %s ---", str(np.round(acc_score, 3)))        
-    
+        L.info("Explained Variance: --- %s ---", str(np.round(acc_score, 3)))
+
     if compute_shap:
-        explainer = shap.TreeExplainer(
-            model, feature_perturbation="interventional",
-        )
+        explainer = shap.TreeExplainer(model, feature_perturbation="interventional",)
         shap_values = explainer.shap_values(X, check_additivity=False)
         return top_features, acc_score, shap_values
-    
+
     return top_features, acc_score, None
 
 
@@ -430,9 +441,7 @@ def fit_model(features, model, compute_shap=True):
     top_features = model.feature_importances_
 
     if compute_shap:
-        explainer = shap.TreeExplainer(
-            model, feature_perturbation="interventional"
-        )
+        explainer = shap.TreeExplainer(model, feature_perturbation="interventional")
         shap_values = explainer.shap_values(X_test, check_additivity=False)
     else:
         shap_values = None

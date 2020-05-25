@@ -137,7 +137,7 @@ def extract_features(
 )
 @click.option(
     "--analysis-type",
-    default='classification',
+    default="classification",
     show_default=True,
     help="classification/regression/unsupervised.",
 )
