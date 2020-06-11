@@ -3,18 +3,20 @@ import logging
 import os
 import time
 from pathlib import Path
-import itertools
 
 import numpy as np
 import pandas as pd
 import shap
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, explained_variance_score
 from sklearn.model_selection import (
     RandomizedSearchCV,
     StratifiedKFold,
+    KFold,
     train_test_split,
 )
+from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
+import itertools
 
 from . import plotting, utils
 
@@ -31,14 +33,19 @@ def _features_to_Xy(features):
     return X, y
 
 
-def _normalise_feature_data(features):
+def _normalise_feature_data(features,):
     """Normalise the feature matrix using sklearn scaler to remove the mean and scale to unit variance."""
-    labels = features["labels"]
+    if "labels" in features:
+        labels = features["labels"]
+
     normed_features = pd.DataFrame(
         StandardScaler().fit_transform(features), columns=features.columns
     )
     normed_features.index = features.index
-    normed_features["labels"] = labels
+
+    if "labels" in features:
+        normed_features["labels"] = labels
+
     return normed_features
 
 
@@ -73,6 +80,21 @@ def _reduce_correlation_feature_set(
     return X[X.columns[selected_features]]
 
 
+def print_accuracy(acc_scores, analysis_type):
+    if analysis_type == "classification":
+        L.info(
+            "Accuracy: %s +/- %s",
+            str(np.round(np.mean(acc_scores), 3)),
+            str(np.round(np.std(acc_scores), 3)),
+        )
+    elif analysis_type == "regression":
+        L.info(
+            "Explained Variance: %s +/- %s",
+            str(np.round(np.mean(acc_scores), 3)),
+            str(np.round(np.std(acc_scores), 3)),
+        )
+
+
 def _filter_interpretable(features, features_info, interpretability):
     """Get only features with certain interpretability."""
     interpretability = min(5, interpretability)
@@ -85,38 +107,58 @@ def _filter_interpretable(features, features_info, interpretability):
     return features, features_info
 
 
-def _get_classifier(classifier):
-    """Get a classifier."""
-    if isinstance(classifier, str):
-        if classifier == "RF":
-            from sklearn.ensemble import RandomForestClassifier
+def _get_model(model, analysis_type):
+    """Get a model."""
+    if isinstance(model, str):
+        if model == "RF":
+            if analysis_type == "classification":
+                from sklearn.ensemble import RandomForestClassifier
 
-            L.info("... Using RandomForest classifier ...")
-            return RandomForestClassifier(n_estimators=1000, max_depth=30)
-        if classifier == "XG":
-            from sklearn.ensemble import GradientBoostingClassifier
+                L.info("... Using RandomForest classifier ...")
+                return RandomForestClassifier(n_estimators=1000, max_depth=30)
+            if analysis_type == "regression":
+                from sklearn.ensemble import RandomForestRegressor
 
-            L.info("... Using Xgboost classifier ...")
-            return GradientBoostingClassifier()
+                L.info("... Using RandomForest regressor ...")
+                return RandomForestRegressor(n_estimators=1000, max_depth=30)
 
-        if classifier == "LGBM":
-            from lightgbm import LGBMClassifier
+        if model == "XG":
+            if analysis_type == "classification":
+                from xgboost import XGBClassifier
 
-            L.info("... Using LGBM classifier ...")
-            return LGBMClassifier()
+                L.info("... Using Xgboost classifier ...")
+                return XGBClassifier()
+            if analysis_type == "regression":
+                from xgboost import XGBRegressor
 
-        raise Exception("Unknown classifier type: {}".format(classifier))
-    return classifier
+                L.info("... Using Xgboost regressor ...")
+                return XGBRegressor()
+
+        if model == "LGBM":
+            if analysis_type == "classification":
+                L.info("... Using LGBM classifier ...")
+                from lightgbm import LGBMClassifier
+
+                return LGBMClassifier()
+            if analysis_type == "regression":
+                L.info("... Using LGBM regressor ...")
+                from lightgbm import LGBMRegressor
+
+                return LGBMRegressor()
+
+        raise Exception("Unknown model type: {}".format(model))
+    return model
 
 
 def analysis(
     features,
     features_info,
     graphs,
+    analysis_type="classification",
     folder=".",
     graph_removal=0.3,
     interpretability=1,
-    classifier="XG",
+    model="XG",
     kfold=True,
     compute_shap=True,
     reduced_set_size=100,
@@ -140,43 +182,67 @@ def analysis(
     )
 
     features = _normalise_feature_data(features)
-    classifier = _get_classifier(classifier)
 
-    if grid_search and kfold:
-        L.info("Using grid_search  and kfold")
-        X, y, shap_values, top_features = fit_grid_search(features, classifier,)
-    elif kfold:
-        L.info("Using kfold")
-        X, y, top_features, shap_values, _ = fit_model_kfold(
-            features,
-            classifier,
-            compute_shap=compute_shap,
-            reduced_set_size=reduced_set_size,
-            reduced_set_max_correlation=reduced_set_max_correlation,
-        )
+    if analysis_type == "unsupervised":
+        unsupervised_learning(features, features_info, graphs)
+        return
     else:
-        X, y, top_features, shap_values = fit_model(
-            features, classifier, compute_shap=compute_shap
-        )
+        model = _get_model(model, analysis_type)
 
-    results_folder = Path(folder) / (
-        "results_interpretability_" + str(interpretability)
-    )
-
-    if not Path(results_folder).exists():
-        os.mkdir(results_folder)
-
-    if plot:
-        if compute_shap:
-            plotting.shap_plots(
-                X, y, shap_values, results_folder, graphs, max_feats=max_feats_plot
+        if grid_search and kfold:
+            L.info("Using grid_search  and kfold")
+            X, y, shap_values, top_features = fit_grid_search(features, model,)
+        elif kfold:
+            L.info("Using kfold")
+            X, y, top_features, shap_values, acc_scores = fit_model_kfold(
+                features,
+                model,
+                analysis_type,
+                compute_shap=compute_shap,
+                reduced_set_size=reduced_set_size,
+                reduced_set_max_correlation=reduced_set_max_correlation,
             )
         else:
-            plotting.basic_plots(X, top_features, results_folder)
+            X, y, top_features, shap_values = fit_model(
+                features, model, analysis_type, compute_shap=compute_shap
+            )
 
-    output_csv(features, features_info, top_features, shap_values, results_folder)
+        results_folder = Path(folder) / (
+            "results_interpretability_" + str(interpretability)
+        )
 
-    return X, shap_values
+        if not Path(results_folder).exists():
+            os.mkdir(results_folder)
+
+        if plot:
+            if compute_shap:
+                plotting.shap_plots(
+                    X,
+                    y,
+                    shap_values,
+                    results_folder,
+                    graphs,
+                    analysis_type,
+                    max_feats=max_feats_plot,
+                )
+            else:
+                plotting.basic_plots(X, top_features, results_folder)
+
+        output_csv(features, features_info, top_features, shap_values, results_folder)
+
+        return X, shap_values
+
+
+def unsupervised_learning(features, features_info, graphs):
+    """ implementing some basic unsupervised approaches to the data """
+
+    pca = PCA(n_components=2)
+    pca.fit(features)
+    print("Variance of PC component 1: {}".format(pca.explained_variance_ratio_[0]))
+    print("Variance of PC component 2: {}".format(pca.explained_variance_ratio_[1]))
+    plotting.pca_plot(features, pca)
+
+    return
 
 
 def output_csv(features_df, features_info_df, feature_importance, shap_values, folder):
@@ -201,14 +267,14 @@ def output_csv(features_df, features_info_df, feature_importance, shap_values, f
 
 def classify_pairwise(
     features,
-    classifier,
+    model,
     compute_shap=False,
     reduced_set_size=100,
     reduced_set_max_correlation=0.9,
 ):
 
     """Classify graphs with kfold."""
-    if classifier is None:
+    if model is None:
         raise Exception("Please provide a model for classification")
 
     X, y = _features_to_Xy(features)
@@ -218,9 +284,9 @@ def classify_pairwise(
         X_sub = X[y.isin(class_pairs[0])]
         y_sub = y[y.isin(class_pairs[0])]
         X_sub = X_sub.merge(y_sub, left_index=True, right_index=True)
-        _, _, _, _, acc_scores = fit_model_kfold(
+        a, b, top_features, shap_values, acc_scores = fit_model_kfold(
             X_sub,
-            classifier,
+            model,
             compute_shap=compute_shap,
             reduced_set_size=reduced_set_size,
             reduced_set_max_correlation=reduced_set_max_correlation,
@@ -232,38 +298,38 @@ def classify_pairwise(
 
 def fit_model_kfold(
     features,
-    classifier,
+    model,
+    analysis_type,
     compute_shap=True,
     reduced_set_size=100,
     reduced_set_max_correlation=0.9,
 ):
     """Classify graphs with kfold."""
-    if classifier is None:
+    if model is None:
         raise Exception("Please provide a model for classification")
 
     X, y = _features_to_Xy(features)
 
-    n_splits = _number_folds(y)
-    L.info("Using %s splits", str(n_splits))
-
-    folds = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=1)
+    if analysis_type == "classification":
+        n_splits = _number_folds(y)
+        L.info("Using %s splits", str(n_splits))
+        folds = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=1)
+    elif analysis_type == "regression":
+        n_splits = 10
+        folds = KFold(n_splits=n_splits, shuffle=True, random_state=1)
 
     top_features = []
     shap_values = []
     acc_scores = []
     for indices in folds.split(X, y=y):
         top_feature, acc_score, shap_value = compute_fold(
-            X, y, classifier, indices, compute_shap
+            X, y, model, indices, analysis_type, compute_shap
         )
         top_features.append(top_feature)
         acc_scores.append(acc_score)
         shap_values.append(shap_value)
 
-    L.info(
-        "Accuracy: %s +/- %s",
-        str(np.round(np.mean(acc_scores), 3)),
-        str(np.round(np.std(acc_scores), 3)),
-    )
+    print_accuracy(acc_scores, analysis_type)
 
     # taking average of folds
     if any(isinstance(shap_value, list) for shap_value in shap_values):
@@ -289,7 +355,7 @@ def fit_model_kfold(
     indices_all = (indices for indices in folds.split(X, y=y))
     for indices in indices_all:
         top_feature, acc_score, _ = compute_fold(
-            X_reduced_corr, y, classifier, indices, compute_shap=False
+            X_reduced_corr, y, model, indices, analysis_type, compute_shap=False
         )
         acc_scores.append(acc_score)
 
@@ -301,7 +367,7 @@ def fit_model_kfold(
     return X, y, top_features, shap_fold_average, acc_scores
 
 
-def compute_fold(X, y, classifier, indices, compute_shap=True):
+def compute_fold(X, y, model, indices, analysis_type, compute_shap=True):
     """Compute a single fold for parallel computation."""
     train_index, val_index = indices
 
@@ -314,28 +380,31 @@ def compute_fold(X, y, classifier, indices, compute_shap=True):
     X_train, X_val = X.loc[x_train_idx], X.loc[x_val_idx]
     y_train, y_val = y.loc[y_train_idx], y.loc[y_val_idx]
 
-    classifier.fit(X_train, y_train)
-    top_features = classifier.feature_importances_
+    model.fit(X_train, y_train)
+    top_features = model.feature_importances_
 
-    acc_score = accuracy_score(y_val, classifier.predict(X_val))
-    L.info("Fold accuracy: --- %s ---", str(np.round(acc_score, 3)))
+    if analysis_type == "classification":
+        acc_score = accuracy_score(y_val, model.predict(X_val))
+        L.info("Fold accuracy: --- %s ---", str(np.round(acc_score, 3)))
+    elif analysis_type == "regression":
+        acc_score = explained_variance_score(y_val, model.predict(X_val))
+        L.info("Explained Variance: --- %s ---", str(np.round(acc_score, 3)))
 
     if compute_shap:
-        explainer = shap.TreeExplainer(
-            classifier, feature_perturbation="interventional",
-        )
+        explainer = shap.TreeExplainer(model, feature_perturbation="interventional",)
         shap_values = explainer.shap_values(X, check_additivity=False)
         return top_features, acc_score, shap_values
+
     return top_features, acc_score, None
 
 
-def fit_model(features, classifier, compute_shap=True):
+def fit_model(features, model, compute_shap=True):
     """shapeley analysis."""
 
     explainer = None
     shap_values = None
 
-    if classifier is None:
+    if model is None:
         raise Exception("Please provide a model for classification")
 
     X, y = _features_to_Xy(features)
@@ -344,26 +413,24 @@ def fit_model(features, classifier, compute_shap=True):
         X, y, test_size=0.2, shuffle=True, stratify=y, random_state=42
     )
 
-    classifier.fit(X_train, y_train)
-    top_features = classifier.feature_importances_
+    model.fit(X_train, y_train)
+    top_features = model.feature_importances_
 
     if compute_shap:
-        explainer = shap.TreeExplainer(
-            classifier, feature_perturbation="interventional"
-        )
+        explainer = shap.TreeExplainer(model, feature_perturbation="interventional")
         shap_values = explainer.shap_values(X_test, check_additivity=False)
     else:
         shap_values = None
-    acc_scores = accuracy_score(y_test, classifier.predict(X_test))
+    acc_scores = accuracy_score(y_test, model.predict(X_test))
 
     L.info("Accuracy: %s", str(acc_scores))
 
     return X, y, top_features, shap_values
 
 
-def fit_grid_search(features, classifier):
+def fit_grid_search(features, model):
     """Classify using a grid search, slow and WIP."""
-    if classifier is None:
+    if model is None:
         raise Exception("Please provide a model for classification")
 
     X, y = _features_to_Xy(features)
@@ -391,7 +458,7 @@ def fit_grid_search(features, classifier):
     folds = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=10)
 
     model = RandomizedSearchCV(
-        estimator=classifier,
+        estimator=model,
         param_distributions=random_grid,
         n_iter=100,
         cv=folds,
@@ -406,7 +473,7 @@ def fit_grid_search(features, classifier):
 
     optimal_model = model.best_estimator_
 
-    X, y, mean_shap_values, top_features, _ = fit_model_kfold(
+    X, y, mean_shap_values, top_features = fit_model_kfold(
         features, optimal_model, compute_shap=True,
     )
 
