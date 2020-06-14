@@ -96,10 +96,6 @@ class Graph:
         self.nodes = nodes.set_index("new_index")
         self.edges = edges.reset_index()
 
-        #        if not isinstance(label, int):
-        #            raise Exception(
-        #                "Please provide an integer label, and use the attribute label_name"
-        #            )
         self.label = label
         self.label_name = label_name
         self.disabled = False

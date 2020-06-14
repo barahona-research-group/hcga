@@ -2,6 +2,7 @@
 import logging
 import os
 import time
+import itertools
 from pathlib import Path
 
 import numpy as np
@@ -16,7 +17,6 @@ from sklearn.model_selection import (
 )
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
-import itertools
 
 from . import plotting, utils
 
@@ -81,6 +81,7 @@ def _reduce_correlation_feature_set(
 
 
 def print_accuracy(acc_scores, analysis_type):
+    """Print the classification or regression accuracies."""
     if analysis_type == "classification":
         L.info(
             "Accuracy: %s +/- %s",
@@ -115,42 +116,42 @@ def _get_model(model, analysis_type):
                 from sklearn.ensemble import RandomForestClassifier
 
                 L.info("... Using RandomForest classifier ...")
-                return RandomForestClassifier(n_estimators=1000, max_depth=30)
+                model = RandomForestClassifier(n_estimators=1000, max_depth=30)
             if analysis_type == "regression":
                 from sklearn.ensemble import RandomForestRegressor
 
                 L.info("... Using RandomForest regressor ...")
-                return RandomForestRegressor(n_estimators=1000, max_depth=30)
+                model = RandomForestRegressor(n_estimators=1000, max_depth=30)
 
         if model == "XG":
             if analysis_type == "classification":
                 from xgboost import XGBClassifier
 
                 L.info("... Using Xgboost classifier ...")
-                return XGBClassifier()
+                model = XGBClassifier()
             if analysis_type == "regression":
                 from xgboost import XGBRegressor
 
                 L.info("... Using Xgboost regressor ...")
-                return XGBRegressor()
+                model = XGBRegressor()
 
         if model == "LGBM":
             if analysis_type == "classification":
                 L.info("... Using LGBM classifier ...")
                 from lightgbm import LGBMClassifier
 
-                return LGBMClassifier()
+                model = LGBMClassifier()
             if analysis_type == "regression":
                 L.info("... Using LGBM regressor ...")
                 from lightgbm import LGBMRegressor
 
-                return LGBMRegressor()
+                model = LGBMRegressor()
 
         raise Exception("Unknown model type: {}".format(model))
     return model
 
 
-def analysis(
+def analysis(  # pylint: disable=inconsistent-return-statements
     features,
     features_info,
     graphs,
@@ -184,56 +185,56 @@ def analysis(
     features = _normalise_feature_data(features)
 
     if analysis_type == "unsupervised":
-        unsupervised_learning(features, features_info, graphs)
+        unsupervised_learning(features)
         return
+
+    model = _get_model(model, analysis_type)
+
+    if grid_search and kfold:
+        L.info("Using grid_search  and kfold")
+        X, y, shap_values, top_features = fit_grid_search(features, model,)
+    elif kfold:
+        L.info("Using kfold")
+        X, y, top_features, shap_values, _ = fit_model_kfold(
+            features,
+            model,
+            analysis_type,
+            compute_shap=compute_shap,
+            reduced_set_size=reduced_set_size,
+            reduced_set_max_correlation=reduced_set_max_correlation,
+        )
     else:
-        model = _get_model(model, analysis_type)
-
-        if grid_search and kfold:
-            L.info("Using grid_search  and kfold")
-            X, y, shap_values, top_features = fit_grid_search(features, model,)
-        elif kfold:
-            L.info("Using kfold")
-            X, y, top_features, shap_values, acc_scores = fit_model_kfold(
-                features,
-                model,
-                analysis_type,
-                compute_shap=compute_shap,
-                reduced_set_size=reduced_set_size,
-                reduced_set_max_correlation=reduced_set_max_correlation,
-            )
-        else:
-            X, y, top_features, shap_values = fit_model(
-                features, model, analysis_type, compute_shap=compute_shap
-            )
-
-        results_folder = Path(folder) / (
-            "results_interpretability_" + str(interpretability)
+        X, y, top_features, shap_values = fit_model(
+            features, model, compute_shap=compute_shap
         )
 
-        if not Path(results_folder).exists():
-            os.mkdir(results_folder)
+    results_folder = Path(folder) / (
+        "results_interpretability_" + str(interpretability)
+    )
 
-        if plot:
-            if compute_shap:
-                plotting.shap_plots(
-                    X,
-                    y,
-                    shap_values,
-                    results_folder,
-                    graphs,
-                    analysis_type,
-                    max_feats=max_feats_plot,
-                )
-            else:
-                plotting.basic_plots(X, top_features, results_folder)
+    if not Path(results_folder).exists():
+        os.mkdir(results_folder)
 
-        output_csv(features, features_info, top_features, shap_values, results_folder)
+    if plot:
+        if compute_shap:
+            plotting.shap_plots(
+                X,
+                y,
+                shap_values,
+                results_folder,
+                graphs,
+                analysis_type,
+                max_feats=max_feats_plot,
+            )
+        else:
+            plotting.basic_plots(X, top_features, results_folder)
 
-        return X, shap_values
+    output_csv(features, features_info, top_features, shap_values, results_folder)
+
+    return X, shap_values
 
 
-def unsupervised_learning(features, features_info, graphs):
+def unsupervised_learning(features):
     """ implementing some basic unsupervised approaches to the data """
 
     pca = PCA(n_components=2)
@@ -241,8 +242,6 @@ def unsupervised_learning(features, features_info, graphs):
     print("Variance of PC component 1: {}".format(pca.explained_variance_ratio_[0]))
     print("Variance of PC component 2: {}".format(pca.explained_variance_ratio_[1]))
     plotting.pca_plot(features, pca)
-
-    return
 
 
 def output_csv(features_df, features_info_df, feature_importance, shap_values, folder):
@@ -284,9 +283,10 @@ def classify_pairwise(
         X_sub = X[y.isin(class_pairs[0])]
         y_sub = y[y.isin(class_pairs[0])]
         X_sub = X_sub.merge(y_sub, left_index=True, right_index=True)
-        a, b, top_features, shap_values, acc_scores = fit_model_kfold(
+        _, _, _, _, acc_scores = fit_model_kfold(
             X_sub,
             model,
+            'classification',
             compute_shap=compute_shap,
             reduced_set_size=reduced_set_size,
             reduced_set_max_correlation=reduced_set_max_correlation,
@@ -473,8 +473,8 @@ def fit_grid_search(features, model):
 
     optimal_model = model.best_estimator_
 
-    X, y, mean_shap_values, top_features = fit_model_kfold(
-        features, optimal_model, compute_shap=True,
+    X, y, top_features, mean_shap_values, _ = fit_model_kfold(
+        features, optimal_model, 'classification', compute_shap=True,
     )
 
     return X, y, mean_shap_values, top_features
