@@ -85,7 +85,8 @@ class Hcga:
         results_folder="./results",
         graph_removal=0.3,
         interpretability=1,
-        classifier="XG",
+        analysis_type="classification",
+        model="XG",
         kfold=True,
         compute_shap=True,
         reduced_set_size=100,
@@ -97,14 +98,15 @@ class Hcga:
 
         self.load_features(feature_file=feature_file)
 
-        X, shap_values = analysis(
+        analysis(
             self.features,
             self.features_info,
             self.graphs,
+            analysis_type=analysis_type,
             folder=results_folder,
             graph_removal=graph_removal,
             interpretability=interpretability,
-            classifier=classifier,
+            model=model,
             kfold=kfold,
             compute_shap=compute_shap,
             reduced_set_size=reduced_set_size,

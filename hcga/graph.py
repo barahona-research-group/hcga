@@ -90,18 +90,12 @@ class Graph:
         edges["start_node"] = nodes.new_index[edges["start_node"].to_list()].to_list()
         edges["end_node"] = nodes.new_index[edges["end_node"].to_list()].to_list()
 
-        if "weight" in edges:
-            edges["weight"] = nodes.new_index[edges["weight"].to_list()].to_list()
-        else:
+        if "weight" not in edges:
             edges["weight"] = nodes.new_index[np.ones(len(edges)).tolist()].to_list()
 
         self.nodes = nodes.set_index("new_index")
         self.edges = edges.reset_index()
 
-        if not isinstance(label, int):
-            raise Exception(
-                "Please provide an integer label, and use the attribute label_name"
-            )
         self.label = label
         self.label_name = label_name
         self.disabled = False
