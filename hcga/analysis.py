@@ -4,6 +4,7 @@ import os
 import time
 from pathlib import Path
 import itertools
+from tqdm import tqdm
 
 import numpy as np
 import pandas as pd
@@ -94,10 +95,10 @@ def _get_classifier(classifier):
             L.info("... Using RandomForest classifier ...")
             return RandomForestClassifier(n_estimators=1000, max_depth=30)
         if classifier == "XG":
-            from sklearn.ensemble import GradientBoostingClassifier
+            from xgboost import XGBClassifier 
 
             L.info("... Using Xgboost classifier ...")
-            return GradientBoostingClassifier()
+            return XGBClassifier()
 
         if classifier == "LGBM":
             from lightgbm import LGBMClassifier
@@ -205,29 +206,34 @@ def classify_pairwise(
     compute_shap=False,
     reduced_set_size=100,
     reduced_set_max_correlation=0.9,
+    n_top_features=5,
+    min_acc=0.8,
 ):
 
     """Classify graphs with kfold."""
-    if classifier is None:
-        raise Exception("Please provide a model for classification")
-
-    X, y = _features_to_Xy(features)
-    class_pairs = list(itertools.combinations(y.unique(), 2))
-    accuracy_matrix = pd.DataFrame(columns=y.unique(), index=y.unique())
-    for pair in class_pairs:
-        X_sub = X[y.isin(class_pairs[0])]
-        y_sub = y[y.isin(class_pairs[0])]
-        X_sub = X_sub.merge(y_sub, left_index=True, right_index=True)
-        _, _, _, _, acc_scores = fit_model_kfold(
-            X_sub,
+    classifier = _get_classifier(classifier)
+    classes = features.labels.unique()
+    class_pairs = list(itertools.combinations(classes, 2))
+    accuracy_matrix = pd.DataFrame(columns=classes, index=classes)
+    top_features = []
+    for pair in tqdm(class_pairs):#[:200]):
+        features_pair = features.loc[(features.labels==pair[0]) | (features.labels==pair[1])]
+        X, y, shap_top_features, shap_fold_average, acc_scores = fit_model_kfold(
+            features_pair,
             classifier,
             compute_shap=compute_shap,
             reduced_set_size=reduced_set_size,
             reduced_set_max_correlation=reduced_set_max_correlation,
         )
-        accuracy_matrix.loc[pair[0], pair[1]] = np.round(np.mean(acc_scores), 3)
 
-    return accuracy_matrix
+        accuracy_matrix.loc[pair[0], pair[1]] = np.round(np.mean(acc_scores), 3)
+        accuracy_matrix.loc[pair[1], pair[0]] = np.round(np.mean(acc_scores), 3)
+        
+        if np.mean(acc_scores) > min_acc:
+            top_features_raw = X.columns[np.argsort(shap_top_features)[-n_top_features:]]
+            top_features += [f_class + '_' + f for f_class, f in top_features_raw]
+
+    return accuracy_matrix, top_features
 
 
 def fit_model_kfold(
@@ -253,7 +259,7 @@ def fit_model_kfold(
     acc_scores = []
     for indices in folds.split(X, y=y):
         top_feature, acc_score, shap_value = compute_fold(
-            X, y, classifier, indices, compute_shap
+            X, y, classifier, indices, compute_shap=True
         )
         top_features.append(top_feature)
         acc_scores.append(acc_score)
@@ -264,6 +270,11 @@ def fit_model_kfold(
         str(np.round(np.mean(acc_scores), 3)),
         str(np.round(np.std(acc_scores), 3)),
     )
+    if not compute_shap:
+        shap_fold_average = [np.mean(shap_values, axis=0)]
+        shap_top_features = np.sum(np.mean(np.abs(shap_fold_average), axis=1), axis=0)
+        return X, y, shap_top_features, shap_fold_average, acc_scores
+        #return X, y, acc_scores
 
     # taking average of folds
     if any(isinstance(shap_value, list) for shap_value in shap_values):
