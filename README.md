@@ -3,7 +3,7 @@
 This is the official repository of *hcga*, a highly comparative graph analysis toolbox. It performs a massive feature extraction from a set of graphs, and applies supervised classification methods. 
 
 <p align="center">
-  <img src="docs/artwork/hcga_workflow.png" width="800" />
+  <img src="doc/artwork/hcga_workflow.png" width="800" />
 </p>
 
 ## Installation
