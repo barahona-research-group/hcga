@@ -95,7 +95,7 @@ def _get_classifier(classifier):
             L.info("... Using RandomForest classifier ...")
             return RandomForestClassifier(n_estimators=1000, max_depth=30)
         if classifier == "XG":
-            from xgboost import XGBClassifier 
+            from xgboost import XGBClassifier
 
             L.info("... Using Xgboost classifier ...")
             return XGBClassifier()
@@ -119,7 +119,7 @@ def analysis(
     interpretability=1,
     classifier="XG",
     kfold=True,
-    compute_shap=True,
+    reduce_set=True,
     reduced_set_size=100,
     reduced_set_max_correlation=0.9,
     grid_search=False,
@@ -151,14 +151,12 @@ def analysis(
         X, y, top_features, shap_values, _ = fit_model_kfold(
             features,
             classifier,
-            compute_shap=compute_shap,
+            reduce_set=reduce_set,
             reduced_set_size=reduced_set_size,
             reduced_set_max_correlation=reduced_set_max_correlation,
         )
     else:
-        X, y, top_features, shap_values = fit_model(
-            features, classifier, compute_shap=compute_shap
-        )
+        X, y, top_features, shap_values = fit_model(features, classifier)
 
     results_folder = Path(folder) / (
         "results_interpretability_" + str(interpretability)
@@ -168,12 +166,9 @@ def analysis(
         os.mkdir(results_folder)
 
     if plot:
-        if compute_shap:
-            plotting.shap_plots(
-                X, y, shap_values, results_folder, graphs, max_feats=max_feats_plot
-            )
-        else:
-            plotting.basic_plots(X, top_features, results_folder)
+        plotting.shap_plots(
+            X, y, shap_values, results_folder, graphs, max_feats=max_feats_plot
+        )
 
     output_csv(features, features_info, top_features, shap_values, results_folder)
 
@@ -181,7 +176,7 @@ def analysis(
 
 
 def output_csv(features_df, features_info_df, feature_importance, shap_values, folder):
-    """save csv file with analysis data."""
+    """Save csv file with analysis data."""
     result_df = features_info_df.copy()
     result_df.loc["feature_importance", features_df.columns[:-1]] = np.vstack(
         feature_importance
@@ -203,47 +198,83 @@ def output_csv(features_df, features_info_df, feature_importance, shap_values, f
 def classify_pairwise(
     features,
     classifier,
-    compute_shap=False,
-    reduced_set_size=100,
-    reduced_set_max_correlation=0.9,
     n_top_features=5,
     min_acc=0.8,
+    reduce_set=False,
+    reduced_set_size=100,
+    reduced_set_max_correlation=0.9,
 ):
+    """Classify all possible pairs of clases with kfold and returns top features.
+   
+    The top features for each pair with high enough accuracies are collected in a list,
+    for later analysis. 
 
-    """Classify graphs with kfold."""
+    Args:
+        features (dataframe): extracted features
+        classifier (str): name of the classifier to use
+        n_top_features (int): number of top features to save
+        min_acc (float): minimum accuracy to save top features
+        reduce_set (bool): is True, the classification will be rerun
+                           on a reduced set of top features (from shapely analysis)
+        reduce_set_size (int): number of features to keep for reduces set 
+        reduced_set_max_correlation (float): to discared highly correlated top features
+                                             in reduced set of features
+
+    Returns:
+        (dataframe, list, int): accuracies dataframe, list of top features, number of top pairs
+    """
     classifier = _get_classifier(classifier)
     classes = features.labels.unique()
     class_pairs = list(itertools.combinations(classes, 2))
     accuracy_matrix = pd.DataFrame(columns=classes, index=classes)
+
     top_features = []
-    for pair in tqdm(class_pairs):#[:200]):
-        features_pair = features.loc[(features.labels==pair[0]) | (features.labels==pair[1])]
+    n_pairs = 0
+    for pair in tqdm(class_pairs):
+        features_pair = features.loc[
+            (features.labels == pair[0]) | (features.labels == pair[1])
+        ]
         X, y, shap_top_features, shap_fold_average, acc_scores = fit_model_kfold(
             features_pair,
             classifier,
-            compute_shap=compute_shap,
+            reduce_set=reduce_set,
             reduced_set_size=reduced_set_size,
             reduced_set_max_correlation=reduced_set_max_correlation,
         )
 
         accuracy_matrix.loc[pair[0], pair[1]] = np.round(np.mean(acc_scores), 3)
         accuracy_matrix.loc[pair[1], pair[0]] = np.round(np.mean(acc_scores), 3)
-        
-        if np.mean(acc_scores) > min_acc:
-            top_features_raw = X.columns[np.argsort(shap_top_features)[-n_top_features:]]
-            top_features += [f_class + '_' + f for f_class, f in top_features_raw]
 
-    return accuracy_matrix, top_features
+        if np.mean(acc_scores) > min_acc:
+            top_features_raw = X.columns[
+                np.argsort(shap_top_features)[-n_top_features:]
+            ]
+            top_features += [f_class + "_" + f for f_class, f in top_features_raw]
+            n_pairs += 1
+
+    return accuracy_matrix, top_features, n_pairs
 
 
 def fit_model_kfold(
     features,
     classifier,
-    compute_shap=True,
+    reduce_set=True,
     reduced_set_size=100,
     reduced_set_max_correlation=0.9,
 ):
-    """Classify graphs with kfold."""
+    """Classify graphs from extracted features with kfold.
+    
+    Args:
+        features (dataframe): extracted features
+        classifier (str): name of the classifier to use
+        reduce_set (bool): is True, the classification will be rerun
+                           on a reduced set of top features (from shapely analysis)
+        reduce_set_size (int): number of features to keep for reduces set 
+        reduced_set_max_correlation (float): to discared highly correlated top features
+                                             in reduced set of features
+    Returns:
+        WIP
+    """
     if classifier is None:
         raise Exception("Please provide a model for classification")
 
@@ -254,14 +285,12 @@ def fit_model_kfold(
 
     folds = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=1)
 
-    top_features = []
+    # top_features = []
     shap_values = []
     acc_scores = []
     for indices in folds.split(X, y=y):
-        top_feature, acc_score, shap_value = compute_fold(
-            X, y, classifier, indices, compute_shap=True
-        )
-        top_features.append(top_feature)
+        top_feature, acc_score, shap_value = compute_fold(X, y, classifier, indices)
+        #top_features.append(top_feature)
         acc_scores.append(acc_score)
         shap_values.append(shap_value)
 
@@ -270,23 +299,22 @@ def fit_model_kfold(
         str(np.round(np.mean(acc_scores), 3)),
         str(np.round(np.std(acc_scores), 3)),
     )
-    if not compute_shap:
-        shap_fold_average = [np.mean(shap_values, axis=0)]
-        shap_top_features = np.sum(np.mean(np.abs(shap_fold_average), axis=1), axis=0)
+
+    shap_fold_average = [np.mean(shap_values, axis=0)]
+    shap_top_features = np.sum(np.mean(np.abs(shap_fold_average), axis=1), axis=0)
+
+    if not reduce_set:
         return X, y, shap_top_features, shap_fold_average, acc_scores
-        #return X, y, acc_scores
 
     # taking average of folds
-    if any(isinstance(shap_value, list) for shap_value in shap_values):
-        shap_fold_average = np.mean(shap_values, axis=0)
-        shap_fold_average = [
-            shap_fold_average[label, :, :]
-            for label in range(shap_fold_average.shape[0])
-        ]
-    else:
-        shap_fold_average = [np.mean(shap_values, axis=0)]
-
-    shap_top_features = np.sum(np.mean(np.abs(shap_fold_average), axis=1), axis=0)
+    #if any(isinstance(shap_value, list) for shap_value in shap_values):
+    #    shap_fold_average = np.mean(shap_values, axis=0)
+    #    shap_fold_average = [
+    #        shap_fold_average[label, :, :]
+    #        for label in range(shap_fold_average.shape[0])
+    #    ]
+    #else:
+    #    shap_fold_average = [np.mean(shap_values, axis=0)]
 
     X_reduced_corr = _reduce_correlation_feature_set(
         X,
@@ -299,20 +327,22 @@ def fit_model_kfold(
     acc_scores = []
     indices_all = (indices for indices in folds.split(X, y=y))
     for indices in indices_all:
-        top_feature, acc_score, _ = compute_fold(
-            X_reduced_corr, y, classifier, indices, compute_shap=False
-        )
+        top_feature, acc_score, shape_value = compute_fold(X_reduced_corr, y, classifier, indices)
+        shap_values.append(shap_value)
         acc_scores.append(acc_score)
+
+    shap_fold_average = [np.mean(shap_values, axis=0)]
+    shap_top_features = np.sum(np.mean(np.abs(shap_fold_average), axis=1), axis=0)
 
     L.info(
         "Accuracy with reduced set: %s +/- %s",
         str(np.round(np.mean(acc_scores), 3)),
         str(np.round(np.std(acc_scores), 3)),
     )
-    return X, y, top_features, shap_fold_average, acc_scores
+    return X, y, shap_top_features, shap_fold_average, acc_scores
 
 
-def compute_fold(X, y, classifier, indices, compute_shap=True):
+def compute_fold(X, y, classifier, indices):
     """Compute a single fold for parallel computation."""
     train_index, val_index = indices
 
@@ -331,16 +361,12 @@ def compute_fold(X, y, classifier, indices, compute_shap=True):
     acc_score = accuracy_score(y_val, classifier.predict(X_val))
     L.info("Fold accuracy: --- %s ---", str(np.round(acc_score, 3)))
 
-    if compute_shap:
-        explainer = shap.TreeExplainer(
-            classifier, feature_perturbation="interventional",
-        )
-        shap_values = explainer.shap_values(X, check_additivity=False)
-        return top_features, acc_score, shap_values
-    return top_features, acc_score, None
+    explainer = shap.TreeExplainer(classifier, feature_perturbation="interventional",)
+    shap_values = explainer.shap_values(X, check_additivity=False)
+    return top_features, acc_score, shap_values
 
 
-def fit_model(features, classifier, compute_shap=True):
+def fit_model(features, classifier):
     """shapeley analysis."""
 
     explainer = None
@@ -358,13 +384,9 @@ def fit_model(features, classifier, compute_shap=True):
     classifier.fit(X_train, y_train)
     top_features = classifier.feature_importances_
 
-    if compute_shap:
-        explainer = shap.TreeExplainer(
-            classifier, feature_perturbation="interventional"
-        )
-        shap_values = explainer.shap_values(X_test, check_additivity=False)
-    else:
-        shap_values = None
+    explainer = shap.TreeExplainer(classifier, feature_perturbation="interventional")
+    shap_values = explainer.shap_values(X_test, check_additivity=False)
+    shap_values = None
     acc_scores = accuracy_score(y_test, classifier.predict(X_test))
 
     L.info("Accuracy: %s", str(acc_scores))
@@ -417,8 +439,6 @@ def fit_grid_search(features, classifier):
 
     optimal_model = model.best_estimator_
 
-    X, y, mean_shap_values, top_features, _ = fit_model_kfold(
-        features, optimal_model, compute_shap=True,
-    )
+    X, y, mean_shap_values, top_features, _ = fit_model_kfold(features, optimal_model)
 
     return X, y, mean_shap_values, top_features

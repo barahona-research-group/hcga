@@ -89,8 +89,8 @@ class Graph:
         nodes["new_index"] = np.arange(0, len(nodes.index))
         edges["start_node"] = nodes.new_index[edges["start_node"].to_list()].to_list()
         edges["end_node"] = nodes.new_index[edges["end_node"].to_list()].to_list()
-        if 'weight' not in edges.columns:
-            edges.loc[:, 'weight'] = 1.
+        if "weight" not in edges.columns:
+            edges.loc[:, "weight"] = 1.0
 
         self.nodes = nodes.set_index("new_index")
         self.edges = edges.reset_index()
