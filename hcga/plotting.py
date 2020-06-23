@@ -83,6 +83,7 @@ def custom_dot_summary_plot(shap_vals, data, folder, pp, max_feats):
 
 def plot_dendogram_shap(shap_vals, data, folder, pp, max_feats=20):
     from matplotlib.gridspec import GridSpec
+
     plt.figure()
 
     shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)

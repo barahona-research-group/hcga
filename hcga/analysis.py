@@ -189,7 +189,6 @@ def analysis(  # pylint: disable=inconsistent-return-statements
         unsupervised_learning(features)
         return
 
-    
     model = _get_model(model, analysis_type)
 
     if grid_search and kfold:
@@ -206,9 +205,7 @@ def analysis(  # pylint: disable=inconsistent-return-statements
             reduced_set_max_correlation=reduced_set_max_correlation,
         )
     else:
-        X, y, top_features, shap_values = fit_model(
-            features, model,
-        )
+        X, y, top_features, shap_values = fit_model(features, model,)
 
     results_folder = Path(folder) / (
         "results_interpretability_" + str(interpretability)
@@ -217,7 +214,7 @@ def analysis(  # pylint: disable=inconsistent-return-statements
     if not Path(results_folder).exists():
         os.mkdir(results_folder)
 
-    if plot:        
+    if plot:
         plotting.shap_plots(
             X,
             y,
@@ -263,9 +260,9 @@ def output_csv(features_df, features_info_df, feature_importance, shap_values, f
     result_df.to_csv(os.path.join(folder, "importance_results.csv"))
 
 
-
 def classify_pairwise(
     features,
+    features_info,
     model,
     graph_removal=0.3,
     interpretability=1,
@@ -276,17 +273,18 @@ def classify_pairwise(
     reduced_set_max_correlation=0.5,
 ):
     """Classify all possible pairs of clases with kfold and returns top features.
-   
+
     The top features for each pair with high enough accuracies are collected in a list,
-    for later analysis. 
+    for later analysis.
     Args:
         features (dataframe): extracted features
+        features_info (): WIP
         classifier (str): name of the classifier to use
         n_top_features (int): number of top features to save
         min_acc (float): minimum accuracy to save top features
         reduce_set (bool): is True, the classification will be rerun
                            on a reduced set of top features (from shapely analysis)
-        reduce_set_size (int): number of features to keep for reduces set 
+        reduce_set_size (int): number of features to keep for reduces set
         reduced_set_max_correlation (float): to discared highly correlated top features
                                              in reduced set of features
     Returns:
@@ -298,13 +296,17 @@ def classify_pairwise(
     features = utils.filter_features(features)
     L.info("%s valid features", str(len(features.columns)))
 
-
+    features, features_info = _filter_interpretable(
+        features, features_info, interpretability
+    )
+    L.info(
+        "%s with interpretability %s", str(len(features.columns)), str(interpretability)
+    )
 
     features = _normalise_feature_data(features)
-    
-    
-    analysis_type='classification'
-    classifier = _get_model(model,analysis_type=analysis_type)
+
+    analysis_type = "classification"
+    classifier = _get_model(model, analysis_type=analysis_type)
     classes = features.labels.unique()
     class_pairs = list(itertools.combinations(classes, 2))
     accuracy_matrix = pd.DataFrame(columns=classes, index=classes)
@@ -315,7 +317,7 @@ def classify_pairwise(
         features_pair = features.loc[
             (features.labels == pair[0]) | (features.labels == pair[1])
         ]
-        X, y, shap_top_features, shap_fold_average, acc_scores = fit_model_kfold(
+        X, _, shap_top_features, _, acc_scores = fit_model_kfold(
             features_pair,
             classifier,
             analysis_type,
@@ -346,13 +348,13 @@ def fit_model_kfold(
     reduced_set_max_correlation=0.9,
 ):
     """Classify graphs from extracted features with kfold.
-    
+
     Args:
         features (dataframe): extracted features
         classifier (str): name of the classifier to use
         reduce_set (bool): is True, the classification will be rerun
                            on a reduced set of top features (from shapely analysis)
-        reduce_set_size (int): number of features to keep for reduces set 
+        reduce_set_size (int): number of features to keep for reduces set
         reduced_set_max_correlation (float): to discared highly correlated top features
                                              in reduced set of features
     Returns:
@@ -374,8 +376,8 @@ def fit_model_kfold(
     shap_values = []
     acc_scores = []
     for indices in folds.split(X, y=y):
-        top_feature, acc_score, shap_value = compute_fold(
-            X, y, model, indices, analysis_type, 
+        _, acc_score, shap_value = compute_fold(
+            X, y, model, indices, analysis_type,
         )
         acc_scores.append(acc_score)
         shap_values.append(shap_value)
@@ -401,13 +403,15 @@ def fit_model_kfold(
     acc_scores = []
     indices_all = (indices for indices in folds.split(X, y=y))
     for indices in indices_all:
-        top_feature, acc_score, shap_value = compute_fold(X_reduced_corr, y, model, indices, analysis_type)
+        _, acc_score, shap_value = compute_fold(
+            X_reduced_corr, y, model, indices, analysis_type
+        )
         shap_values.append(shap_value)
         acc_scores.append(acc_score)
-        
+
     shap_fold_average = [np.mean(shap_values, axis=0)]
     shap_top_features = np.sum(np.mean(np.abs(shap_fold_average), axis=1), axis=0)
-    
+
     if analysis_type == "classification":
         L.info(
             "Accuracy with reduced set: %s +/- %s",
@@ -415,14 +419,12 @@ def fit_model_kfold(
             str(np.round(np.std(acc_scores), 3)),
         )
     elif analysis_type == "regression":
-       L.info(
+        L.info(
             "Mean Absolute Error with reduced set: %s +/- %s",
             str(np.round(np.mean(acc_scores), 3)),
             str(np.round(np.std(acc_scores), 3)),
-        ) 
-    
+        )
 
-    
     return X, y, shap_top_features, shap_fold_average, acc_scores
 
 
@@ -449,21 +451,10 @@ def compute_fold(X, y, model, indices, analysis_type):
         acc_score = mean_absolute_error(y_val, model.predict(X_val))
         L.info("Mean Absolute Error: --- %s ---", str(np.round(acc_score, 3)))
 
-    
-        
-    #### this is a work around because the shap explainer wasn't working properly with xgboost
-    mybooster = model.get_booster()
-    model_bytearray = mybooster.save_raw()[4:]
-    def myfun(self=None):
-        return model_bytearray
-    mybooster.save_raw = myfun
-    ####
-    
     explainer = shap.TreeExplainer(model, feature_perturbation="interventional",)
     shap_values = explainer.shap_values(X, check_additivity=False)
-    
-    return top_features, acc_score, shap_values
 
+    return top_features, acc_score, shap_values
 
 
 def fit_model(features, model):
@@ -483,7 +474,6 @@ def fit_model(features, model):
 
     model.fit(X_train, y_train)
     top_features = model.feature_importances_
-
 
     explainer = shap.TreeExplainer(model, feature_perturbation="interventional")
     shap_values = explainer.shap_values(X_test, check_additivity=False)
@@ -541,7 +531,7 @@ def fit_grid_search(features, model):
     optimal_model = model.best_estimator_
 
     X, y, top_features, mean_shap_values, _ = fit_model_kfold(
-        features, optimal_model, 'classification',
-        )
+        features, optimal_model, "classification",
+    )
 
     return X, y, mean_shap_values, top_features
