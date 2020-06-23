@@ -1,0 +1,22 @@
+action: lint, msg: getenv
+cwd: /home/robert/Documents/PythonCode/hcga
+cmd: /home/robert/Documents/PythonCode/hcga/.tox/lint/bin/python -m pip install pycodestyle astroid==2.1.0 pylint==2.2.2
+Collecting pycodestyle
+  Using cached pycodestyle-2.6.0-py2.py3-none-any.whl (41 kB)
+Collecting astroid==2.1.0
+  Using cached astroid-2.1.0-py3-none-any.whl (176 kB)
+Collecting pylint==2.2.2
+  Using cached pylint-2.2.2-py3-none-any.whl (750 kB)
+Collecting six
+  Downloading six-1.15.0-py2.py3-none-any.whl (10 kB)
+Processing /home/robert/.cache/pip/wheels/62/76/4c/aa25851149f3f6d9785f6c869387ad82b3fd37582fa8147ac6/wrapt-1.12.1-cp37-cp37m-linux_x86_64.whl
+Collecting lazy-object-proxy
+  Using cached lazy_object_proxy-1.5.0-cp37-cp37m-manylinux1_x86_64.whl (57 kB)
+Collecting isort>=4.2.5
+  Using cached isort-4.3.21-py2.py3-none-any.whl (42 kB)
+Collecting mccabe
+  Using cached mccabe-0.6.1-py2.py3-none-any.whl (8.6 kB)
+Installing collected packages: pycodestyle, six, wrapt, lazy-object-proxy, astroid, isort, mccabe, pylint
+Successfully installed astroid-2.1.0 isort-4.3.21 lazy-object-proxy-1.5.0 mccabe-0.6.1 pycodestyle-2.6.0 pylint-2.2.2 six-1.15.0 wrapt-1.12.1
+WARNING: You are using pip version 20.1; however, version 20.1.1 is available.
+You should consider upgrading via the '/home/robert/Documents/PythonCode/hcga/.tox/lint/bin/python -m pip install --upgrade pip' command.

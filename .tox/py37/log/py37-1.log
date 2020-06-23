@@ -1,0 +1,31 @@
+action: py37, msg: getenv
+cwd: /home/robert/Documents/PythonCode/hcga
+cmd: /home/robert/Documents/PythonCode/hcga/.tox/py37/bin/python -m pip install mock pytest
+Collecting mock
+  Using cached mock-4.0.2-py3-none-any.whl (28 kB)
+Collecting pytest
+  Using cached pytest-5.4.3-py3-none-any.whl (248 kB)
+Collecting attrs>=17.4.0
+  Using cached attrs-19.3.0-py2.py3-none-any.whl (39 kB)
+Collecting packaging
+  Using cached packaging-20.4-py2.py3-none-any.whl (37 kB)
+Collecting pluggy<1.0,>=0.12
+  Using cached pluggy-0.13.1-py2.py3-none-any.whl (18 kB)
+Collecting py>=1.5.0
+  Using cached py-1.8.1-py2.py3-none-any.whl (83 kB)
+Collecting wcwidth
+  Using cached wcwidth-0.2.4-py2.py3-none-any.whl (30 kB)
+Collecting more-itertools>=4.0.0
+  Downloading more_itertools-8.3.0-py3-none-any.whl (44 kB)
+Collecting importlib-metadata>=0.12; python_version < "3.8"
+  Using cached importlib_metadata-1.6.1-py2.py3-none-any.whl (31 kB)
+Collecting pyparsing>=2.0.2
+  Using cached pyparsing-2.4.7-py2.py3-none-any.whl (67 kB)
+Collecting six
+  Using cached six-1.15.0-py2.py3-none-any.whl (10 kB)
+Collecting zipp>=0.5
+  Using cached zipp-3.1.0-py3-none-any.whl (4.9 kB)
+Installing collected packages: mock, attrs, pyparsing, six, packaging, zipp, importlib-metadata, pluggy, py, wcwidth, more-itertools, pytest
+Successfully installed attrs-19.3.0 importlib-metadata-1.6.1 mock-4.0.2 more-itertools-8.3.0 packaging-20.4 pluggy-0.13.1 py-1.8.1 pyparsing-2.4.7 pytest-5.4.3 six-1.15.0 wcwidth-0.2.4 zipp-3.1.0
+WARNING: You are using pip version 20.1; however, version 20.1.1 is available.
+You should consider upgrading via the '/home/robert/Documents/PythonCode/hcga/.tox/py37/bin/python -m pip install --upgrade pip' command.

@@ -1,0 +1,261 @@
+action: GLOB, msg: packaging
+cwd: /home/robert/Documents/PythonCode/hcga
+cmd: /home/robert/anaconda3/envs/hcga/bin/python setup.py sdist --formats=zip --dist-dir /home/robert/Documents/PythonCode/hcga/.tox/dist
+running sdist
+running egg_info
+writing hcga.egg-info/PKG-INFO
+writing dependency_links to hcga.egg-info/dependency_links.txt
+writing entry points to hcga.egg-info/entry_points.txt
+writing requirements to hcga.egg-info/requires.txt
+writing top-level names to hcga.egg-info/top_level.txt
+reading manifest file 'hcga.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no files found matching 'hcga/Operations/operations.yaml'
+warning: no previously-included files found matching '/hcga/TestData/'
+writing manifest file 'hcga.egg-info/SOURCES.txt'
+running check
+warning: check: missing required meta-data: url
+
+creating hcga-1.0.0
+creating hcga-1.0.0/hcga
+creating hcga-1.0.0/hcga.egg-info
+creating hcga-1.0.0/hcga/__pycache__
+creating hcga-1.0.0/hcga/dataset_creation
+creating hcga-1.0.0/hcga/dataset_creation/__pycache__
+creating hcga-1.0.0/hcga/features
+creating hcga-1.0.0/hcga/features/__pycache__
+copying files to hcga-1.0.0...
+copying MANIFEST.in -> hcga-1.0.0
+copying README.md -> hcga-1.0.0
+copying setup.py -> hcga-1.0.0
+copying hcga/__init__.py -> hcga-1.0.0/hcga
+copying hcga/analysis.py -> hcga-1.0.0/hcga
+copying hcga/app.py -> hcga-1.0.0/hcga
+copying hcga/extraction.py -> hcga-1.0.0/hcga
+copying hcga/feature_class.py -> hcga-1.0.0/hcga
+copying hcga/graph.py -> hcga-1.0.0/hcga
+copying hcga/hcga.py -> hcga-1.0.0/hcga
+copying hcga/io.py -> hcga-1.0.0/hcga
+copying hcga/plotting.py -> hcga-1.0.0/hcga
+copying hcga/utils.py -> hcga-1.0.0/hcga
+copying hcga.egg-info/PKG-INFO -> hcga-1.0.0/hcga.egg-info
+copying hcga.egg-info/SOURCES.txt -> hcga-1.0.0/hcga.egg-info
+copying hcga.egg-info/dependency_links.txt -> hcga-1.0.0/hcga.egg-info
+copying hcga.egg-info/entry_points.txt -> hcga-1.0.0/hcga.egg-info
+copying hcga.egg-info/requires.txt -> hcga-1.0.0/hcga.egg-info
+copying hcga.egg-info/top_level.txt -> hcga-1.0.0/hcga.egg-info
+copying hcga/__pycache__/__init__.cpython-37.pyc -> hcga-1.0.0/hcga/__pycache__
+copying hcga/__pycache__/analysis.cpython-37.pyc -> hcga-1.0.0/hcga/__pycache__
+copying hcga/__pycache__/app.cpython-37.pyc -> hcga-1.0.0/hcga/__pycache__
+copying hcga/__pycache__/extraction.cpython-37.pyc -> hcga-1.0.0/hcga/__pycache__
+copying hcga/__pycache__/feature_class.cpython-37.pyc -> hcga-1.0.0/hcga/__pycache__
+copying hcga/__pycache__/graph.cpython-37.pyc -> hcga-1.0.0/hcga/__pycache__
+copying hcga/__pycache__/hcga.cpython-37.pyc -> hcga-1.0.0/hcga/__pycache__
+copying hcga/__pycache__/io.cpython-37.pyc -> hcga-1.0.0/hcga/__pycache__
+copying hcga/__pycache__/plotting.cpython-37.pyc -> hcga-1.0.0/hcga/__pycache__
+copying hcga/__pycache__/utils.cpython-37.pyc -> hcga-1.0.0/hcga/__pycache__
+copying hcga/dataset_creation/__init__.py -> hcga-1.0.0/hcga/dataset_creation
+copying hcga/dataset_creation/benchmark_datasets.py -> hcga-1.0.0/hcga/dataset_creation
+copying hcga/dataset_creation/synthetic_datasets.py -> hcga-1.0.0/hcga/dataset_creation
+copying hcga/dataset_creation/test_dataset.py -> hcga-1.0.0/hcga/dataset_creation
+copying hcga/dataset_creation/__pycache__/__init__.cpython-37.pyc -> hcga-1.0.0/hcga/dataset_creation/__pycache__
+copying hcga/dataset_creation/__pycache__/benchmark_datasets.cpython-37.pyc -> hcga-1.0.0/hcga/dataset_creation/__pycache__
+copying hcga/dataset_creation/__pycache__/synthetic_datasets.cpython-37.pyc -> hcga-1.0.0/hcga/dataset_creation/__pycache__
+copying hcga/dataset_creation/__pycache__/test_dataset.cpython-37-pytest-5.4.2.pyc -> hcga-1.0.0/hcga/dataset_creation/__pycache__
+copying hcga/dataset_creation/__pycache__/test_dataset.cpython-37.pyc -> hcga-1.0.0/hcga/dataset_creation/__pycache__
+copying hcga/features/__init__.py -> hcga-1.0.0/hcga/features
+copying hcga/features/assortativity.py -> hcga-1.0.0/hcga/features
+copying hcga/features/basic_stats.py -> hcga-1.0.0/hcga/features
+copying hcga/features/centralities_basic.py -> hcga-1.0.0/hcga/features
+copying hcga/features/centralities_force.py -> hcga-1.0.0/hcga/features
+copying hcga/features/chemical_theory.py -> hcga-1.0.0/hcga/features
+copying hcga/features/cliques.py -> hcga-1.0.0/hcga/features
+copying hcga/features/clustering.py -> hcga-1.0.0/hcga/features
+copying hcga/features/communities_asyn.py -> hcga-1.0.0/hcga/features
+copying hcga/features/communities_bisection.py -> hcga-1.0.0/hcga/features
+copying hcga/features/communities_labelprop.py -> hcga-1.0.0/hcga/features
+copying hcga/features/communities_modularity.py -> hcga-1.0.0/hcga/features
+copying hcga/features/components.py -> hcga-1.0.0/hcga/features
+copying hcga/features/core_number.py -> hcga-1.0.0/hcga/features
+copying hcga/features/covering.py -> hcga-1.0.0/hcga/features
+copying hcga/features/cycle_basis.py -> hcga-1.0.0/hcga/features
+copying hcga/features/distance_measures.py -> hcga-1.0.0/hcga/features
+copying hcga/features/dominating_sets.py -> hcga-1.0.0/hcga/features
+copying hcga/features/efficiency.py -> hcga-1.0.0/hcga/features
+copying hcga/features/eulerian.py -> hcga-1.0.0/hcga/features
+copying hcga/features/independent_sets.py -> hcga-1.0.0/hcga/features
+copying hcga/features/k_components.py -> hcga-1.0.0/hcga/features
+copying hcga/features/link_analysis_hits.py -> hcga-1.0.0/hcga/features
+copying hcga/features/maximal_matching.py -> hcga-1.0.0/hcga/features
+copying hcga/features/minimum_cuts.py -> hcga-1.0.0/hcga/features
+copying hcga/features/node_clique_number.py -> hcga-1.0.0/hcga/features
+copying hcga/features/node_connectivity.py -> hcga-1.0.0/hcga/features
+copying hcga/features/node_features.py -> hcga-1.0.0/hcga/features
+copying hcga/features/rich_club.py -> hcga-1.0.0/hcga/features
+copying hcga/features/scale_free.py -> hcga-1.0.0/hcga/features
+copying hcga/features/shortest_paths.py -> hcga-1.0.0/hcga/features
+copying hcga/features/small_worldness.py -> hcga-1.0.0/hcga/features
+copying hcga/features/spectrum.py -> hcga-1.0.0/hcga/features
+copying hcga/features/structural_holes.py -> hcga-1.0.0/hcga/features
+copying hcga/features/utils.py -> hcga-1.0.0/hcga/features
+copying hcga/features/vitality.py -> hcga-1.0.0/hcga/features
+copying hcga/features/__pycache__/__init__.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/assortativity.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/basic_stats.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/centralities_basic.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/centralities_force.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/chemical_theory.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/cliques.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/clustering.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/communities_asyn.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/communities_bisection.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/communities_labelprop.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/communities_modularity.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/components.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/core_number.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/covering.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/cycle_basis.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/distance_measures.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/dominating_sets.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/efficiency.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/eulerian.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/independent_sets.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/k_components.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/link_analysis_hits.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/maximal_matching.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/minimum_cuts.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/node_clique_number.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/node_connectivity.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/node_features.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/rich_club.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/scale_free.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/shortest_paths.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/small_worldness.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/spectrum.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/structural_holes.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/utils.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+copying hcga/features/__pycache__/vitality.cpython-37.pyc -> hcga-1.0.0/hcga/features/__pycache__
+Writing hcga-1.0.0/setup.cfg
+creating /home/robert/Documents/PythonCode/hcga/.tox/dist
+creating '/home/robert/Documents/PythonCode/hcga/.tox/dist/hcga-1.0.0.zip' and adding 'hcga-1.0.0' to it
+adding 'hcga-1.0.0'
+adding 'hcga-1.0.0/hcga'
+adding 'hcga-1.0.0/hcga.egg-info'
+adding 'hcga-1.0.0/MANIFEST.in'
+adding 'hcga-1.0.0/setup.py'
+adding 'hcga-1.0.0/README.md'
+adding 'hcga-1.0.0/setup.cfg'
+adding 'hcga-1.0.0/PKG-INFO'
+adding 'hcga-1.0.0/hcga/dataset_creation'
+adding 'hcga-1.0.0/hcga/features'
+adding 'hcga-1.0.0/hcga/__pycache__'
+adding 'hcga-1.0.0/hcga/hcga.py'
+adding 'hcga-1.0.0/hcga/plotting.py'
+adding 'hcga-1.0.0/hcga/__init__.py'
+adding 'hcga-1.0.0/hcga/feature_class.py'
+adding 'hcga-1.0.0/hcga/extraction.py'
+adding 'hcga-1.0.0/hcga/utils.py'
+adding 'hcga-1.0.0/hcga/io.py'
+adding 'hcga-1.0.0/hcga/analysis.py'
+adding 'hcga-1.0.0/hcga/app.py'
+adding 'hcga-1.0.0/hcga/graph.py'
+adding 'hcga-1.0.0/hcga/dataset_creation/__pycache__'
+adding 'hcga-1.0.0/hcga/dataset_creation/synthetic_datasets.py'
+adding 'hcga-1.0.0/hcga/dataset_creation/__init__.py'
+adding 'hcga-1.0.0/hcga/dataset_creation/test_dataset.py'
+adding 'hcga-1.0.0/hcga/dataset_creation/benchmark_datasets.py'
+adding 'hcga-1.0.0/hcga/dataset_creation/__pycache__/__init__.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/dataset_creation/__pycache__/test_dataset.cpython-37-pytest-5.4.2.pyc'
+adding 'hcga-1.0.0/hcga/dataset_creation/__pycache__/benchmark_datasets.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/dataset_creation/__pycache__/test_dataset.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/dataset_creation/__pycache__/synthetic_datasets.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__'
+adding 'hcga-1.0.0/hcga/features/cycle_basis.py'
+adding 'hcga-1.0.0/hcga/features/covering.py'
+adding 'hcga-1.0.0/hcga/features/communities_asyn.py'
+adding 'hcga-1.0.0/hcga/features/shortest_paths.py'
+adding 'hcga-1.0.0/hcga/features/clustering.py'
+adding 'hcga-1.0.0/hcga/features/centralities_basic.py'
+adding 'hcga-1.0.0/hcga/features/centralities_force.py'
+adding 'hcga-1.0.0/hcga/features/communities_modularity.py'
+adding 'hcga-1.0.0/hcga/features/__init__.py'
+adding 'hcga-1.0.0/hcga/features/small_worldness.py'
+adding 'hcga-1.0.0/hcga/features/efficiency.py'
+adding 'hcga-1.0.0/hcga/features/utils.py'
+adding 'hcga-1.0.0/hcga/features/maximal_matching.py'
+adding 'hcga-1.0.0/hcga/features/dominating_sets.py'
+adding 'hcga-1.0.0/hcga/features/core_number.py'
+adding 'hcga-1.0.0/hcga/features/cliques.py'
+adding 'hcga-1.0.0/hcga/features/k_components.py'
+adding 'hcga-1.0.0/hcga/features/distance_measures.py'
+adding 'hcga-1.0.0/hcga/features/structural_holes.py'
+adding 'hcga-1.0.0/hcga/features/eulerian.py'
+adding 'hcga-1.0.0/hcga/features/vitality.py'
+adding 'hcga-1.0.0/hcga/features/basic_stats.py'
+adding 'hcga-1.0.0/hcga/features/node_clique_number.py'
+adding 'hcga-1.0.0/hcga/features/link_analysis_hits.py'
+adding 'hcga-1.0.0/hcga/features/communities_bisection.py'
+adding 'hcga-1.0.0/hcga/features/rich_club.py'
+adding 'hcga-1.0.0/hcga/features/minimum_cuts.py'
+adding 'hcga-1.0.0/hcga/features/independent_sets.py'
+adding 'hcga-1.0.0/hcga/features/node_connectivity.py'
+adding 'hcga-1.0.0/hcga/features/assortativity.py'
+adding 'hcga-1.0.0/hcga/features/chemical_theory.py'
+adding 'hcga-1.0.0/hcga/features/components.py'
+adding 'hcga-1.0.0/hcga/features/communities_labelprop.py'
+adding 'hcga-1.0.0/hcga/features/node_features.py'
+adding 'hcga-1.0.0/hcga/features/scale_free.py'
+adding 'hcga-1.0.0/hcga/features/spectrum.py'
+adding 'hcga-1.0.0/hcga/features/__pycache__/independent_sets.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/core_number.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/components.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/maximal_matching.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/rich_club.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/link_analysis_hits.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/__init__.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/clustering.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/centralities_force.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/communities_bisection.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/node_features.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/k_components.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/eulerian.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/cycle_basis.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/small_worldness.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/shortest_paths.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/basic_stats.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/structural_holes.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/efficiency.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/distance_measures.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/communities_modularity.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/dominating_sets.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/communities_asyn.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/spectrum.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/chemical_theory.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/node_clique_number.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/covering.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/centralities_basic.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/node_connectivity.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/minimum_cuts.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/utils.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/communities_labelprop.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/cliques.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/vitality.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/assortativity.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/features/__pycache__/scale_free.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/__pycache__/feature_class.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/__pycache__/__init__.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/__pycache__/plotting.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/__pycache__/analysis.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/__pycache__/graph.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/__pycache__/extraction.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/__pycache__/utils.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/__pycache__/app.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/__pycache__/hcga.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga/__pycache__/io.cpython-37.pyc'
+adding 'hcga-1.0.0/hcga.egg-info/top_level.txt'
+adding 'hcga-1.0.0/hcga.egg-info/requires.txt'
+adding 'hcga-1.0.0/hcga.egg-info/dependency_links.txt'
+adding 'hcga-1.0.0/hcga.egg-info/SOURCES.txt'
+adding 'hcga-1.0.0/hcga.egg-info/entry_points.txt'
+adding 'hcga-1.0.0/hcga.egg-info/PKG-INFO'
+removing 'hcga-1.0.0' (and everything under it)

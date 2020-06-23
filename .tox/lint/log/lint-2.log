@@ -1,0 +1,54 @@
+action: lint, msg: installpkg
+cwd: /home/robert/Documents/PythonCode/hcga
+cmd: /home/robert/Documents/PythonCode/hcga/.tox/lint/bin/python -m pip install --exists-action w .tox/.tmp/package/1/hcga-1.0.0.zip
+Processing ./.tox/.tmp/package/1/hcga-1.0.0.zip
+Collecting click>=7.1.1
+  Using cached click-7.1.2-py2.py3-none-any.whl (82 kB)
+Collecting numpy>=1.18.2
+  Using cached numpy-1.18.5-cp37-cp37m-manylinux1_x86_64.whl (20.1 MB)
+Collecting scipy>=1.4.1
+  Using cached scipy-1.4.1-cp37-cp37m-manylinux1_x86_64.whl (26.1 MB)
+Collecting tqdm>=4.45.0
+  Using cached tqdm-4.46.1-py2.py3-none-any.whl (63 kB)
+Collecting networkx>=2.4
+  Using cached networkx-2.4-py3-none-any.whl (1.6 MB)
+Collecting scikit-learn>=0.23.1
+  Using cached scikit_learn-0.23.1-cp37-cp37m-manylinux1_x86_64.whl (6.8 MB)
+Processing /home/robert/.cache/pip/wheels/d3/b5/0a/df14cac170d872be0dd0300309b7463b5e52d936c3edce7963/fa2-0.3.5-cp37-cp37m-linux_x86_64.whl
+Collecting matplotlib>=1.4.3
+  Using cached matplotlib-3.2.1-cp37-cp37m-manylinux1_x86_64.whl (12.4 MB)
+Collecting seaborn>=0.9.0
+  Using cached seaborn-0.10.1-py3-none-any.whl (215 kB)
+Collecting lightgbm>=2.3.1
+  Using cached lightgbm-2.3.1-py2.py3-none-manylinux1_x86_64.whl (1.2 MB)
+Processing /home/robert/.cache/pip/wheels/c3/e0/82/26cebc699e23c6a1b9963981e1a10ed7de75db012f4af12428/shap-0.35.0-cp37-cp37m-linux_x86_64.whl
+Collecting pandas>=1.0.3
+  Using cached pandas-1.0.4-cp37-cp37m-manylinux1_x86_64.whl (10.1 MB)
+Processing /home/robert/.cache/pip/wheels/a1/b6/7c/0e63e34eb06634181c63adacca38b79ff8f35c37e3c13e3c02/wget-3.2-py3-none-any.whl
+Collecting decorator>=4.3.0
+  Using cached decorator-4.4.2-py2.py3-none-any.whl (9.2 kB)
+Collecting threadpoolctl>=2.0.0
+  Using cached threadpoolctl-2.1.0-py3-none-any.whl (12 kB)
+Collecting joblib>=0.11
+  Using cached joblib-0.15.1-py3-none-any.whl (298 kB)
+Collecting cycler>=0.10
+  Using cached cycler-0.10.0-py2.py3-none-any.whl (6.5 kB)
+Collecting kiwisolver>=1.0.1
+  Using cached kiwisolver-1.2.0-cp37-cp37m-manylinux1_x86_64.whl (88 kB)
+Collecting python-dateutil>=2.1
+  Using cached python_dateutil-2.8.1-py2.py3-none-any.whl (227 kB)
+Collecting pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=2.0.1
+  Using cached pyparsing-2.4.7-py2.py3-none-any.whl (67 kB)
+Collecting pytz>=2017.2
+  Using cached pytz-2020.1-py2.py3-none-any.whl (510 kB)
+Requirement already satisfied: six in ./.tox/lint/lib/python3.7/site-packages (from cycler>=0.10->matplotlib>=1.4.3->hcga==1.0.0) (1.15.0)
+Building wheels for collected packages: hcga
+  Building wheel for hcga (setup.py): started
+  Building wheel for hcga (setup.py): finished with status 'done'
+  Created wheel for hcga: filename=hcga-1.0.0-py3-none-any.whl size=51874 sha256=9ecf4411c93f940a9e4d6b71486ce5ddc13bde432a8ea0469dc0a20f22b51489
+  Stored in directory: /home/robert/.cache/pip/wheels/7b/ea/c9/01297835e90b0833da8d28c33dd81d15731c67ea5d73333289
+Successfully built hcga
+Installing collected packages: click, numpy, scipy, tqdm, decorator, networkx, threadpoolctl, joblib, scikit-learn, fa2, cycler, kiwisolver, python-dateutil, pyparsing, matplotlib, pytz, pandas, seaborn, lightgbm, shap, wget, hcga
+Successfully installed click-7.1.2 cycler-0.10.0 decorator-4.4.2 fa2-0.3.5 hcga-1.0.0 joblib-0.15.1 kiwisolver-1.2.0 lightgbm-2.3.1 matplotlib-3.2.1 networkx-2.4 numpy-1.18.5 pandas-1.0.4 pyparsing-2.4.7 python-dateutil-2.8.1 pytz-2020.1 scikit-learn-0.23.1 scipy-1.4.1 seaborn-0.10.1 shap-0.35.0 threadpoolctl-2.1.0 tqdm-4.46.1 wget-3.2
+WARNING: You are using pip version 20.1; however, version 20.1.1 is available.
+You should consider upgrading via the '/home/robert/Documents/PythonCode/hcga/.tox/lint/bin/python -m pip install --upgrade pip' command.
