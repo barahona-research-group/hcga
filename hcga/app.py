@@ -163,10 +163,10 @@ def extract_features(
 )
 @click.option("--kfold/--no-kfold", default=True, show_default=True, help="use K-fold")
 @click.option(
-    "--shap/--no-shap",
+    "--reduce-set/--no-reduce-set",
     default=True,
     show_default=True,
-    help="True or False whether to compute shap values",
+    help="True or False whether to recompute accuarcies with a reduced set of top features."
 )
 @click.option(
     "--reduced-set-size",
@@ -208,7 +208,7 @@ def feature_analysis(
     interpretability,
     model,
     kfold,
-    shap,
+    reduce_set,
     reduced_set_size,
     reduced_set_max_correlation,
     grid_search,
@@ -233,7 +233,7 @@ def feature_analysis(
         interpretability=interpretability,
         model=model,
         kfold=kfold,
-        compute_shap=shap,
+        reduce_set=reduce_set,
         reduced_set_size=reduced_set_size,
         reduced_set_max_correlation=reduced_set_max_correlation,
         grid_search=grid_search,
