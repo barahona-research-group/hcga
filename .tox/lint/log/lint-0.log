@@ -1,7 +1,0 @@
-action: lint, msg: getenv
-cwd: /home/robert/Documents/PythonCode/hcga/.tox
-cmd: /home/robert/anaconda3/envs/hcga/bin/python -m virtualenv --no-download --python /home/robert/anaconda3/envs/hcga/bin/python lint
-created virtual environment CPython3.7.6.final.0-64 in 157ms
-  creator CPython3Posix(dest=/home/robert/Documents/PythonCode/hcga/.tox/lint, clear=False, global=False)
-  seeder FromAppData(download=False, pip=latest, setuptools=latest, wheel=latest, via=copy, app_data_dir=/home/robert/.local/share/virtualenv/seed-app-data/v1.0.1)
-  activators BashActivator,CShellActivator,FishActivator,PowerShellActivator,PythonActivator,XonshActivator
