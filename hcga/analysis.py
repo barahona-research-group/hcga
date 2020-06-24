@@ -376,16 +376,16 @@ def fit_model_kfold(
     shap_values = []
     acc_scores = []
     for indices in folds.split(X, y=y):
-        _, acc_score, shap_value = compute_fold(
-            X, y, model, indices, analysis_type,
-        )
+        _, acc_score, shap_value = compute_fold(X, y, model, indices, analysis_type,)
         acc_scores.append(acc_score)
         shap_values.append(shap_value)
 
     print_accuracy(acc_scores, analysis_type)
 
-    # taking average of folds
-    shap_fold_average = [np.mean(shap_values, axis=0)]
+    if any(isinstance(shap_value, list) for shap_value in shap_values):
+        shap_fold_average = list(np.mean(shap_values, axis=0))
+    else:
+        shap_fold_average = [np.mean(shap_values, axis=0)]
 
     shap_top_features = np.sum(np.mean(np.abs(shap_fold_average), axis=1), axis=0)
 
@@ -409,7 +409,11 @@ def fit_model_kfold(
         shap_values.append(shap_value)
         acc_scores.append(acc_score)
 
-    shap_fold_average = [np.mean(shap_values, axis=0)]
+    if any(isinstance(shap_value, list) for shap_value in shap_values):
+        shap_fold_average = list(np.mean(shap_values, axis=0))
+    else:
+        shap_fold_average = [np.mean(shap_values, axis=0)]
+
     shap_top_features = np.sum(np.mean(np.abs(shap_fold_average), axis=1), axis=0)
 
     if analysis_type == "classification":
@@ -425,7 +429,7 @@ def fit_model_kfold(
             str(np.round(np.std(acc_scores), 3)),
         )
 
-    return X, y, shap_top_features, shap_fold_average, acc_scores
+    return X_reduced_corr, y, shap_top_features, shap_fold_average, acc_scores
 
 
 def compute_fold(X, y, model, indices, analysis_type):
