@@ -184,7 +184,7 @@ class Graph:
 
         largest_cc_label = np.argmax(np.unique(labels, return_counts=True)[1])
 
-        drop_nodes = np.where(labels == largest_cc_label)[0]
+        drop_nodes = np.where(labels != largest_cc_label)[0]
         self.nodes = self.nodes.drop(drop_nodes)
 
         drop_edges = [
