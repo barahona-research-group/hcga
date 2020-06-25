@@ -166,7 +166,7 @@ def extract_features(
     "--reduce-set/--no-reduce-set",
     default=True,
     show_default=True,
-    help="True or False whether to recompute accuarcies with a reduced set of top features."
+    help="True or False whether to recompute accuarcies with a reduced set of top features.",
 )
 @click.option(
     "--reduced-set-size",

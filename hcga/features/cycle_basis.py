@@ -36,9 +36,15 @@ class CycleBasis(FeatureClass):
             InterpretabilityScore(3),
         )
 
+        def minimum_cycle_length(graph):
+            """Minimum cycle length returns 0 if graph is a tree."""
+            if len(eval_cycle_basis(graph)) == 0:
+                return 0
+            return np.min([len(cycle) for cycle in eval_cycle_basis(graph)]),
+
         self.add_feature(
             "minimum_cycle_length",
-            lambda graph: np.min([len(cycle) for cycle in eval_cycle_basis(graph)]),
+            minimum_cycle_length,
             "The minimum length of cycles in the graph",
             InterpretabilityScore(3),
         )
