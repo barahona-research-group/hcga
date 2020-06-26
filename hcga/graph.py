@@ -91,7 +91,7 @@ class Graph:
         edges["end_node"] = nodes.new_index[edges["end_node"].to_list()].to_list()
 
         if "weight" not in edges:
-            edges["weight"] = nodes.new_index[np.ones(len(edges)).tolist()].to_list()
+            edges["weight"] = 1.0
 
         self.nodes = nodes.set_index("new_index")
         self.edges = edges.reset_index()
@@ -184,7 +184,7 @@ class Graph:
 
         largest_cc_label = np.argmax(np.unique(labels, return_counts=True)[1])
 
-        drop_nodes = np.where(labels == largest_cc_label)[0]
+        drop_nodes = np.where(labels != largest_cc_label)[0]
         self.nodes = self.nodes.drop(drop_nodes)
 
         drop_edges = [

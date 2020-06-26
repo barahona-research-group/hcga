@@ -29,23 +29,24 @@ logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 
 def _features_to_Xy(features):
     """decompose features dataframe to X and y."""
-    X = features.drop(columns=["labels"])
-    y = features["labels"]
+    X = features.drop(columns=["label"])
+    y = features["label"]
     return X, y
 
 
 def _normalise_feature_data(features,):
     """Normalise the feature matrix using sklearn scaler to remove the mean and scale to unit variance."""
-    if "labels" in features:
-        labels = features["labels"]
+    if "label" in features:
+        label = features["label"]
 
     normed_features = pd.DataFrame(
         StandardScaler().fit_transform(features), columns=features.columns
     )
+    print(normed_features.index, features.index)
     normed_features.index = features.index
 
-    if "labels" in features:
-        normed_features["labels"] = labels
+    if "label" in features:
+        normed_features["label"] = label
 
     return normed_features
 
@@ -307,7 +308,7 @@ def classify_pairwise(
 
     analysis_type = "classification"
     classifier = _get_model(model, analysis_type=analysis_type)
-    classes = features.labels.unique()
+    classes = features.label.unique()
     class_pairs = list(itertools.combinations(classes, 2))
     accuracy_matrix = pd.DataFrame(columns=classes, index=classes)
 
@@ -315,7 +316,7 @@ def classify_pairwise(
     n_pairs = 0
     for pair in tqdm(class_pairs):
         features_pair = features.loc[
-            (features.labels == pair[0]) | (features.labels == pair[1])
+            (features.label == pair[0]) | (features.label == pair[1])
         ]
         X, _, shap_top_features, _, acc_scores = fit_model_kfold(
             features_pair,
