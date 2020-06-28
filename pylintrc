@@ -10,7 +10,7 @@ max-line-length=120
 
 [DESIGN]
 # Maximum number of arguments for function / method
-max-args=8
+max-args=10
 # Argument names that match this expression will be ignored. Default to name
 # with leading underscore
 ignored-argument-names=_.*
