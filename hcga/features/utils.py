@@ -10,6 +10,13 @@ def ensure_connected(graph):
         return graph
     raise Exception("ensure_conneted is not implemented for this graph type")
 
+def ensure_connected_directed(graph):
+    """Ensures that a directed graph is weakly connected."""
+    if isinstance(graph, nx.Graph):
+        if not nx.is_weakly_connected(graph):
+            return graph.subgraph(max(nx.weakly_connected_components(graph), key=len))
+        return graph
+    raise Exception("ensure_conneted_directed is not implemented for this graph type")
 
 def remove_selfloops(graph):
     """Return a graph without selfloops."""
