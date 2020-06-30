@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Jun 29 12:35:19 2020
-
-@author: henrypalasciano
-"""
-
 """Connectance class."""
 import networkx as nx
 
@@ -16,12 +8,12 @@ featureclass_name = "connectance"
 "Directed networks only"
 
 class Connectance(FeatureClass):
-    """Node clique number class.
+    """Connectance class.
     """
 
     modes = ["fast", "medium", "slow"]
     shortname = "Cns"
-    name = "connectancd"
+    name = "connectance"
     encoding = "networkx"
 
     def compute_features(self):

@@ -1,19 +1,12 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Jun 29 12:04:27 2020
-
-@author: henrypalasciano
-"""
-
 "Nestness class"
-
 import numpy as np
 import networkx as nx
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Nestedness"
+
+"A graph has a nested structure when smaller components contain a subset of larger components"
 
 
 def nestedness_func(g):
@@ -34,10 +27,8 @@ def nestedness_func(g):
                 n_m = min(len(neighbors[i]), len(neighbors[j]))
                 sum_n_ij += n_ij
                 sum_n_m += n_m
-                
-    nestedness = sum_n_ij/n_m
     
-    return nestedness
+    return sum_n_ij/n_m
 
 
 

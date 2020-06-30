@@ -1,11 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Jun 28 17:52:35 2020
-
-@author: henrypalasciano
-"""
-
+"""Connectivity class."""
 import numpy as np
 import networkx as nx
 
