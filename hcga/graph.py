@@ -142,13 +142,20 @@ class Graph:
             if not hasattr(self, "_graph_networkx"):
                 self.set_networkx()
             return self._graph_networkx
+        if encoding == "networkx_directed":
+            if not hasattr(self, "_graph_networkx"):
+                self.set_networkx(directed=True)
+            return self._graph_networkx
         if encoding == "igraph":
             raise Exception("Igraph is not yet implemented")
         raise Exception("Graph encoding not understood")
 
-    def set_networkx(self):
+    def set_networkx(self, directed=False):
         """Set the networkx graph encoding."""
-        self._graph_networkx = nx.Graph()
+        if directed:
+            self._graph_networkx = nx.DiGraph()
+        else:
+            self._graph_networkx = nx.Graph()
         if self.n_node_features == 0:
             nodes = [(node, {"feat": [0]}) for node, node_data in self.nodes.iterrows()]
         else:
