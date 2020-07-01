@@ -1,19 +1,19 @@
-"""Connectivity class."""
+"""Connected components class."""
 import numpy as np
 import networkx as nx
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 
-featureclass_name = "Connectivity"
+featureclass_name = "Connected Components"
 
 # Only for directed networks
 
-class Connectivity(FeatureClass):
-    """Connectivity class."""
+class ConnectedComponents(FeatureClass):
+    """Connected components class."""
 
     modes = ["fast", "medium", "slow"]
-    shortname = "Con"
-    name = "connectivity"
+    shortname = "CCo"
+    name = "connected_components"
     encoding = "networkx"
     
     def compute_features(self):
