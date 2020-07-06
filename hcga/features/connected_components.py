@@ -4,7 +4,7 @@ import networkx as nx
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 
-featureclass_name = "Connected Components"
+featureclass_name = "ConnectedComponents"
 
 # Only for directed networks
 

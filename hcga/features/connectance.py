@@ -1,26 +1,24 @@
-"""Connectance class."""
+"Connectance class"
 import networkx as nx
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 
-featureclass_name = "connectance"
+featureclass_name = "Connectance"
 
-"Directed networks only"
 
 class Connectance(FeatureClass):
-    """Connectance class.
-    """
+    """Connectance class."""
 
     modes = ["fast", "medium", "slow"]
     shortname = "Cns"
     name = "connectance"
     encoding = "networkx"
-
+    
     def compute_features(self):
-
+    
         self.add_feature(
-            "connectance",
-            lambda graph: nx.number_of_edges(graph)/(nx.number_of_nodes(graph)**2),
-            "ratio of number of edges to maximum possible number of edges",
-            InterpretabilityScore(3)
-        )
+                "connectance",
+                lambda graph: nx.density(graph),
+                "ratio of number of edges to maximum possible number of edges",
+                InterpretabilityScore(3),
+            )
