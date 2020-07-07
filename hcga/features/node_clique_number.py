@@ -24,7 +24,7 @@ class NodeCliqueNumber(FeatureClass):
         self.add_feature(
             "clique sizes",
             lambda graph: list(
-                clique.node_clique_number(ensure_connected(graph)).values()
+                clique.node_clique_number(ensure_connected(nx.to_undirected(graph))).values()
             ),
             "the distribution of clique sizes",
             InterpretabilityScore(3),

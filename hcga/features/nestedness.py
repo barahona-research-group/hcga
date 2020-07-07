@@ -28,7 +28,7 @@ def nestedness_func(g):
                 sum_n_ij += n_ij
                 sum_n_m += n_m
     
-    return sum_n_ij/n_m
+    return sum_n_ij/sum_n_m
 
 
 

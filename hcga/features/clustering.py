@@ -17,7 +17,7 @@ class Clustering(FeatureClass):
 
     def compute_features(self):
 
-        triang = lambda graph: np.asarray(list(nx.triangles(graph).values())).mean()
+        triang = lambda graph: np.asarray(list(nx.triangles(nx.to_undirected(graph)).values())).mean()
         self.add_feature(
             "num_triangles",
             triang,
