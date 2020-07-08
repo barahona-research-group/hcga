@@ -91,7 +91,6 @@ class Hcga:
         reduce_set=True,
         reduced_set_size=100,
         reduced_set_max_correlation=0.9,
-        grid_search=False,
         plot=True,
         max_feats_plot=20,
     ):
@@ -111,7 +110,6 @@ class Hcga:
             reduce_set=reduce_set,
             reduced_set_size=reduced_set_size,
             reduced_set_max_correlation=reduced_set_max_correlation,
-            grid_search=grid_search,
             plot=plot,
             max_feats_plot=max_feats_plot,
         )

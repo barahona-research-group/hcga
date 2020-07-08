@@ -61,11 +61,9 @@ def _get_reduced_feature_set(X, shap_top_features, n_top_features=100, alpha=0.9
     """Reduce the feature set by taking uncorrelated features."""
     rank_feat_ids = np.argsort(shap_top_features)[::-1]
 
-    # loop over and add those with minimal correlation
     selected_features = [rank_feat_ids[0]]
-    corr_matrix = np.corrcoef(X.T)
+    corr_matrix = np.abs(np.corrcoef(X.T))
     for rank_feat_id in rank_feat_ids:
-        # find if there is a correlation larger than alpha
         if not (corr_matrix[selected_features, rank_feat_id] > alpha).any():
             selected_features.append(rank_feat_id)
         if len(selected_features) >= n_top_features:
@@ -182,6 +180,7 @@ def analysis(  # pylint: disable=too-many-arguments,too-many-locals
     plot=True,
     max_feats_plot=20,
     n_repeats=1,
+    n_splits=None,
     random_state=1,
 ):
     """Main function to classify graphs and plot results."""
@@ -220,6 +219,7 @@ def analysis(  # pylint: disable=too-many-arguments,too-many-locals
             reduced_set_max_correlation=reduced_set_max_correlation,
             n_repeats=n_repeats,
             random_state=random_state,
+            n_splits=n_splits,
         )
     else:
         X, y, acc_scores, shap_values, shap_feat_importance = fit_model(features, model)
@@ -393,6 +393,7 @@ def fit_model_kfold(
     reduced_set_max_correlation=0.9,
     n_repeats=1,
     random_state=1,
+    n_splits=None,
 ):
     """Classify graphs from extracted features with kfold.
 
@@ -419,7 +420,9 @@ def fit_model_kfold(
             n_splits=n_splits, n_repeats=n_repeats, random_state=random_state
         )
     elif analysis_type == "regression":
-        n_splits = _number_folds(y)
+        if n_splits is None:
+            n_splits = _number_folds(y)
+        L.info("Using %s splits", str(n_splits))
         folds = RepeatedKFold(
             n_splits=n_splits, n_repeats=n_repeats, random_state=random_state
         )
