@@ -27,6 +27,9 @@ def nestedness_func(g):
                 n_m = min(len(neighbors[i]), len(neighbors[j]))
                 sum_n_ij += n_ij
                 sum_n_m += n_m
+                
+    if sum_n_m == 0:
+        return 0
     
     return sum_n_ij/sum_n_m
 
