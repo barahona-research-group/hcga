@@ -6,8 +6,6 @@ from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "ConnectedComponents"
 
-# Only for directed networks
-
 class ConnectedComponents(FeatureClass):
     """Connected components class."""
 
@@ -73,6 +71,21 @@ class ConnectedComponents(FeatureClass):
                 "attracting_component_sizes",
                 lambda graph: [len(i) for i in nx.attracting_components(graph)],
                 "the distribution of attracting component sizes",
+                InterpretabilityScore(3),
+                statistics="centrality"
+            )
+        
+        self.add_feature(
+                "number basal_components",
+                lambda graph: nx.number_attracting_components(nx.reverse(graph)),
+                "An basal component is a set of nodes in a directed graph such that there are no edges pointing into that set",
+                InterpretabilityScore(3),
+            )
+        
+        self.add_feature(
+                "basal_component_sizes",
+                lambda graph: [len(i) for i in nx.attracting_components(nx.reverse(graph))],
+                "the distribution of basal component sizes",
                 InterpretabilityScore(3),
                 statistics="centrality"
             )
