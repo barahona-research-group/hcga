@@ -10,27 +10,21 @@ featureclass_name = "Nestedness"
 
 
 def nestedness_func(g):
-    
+
     n = nx.number_of_nodes(g)
-    
+
     neighbors = [0 for i in range(n)]
     for j in range(n):
         neighbors[j] = {k for k in g.neighbors(j)}
-        
+
     sum_n_ij = 0
     sum_n_m = 0
-    
+
     for j in range(1,n):
         for i in range(j):
-            n_ij = len(neighbors[i].intersection(neighbors[j]))
-            if n_ij != 0:
-                n_m = min(len(neighbors[i]), len(neighbors[j]))
-                sum_n_ij += n_ij
-                sum_n_m += n_m
-                
-    if sum_n_m == 0:
-        return 0
-    
+            sum_n_ij += len(neighbors[i].intersection(neighbors[j]))
+            sum_n_m += min(len(neighbors[i]), len(neighbors[j]))
+            
     return sum_n_ij/sum_n_m
 
 
