@@ -127,16 +127,11 @@ def _plot_feature_summary(data, labels, graphs, folder, shap_values, max_feats=5
     feature_names = list(data.iloc[:, shap_mean.argsort()[-max_feats:]].columns)
 
     percentiles = [2, 25, 50, 75, 98]
+
     figs = []
     for feature_name in feature_names:
-
-        p_vals = []
-        for p in percentiles:
-            p_vals.append(np.percentile(data[feature_name], p))
-
-        p_ids = []
-        for p_val in p_vals:
-            p_ids.append(abs(data[feature_name] - p_val).idxmin())
+        p_vals = [np.percentile(data[feature_name], p) for p in percentiles]
+        p_ids = [abs(data[feature_name] - p_val).idxmin() for p_val in p_vals]
 
         figs.append(plt.figure())
         grid = plt.GridSpec(5, 3, wspace=0.4, hspace=0.3)
