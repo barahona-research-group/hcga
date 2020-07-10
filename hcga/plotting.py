@@ -15,75 +15,66 @@ from matplotlib.backends.backend_pdf import PdfPages
 L = logging.getLogger(__name__)
 
 
+def _save_to_pdf(pdf, figs=None):
+    if figs is not None:
+        for fig in figs:
+            pdf.savefig(fig, bbox_inches="tight")
+        plt.close("all")
+    else:
+        pdf.savefig(bbox_inches="tight")
+        plt.close()
+
+
 def shap_plots(X, y, shap_values, folder, graphs, analysis_type, max_feats=20):
     """plot summary."""
-    with PdfPages(os.path.join(folder, "analysis_report.pdf")) as pp:
+    with PdfPages(os.path.join(folder, "analysis_report.pdf")) as pdf:
+        _bar_ranking_plot(shap_values, X, folder, max_feats=max_feats)
+        _save_to_pdf(pdf)
 
-        pp = custom_bar_ranking_plot(shap_values, X, folder, pp, max_feats=max_feats)
-        pp = custom_dot_summary_plot(shap_values, X, folder, pp, max_feats=max_feats)
-        pp = plot_dendogram_shap(shap_values, X, folder, pp, max_feats=max_feats)
+        _dot_summary_plot(shap_values, X, folder, max_feats=max_feats)
+        _save_to_pdf(pdf)
+
+        _plot_dendrogram_shap(shap_values, X, folder, max_feats=max_feats)
+        _save_to_pdf(pdf)
 
         if analysis_type == "classification":
-            pp = plot_shap_violin(shap_values, X, y, folder, pp, max_feats=max_feats)
+            _plot_shap_violin(shap_values, X, y, folder, max_feats=max_feats)
         elif analysis_type == "regression":
-            pp = plot_trend(shap_values, X, y, folder, pp, max_feats=max_feats)
+            _plot_trend(shap_values, X, y, folder, max_feats=max_feats)
+        _save_to_pdf(pdf)
 
-        pp = plot_feature_summary(X, graphs, folder, pp, shap_values)
+        figs = _plot_feature_summary(
+            X, y, graphs, folder, shap_values, max_feats=max_feats
+        )
+        _save_to_pdf(pdf, figs)
 
 
-def custom_bar_ranking_plot(shap_vals, data, folder, pp, max_feats):
-    """Function for customizing and saving SHAP summary bar plot.
-
-    Arguments:
-    shap_vals = SHAP values list generated from explainer
-    data      = data to explain
-    max_feats = number of features to display
-    """
-    plt.rcParams.update({"font.size": 14})
+def _bar_ranking_plot(shap_vals, data, folder, max_feats):
+    """Function for customizing and saving SHAP summary bar plot."""
     shap.summary_plot(
         shap_vals, data, plot_type="bar", max_display=max_feats, show=False
     )
-    fig = plt.gcf()
-    fig.set_figheight(20)
-    fig.set_figwidth(15)
-    plt.tight_layout()
     plt.title("Feature Rankings-All Classes")
     plt.savefig(os.path.join(folder, "shap_bar_rank.png"), dpi=200, bbox_inches="tight")
-    pp.savefig(fig, bbox_inches="tight")
-    return pp
 
 
-def custom_dot_summary_plot(shap_vals, data, folder, pp, max_feats):
-    """Function for customizing and saving SHAP summary dot plot.
-
-    Arguments:
-    shap_vals = SHAP values list generated from explainer
-    data      = data to explain
-    max_feats = number of features to display
-    """
+def _dot_summary_plot(shap_vals, data, folder, max_feats):
+    """Function for customizing and saving SHAP summary dot plot."""
     num_classes = len(shap_vals)
     for i in range(num_classes):
         plt.figure()
-        L.info("Sample Expanded Feature Summary for Class %s", i)
-        plt.rcParams.update({"font.size": 14})
         shap.summary_plot(
             shap_vals[i], data, plot_type="dot", max_display=max_feats, show=False
         )
-        fig = plt.gcf()
-        fig.set_figheight(20)
-        fig.set_figwidth(15)
-        plt.tight_layout()
         plt.title("Sample Expanded Feature Summary for Class " + str(i))
         plt.savefig(
             os.path.join(folder, "shap_class_{}_summary.png".format(i)),
             dpi=200,
             bbox_inches="tight",
         )
-        pp.savefig(fig, bbox_inches="tight")
-    return pp
 
 
-def plot_dendogram_shap(shap_vals, data, folder, pp, max_feats=20):
+def _plot_dendrogram_shap(shap_vals, data, folder, max_feats=20):
     from matplotlib.gridspec import GridSpec
 
     plt.figure()
@@ -127,68 +118,68 @@ def plot_dendogram_shap(shap_vals, data, folder, pp, max_feats=20):
     plt.savefig(
         os.path.join(folder, "shap_dendogram_top20.png"), dpi=200, bbox_inches="tight"
     )
-    pp.savefig(f, bbox_inches="tight")
-    return pp
 
 
-def plot_feature_summary(data, graphs, folder, pp, shap_vals=None, feat_name=None):
+def _plot_feature_summary(data, labels, graphs, folder, shap_values, max_feats=5):
     """for a given feature id, plot the feature summary."""
 
-    if not feat_name:
-        shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
+    shap_mean = np.sum(np.mean(np.abs(shap_values), axis=1), axis=0)
+    feature_names = list(data.iloc[:, shap_mean.argsort()[-max_feats:]].columns)
 
-    feature_data = data.iloc[:, shap_mean.argmax()].sort_values()
-    samples = np.round(np.linspace(0, len(feature_data) - 1, 5)).astype(int)
+    percentiles = [2, 25, 50, 75, 98]
+    figs = []
+    for feature_name in feature_names:
 
-    fig = plt.figure(figsize=(20, 15))
-    grid = plt.GridSpec(5, 3, wspace=0.4, hspace=0.3)
-    ax = []
-    ax.append(plt.subplot(grid[0:, 0:2]))
-    ax.append(plt.subplot(grid[4, 2]))
-    ax.append(plt.subplot(grid[3, 2]))
-    ax.append(plt.subplot(grid[2, 2]))
-    ax.append(plt.subplot(grid[1, 2]))
-    ax.append(plt.subplot(grid[0, 2]))
-    g = sns.violinplot(data=feature_data, ax=ax[0], palette="muted", width=1)
+        p_vals = []
+        for p in percentiles:
+            p_vals.append(np.percentile(data[feature_name], p))
 
-    c = sns.color_palette("hls", 5)
-    for i, sample in enumerate(samples):
-        graph_id = feature_data.index[sample]  # .index.tolist()
-        graph_to_plot = graphs.graphs[graph_id]
-        g.axhline(feature_data.iloc[sample], ls="--", color=c[i])
+        p_ids = []
+        for p_val in p_vals:
+            p_ids.append(abs(data[feature_name] - p_val).idxmin())
 
-        graph = graph_to_plot.get_graph("networkx")
-        pos = nx.spring_layout(graph)
-        nx.draw(
-            graph,
-            pos,
-            ax=ax[i + 1],
-            node_size=5,
-            node_color=[c[i] for n in range(len(graph))],
+        figs.append(plt.figure())
+        grid = plt.GridSpec(5, 3, wspace=0.4, hspace=0.3)
+        ax = []
+        ax.append(plt.subplot(grid[0:, 0:2]))
+        ax.append(plt.subplot(grid[4, 2]))
+        ax.append(plt.subplot(grid[3, 2]))
+        ax.append(plt.subplot(grid[2, 2]))
+        ax.append(plt.subplot(grid[1, 2]))
+        ax.append(plt.subplot(grid[0, 2]))
+
+        g = sns.violinplot(data=data[feature_name], ax=ax[0], palette="muted", bw=0.1)
+
+        c = sns.color_palette("hls", 5)
+        for i, p_id in enumerate(p_ids):
+            graph_to_plot = graphs.graphs[p_id]
+            g.axhline(data.loc[p_id, feature_name], ls="--", color=c[i])
+
+            graph = graph_to_plot.get_graph("networkx")
+            pos = nx.spring_layout(graph)
+            nx.draw(
+                graph,
+                pos,
+                ax=ax[i + 1],
+                node_size=5,
+                node_color=[c[i] for n in range(len(graph))],
+            )
+            ax[i + 1].set_title(
+                "Graph ID: {}, y-label: {}".format(p_id, np.round(labels[p_id], 3)),
+                fontsize="small",
+            )
+
+        feature_name = feature_name[0] + "_" + feature_name[1]
+        figs[-1].suptitle("Feature: {}".format(feature_name))
+        plt.savefig(
+            os.path.join(folder, "feature_{}_summary.png".format(feature_name)),
+            dpi=200,
+            bbox_inches="tight",
         )
-        ax[i + 1].set_title(
-            "Graph ID: {}, y-label: {}".format(
-                feature_data.index[sample], graph_to_plot.label[0]
-            ),
-            fontsize="small",
-        )
-
-    fig.suptitle(
-        "Feature: {}".format(feature_data.name)
-    )  # or plt.suptitle('Main title')
-    plt.savefig(
-        os.path.join(folder, "feature_{}_summary.png".format(feature_data.name[1])),
-        dpi=200,
-        bbox_inches="tight",
-    )
-
-    pp.savefig(
-        fig, bbox_inches="tight",
-    )
-    return pp
+    return figs
 
 
-def plot_shap_violin(shap_vals, data, labels, folder, pp, max_feats=20):
+def _plot_shap_violin(shap_vals, data, labels, folder, max_feats=20):
     """Plot the violins of a feature."""
     shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
     top_feat_idx = shap_mean.argsort()[::-1][:max_feats]
@@ -205,7 +196,6 @@ def plot_shap_violin(shap_vals, data, labels, folder, pp, max_feats=20):
             indices = np.argwhere(labels.values == k)
             data_split.append(feature_data[indices])
 
-        # sns.set(style="whitegrid")
         sns.violinplot(data=data_split, ax=ax, palette="muted", width=1)
         ax.set(xlabel="Class label", ylabel=data.columns[top_feat])
 
@@ -218,13 +208,9 @@ def plot_shap_violin(shap_vals, data, labels, folder, pp, max_feats=20):
     plt.savefig(
         os.path.join(folder, "shap_violins_top20.png"), dpi=200, bbox_inches="tight",
     )
-    pp.savefig(
-        fig, bbox_inches="tight",
-    )
-    return pp
 
 
-def plot_trend(shap_vals, data, labels, folder, pp, max_feats=20):
+def _plot_trend(shap_vals, data, labels, folder, max_feats=20):
     """Plot the violins of a feature."""
     shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
     top_feat_idx = shap_mean.argsort()[::-1][:max_feats]
@@ -248,10 +234,6 @@ def plot_trend(shap_vals, data, labels, folder, pp, max_feats=20):
     plt.savefig(
         os.path.join(folder, "shap_trend_top20.png"), dpi=200, bbox_inches="tight",
     )
-    pp.savefig(
-        fig, bbox_inches="tight",
-    )
-    return pp
 
 
 def pca_plot(features, pca):

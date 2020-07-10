@@ -18,7 +18,8 @@ from sklearn.model_selection import (
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
-from . import plotting, utils
+from . import utils
+from .plotting import shap_plots, pca_plot
 
 L = logging.getLogger(__name__)
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
@@ -234,7 +235,7 @@ def analysis(  # pylint: disable=too-many-arguments,too-many-locals
         os.mkdir(results_folder)
 
     if plot:
-        plotting.shap_plots(
+        shap_plots(
             X,
             y,
             shap_values,
@@ -262,7 +263,7 @@ def unsupervised_learning(features):
     pca.fit(features)
     L.info("Variance of PC component 1: %s", pca.explained_variance_ratio_[0])
     L.info("Variance of PC component 2: %s", pca.explained_variance_ratio_[1])
-    plotting.pca_plot(features, pca)
+    pca_plot(features, pca)
 
 
 def _save_to_csv(
