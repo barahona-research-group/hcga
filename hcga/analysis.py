@@ -15,11 +15,10 @@ from sklearn.model_selection import (
     RepeatedKFold,
     train_test_split,
 )
-from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
 from . import utils
-from .plotting import shap_plots, pca_plot
+from .plotting import plot_analysis
 
 L = logging.getLogger(__name__)
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
@@ -28,7 +27,7 @@ warnings.simplefilter("ignore")
 # pylint: disable=too-many-locals
 
 
-def _features_to_Xy(features):
+def features_to_Xy(features):
     """decompose features dataframe to numpy arrayes X and y."""
     X = features.drop(columns=["label"])
     y = features["label"]
@@ -165,6 +164,146 @@ def _get_model(model, analysis_type):
     return model
 
 
+def _get_shap_feature_importance(shap_values):
+    """From a list of shap values per folds, compute the global shap feature importance."""
+    mean_shap_values = np.mean(shap_values, axis=0)
+    if isinstance(mean_shap_values, list):
+        global_mean_shap_values = np.sum(mean_shap_values, axis=0)
+    else:
+        global_mean_shap_values = mean_shap_values
+
+    return mean_shap_values, np.mean(abs(global_mean_shap_values), axis=0)
+
+
+def _evaluate_kfold(X, y, model, folds, analysis_type):
+    """Evaluate the kfolds."""
+    shap_values = []
+    acc_scores = []
+    for indices in folds.split(X, y=y):
+        acc_score, shap_value = compute_fold(X, y, model, indices, analysis_type)
+        shap_values.append(shap_value)
+        acc_scores.append(acc_score)
+    return acc_scores, shap_values
+
+
+def fit_model_kfold(
+    features,
+    model,
+    analysis_type,
+    reduce_set=True,
+    reduced_set_size=100,
+    reduced_set_max_correlation=0.9,
+    n_repeats=1,
+    random_state=1,
+    n_splits=None,
+):
+    """Classify graphs from extracted features with kfold.
+
+    Args:
+        features (dataframe): extracted features
+        classifier (str): name of the classifier to use
+        reduce_set (bool): is True, the classification will be rerun
+                           on a reduced set of top features (from shapely analysis)
+        reduce_set_size (int): number of features to keep for reduces set
+        reduced_set_max_correlation (float): to discared highly correlated top features
+                                             in reduced set of features
+    Returns:
+        WIP
+    """
+    if model is None:
+        raise Exception("Please provide a model for classification")
+
+    X, y = features_to_Xy(features)
+
+    if analysis_type == "classification":
+        n_splits = _number_folds(y)
+        L.info("Using %s splits", str(n_splits))
+        folds = RepeatedStratifiedKFold(
+            n_splits=n_splits, n_repeats=n_repeats, random_state=random_state
+        )
+    elif analysis_type == "regression":
+        if n_splits is None:
+            n_splits = _number_folds(y)
+        L.info("Using %s splits", str(n_splits))
+        folds = RepeatedKFold(
+            n_splits=n_splits, n_repeats=n_repeats, random_state=random_state
+        )
+
+    acc_scores, shap_values = _evaluate_kfold(X, y, model, folds, analysis_type)
+    _print_accuracy(acc_scores, analysis_type)
+    mean_shap_values, shap_feature_importance = _get_shap_feature_importance(
+        shap_values
+    )
+
+    if not reduce_set:
+        return {
+            "X": X,
+            "y": y,
+            "acc_scores": acc_scores,
+            "mean_shap_values": mean_shap_values,
+            "shap_values": shap_values,
+            "shap_feature_importance": shap_feature_importance,
+            "reduced_features": None,
+        }
+
+    reduced_features = _get_reduced_feature_set(
+        X,
+        shap_feature_importance,
+        n_top_features=reduced_set_size,
+        alpha=reduced_set_max_correlation,
+    )
+    reduced_acc_scores, reduced_shap_values = _evaluate_kfold(
+        X[reduced_features], y, model, folds, analysis_type
+    )
+    _print_accuracy(reduced_acc_scores, analysis_type, reduced=True)
+    (
+        reduced_mean_shap_values,
+        reduced_shap_feature_importance,
+    ) = _get_shap_feature_importance(reduced_shap_values)
+
+    return {
+        "X": X,
+        "y": y,
+        "acc_scores": acc_scores,
+        "mean_shap_values": mean_shap_values,
+        "shap_feature_importance": shap_feature_importance,
+        "reduced_features": reduced_features,
+        "reduced_shap_values": reduced_shap_values,
+        "shap_values": shap_values,
+        "reduced_acc_scores": reduced_acc_scores,
+        "reduced_mean_shap_values": reduced_mean_shap_values,
+        "reduced_shap_feature_importance": reduced_shap_feature_importance,
+    }
+
+
+def compute_fold(X, y, model, indices, analysis_type):
+    """Compute a single fold for parallel computation."""
+    train_index, val_index = indices
+    model.fit(X.iloc[train_index], y.iloc[train_index])
+
+    if analysis_type == "classification":
+        acc_score = accuracy_score(y.iloc[val_index], model.predict(X.iloc[val_index]))
+        L.info("Fold accuracy: --- %s ---", str(np.round(acc_score, 3)))
+    elif analysis_type == "regression":
+        acc_score = mean_absolute_error(
+            y.iloc[val_index], model.predict(X.iloc[val_index])
+        )
+
+        import matplotlib.pyplot as plt
+
+        plt.figure()
+        plt.plot(y, model.predict(X), "+")
+        plt.savefig("test.png")
+        plt.close()
+
+        L.info("Mean Absolute Error: --- %s ---", str(np.round(acc_score, 3)))
+
+    explainer = shap.TreeExplainer(model)
+    shap_values = explainer.shap_values(X)
+
+    return acc_score, shap_values
+
+
 def analysis(  # pylint: disable=too-many-arguments,too-many-locals
     features,
     features_info,
@@ -180,6 +319,7 @@ def analysis(  # pylint: disable=too-many-arguments,too-many-locals
     reduced_set_max_correlation=0.9,
     plot=True,
     max_feats_plot=20,
+    max_feats_plot_dendrogram=100,
     n_repeats=1,
     n_splits=None,
     random_state=1,
@@ -202,16 +342,7 @@ def analysis(  # pylint: disable=too-many-arguments,too-many-locals
     model = _get_model(model, analysis_type)
 
     if kfold:
-        L.info("Using kfold")
-
-        (
-            X,
-            y,
-            acc_scores,
-            shap_values,
-            shap_feat_importance,
-            reduced_features,
-        ) = fit_model_kfold(
+        analysis_results = fit_model_kfold(
             features,
             model,
             analysis_type,
@@ -223,10 +354,14 @@ def analysis(  # pylint: disable=too-many-arguments,too-many-locals
             n_splits=n_splits,
         )
     else:
-        X, y, acc_scores, shap_values, shap_feat_importance = fit_model(features, model)
+        analysis_results = fit_model(features, model)
 
     if analysis_type == "regression":
-        shap_values = [shap_values]
+        analysis_results["mean_shap_values"] = [analysis_results["mean_shap_values"]]
+        if "reduced_mean_shap_values" in analysis_results:
+            analysis_results["reduced_mean_shap_values"] = [
+                analysis_results["reduced_mean_shap_values"]
+            ]
 
     results_folder = Path(folder) / (
         "results_interpretability_" + str(interpretability)
@@ -235,47 +370,29 @@ def analysis(  # pylint: disable=too-many-arguments,too-many-locals
         os.mkdir(results_folder)
 
     if plot:
-        shap_plots(
-            X,
-            y,
-            shap_values,
+        plot_analysis(
+            analysis_results,
             results_folder,
             graphs,
             analysis_type,
-            max_feats=max_feats_plot,
+            max_feats_plot,
+            max_feats_plot_dendrogram,
         )
 
-    _save_to_csv(
-        features_info,
-        shap_values,
-        shap_feat_importance,
-        reduced_features,
-        results_folder,
-    )
+    _save_to_csv(features_info, analysis_results, results_folder)
 
-    return X, acc_scores, shap_values, shap_feat_importance
+    return analysis_results
 
 
-def unsupervised_learning(features):
-    """ implementing some basic unsupervised approaches to the data """
-
-    pca = PCA(n_components=2)
-    pca.fit(features)
-    L.info("Variance of PC component 1: %s", pca.explained_variance_ratio_[0])
-    L.info("Variance of PC component 2: %s", pca.explained_variance_ratio_[1])
-    pca_plot(features, pca)
-
-
-def _save_to_csv(
-    features_info_df,
-    shap_values,
-    shap_feat_importance,
-    reduced_features,
-    folder="results",
-):
+def _save_to_csv(features_info_df, analysis_results, folder="results"):
     """Save csv file with analysis data."""
+
+    shap_values = analysis_results["shap_values"]
+    shap_feature_importance = analysis_results["shap_feature_importance"]
+    reduced_features = analysis_results["reduced_features"]
+
     result_df = features_info_df.copy()
-    result_df.loc["shap_feature_importance", reduced_features] = shap_feat_importance
+    result_df.loc["shap_feature_importance", reduced_features] = shap_feature_importance
 
     if len(shap_values) > 1:
         for i, shap_class in enumerate(shap_values):
@@ -344,7 +461,7 @@ def classify_pairwise(
         features_pair = features.loc[
             (features.label == pair[0]) | (features.label == pair[1])
         ]
-        X, _, acc_scores, _, shap_feat_importance, _ = fit_model_kfold(
+        X, _, acc_scores, _, shap_feature_importance, _ = fit_model_kfold(
             features_pair,
             classifier,
             analysis_type,
@@ -357,132 +474,12 @@ def classify_pairwise(
         accuracy_matrix.loc[pair[0], pair[1]] = np.round(np.mean(acc_scores), 3)
         accuracy_matrix.loc[pair[1], pair[0]] = np.round(np.mean(acc_scores), 3)
 
-        top_features_raw = X.columns[np.argsort(shap_feat_importance)[-n_top_features:]]
+        top_features_raw = X.columns[
+            np.argsort(shap_feature_importance)[-n_top_features:]
+        ]
         top_features[pair] = [f_class + "_" + f for f_class, f in top_features_raw]
 
     return accuracy_matrix, top_features
-
-
-def _get_shap_feature_importance(shap_values):
-    """From a list of shap values per folds, compute the global shap feature importance."""
-    mean_shap_values = np.mean(shap_values, axis=0)
-    if isinstance(mean_shap_values, list):
-        global_mean_shap_values = np.sum(mean_shap_values, axis=0)
-    else:
-        global_mean_shap_values = mean_shap_values
-
-    return mean_shap_values, np.mean(abs(global_mean_shap_values), axis=0)
-
-
-def _evaluate_kfold(X, y, model, folds, analysis_type):
-    """Evaluate the kfolds."""
-    shap_values = []
-    acc_scores = []
-    for indices in folds.split(X, y=y):
-        acc_score, shap_value = compute_fold(X, y, model, indices, analysis_type)
-        shap_values.append(shap_value)
-        acc_scores.append(acc_score)
-    return acc_scores, shap_values
-
-
-def fit_model_kfold(
-    features,
-    model,
-    analysis_type,
-    reduce_set=True,
-    reduced_set_size=100,
-    reduced_set_max_correlation=0.9,
-    n_repeats=1,
-    random_state=1,
-    n_splits=None,
-):
-    """Classify graphs from extracted features with kfold.
-
-    Args:
-        features (dataframe): extracted features
-        classifier (str): name of the classifier to use
-        reduce_set (bool): is True, the classification will be rerun
-                           on a reduced set of top features (from shapely analysis)
-        reduce_set_size (int): number of features to keep for reduces set
-        reduced_set_max_correlation (float): to discared highly correlated top features
-                                             in reduced set of features
-    Returns:
-        WIP
-    """
-    if model is None:
-        raise Exception("Please provide a model for classification")
-
-    X, y = _features_to_Xy(features)
-
-    if analysis_type == "classification":
-        n_splits = _number_folds(y)
-        L.info("Using %s splits", str(n_splits))
-        folds = RepeatedStratifiedKFold(
-            n_splits=n_splits, n_repeats=n_repeats, random_state=random_state
-        )
-    elif analysis_type == "regression":
-        if n_splits is None:
-            n_splits = _number_folds(y)
-        L.info("Using %s splits", str(n_splits))
-        folds = RepeatedKFold(
-            n_splits=n_splits, n_repeats=n_repeats, random_state=random_state
-        )
-
-    acc_scores, shap_values = _evaluate_kfold(X, y, model, folds, analysis_type)
-    _print_accuracy(acc_scores, analysis_type)
-    mean_shap_values, shap_feat_importance = _get_shap_feature_importance(shap_values)
-
-    if not reduce_set:
-        return X, y, acc_scores, mean_shap_values, shap_feat_importance, X.columns
-
-    reduced_features = _get_reduced_feature_set(
-        X,
-        shap_feat_importance,
-        n_top_features=reduced_set_size,
-        alpha=reduced_set_max_correlation,
-    )
-    X_reduced = X[reduced_features]
-
-    acc_scores, shap_values = _evaluate_kfold(X_reduced, y, model, folds, analysis_type)
-    _print_accuracy(acc_scores, analysis_type, reduced=True)
-    mean_shap_values, shap_feat_importance = _get_shap_feature_importance(shap_values)
-
-    return (
-        X_reduced,
-        y,
-        acc_scores,
-        mean_shap_values,
-        shap_feat_importance,
-        reduced_features,
-    )
-
-
-def compute_fold(X, y, model, indices, analysis_type):
-    """Compute a single fold for parallel computation."""
-    train_index, val_index = indices
-    model.fit(X.iloc[train_index], y.iloc[train_index])
-
-    if analysis_type == "classification":
-        acc_score = accuracy_score(y.iloc[val_index], model.predict(X.iloc[val_index]))
-        L.info("Fold accuracy: --- %s ---", str(np.round(acc_score, 3)))
-    elif analysis_type == "regression":
-        acc_score = mean_absolute_error(
-            y.iloc[val_index], model.predict(X.iloc[val_index])
-        )
-
-        import matplotlib.pyplot as plt
-
-        plt.figure()
-        plt.plot(y, model.predict(X), "+")
-        plt.savefig("test.png")
-        plt.close()
-
-        L.info("Mean Absolute Error: --- %s ---", str(np.round(acc_score, 3)))
-
-    explainer = shap.TreeExplainer(model)
-    shap_values = explainer.shap_values(X)
-
-    return acc_score, shap_values
 
 
 def fit_model(features, model):
@@ -494,7 +491,7 @@ def fit_model(features, model):
     if model is None:
         raise Exception("Please provide a model for classification")
 
-    X, y = _features_to_Xy(features)
+    X, y = features_to_Xy(features)
 
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, shuffle=True, stratify=y, random_state=42
@@ -509,5 +506,13 @@ def fit_model(features, model):
 
     L.info("Accuracy: %s", str(acc_scores))
 
-    mean_shap_values, shap_feat_importance = _get_shap_feature_importance([shap_values])
-    return X, y, acc_scores, mean_shap_values, shap_feat_importance
+    mean_shap_values, shap_feature_importance = _get_shap_feature_importance(
+        [shap_values]
+    )
+    return {
+        "X": X,
+        "y": y,
+        "acc_scores": acc_scores,
+        "mean_shao_values": mean_shap_values,
+        "shap_feature_importance": shap_feature_importance,
+    }

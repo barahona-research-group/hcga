@@ -2,13 +2,15 @@
 import logging
 import os
 
-import matplotlib.pyplot as plt
-import networkx as nx
 import numpy as np
-import seaborn as sns
-import shap
 from scipy.cluster.hierarchy import dendrogram, linkage
+import networkx as nx
+import shap
+
+import seaborn as sns
+import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
+from matplotlib.gridspec import GridSpec
 
 # pylint: disable-all
 
@@ -25,46 +27,69 @@ def _save_to_pdf(pdf, figs=None):
         plt.close()
 
 
-def shap_plots(X, y, shap_values, folder, graphs, analysis_type, max_feats=20):
-    """plot summary."""
+def plot_analysis(
+    analysis_results,
+    folder,
+    graphs,
+    analysis_type,
+    max_feats=20,
+    max_feats_dendrogram=100,
+):
+    """Plot summary of hcga analysis."""
+    if "reduced_mean_shap_values" in analysis_results:
+        shap_values = analysis_results["reduced_mean_shap_values"]
+        reduced_features = analysis_results["reduced_features"]
+    else:
+        shap_values = analysis_results["mean_shap_values"]
+        reduced_features = analysis_results["X"].columns
+
+    X = analysis_results["X"][reduced_features]
+    y = analysis_results["y"]
+
     with PdfPages(os.path.join(folder, "analysis_report.pdf")) as pdf:
-        _bar_ranking_plot(shap_values, X, folder, max_feats=max_feats)
+        _bar_ranking_plot(shap_values, X, folder, max_feats)
         _save_to_pdf(pdf)
 
-        _dot_summary_plot(shap_values, X, folder, max_feats=max_feats)
+        _dot_summary_plot(shap_values, X, folder, max_feats)
         _save_to_pdf(pdf)
 
-        _plot_dendrogram_shap(shap_values, X, folder, max_feats=max_feats)
+        _plot_dendrogram_shap(
+            analysis_results["mean_shap_values"],
+            analysis_results["X"],
+            reduced_features,
+            folder,
+            max_feats_dendrogram,
+        )
         _save_to_pdf(pdf)
 
         if analysis_type == "classification":
-            _plot_shap_violin(shap_values, X, y, folder, max_feats=max_feats)
+            _plot_shap_violin(shap_values, X, y, folder, max_feats)
         elif analysis_type == "regression":
-            _plot_trend(shap_values, X, y, folder, max_feats=max_feats)
+            _plot_trend(shap_values, X, y, folder, max_feats)
         _save_to_pdf(pdf)
 
         figs = _plot_feature_summary(
-            X, y, graphs, folder, shap_values, max_feats=max_feats
+            X[reduced_features], y, graphs, folder, shap_values, max_feats
         )
         _save_to_pdf(pdf, figs)
 
 
-def _bar_ranking_plot(shap_vals, data, folder, max_feats):
+def _bar_ranking_plot(shap_values, data, folder, max_feats):
     """Function for customizing and saving SHAP summary bar plot."""
     shap.summary_plot(
-        shap_vals, data, plot_type="bar", max_display=max_feats, show=False
+        shap_values, data, plot_type="bar", max_display=max_feats, show=False
     )
     plt.title("Feature Rankings-All Classes")
     plt.savefig(os.path.join(folder, "shap_bar_rank.png"), dpi=200, bbox_inches="tight")
 
 
-def _dot_summary_plot(shap_vals, data, folder, max_feats):
+def _dot_summary_plot(shap_values, data, folder, max_feats):
     """Function for customizing and saving SHAP summary dot plot."""
-    num_classes = len(shap_vals)
+    num_classes = len(shap_values)
     for i in range(num_classes):
         plt.figure()
         shap.summary_plot(
-            shap_vals[i], data, plot_type="dot", max_display=max_feats, show=False
+            shap_values[i], data, plot_type="dot", max_display=max_feats, show=False
         )
         plt.title("Sample Expanded Feature Summary for Class " + str(i))
         plt.savefig(
@@ -74,33 +99,28 @@ def _dot_summary_plot(shap_vals, data, folder, max_feats):
         )
 
 
-def _plot_dendrogram_shap(shap_vals, data, folder, max_feats=20):
-    from matplotlib.gridspec import GridSpec
-
-    plt.figure()
-
-    shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
-
-    top_feat_idx = shap_mean.argsort()[::-1][:max_feats]
-
-    df_topN = data[data.columns[top_feat_idx]]
+def _plot_dendrogram_shap(shap_values, X, reduced_features, folder, max_feats):
+    """Plot dendrogram witth hierarchical clustering."""
+    shap_mean = np.sum(np.mean(np.abs(shap_values), axis=1), axis=0)
+    top_feat_idx = shap_mean.argsort()[-max_feats:]
+    df_topN = X[X.columns[top_feat_idx]]
 
     cor = np.abs(df_topN.corr())
     Z = linkage(cor, "ward")
+    dn = dendrogram(Z, labels=X.columns[top_feat_idx])
 
-    dn = dendrogram(Z, labels=data.columns[top_feat_idx])
+    # top_feats_names = [df_topN.columns[i] for i in dn["leaves"]]
+    top_feats_names = df_topN.columns[dn["leaves"]]
+    cor_sorted = np.abs(df_topN[top_feats_names].corr())
 
-    top_feats_names = [df_topN.columns[i] for i in dn["leaves"]]
-
-    df = df_topN[top_feats_names]
-    cor2 = np.abs(df.corr())
-
-    f, ax = plt.subplots(3, 1, figsize=(20, 15))
+    plt.figure()
+    f, ax = plt.subplots(3, 1, figsize=(20, 25))
 
     dn = dendrogram(Z, ax=ax[0])
     ax[0].xaxis.set_ticklabels([])
+
     sns.heatmap(
-        cor2,
+        cor_sorted,
         ax=ax[2],
         linewidth=0.5,
         cbar_ax=ax[1],
@@ -116,11 +136,11 @@ def _plot_dendrogram_shap(shap_vals, data, folder, max_feats=20):
 
     ax[0].title.set_text("Top {} features heatmap and dendogram".format(max_feats))
     plt.savefig(
-        os.path.join(folder, "shap_dendogram_top20.png"), dpi=200, bbox_inches="tight"
+        os.path.join(folder, "shap_dendogram.png"), dpi=200, bbox_inches="tight"
     )
 
 
-def _plot_feature_summary(data, labels, graphs, folder, shap_values, max_feats=5):
+def _plot_feature_summary(data, labels, graphs, folder, shap_values, max_feats):
     """for a given feature id, plot the feature summary."""
 
     shap_mean = np.sum(np.mean(np.abs(shap_values), axis=1), axis=0)
@@ -174,7 +194,7 @@ def _plot_feature_summary(data, labels, graphs, folder, shap_values, max_feats=5
     return figs
 
 
-def _plot_shap_violin(shap_vals, data, labels, folder, max_feats=20):
+def _plot_shap_violin(shap_vals, data, labels, folder, max_feats):
     """Plot the violins of a feature."""
     shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
     top_feat_idx = shap_mean.argsort()[::-1][:max_feats]
@@ -205,7 +225,7 @@ def _plot_shap_violin(shap_vals, data, labels, folder, max_feats=20):
     )
 
 
-def _plot_trend(shap_vals, data, labels, folder, max_feats=20):
+def _plot_trend(shap_vals, data, labels, folder, max_feats):
     """Plot the violins of a feature."""
     shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
     top_feat_idx = shap_mean.argsort()[::-1][:max_feats]
