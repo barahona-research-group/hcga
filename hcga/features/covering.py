@@ -18,7 +18,7 @@ class Covering(FeatureClass):
 
         self.add_feature(
             "min_edge_cover",
-            lambda graph: len(list(nx.min_edge_cover(nx.to_undirected(graph)))),
+            lambda graph: len(list(nx.min_edge_cover(graph))),
             "The number of edges which consistutes the minimum edge cover of the graph",
             InterpretabilityScore(3),
         )

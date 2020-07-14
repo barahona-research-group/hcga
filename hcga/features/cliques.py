@@ -3,7 +3,6 @@ from functools import lru_cache
 
 import numpy as np
 from networkx.algorithms import clique
-from networkx import to_undirected
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 
@@ -23,7 +22,7 @@ class Cliques(FeatureClass):
         # graph clique number
         self.add_feature(
             "graph_clique_number",
-            lambda graph: clique.graph_clique_number(to_undirected(graph)),
+            lambda graph: clique.graph_clique_number(graph),
             "The clique number of a graph is the size of the largest clique in the graph",
             InterpretabilityScore(3),
         )
@@ -31,13 +30,13 @@ class Cliques(FeatureClass):
         # number of maximal cliques
         self.add_feature(
             "num_max_cliques",
-            lambda graph: clique.graph_number_of_cliques(to_undirected(graph)),
+            lambda graph: clique.graph_number_of_cliques(graph),
             "The number of maximal cliques in the graph",
             InterpretabilityScore(3),
         )
 
         n_cliques = lambda graph: len(
-            [u for u in list(clique.enumerate_all_cliques(to_undirected(graph))) if len(u) > 1]
+            [u for u in list(clique.enumerate_all_cliques(graph)) if len(u) > 1]
         )
         self.add_feature(
             "num_cliques",
@@ -47,7 +46,7 @@ class Cliques(FeatureClass):
         )
 
         clique_sizes = lambda graph: [
-            len(u) for u in list(clique.enumerate_all_cliques(to_undirected(graph))) if len(u) > 1
+            len(u) for u in list(clique.enumerate_all_cliques(graph)) if len(u) > 1
         ]
         self.add_feature(
             "clique_sizes",
@@ -60,7 +59,7 @@ class Cliques(FeatureClass):
         @lru_cache(maxsize=None)
         def eval_cliques(graph):
             """this evaluates the main function and cach it for speed up."""
-            cliques = [len(u) for u in list(clique.find_cliques(to_undirected(graph))) if len(u) > 1]
+            cliques = [len(u) for u in list(clique.find_cliques(graph)) if len(u) > 1]
             return np.bincount(cliques)[np.nonzero(np.bincount(cliques))]
 
         maximal_clique_sizes = (

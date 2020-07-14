@@ -22,8 +22,10 @@ def nestedness_func(g):
 
     for j in range(1,n):
         for i in range(j):
-            sum_n_ij += len(neighbors[i].intersection(neighbors[j]))
-            sum_n_m += min(len(neighbors[i]), len(neighbors[j]))
+            n_ij = len(neighbors[i].intersection(neighbors[j]))
+            n_m = min(len(neighbors[i]), len(neighbors[j]))
+            sum_n_ij += n_ij
+            sum_n_m += n_m
             
     return sum_n_ij/sum_n_m
 
