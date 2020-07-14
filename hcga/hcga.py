@@ -45,7 +45,7 @@ class Hcga:
         self,
         n_workers=1,
         mode="slow",
-        norm=False,
+        norm=True,
         stats_level="advanced",
         runtimes=False,
         node_feat=True,

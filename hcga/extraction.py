@@ -17,10 +17,10 @@ def extract(  # pylint: disable=too-many-arguments
     graphs,
     n_workers,
     mode="fast",
-    normalize_features=False,
+    normalize_features=True,
     statistics_level="basic",
     with_runtimes=False,
-    with_node_features=False,
+    with_node_features=True,
     timeout=10,
     connected=False,
 ):
@@ -109,7 +109,7 @@ def _load_feature_class(feature_name):
 
 def get_list_feature_classes(
     mode="fast",
-    normalize_features=False,
+    normalize_features=True,
     statistics_level="basic",
     n_node_features=0,
     timeout=10,
