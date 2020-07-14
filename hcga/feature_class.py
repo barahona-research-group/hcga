@@ -6,6 +6,8 @@ import signal
 import numpy as np
 import scipy.stats as st
 from networkx.algorithms.community import quality
+from networkx import to_undirected
+from networkx.exception import NetworkXNotImplemented
 import pandas as pd
 
 from hcga.utils import get_trivial_graph, TimeoutError, timeout_handler
@@ -65,6 +67,7 @@ class FeatureClass:
         if graph is not None:
             self.graph = graph.get_graph(self.__class__.encoding)
             self.graph_id = graph.id
+            self.graph_type = graph.graph_type
         else:
             self.graph = None
         self.features = {}
@@ -154,9 +157,14 @@ class FeatureClass:
         try:
             signal.signal(signal.SIGALRM, timeout_handler)
             signal.alarm(int(self.__class__.timeout))
-            feature = feature_function(function_args)
+            try:
+                feature = feature_function(function_args)
+            except NetworkXNotImplemented:
+                if self.graph_type == "directed":
+                    feature = feature_function(to_undirected(function_args))
             signal.alarm(0)
             return feature
+        
         except (KeyboardInterrupt, SystemExit):
             sys.exit(0)
 
