@@ -216,7 +216,8 @@ def fit_model_kfold(
     X, y = features_to_Xy(features)
 
     if analysis_type == "classification":
-        n_splits = _number_folds(y)
+        if n_splits is None:
+            n_splits = _number_folds(y)
         L.info("Using %s splits", str(n_splits))
         folds = RepeatedStratifiedKFold(
             n_splits=n_splits, n_repeats=n_repeats, random_state=random_state
@@ -417,6 +418,7 @@ def classify_pairwise(
     reduced_set_size=100,
     reduced_set_max_correlation=0.5,
     n_repeats=1,
+    n_splits=None,
 ):
     """Classify all possible pairs of clases with kfold and returns top features.
 
@@ -461,7 +463,7 @@ def classify_pairwise(
         features_pair = features.loc[
             (features.label == pair[0]) | (features.label == pair[1])
         ]
-        X, _, acc_scores, _, shap_feature_importance, _ = fit_model_kfold(
+        analysis_results = fit_model_kfold(
             features_pair,
             classifier,
             analysis_type,
@@ -469,14 +471,22 @@ def classify_pairwise(
             reduced_set_size=reduced_set_size,
             reduced_set_max_correlation=reduced_set_max_correlation,
             n_repeats=n_repeats,
+            n_splits=n_splits,
         )
+        if 'reduced_acc_scores' in analysis_results:
+            accuracy_matrix.loc[pair[0], pair[1]] = np.round(np.mean(analysis_results['reduced_acc_scores']), 3)
+        else:
+            accuracy_matrix.loc[pair[0], pair[1]] = np.round(np.mean(analysis_results['acc_scores']), 3)
+        accuracy_matrix.loc[pair[1], pair[0]] = accuracy_matrix.loc[pair[0], pair[1]]
 
-        accuracy_matrix.loc[pair[0], pair[1]] = np.round(np.mean(acc_scores), 3)
-        accuracy_matrix.loc[pair[1], pair[0]] = np.round(np.mean(acc_scores), 3)
-
-        top_features_raw = X.columns[
-            np.argsort(shap_feature_importance)[-n_top_features:]
-        ]
+        if 'reduced_features' in analysis_results:
+            top_features_raw = analysis_results['X'][analysis_results['reduced_features']].columns[
+                np.argsort(analysis_results['reduced_shap_feature_importance'])[-n_top_features:]
+            ]
+        else:
+            top_features_raw = analysis_results['X'].columns[
+                np.argsort(analysis_results['shap_feature_importance'])[-n_top_features:]
+            ]
         top_features[pair] = [f_class + "_" + f for f_class, f in top_features_raw]
 
     return accuracy_matrix, top_features
