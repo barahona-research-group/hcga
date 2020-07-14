@@ -108,7 +108,7 @@ class Hcga:
             interpretability=interpretability,
             model=model,
             kfold=kfold,
-            compute_shap=compute_shap,
+            reduce_set=compute_shap,
             reduced_set_size=reduced_set_size,
             reduced_set_max_correlation=reduced_set_max_correlation,
             grid_search=False,
