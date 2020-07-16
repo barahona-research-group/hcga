@@ -1,67 +1,69 @@
-"""Jaccard Similarity class."""
+"""Role-similarity Based Comparison class."""
 import networkx as nx
 import numpy as np
+from sklearn.preprocessing import normalize
 
 from .utils import ensure_connected,  remove_selfloops
 from ..feature_class import FeatureClass, InterpretabilityScore
 
-featureclass_name = "JaccardSimilarity"
+featureclass_name = "RolesimilarityBasedComparison"
 
 """
-Create the Jaccard similarity matrix for nodes in the network, 
+Create the role-similarity based comparison (rbc) matrix for nodes in the network,
 then convert this to a graph and extract some features
-This is defined as a/(a+b+c), where
-a = number of common neighbours
-b = number of neighbours of node 1 that are not neighbours of node 2
-c = number of neighbours of node 2 that are not neighbours of node 1
-Treating this matrix as an adjacency matrix, we can compute network some features
-ref: https://www.biorxiv.org/content/10.1101/112540v4.full
-
-For some features we remove selfloops, since the diagonal of the Jaccard 
-similarity consists of ones, and therefore all nodes will have a selfloop with weight one
+ref: https://arxiv.org/abs/1103.5582
+For some features we remove selfloops, since the diagonal of the rbc matrix
+consists of ones, and therefore all nodes will have a selfloop with weight one
 """
 
-def jaccard_similarity(graph):
-    
-    # Construct a graph from Jaccard similarity matrix
-    n = nx.number_of_nodes(graph)
-    jsm = np.eye(n)
-    
-    neighbors = [0 for i in range(n)]
-    
-    for j in range(n):
-        neighbors[j] = set(graph.neighbors(j))
-        
-    for i in range(n):
-        for j in range(i+1,n):
-            a = len(neighbors[i].intersection(neighbors[j]))
-            if a == 0:
-                jsm[i,j] = 0
-            else:
-                b = len(neighbors[i].difference(neighbors[j]))
-                c = len(neighbors[j].difference(neighbors[i]))
-                jsm[i,j] = a/(a+b+c)
+def rbc(graph):
             
-    return nx.Graph(jsm)
+    a = np.where(nx.adj_matrix(graph).toarray() > 0, 1, 0)
+    g = nx.DiGraph(a)
+            
+    if nx.is_directed_acyclic_graph(g):
+        k = nx.dag_longest_path_length(g)
+        beta = 0.95
+            
+    else:
+        l = max(np.linalg.eig(a)[0])
+        if l != 0:
+            beta = 0.95/l
+        else:
+            beta = 0.95
+        k = 10
+            
+    n = g.number_of_nodes()
+    ones = np.ones(n)
+    ba = beta * a
+    ba_t = np.transpose(ba)
+    x = np.zeros([n, k*2])
+    for i in range(1,k+1):
+        x[:,i-1] = np.dot(np.linalg.matrix_power(ba,i),ones)
+        x[:,i+k-1] = np.dot(np.linalg.matrix_power(ba_t,i),ones)
+    x_norm = normalize(x, axis=1)
+    y = np.matmul(x_norm,np.transpose(x_norm))
+            
+    return nx.Graph(y)
 
 
-class JaccardSimilarity(FeatureClass):
-    """Jaccard Similarity class."""
+class RolesimilarityBasedComparison(FeatureClass):
+    """Role-similarity Based Comparison class."""
     
     modes = ["fast", "medium", "slow"]
-    shortname = "JS"
-    name = "jaccard_similarity"
+    shortname = "RBC"
+    name = "rbc"
     encoding = "networkx"
 
     def compute_features(self):
         
-        g = jaccard_similarity(self.graph)
+        g = rbc(self.graph)
         
         # Basic stats
         self.add_feature(
             "number_of_edges",
             lambda graph: graph.number_of_edges(),
-            "Number of edges in Jaccard similarity graph",
+            "Number of edges in rbc graph",
             InterpretabilityScore(5),
             function_args=g,
         )
@@ -69,7 +71,7 @@ class JaccardSimilarity(FeatureClass):
         self.add_feature(
             "number_of_edges_no_selfloops",
             lambda graph: remove_selfloops(graph).number_of_edges(),
-            "Number of edges, not including selfloops, in Jaccard similarity graph",
+            "Number of edges, not including selfloops, in rbc graph",
             InterpretabilityScore(5),
             function_args=g,
         )
@@ -77,7 +79,7 @@ class JaccardSimilarity(FeatureClass):
         self.add_feature(
             "connectance",
             lambda graph: nx.density(graph),
-            "Connectance of Jaccard similarity graph",
+            "Connectance of rbc graph",
             InterpretabilityScore(5),
             function_args=g,
         )
@@ -85,7 +87,7 @@ class JaccardSimilarity(FeatureClass):
         self.add_feature(
             "diameter",
             lambda graph: nx.diameter(ensure_connected(graph)),
-            "Diameter of Jaccard similarity graph",
+            "Diameter of rbc graph",
             InterpretabilityScore(5),
             function_args=g,
         )
@@ -93,7 +95,7 @@ class JaccardSimilarity(FeatureClass):
         self.add_feature(
             "radius",
             lambda graph: nx.radius(ensure_connected(graph)),
-            "Radius of Jaccard similarity graph",
+            "Radius of rbc graph",
             InterpretabilityScore(5),
             function_args=g,
         )
@@ -101,7 +103,7 @@ class JaccardSimilarity(FeatureClass):
         self.add_feature(
             "edge_weights",
             lambda graph: list(nx.get_edge_attributes(remove_selfloops(graph), "weight").values()),
-            "Weights of the edges in Jaccard similarity graph",
+            "Weights of the edges in rbc graph",
             InterpretabilityScore(5),
             function_args=g,
             statistics="centrality",
@@ -111,7 +113,7 @@ class JaccardSimilarity(FeatureClass):
         self.add_feature(
             "degree_assortativity_coeff",
             lambda graph: nx.degree_assortativity_coefficient(graph),
-            "Similarity of connections in Jaccard similarity graph with respect to the node degree",
+            "Similarity of connections in rbc graph with respect to the node degree",
             InterpretabilityScore(4),
             function_args=g,
         )
@@ -144,4 +146,5 @@ class JaccardSimilarity(FeatureClass):
             function_args=g,
             statistics="centrality",
         )
+        
         
