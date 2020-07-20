@@ -7,6 +7,8 @@ from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "ShortestPaths"
 
+# pylint: disable=no-value-for-parameter
+
 
 class ShortestPaths(FeatureClass):
     """Shortest paths class."""
