@@ -1,6 +1,5 @@
 """Utils functions."""
 import logging
-import numpy as np
 import pandas as pd
 
 from hcga.graph import Graph

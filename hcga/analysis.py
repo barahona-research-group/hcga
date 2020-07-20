@@ -17,14 +17,11 @@ from sklearn.model_selection import (
 )
 from sklearn.preprocessing import StandardScaler
 
-from . import utils
 from .plotting import plot_analysis
 
 L = logging.getLogger(__name__)
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 warnings.simplefilter("ignore")
-
-# pylint: disable=too-many-locals
 
 
 def features_to_Xy(features):
@@ -322,7 +319,36 @@ def compute_fold(X, y, model, indices, analysis_type):
     return acc_score, shap_values
 
 
-def analysis(  # pylint: disable=too-many-arguments,too-many-locals
+def _preprocess_features(features, features_info, graph_removal, interpretability):
+    """Collect all feature filters."""
+    L.info("%s total features", str(len(features.columns)))
+
+    samples_to_filter = _filter_graphs(features, graph_removal=graph_removal)
+    features = features.drop(labels=samples_to_filter)
+    features_info = features_info.drop(labels=samples_to_filter)
+    L.info(
+        "%s graphs were removed for more than %s fraction of bad features",
+        str(len(samples_to_filter)),
+        str(graph_removal),
+    )
+
+    good_features = _filter_features(features)
+    features = features[good_features]
+    features_info = features_info[good_features.drop("label")]
+    L.info("%s valid features", str(len(features.columns)))
+
+    features, features_info = _filter_interpretable(
+        features, features_info, interpretability
+    )
+    L.info(
+        "%s with interpretability %s", str(len(features.columns)), str(interpretability)
+    )
+
+    features = _normalise_feature_data(features)
+    return features, features_info
+
+
+def analysis(
     features,
     features_info,
     graphs,
@@ -343,30 +369,9 @@ def analysis(  # pylint: disable=too-many-arguments,too-many-locals
     random_state=1,
 ):
     """Main function to classify graphs and plot results."""
-    L.info("%s total features", str(len(features.columns)))
-
-    samples_to_filter = _filter_graphs(features, graph_removal=graph_removal)
-    features = features.drop(labels=samples_to_filter)
-    features_info = features_info.drop(labels=samples_to_filter)
-    L.info(
-        "%s graphs were removed for more than %s fraction of bad features",
-        str(len(samples_to_filter)),
-        str(graph_removal),
+    features, features_info = _preprocess_features(
+        features, features_info, graph_removal, interpretability
     )
-
-    good_features = _filter_features(features)
-    features = features[good_features]
-    features_info = features_info[good_features.drop('label')]
-    L.info("%s valid features", str(len(features.columns)))
-
-    features, features_info = _filter_interpretable(
-        features, features_info, interpretability
-    )
-    L.info(
-        "%s with interpretability %s", str(len(features.columns)), str(interpretability)
-    )
-
-    features = _normalise_feature_data(features)
     model = _get_model(model, analysis_type)
 
     if kfold:
@@ -416,13 +421,17 @@ def _save_to_csv(features_info_df, analysis_results, folder="results"):
     """Save csv file with analysis data."""
 
     result_df = features_info_df.copy()
-    result_df.loc["shap_feature_importance"] = analysis_results["shap_feature_importance"]
+    result_df.loc["shap_feature_importance"] = analysis_results[
+        "shap_feature_importance"
+    ]
     shap_values = analysis_results["shap_values"]
     for i, shap_class in enumerate(shap_values):
-        result_df.loc["shap_importance: class {}".format(i)] = np.vstack(shap_class).mean(axis=0)
+        result_df.loc["shap_importance: class {}".format(i)] = np.vstack(
+            shap_class
+        ).mean(axis=0)
 
     if analysis_results["reduced_features"] is not None:
-        reduced_features = analysis_results['reduced_features']
+        reduced_features = analysis_results["reduced_features"]
         result_df.loc[
             "reduced_shap_feature_importance", reduced_features
         ] = analysis_results["reduced_shap_feature_importance"]
@@ -473,20 +482,9 @@ def classify_pairwise(
     Returns:
         (dataframe, list, int): accuracies dataframe, list of top features, number of top pairs
     """
-    L.info("%s total features", str(len(features.columns)))
-
-    features = utils.filter_graphs(features, graph_removal=graph_removal)
-    features = utils.filter_features(features)
-    L.info("%s valid features", str(len(features.columns)))
-
-    features, features_info = _filter_interpretable(
-        features, features_info, interpretability
+    features, features_info = _preprocess_features(
+        features, features_info, graph_removal, interpretability
     )
-    L.info(
-        "%s with interpretability %s", str(len(features.columns)), str(interpretability)
-    )
-
-    features = _normalise_feature_data(features)
 
     analysis_type = "classification"
     classifier = _get_model(model, analysis_type=analysis_type)
@@ -509,23 +507,29 @@ def classify_pairwise(
             n_repeats=n_repeats,
             n_splits=n_splits,
         )
-        if 'reduced_acc_scores' in analysis_results:
+        if "reduced_acc_scores" in analysis_results:
             accuracy_matrix.loc[pair[0], pair[1]] = np.round(
-                np.mean(analysis_results['reduced_acc_scores']), 3
+                np.mean(analysis_results["reduced_acc_scores"]), 3
             )
         else:
             accuracy_matrix.loc[pair[0], pair[1]] = np.round(
-                np.mean(analysis_results['acc_scores']), 3
+                np.mean(analysis_results["acc_scores"]), 3
             )
         accuracy_matrix.loc[pair[1], pair[0]] = accuracy_matrix.loc[pair[0], pair[1]]
 
-        if 'reduced_features' in analysis_results:
-            top_features_raw = analysis_results['X'][analysis_results['reduced_features']].columns[
-                np.argsort(analysis_results['reduced_shap_feature_importance'])[-n_top_features:]
+        if "reduced_features" in analysis_results:
+            top_features_raw = analysis_results["X"][
+                analysis_results["reduced_features"]
+            ].columns[
+                np.argsort(analysis_results["reduced_shap_feature_importance"])[
+                    -n_top_features:
+                ]
             ]
         else:
-            top_features_raw = analysis_results['X'].columns[
-                np.argsort(analysis_results['shap_feature_importance'])[-n_top_features:]
+            top_features_raw = analysis_results["X"].columns[
+                np.argsort(analysis_results["shap_feature_importance"])[
+                    -n_top_features:
+                ]
             ]
         top_features[pair] = [f_class + "_" + f for f_class, f in top_features_raw]
 

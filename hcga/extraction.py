@@ -10,10 +10,8 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-from . import utils
 
-
-def extract(  # pylint: disable=too-many-arguments
+def extract(
     graphs,
     n_workers,
     mode="fast",
@@ -70,8 +68,6 @@ def extract(  # pylint: disable=too-many-arguments
     _set_graph_labels(all_features_df, graphs)
 
     print(len(all_features_df.columns), "feature extracted.")
-    print(len(utils.filter_features(all_features_df).columns), "valid features.")
-
     return all_features_df, features_info_df
 
 
