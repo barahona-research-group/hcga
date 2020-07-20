@@ -117,8 +117,25 @@ def _filter_interpretable(features, features_info, interpretability):
         if score < interpretability:
             if feat in features.columns:
                 features = features.drop(columns=[feat])
-                del features_info[feat]
+                features_info = features_info.drop(columns=[feat])
     return features, features_info
+
+
+def _filter_graphs(features, graph_removal=0.05):
+    """Remove samples with more than X% bad values."""
+    samples_to_filter = features.index[
+        features.isnull().sum(axis=1) / len(features.columns) > graph_removal
+    ].tolist()
+    return samples_to_filter
+
+
+def _filter_features(features):
+    """Filter features and create feature matrix."""
+    nan_features = features.replace([np.inf, -np.inf], np.nan)
+    valid_features = nan_features.dropna(axis=1)
+    return valid_features.drop(
+        valid_features.std()[(valid_features.std() == 0)].index, axis=1
+    ).columns
 
 
 def _get_model(model, analysis_type):
@@ -328,8 +345,18 @@ def analysis(  # pylint: disable=too-many-arguments,too-many-locals
     """Main function to classify graphs and plot results."""
     L.info("%s total features", str(len(features.columns)))
 
-    features = utils.filter_graphs(features, graph_removal=graph_removal)
-    features = utils.filter_features(features)
+    samples_to_filter = _filter_graphs(features, graph_removal=graph_removal)
+    features = features.drop(labels=samples_to_filter)
+    features_info = features_info.drop(labels=samples_to_filter)
+    L.info(
+        "%s graphs were removed for more than %s fraction of bad features",
+        str(len(samples_to_filter)),
+        str(graph_removal),
+    )
+
+    good_features = _filter_features(features)
+    features = features[good_features]
+    features_info = features_info[good_features.drop('label')]
     L.info("%s valid features", str(len(features.columns)))
 
     features, features_info = _filter_interpretable(
@@ -388,22 +415,31 @@ def analysis(  # pylint: disable=too-many-arguments,too-many-locals
 def _save_to_csv(features_info_df, analysis_results, folder="results"):
     """Save csv file with analysis data."""
 
-    shap_values = analysis_results["shap_values"]
-    shap_feature_importance = analysis_results["shap_feature_importance"]
-    reduced_features = analysis_results["reduced_features"]
-
     result_df = features_info_df.copy()
-    result_df.loc["shap_feature_importance", reduced_features] = shap_feature_importance
+    result_df.loc["shap_feature_importance"] = analysis_results["shap_feature_importance"]
+    shap_values = analysis_results["shap_values"]
+    for i, shap_class in enumerate(shap_values):
+        result_df.loc["shap_importance: class {}".format(i)] = np.vstack(shap_class).mean(axis=0)
 
-    if len(shap_values) > 1:
+    if analysis_results["reduced_features"] is not None:
+        reduced_features = analysis_results['reduced_features']
+        result_df.loc[
+            "reduced_shap_feature_importance", reduced_features
+        ] = analysis_results["reduced_shap_feature_importance"]
+        shap_values = analysis_results["reduced_shap_values"]
         for i, shap_class in enumerate(shap_values):
             result_df.loc[
-                "shap_importance: class {}".format(i), reduced_features
+                "reduced shap_importance: class {}".format(i), reduced_features
             ] = np.vstack(shap_class).mean(axis=0)
 
-    result_df = result_df.sort_values(
-        "shap_feature_importance", axis=1, ascending=False
-    )
+        result_df = result_df.sort_values(
+            "reduced_shap_feature_importance", axis=1, ascending=False
+        )
+    else:
+        result_df = result_df.sort_values(
+            "shap_feature_importance", axis=1, ascending=False
+        )
+
     result_df.to_csv(os.path.join(folder, "importance_results.csv"))
 
 
@@ -474,9 +510,13 @@ def classify_pairwise(
             n_splits=n_splits,
         )
         if 'reduced_acc_scores' in analysis_results:
-            accuracy_matrix.loc[pair[0], pair[1]] = np.round(np.mean(analysis_results['reduced_acc_scores']), 3)
+            accuracy_matrix.loc[pair[0], pair[1]] = np.round(
+                np.mean(analysis_results['reduced_acc_scores']), 3
+            )
         else:
-            accuracy_matrix.loc[pair[0], pair[1]] = np.round(np.mean(analysis_results['acc_scores']), 3)
+            accuracy_matrix.loc[pair[0], pair[1]] = np.round(
+                np.mean(analysis_results['acc_scores']), 3
+            )
         accuracy_matrix.loc[pair[1], pair[0]] = accuracy_matrix.loc[pair[0], pair[1]]
 
         if 'reduced_features' in analysis_results:
