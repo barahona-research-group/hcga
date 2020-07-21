@@ -2,6 +2,7 @@
 *.svg 
 *.swp
 *.pkl
+.tox/*
 
 build/
 
