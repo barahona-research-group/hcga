@@ -13,12 +13,12 @@ class Connectance(FeatureClass):
     shortname = "Cns"
     name = "connectance"
     encoding = "networkx"
-    
+
     def compute_features(self):
-    
+
         self.add_feature(
-                "connectance",
-                lambda graph: nx.density(graph),
-                "ratio of number of edges to maximum possible number of edges",
-                InterpretabilityScore(3),
-            )
+            "connectance",
+            lambda graph: nx.density(graph),
+            "ratio of number of edges to maximum possible number of edges",
+            InterpretabilityScore(3),
+        )

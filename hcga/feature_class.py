@@ -166,7 +166,7 @@ class FeatureClass:
                     feature = feature_function(to_undirected(function_args))
             signal.alarm(0)
             return feature
-        
+
         except (KeyboardInterrupt, SystemExit):
             sys.exit(0)
 

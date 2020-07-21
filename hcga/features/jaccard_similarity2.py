@@ -3,13 +3,13 @@ import networkx as nx
 import numpy as np
 
 from .jaccard_similarity import jaccard_similarity
-from .utils import ensure_connected,  remove_selfloops
+from .utils import ensure_connected
 from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "JaccardSimilarity2"
 
 """
-Create the Jaccard similarity matrix for nodes in the network, 
+Create the Jaccard similarity matrix for nodes in the network,
 then convert this to a graph and extract some features
 This is defined as a/(a+b+c), where
 a = number of common neighbours
@@ -18,22 +18,23 @@ c = number of neighbours of node 2 that are not neighbours of node 1
 Treating this matrix as an adjacency matrix, we can compute network some features
 ref: https://www.biorxiv.org/content/10.1101/112540v4.full
 
-For some features we remove selfloops, since the diagonal of the Jaccard 
+For some features we remove selfloops, since the diagonal of the Jaccard
 similarity consists of ones, and therefore all nodes will have a selfloop with weight one
 """
 
+
 class JaccardSimilarity2(FeatureClass):
     """Jaccard Similarity class2."""
-    
+
     modes = ["fast", "medium", "slow"]
     shortname = "JS"
     name = "jaccard_similarity2"
     encoding = "networkx"
 
     def compute_features(self):
-        
+
         g = jaccard_similarity(self.graph)
-        
+
         # Cliques
         self.add_feature(
             "graph_clique_number",
@@ -58,7 +59,7 @@ class JaccardSimilarity2(FeatureClass):
             InterpretabilityScore(3),
             function_args=g,
         )
-        
+
         # Clustering
         self.add_feature(
             "num_triangles",
@@ -67,7 +68,7 @@ class JaccardSimilarity2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         self.add_feature(
             "transitivity",
             lambda graph: nx.transitivity(graph),
@@ -75,7 +76,7 @@ class JaccardSimilarity2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         # Components
         self.add_feature(
             "is_connected",
@@ -92,7 +93,7 @@ class JaccardSimilarity2(FeatureClass):
             InterpretabilityScore(5),
             function_args=g,
         )
-        
+
         self.add_feature(
             "largest_connected_component",
             lambda graph: ensure_connected(graph).number_of_nodes(),
@@ -100,7 +101,7 @@ class JaccardSimilarity2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         # Distance measures
         self.add_feature(
             "barycenter_size",
@@ -142,7 +143,7 @@ class JaccardSimilarity2(FeatureClass):
             function_args=g,
             statistics="centrality",
         )
-        
+
         # Efficiency
         self.add_feature(
             "local_efficiency",
@@ -159,7 +160,7 @@ class JaccardSimilarity2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         # Independent set
         self.add_feature(
             "size_max_indep_set",
@@ -168,7 +169,7 @@ class JaccardSimilarity2(FeatureClass):
             InterpretabilityScore(3),
             function_args=g,
         )
-        
+
         # Maximal matching
         self.add_feature(
             "maximal_matching",
@@ -177,7 +178,7 @@ class JaccardSimilarity2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         # Node connectivity
         self.add_feature(
             "node_connectivity",
@@ -186,7 +187,7 @@ class JaccardSimilarity2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         self.add_feature(
             "avg_node_connectivity",
             lambda graph: nx.average_node_connectivity(graph),
@@ -194,7 +195,7 @@ class JaccardSimilarity2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         self.add_feature(
             "edge_connectivity",
             lambda graph: nx.edge_connectivity(graph),
@@ -202,7 +203,7 @@ class JaccardSimilarity2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         # Small worldness
         self.add_feature(
             "omega",
@@ -211,5 +212,3 @@ class JaccardSimilarity2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
-

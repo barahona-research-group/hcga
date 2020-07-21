@@ -18,7 +18,7 @@ class Cliques(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        
+
         # graph clique number
         self.add_feature(
             "graph_clique_number",

@@ -1,10 +1,9 @@
 """Role-similarity Based Comparison class 2."""
 import networkx as nx
 import numpy as np
-from sklearn.preprocessing import normalize
 
 from .rbc import rbc
-from .utils import ensure_connected,  remove_selfloops
+from .utils import ensure_connected
 from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "RolesimilarityBasedComparison2"
@@ -17,9 +16,10 @@ For some features we remove selfloops, since the diagonal of the rbc matrix
 consists of ones, and therefore all nodes will have a selfloop with weight one
 """
 
+
 class RolesimilarityBasedComparison2(FeatureClass):
     """Role-similarity Based Comparison class 2."""
-    
+
     modes = ["fast", "medium", "slow"]
     shortname = "RBC2"
     name = "rbc2"
@@ -28,7 +28,7 @@ class RolesimilarityBasedComparison2(FeatureClass):
     def compute_features(self):
 
         g = rbc(self.graph)
-        
+
         # Cliques
         self.add_feature(
             "graph_clique_number",
@@ -53,7 +53,7 @@ class RolesimilarityBasedComparison2(FeatureClass):
             InterpretabilityScore(3),
             function_args=g,
         )
-        
+
         # Clustering
         self.add_feature(
             "num_triangles",
@@ -62,7 +62,7 @@ class RolesimilarityBasedComparison2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         self.add_feature(
             "transitivity",
             lambda graph: nx.transitivity(graph),
@@ -70,7 +70,7 @@ class RolesimilarityBasedComparison2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         # Components
         self.add_feature(
             "is_connected",
@@ -87,7 +87,7 @@ class RolesimilarityBasedComparison2(FeatureClass):
             InterpretabilityScore(5),
             function_args=g,
         )
-        
+
         self.add_feature(
             "largest_connected_component",
             lambda graph: ensure_connected(graph).number_of_nodes(),
@@ -95,7 +95,7 @@ class RolesimilarityBasedComparison2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         # Distance measures
         self.add_feature(
             "barycenter_size",
@@ -137,7 +137,7 @@ class RolesimilarityBasedComparison2(FeatureClass):
             function_args=g,
             statistics="centrality",
         )
-        
+
         # Efficiency
         self.add_feature(
             "local_efficiency",
@@ -154,7 +154,7 @@ class RolesimilarityBasedComparison2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         # Independent set
         self.add_feature(
             "size_max_indep_set",
@@ -163,7 +163,7 @@ class RolesimilarityBasedComparison2(FeatureClass):
             InterpretabilityScore(3),
             function_args=g,
         )
-        
+
         # Maximal matching
         self.add_feature(
             "maximal_matching",
@@ -172,7 +172,7 @@ class RolesimilarityBasedComparison2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         # Node connectivity
         self.add_feature(
             "node_connectivity",
@@ -181,7 +181,7 @@ class RolesimilarityBasedComparison2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         self.add_feature(
             "avg_node_connectivity",
             lambda graph: nx.average_node_connectivity(graph),
@@ -189,7 +189,7 @@ class RolesimilarityBasedComparison2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         self.add_feature(
             "edge_connectivity",
             lambda graph: nx.edge_connectivity(graph),
@@ -197,7 +197,7 @@ class RolesimilarityBasedComparison2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         # Small worldness
         self.add_feature(
             "omega",
@@ -206,4 +206,3 @@ class RolesimilarityBasedComparison2(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
