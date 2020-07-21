@@ -1,8 +1,13 @@
+import logging
+
 from .analysis import analysis
 from .extraction import extract
 from .io import load_dataset, load_features, save_dataset, save_features
 
 # pylint: disable-all
+
+L = logging.getLogger(__name__)
+L.setLevel(logging.DEBUG)
 
 
 class Hcga:
@@ -49,8 +54,8 @@ class Hcga:
         stats_level="advanced",
         runtimes=False,
         node_feat=True,
-        timeout=10,
-        connected=True,
+        timeout=30,
+        connected=False,
     ):
 
         self.features, self.features_info = extract(
@@ -88,7 +93,7 @@ class Hcga:
         analysis_type="classification",
         model="XG",
         kfold=True,
-        compute_shap=True,
+        reduce_set=True,
         reduced_set_size=100,
         reduced_set_max_correlation=0.9,
         grid_search=False,
@@ -108,7 +113,7 @@ class Hcga:
             interpretability=interpretability,
             model=model,
             kfold=kfold,
-            compute_shap=compute_shap,
+            reduce_set=reduce_set,
             reduced_set_size=reduced_set_size,
             reduced_set_max_correlation=reduced_set_max_correlation,
             grid_search=False,
