@@ -1,5 +1,6 @@
 """Jaccard Similarity class."""
 import networkx as nx
+from networkx.algorithms import centrality
 import numpy as np
 
 from .utils import ensure_connected, remove_selfloops
@@ -8,7 +9,7 @@ from ..feature_class import FeatureClass, InterpretabilityScore
 featureclass_name = "JaccardSimilarity"
 
 """
-Create the Jaccard similarity matrix for nodes in the network, 
+Create the Jaccard similarity matrix for nodes in the network,
 then convert this to a graph and extract some features
 This is defined as a/(a+b+c), where
 a = number of common neighbours
@@ -17,30 +18,33 @@ c = number of neighbours of node 2 that are not neighbours of node 1
 Treating this matrix as an adjacency matrix, we can compute network some features
 ref: https://www.biorxiv.org/content/10.1101/112540v4.full
 
-For some features we remove selfloops, since the diagonal of the Jaccard 
+For some features we remove selfloops, since the diagonal of the Jaccard
 similarity consists of ones, and therefore all nodes will have a selfloop with weight one
 """
 
+
 def jaccard_similarity(graph):
     """Construct a graph from Jaccard similarity matrix"""
+
     n = nx.number_of_nodes(graph)
     jsm = np.eye(n)
-    
+
     neighbors = [0 for i in range(n)]
             
     for i,j in enumerate(graph.nodes()):
         neighbors[i] = set(graph.neighbors(j))
         
     for i in range(n):
-        for j in range(i+1,n):
+        for j in range(i + 1, n):
             a = len(neighbors[i].intersection(neighbors[j]))
             if a == 0:
-                jsm[i,j] = 0
+                jsm[i, j] = 0
             else:
                 b = len(neighbors[i].difference(neighbors[j]))
                 c = len(neighbors[j].difference(neighbors[i]))
-                jsm[i,j] = a/(a+b+c)
-    
+
+                jsm[i, j] = a / (a + b + c)
+
     return nx.Graph(jsm)
 
 def compute_feats(graph):
@@ -68,7 +72,7 @@ def compute_feats(graph):
 
 class JaccardSimilarity(FeatureClass):
     """Jaccard Similarity class."""
-    
+
     modes = ["fast", "medium", "slow"]
     shortname = "JS"
     name = "jaccard_similarity"
@@ -95,7 +99,6 @@ class JaccardSimilarity(FeatureClass):
             "edge_connectivity",
             ]
         
-        
         self.add_feature(
             feature_names,
             lambda graph: compute_feats(jaccard_similarity(graph)),
@@ -103,4 +106,4 @@ class JaccardSimilarity(FeatureClass):
             InterpretabilityScore(5),
             statistics="list",
         )
-        
+

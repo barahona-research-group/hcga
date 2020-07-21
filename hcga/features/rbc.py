@@ -1,5 +1,6 @@
 """Role-similarity Based Comparison class."""
 import networkx as nx
+from networkx.algorithms import centrality
 import numpy as np
 
 from .utils import ensure_connected, remove_selfloops
@@ -15,19 +16,20 @@ For some features we remove selfloops, since the diagonal of the rbc matrix
 consists of ones, and therefore all nodes will have a selfloop with weight one
 """
 
+
 def rbc(graph):
-    """Construct a graph from role-similarity based comparison matrix"""
+    """Rbc computation."""
     a = np.where(nx.adj_matrix(graph).toarray() > 0, 1, 0)
     g = nx.DiGraph(a)
-                    
+
     if nx.is_directed_acyclic_graph(g):
         k = nx.dag_longest_path_length(g)
         beta = 0.95
-                    
+
     else:
-        l = max(np.linalg.eig(a)[0])
-        if l != 0:
-            beta = 0.95/l
+        lamb = max(np.linalg.eig(a)[0])
+        if lamb != 0:
+            beta = 0.95 / lamb
         else:
             beta = 0.95
         k = 10
@@ -36,14 +38,14 @@ def rbc(graph):
     ones = np.ones(n)
     ba = beta * a
     ba_t = np.transpose(ba)
-    x = np.zeros([n, k*2])
-    for i in range(1,k+1):
-        x[:,i-1] = np.dot(np.linalg.matrix_power(ba,i),ones)
-        x[:,i+k-1] = np.dot(np.linalg.matrix_power(ba_t,i),ones)
-        
+
+    x = np.zeros([n, k * 2])
+    for i in range(1, k + 1):
+        x[:, i - 1] = np.dot(np.linalg.matrix_power(ba, i), ones)
+        x[:, i + k - 1] = np.dot(np.linalg.matrix_power(ba_t, i), ones)
     x_norm = normalize(x, axis=1)
-    y = np.matmul(x_norm,np.transpose(x_norm))
-                    
+    y = np.matmul(x_norm, np.transpose(x_norm))
+
     return nx.Graph(y)
 
 def compute_feats(graph):
@@ -71,7 +73,7 @@ def compute_feats(graph):
 
 class RolesimilarityBasedComparison(FeatureClass):
     """Role-similarity Based Comparison class."""
-    
+
     modes = ["fast", "medium", "slow"]
     shortname = "RBC"
     name = "rbc"
@@ -97,8 +99,7 @@ class RolesimilarityBasedComparison(FeatureClass):
             "node_connectivity",
             "edge_connectivity",
             ]
-        
-        
+
         self.add_feature(
             feature_names,
             lambda graph: compute_feats(rbc(graph)),
@@ -106,6 +107,5 @@ class RolesimilarityBasedComparison(FeatureClass):
             InterpretabilityScore(5),
             statistics="list",
         )
-
         
         

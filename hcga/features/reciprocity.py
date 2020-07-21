@@ -1,5 +1,4 @@
 """Reciprocity class."""
-import numpy as np
 import networkx as nx
 
 from ..feature_class import FeatureClass, InterpretabilityScore

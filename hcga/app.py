@@ -1,12 +1,12 @@
 """Hcga app module."""
 import os
-import warnings
 from pathlib import Path
+import logging
 
 import click
 
-warnings.simplefilter("ignore")
-
+L = logging.getLogger(__name__)
+L.setLevel(logging.DEBUG)
 # pylint: disable=too-many-arguments,too-many-locals
 
 
@@ -178,13 +178,8 @@ def extract_features(
     "--reduced-set-max-correlation",
     default=0.9,
     show_default=True,
-    help="Maximum correlation to allow for selection of top features for reduced feature classification.",
-)
-@click.option(
-    "--grid-search/--no-grid-search",
-    default=False,
-    show_default=True,
-    help="True or False whether to use grid search",
+    help="Maximum correlation to allow for selection of top features \
+    for reduced feature classification.",
 )
 @click.option(
     "-p/-np",
@@ -211,7 +206,6 @@ def feature_analysis(
     reduce_set,
     reduced_set_size,
     reduced_set_max_correlation,
-    grid_search,
     plot,
     max_feats_plot,
 ):
@@ -236,7 +230,6 @@ def feature_analysis(
         reduce_set=reduce_set,
         reduced_set_size=reduced_set_size,
         reduced_set_max_correlation=reduced_set_max_correlation,
-        grid_search=grid_search,
         plot=plot,
         max_feats_plot=max_feats_plot,
     )

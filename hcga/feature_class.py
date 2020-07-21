@@ -2,6 +2,7 @@
 import logging
 import sys
 import signal
+import warnings
 
 import numpy as np
 import scipy.stats as st
@@ -13,7 +14,8 @@ import pandas as pd
 from hcga.utils import get_trivial_graph, TimeoutError, timeout_handler
 
 L = logging.getLogger("Feature exceptions")
-L.setLevel(logging.DEBUG)
+# L.setLevel(logging.DEBUG)
+warnings.simplefilter("ignore")
 
 
 class FeatureClass:
@@ -164,7 +166,7 @@ class FeatureClass:
                     feature = feature_function(to_undirected(function_args))
             signal.alarm(0)
             return feature
-        
+
         except (KeyboardInterrupt, SystemExit):
             sys.exit(0)
 

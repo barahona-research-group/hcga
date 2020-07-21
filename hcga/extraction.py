@@ -10,17 +10,15 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-from . import utils
 
-
-def extract(  # pylint: disable=too-many-arguments
+def extract(
     graphs,
     n_workers,
     mode="fast",
-    normalize_features=False,
+    normalize_features=True,
     statistics_level="basic",
     with_runtimes=False,
-    with_node_features=False,
+    with_node_features=True,
     timeout=10,
     connected=False,
 ):
@@ -70,8 +68,6 @@ def extract(  # pylint: disable=too-many-arguments
     _set_graph_labels(all_features_df, graphs)
 
     print(len(all_features_df.columns), "feature extracted.")
-    print(len(utils.filter_features(all_features_df).columns), "valid features.")
-
     return all_features_df, features_info_df
 
 
@@ -109,7 +105,7 @@ def _load_feature_class(feature_name):
 
 def get_list_feature_classes(
     mode="fast",
-    normalize_features=False,
+    normalize_features=True,
     statistics_level="basic",
     n_node_features=0,
     timeout=10,
