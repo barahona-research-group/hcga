@@ -3,6 +3,7 @@ import networkx as nx
 import numpy as np
 import scipy as sc
 
+
 MIN_NUM_NODES = 2
 MIN_NUM_EDGES = 1
 
