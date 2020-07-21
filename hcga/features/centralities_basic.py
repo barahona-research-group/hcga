@@ -143,7 +143,7 @@ class CentralitiesBasic(FeatureClass):
         )
 
         # Page Rank
-        pagerank = lambda graph: list(nx.pagerank(graph).values())
+        pagerank = lambda graph: list(nx.pagerank_numpy(graph).values())
         self.add_feature(
             "pagerank",
             pagerank,

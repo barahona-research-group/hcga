@@ -181,12 +181,6 @@ def extract_features(
     help="Maximum correlation to allow for selection of top features for reduced feature classification.",
 )
 @click.option(
-    "--grid-search/--no-grid-search",
-    default=False,
-    show_default=True,
-    help="True or False whether to use grid search",
-)
-@click.option(
     "-p/-np",
     "--plot/--no-plot",
     default=True,
@@ -211,7 +205,6 @@ def feature_analysis(
     reduce_set,
     reduced_set_size,
     reduced_set_max_correlation,
-    grid_search,
     plot,
     max_feats_plot,
 ):
@@ -236,7 +229,6 @@ def feature_analysis(
         reduce_set=reduce_set,
         reduced_set_size=reduced_set_size,
         reduced_set_max_correlation=reduced_set_max_correlation,
-        grid_search=grid_search,
         plot=plot,
         max_feats_plot=max_feats_plot,
     )
