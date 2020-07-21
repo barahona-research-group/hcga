@@ -2,6 +2,7 @@
 import networkx as nx
 from networkx.algorithms import centrality
 import numpy as np
+from sklearn.preprocessing import normalize
 
 from .utils import ensure_connected, remove_selfloops
 from ..feature_class import FeatureClass, InterpretabilityScore
