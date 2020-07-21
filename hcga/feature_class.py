@@ -257,6 +257,11 @@ class FeatureClass:
             self.node_feature_statistics(
                 func_result, feature_name, feature_description, feature_interpret,
             )
+            
+        elif statistics == "list":
+            self.list_statistics(
+                func_result, feature_name, feature_description, feature_interpret,
+            )
 
     def compute_features(self):
         """main feature extraction function."""
@@ -370,6 +375,17 @@ class FeatureClass:
             self.feature_statistics_advanced(
                 feat_dist, feat_name, feat_desc, feat_interpret
             )
+            
+    def list_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
+        if feat_dist is not None:
+            for i in range(len(feat_dist)):
+                self.add_feature(
+                    feat_name[i],
+                    lambda args: args[i],
+                    feat_desc,
+                    feat_interpret,
+                    function_args=feat_dist,
+                )
 
     def feature_statistics_basic(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes basic summary statistics of distributions."""

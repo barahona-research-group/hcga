@@ -2,7 +2,7 @@
 import networkx as nx
 import numpy as np
 
-from .utils import ensure_connected,  remove_selfloops
+from .utils import ensure_connected, remove_selfloops
 from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "JaccardSimilarity"
@@ -22,15 +22,14 @@ similarity consists of ones, and therefore all nodes will have a selfloop with w
 """
 
 def jaccard_similarity(graph):
-    
-    # Construct a graph from Jaccard similarity matrix
+    """Construct a graph from Jaccard similarity matrix"""
     n = nx.number_of_nodes(graph)
     jsm = np.eye(n)
     
     neighbors = [0 for i in range(n)]
-    
-    for j in range(n):
-        neighbors[j] = set(graph.neighbors(j))
+            
+    for i,j in enumerate(graph.nodes()):
+        neighbors[i] = set(graph.neighbors(j))
         
     for i in range(n):
         for j in range(i+1,n):
@@ -41,8 +40,30 @@ def jaccard_similarity(graph):
                 b = len(neighbors[i].difference(neighbors[j]))
                 c = len(neighbors[j].difference(neighbors[i]))
                 jsm[i,j] = a/(a+b+c)
-            
+    
     return nx.Graph(jsm)
+
+def compute_feats(graph):
+    
+    feature_list = [graph.number_of_edges(),
+                    remove_selfloops(graph).number_of_edges(),
+                    nx.density(graph),
+                    nx.diameter(ensure_connected(graph)),
+                    nx.radius(ensure_connected(graph)),
+                    nx.degree_assortativity_coefficient(graph),
+                    nx.graph_clique_number(graph),
+                    nx.graph_number_of_cliques(graph),
+                    nx.transitivity(graph),
+                    nx.is_connected(graph) * 1,
+                    nx.number_connected_components(graph),
+                    ensure_connected(graph).number_of_nodes(),
+                    nx.local_efficiency(graph),
+                    nx.global_efficiency(graph),
+                    nx.node_connectivity(graph),
+                    nx.edge_connectivity(graph),
+                    ]
+                    
+    return feature_list
 
 
 class JaccardSimilarity(FeatureClass):
@@ -55,93 +76,31 @@ class JaccardSimilarity(FeatureClass):
 
     def compute_features(self):
         
-        g = jaccard_similarity(self.graph)
-        
-        # Basic stats
-        self.add_feature(
+        feature_names = [
             "number_of_edges",
-            lambda graph: graph.number_of_edges(),
-            "Number of edges in Jaccard similarity graph",
-            InterpretabilityScore(5),
-            function_args=g,
-        )
-        
-        self.add_feature(
             "number_of_edges_no_selfloops",
-            lambda graph: remove_selfloops(graph).number_of_edges(),
-            "Number of edges, not including selfloops, in Jaccard similarity graph",
-            InterpretabilityScore(5),
-            function_args=g,
-        )
-        
-        self.add_feature(
             "connectance",
-            lambda graph: nx.density(graph),
-            "Connectance of Jaccard similarity graph",
-            InterpretabilityScore(5),
-            function_args=g,
-        )
-        
-        self.add_feature(
             "diameter",
-            lambda graph: nx.diameter(ensure_connected(graph)),
-            "Diameter of Jaccard similarity graph",
-            InterpretabilityScore(5),
-            function_args=g,
-        )
-        
-        self.add_feature(
             "radius",
-            lambda graph: nx.radius(ensure_connected(graph)),
-            "Radius of Jaccard similarity graph",
-            InterpretabilityScore(5),
-            function_args=g,
-        )
-        
-        self.add_feature(
-            "edge_weights",
-            lambda graph: list(nx.get_edge_attributes(remove_selfloops(graph), "weight").values()),
-            "Weights of the edges in Jaccard similarity graph",
-            InterpretabilityScore(5),
-            function_args=g,
-            statistics="centrality",
-        )
-        
-        # Assortativity
-        self.add_feature(
             "degree_assortativity_coeff",
-            lambda graph: nx.degree_assortativity_coefficient(graph),
-            "Similarity of connections in Jaccard similarity graph with respect to the node degree",
-            InterpretabilityScore(4),
-            function_args=g,
-        )
+            "graph_clique_number",
+            "num_max_cliques",
+            "transitivity",
+            "is_connected",
+            "num_connected_components",
+            "largest_connected_component",
+            "local_efficiency",
+            "global_efficiency",
+            "node_connectivity",
+            "edge_connectivity",
+            ]
         
-        # Wiener index
-        self.add_feature(
-            "wiener index",
-            lambda graph: nx.wiener_index(graph),
-            "The wiener index is defined as the sum of the lengths of the shortest paths between all pairs of vertices",
-            InterpretabilityScore(4),
-            function_args=g,
-        )
         
-        # Centralities
         self.add_feature(
-            "degree centrality",
-            lambda graph: list(nx.degree_centrality(graph).values()),
-            "The degree centrality distribution",
+            feature_names,
+            lambda graph: compute_feats(jaccard_similarity(graph)),
+            "Simple features of Jaccard similarity matrix",
             InterpretabilityScore(5),
-            function_args=g,
-            statistics="centrality",
-        )
-        
-        self.add_feature(
-            "eigenvector centrality",
-            lambda graph: list(centrality.eigenvector_centrality_numpy(utils.ensure_connected(graph)).values()),
-            "Eigenvector centrality computes the centrality for a node based \
-            on the centrality of its neighbors",
-            InterpretabilityScore(4),
-            function_args=g,
-            statistics="centrality",
+            statistics="list",
         )
         
