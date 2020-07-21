@@ -13,7 +13,7 @@ setup(
         "scipy>=1.4.1",
         "tqdm>=4.45.0",
         "networkx>=2.4",
-        'scikit-learn>=0.23.1',
+        "scikit-learn>=0.23.1",
         "fa2>=0.3.5",
         "matplotlib>=1.4.3",
         "seaborn>=0.9.0",

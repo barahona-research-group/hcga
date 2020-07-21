@@ -50,7 +50,7 @@ class Hcga:
         self,
         n_workers=1,
         mode="slow",
-        norm=False,
+        norm=True,
         stats_level="advanced",
         runtimes=False,
         node_feat=True,
@@ -80,7 +80,7 @@ class Hcga:
 
     def load_features(self, feature_file="./results/features.pkl"):
 
-        [self.features, self.features_info, self.graphs] = load_features(
+        self.features, self.features_info, self.graphs = load_features(
             filename=feature_file
         )
 
@@ -96,7 +96,6 @@ class Hcga:
         reduce_set=True,
         reduced_set_size=100,
         reduced_set_max_correlation=0.9,
-        grid_search=False,
         plot=True,
         max_feats_plot=20,
     ):
@@ -116,7 +115,6 @@ class Hcga:
             reduce_set=reduce_set,
             reduced_set_size=reduced_set_size,
             reduced_set_max_correlation=reduced_set_max_correlation,
-            grid_search=False,
             plot=plot,
             max_feats_plot=max_feats_plot,
         )
