@@ -49,29 +49,6 @@ def rbc(graph):
 
     return nx.Graph(y)
 
-def compute_feats(graph):
-    
-    feature_list = [graph.number_of_edges(),
-                    remove_selfloops(graph).number_of_edges(),
-                    nx.density(graph),
-                    nx.diameter(ensure_connected(graph)),
-                    nx.radius(ensure_connected(graph)),
-                    nx.degree_assortativity_coefficient(graph),
-                    nx.graph_clique_number(graph),
-                    nx.graph_number_of_cliques(graph),
-                    nx.transitivity(graph),
-                    nx.is_connected(graph) * 1,
-                    nx.number_connected_components(graph),
-                    ensure_connected(graph).number_of_nodes(),
-                    nx.local_efficiency(graph),
-                    nx.global_efficiency(graph),
-                    nx.node_connectivity(graph),
-                    nx.edge_connectivity(graph),
-                    ]
-                    
-    return feature_list
-
-
 class RolesimilarityBasedComparison(FeatureClass):
     """Role-similarity Based Comparison class."""
 
@@ -82,31 +59,137 @@ class RolesimilarityBasedComparison(FeatureClass):
 
     def compute_features(self):
         
-        feature_names = [
+        g = rbc(self.graph)
+        
+        # Basic stats
+        self.add_feature(
             "number_of_edges",
+            lambda graph: graph.number_of_edges(),
+            "Number of edges in Jaccard similarity graph",
+            InterpretabilityScore(5),
+            function_args=g,
+        )
+        
+        self.add_feature(
             "number_of_edges_no_selfloops",
+            lambda graph: remove_selfloops(graph).number_of_edges(),
+            "Number of edges, not including selfloops, in Jaccard similarity graph",
+            InterpretabilityScore(5),
+            function_args=g,
+        )
+        
+        self.add_feature(
             "connectance",
+            lambda graph: nx.density(graph),
+            "Connectance of Jaccard similarity graph",
+            InterpretabilityScore(5),
+            function_args=g,
+        )
+        
+        self.add_feature(
             "diameter",
+            lambda graph: nx.diameter(ensure_connected(graph)),
+            "Diameter of Jaccard similarity graph",
+            InterpretabilityScore(5),
+            function_args=g,
+        )
+        
+        self.add_feature(
             "radius",
+            lambda graph: nx.radius(ensure_connected(graph)),
+            "Radius of Jaccard similarity graph",
+            InterpretabilityScore(5),
+            function_args=g,
+        )
+        
+        # Assortativity
+        self.add_feature(
             "degree_assortativity_coeff",
+            lambda graph: nx.degree_assortativity_coefficient(graph),
+            "Similarity of connections in Jaccard similarity graph with respect to the node degree",
+            InterpretabilityScore(4),
+            function_args=g,
+        )
+        
+        # Cliques
+        self.add_feature(
             "graph_clique_number",
-            "num_max_cliques",
-            "transitivity",
-            "is_connected",
-            "num_connected_components",
-            "largest_connected_component",
-            "local_efficiency",
-            "global_efficiency",
-            "node_connectivity",
-            "edge_connectivity",
-            ]
+            lambda graph: nx.graph_clique_number(graph),
+            "The size of the largest clique in the Jaccard similarity graph",
+            InterpretabilityScore(3),
+            function_args=g,
+        )
 
         self.add_feature(
-            feature_names,
-            lambda graph: compute_feats(rbc(graph)),
-            "Simple features of rbc matrix",
-            InterpretabilityScore(5),
-            statistics="list",
+            "num_max_cliques",
+            lambda graph: nx.graph_number_of_cliques(graph),
+            "The number of maximal cliques in the Jaccard similarity graph",
+            InterpretabilityScore(3),
+            function_args=g,
         )
+        
+        # Clustering
+        self.add_feature(
+            "transitivity",
+            lambda graph: nx.transitivity(graph),
+            "Transitivity of the graph",
+            InterpretabilityScore(4),
+            function_args=g,
+        )
+        
+        # Components
+        self.add_feature(
+            "is_connected",
+            lambda graph: nx.is_connected(graph) * 1,
+            "Whether the Jaccard similarity graph is connected or not",
+            InterpretabilityScore(5),
+            function_args=g,
+        )
+
+        self.add_feature(
+            "num_connected_components",
+            lambda graph: nx.number_connected_components(graph),
+            "The number of connected components",
+            InterpretabilityScore(5),
+            function_args=g,
+        )
+        
+        self.add_feature(
+            "largest_connected_component",
+            lambda graph: ensure_connected(graph).number_of_nodes(),
+            "The size of the largest connected component",
+            InterpretabilityScore(4),
+            function_args=g,
+        )
+        
+        # Efficiency
+        self.add_feature(
+            "global_efficiency",
+            lambda graph: nx.global_efficiency(graph),
+            "The global efficiency",
+            InterpretabilityScore(4),
+            function_args=g,
+        )
+        
+        # Node connectivity
+        self.add_feature(
+            "node_connectivity",
+            lambda graph: nx.node_connectivity(graph),
+            "Node connectivity",
+            InterpretabilityScore(4),
+            function_args=g,
+        )
+        
+        self.add_feature(
+            "edge_connectivity",
+            lambda graph: nx.edge_connectivity(graph),
+            "Edge connectivity",
+            InterpretabilityScore(4),
+            function_args=g,
+        )
+
+        
+
+
         
         
