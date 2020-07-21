@@ -1,8 +1,13 @@
+import logging
+
 from .analysis import analysis
 from .extraction import extract
 from .io import load_dataset, load_features, save_dataset, save_features
 
 # pylint: disable-all
+
+L = logging.getLogger(__name__)
+L.setLevel(logging.DEBUG)
 
 
 class Hcga:
@@ -49,8 +54,8 @@ class Hcga:
         stats_level="advanced",
         runtimes=False,
         node_feat=True,
-        timeout=10,
-        connected=True,
+        timeout=30,
+        connected=False,
     ):
 
         self.features, self.features_info = extract(
