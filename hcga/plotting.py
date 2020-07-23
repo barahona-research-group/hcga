@@ -34,7 +34,7 @@ def plot_analysis(
     analysis_type,
     max_feats=20,
     max_feats_dendrogram=100,
-    ext='.svg',
+    ext=".svg",
 ):
     """Plot summary of hcga analysis."""
     if "reduced_mean_shap_values" in analysis_results:
@@ -55,6 +55,15 @@ def plot_analysis(
         _dot_summary_plot(shap_values, X, folder, max_feats, ext=ext)
         _save_to_pdf(pdf)
 
+        _plot_feature_correlation(
+            analysis_results["shap_values"],
+            analysis_results["X"],
+            reduced_features,
+            folder,
+            max_feats_dendrogram,
+            ext=ext,
+        )
+        _save_to_pdf(pdf)
         _plot_dendrogram_shap(
             analysis_results["mean_shap_values"],
             analysis_results["X"],
@@ -77,16 +86,18 @@ def plot_analysis(
         _save_to_pdf(pdf, figs)
 
 
-def _bar_ranking_plot(shap_values, data, folder, max_feats, ext='.png'):
+def _bar_ranking_plot(shap_values, data, folder, max_feats, ext=".png"):
     """Function for customizing and saving SHAP summary bar plot."""
     shap.summary_plot(
         shap_values, data, plot_type="bar", max_display=max_feats, show=False
     )
     plt.title("Feature Rankings-All Classes")
-    plt.savefig(os.path.join(folder, "shap_bar_rank" + ext), dpi=200, bbox_inches="tight")
+    plt.savefig(
+        os.path.join(folder, "shap_bar_rank" + ext), dpi=200, bbox_inches="tight"
+    )
 
 
-def _dot_summary_plot(shap_values, data, folder, max_feats, ext='.png'):
+def _dot_summary_plot(shap_values, data, folder, max_feats, ext=".png"):
     """Function for customizing and saving SHAP summary dot plot."""
     num_classes = len(shap_values)
     for i in range(num_classes):
@@ -102,7 +113,9 @@ def _dot_summary_plot(shap_values, data, folder, max_feats, ext='.png'):
         )
 
 
-def _plot_dendrogram_shap(shap_values, X, reduced_features, folder, max_feats, ext='.png'):
+def _plot_dendrogram_shap(
+    shap_values, X, reduced_features, folder, max_feats, ext=".png"
+):
     """Plot dendrogram witth hierarchical clustering."""
     shap_mean = np.sum(np.mean(np.abs(shap_values), axis=1), axis=0)
     top_feat_idx = shap_mean.argsort()[-max_feats:]
@@ -123,7 +136,7 @@ def _plot_dendrogram_shap(shap_values, X, reduced_features, folder, max_feats, e
     top_feats_names = df_topN.columns[dn["leaves"]]
     cor_sorted = np.abs(df_topN[top_feats_names].corr())
 
-    cb_axis = inset_axes(ax1, width="2%", height="10%", borderpad=2, loc="upper right")
+    cb_axis = inset_axes(ax1, width="5%", height="12%", borderpad=2, loc="upper right")
     sns.heatmap(
         cor_sorted,
         square=True,
@@ -132,19 +145,50 @@ def _plot_dendrogram_shap(shap_values, X, reduced_features, folder, max_feats, e
         cbar_ax=cb_axis,
         cbar_kws={"label": "|pearson|"},
     )
-    cor_sorted['id'] = np.arange(len(cor_sorted))
-    reduced_id = cor_sorted.loc[reduced_features, ('id', '')]
-    ax2.scatter(reduced_id + 0.5, reduced_id + 0.5, c='g', s=100)
+    cor_sorted["id"] = np.arange(len(cor_sorted))
+    reduced_id = cor_sorted.loc[reduced_features, ("id", "")]
+    ax2.scatter(reduced_id + 0.5, reduced_id + 0.5, c="g", s=100)
     ax1.title.set_text("Top {} features heatmap and dendogram".format(max_feats))
     plt.savefig(
         os.path.join(folder, "shap_dendogram" + ext), dpi=200, bbox_inches="tight"
     )
 
 
+def _plot_feature_correlation(
+    shap_values, X, reduced_features, folder, max_feats, ext=".png"
+):
+    """Plot correlation matrix."""
+    shap_mean = np.sum(np.mean(np.abs(shap_values), axis=1), axis=0)
+    top_feat_idx = shap_mean.argsort()[-max_feats:]
+    df_topN = X[X.columns[top_feat_idx]]
+    df_topN = df_topN.sort_index(axis=0).sort_index(axis=1)
+    cor_sorted = np.abs(df_topN.corr())
+
+    plt.figure(figsize=(20, 20))
+    ax = plt.gca()
+    cb_axis = inset_axes(ax, width="5%", height="20%", borderpad=2, loc="upper right")
+    sns.heatmap(
+        cor_sorted,
+        square=True,
+        ax=ax,
+        linewidth=0.5,
+        cbar_ax=cb_axis,
+        cbar_kws={"label": "|pearson|"},
+    )
+    cor_sorted["id"] = np.arange(len(cor_sorted))
+    reduced_id = cor_sorted.loc[reduced_features, ("id", "")]
+    ax.scatter(reduced_id + 0.5, reduced_id + 0.5, c="g", s=100)
+    plt.savefig(
+        os.path.join(folder, "correlation_matrix" + ext), dpi=200, bbox_inches="tight"
+    )
+
+
 PERCENTILES = [2, 25, 50, 75, 98]
 
 
-def _plot_feature_summary(data, labels, graphs, folder, shap_values, max_feats, ext='.png'):
+def _plot_feature_summary(
+    data, labels, graphs, folder, shap_values, max_feats, ext=".png"
+):
     """for a given feature id, plot the feature summary."""
 
     shap_mean = np.sum(np.mean(np.abs(shap_values), axis=1), axis=0)
@@ -196,7 +240,7 @@ def _plot_feature_summary(data, labels, graphs, folder, shap_values, max_feats, 
     return figs
 
 
-def _plot_shap_violin(shap_vals, data, labels, folder, max_feats, ext='.png'):
+def _plot_shap_violin(shap_vals, data, labels, folder, max_feats, ext=".png"):
     """Plot the violins of a feature."""
     shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
     top_feat_idx = shap_mean.argsort()[::-1][:max_feats]
@@ -227,7 +271,7 @@ def _plot_shap_violin(shap_vals, data, labels, folder, max_feats, ext='.png'):
     )
 
 
-def _plot_trend(shap_vals, data, labels, folder, max_feats, ext='.png'):
+def _plot_trend(shap_vals, data, labels, folder, max_feats, ext=".png"):
     """Plot the violins of a feature."""
     shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
     top_feat_idx = shap_mean.argsort()[::-1][:max_feats]
