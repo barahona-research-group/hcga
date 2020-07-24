@@ -27,6 +27,57 @@ def _save_to_pdf(pdf, figs=None):
         plt.close()
 
 
+def plot_prediction(analysis_results, folder, ext=".png", figsize=(6, 6)):
+    """Plot the prediction of the trained model."""
+
+    def _plot_pred(analysis_results, model, X, acc):
+        train_index, test_index = analysis_results["indices"]
+        prediction_test = model.predict(X.iloc[test_index])
+        prediction_train = model.predict(X.iloc[train_index])
+        plt.figure(figsize=figsize)
+        plt.plot(
+            analysis_results["y"].iloc[test_index],
+            prediction_test,
+            "+",
+            c="C0",
+            label="test samples",
+        )
+        plt.plot(
+            analysis_results["y"].iloc[train_index],
+            prediction_train,
+            ".",
+            c="0.5",
+            label="train samples",
+        )
+        plt.plot(analysis_results["y"], analysis_results["y"], ls="--", c="k")
+        plt.legend(loc="best")
+        plt.suptitle("Accuracy: " + str(np.round(acc, 2)))
+        plt.xlabel("Value")
+        plt.ylabel("Predicted value")
+
+    _plot_pred(
+        analysis_results,
+        analysis_results["model"],
+        analysis_results["X"],
+        analysis_results["acc_score"],
+    )
+    plt.savefig(os.path.join(folder, "prediction" + ext), dpi=200, bbox_inches="tight")
+    plt.close()
+    if "reduced_model" in analysis_results:
+        _plot_pred(
+            analysis_results,
+            analysis_results["reduced_model"],
+            analysis_results["X"][analysis_results["reduced_features"]],
+            analysis_results["reduced_acc_score"],
+        )
+        plt.savefig(
+            os.path.join(folder, "reduced_prediction" + ext),
+            dpi=200,
+            bbox_inches="tight",
+        )
+        plt.close()
+
+
 def plot_analysis(
     analysis_results,
     folder,

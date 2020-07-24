@@ -1,4 +1,5 @@
 """functions to extract features from graphs."""
+import logging
 import multiprocessing
 import time
 from collections import defaultdict
@@ -9,6 +10,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
+
+L = logging.getLogger(__name__)
 
 
 def extract(
@@ -41,21 +44,19 @@ def extract(
     )
 
     if with_runtimes:
-        print(
-            "WARNING: Runtime option enable, we will only use 10 graphs and one worker to estimate",
-            "the computational time of each feature class.",
+        L.info(
+            "Runtime option enable, we will only use 10 graphs and one worker to estimate \
+            the computational time of each feature class.",
         )
         selected_graphs = np.random.randint(0, len(graphs), 10)
         for graph in graphs.graphs:
             if graph.id not in selected_graphs:
                 graph.disabled = True
 
-    print(
-        "Extracting features from",
+    L.info(
+        "Extracting features from %s graphs (we disabled %s graphs).",
         len(graphs),
-        "graphs (we disabled",
         graphs.get_num_disabled_graphs(),
-        "graphs).",
     )
     all_features_df = compute_all_features(
         graphs, feat_classes, n_workers=n_workers, with_runtimes=with_runtimes,
@@ -67,7 +68,7 @@ def extract(
 
     _set_graph_labels(all_features_df, graphs)
 
-    print(len(all_features_df.columns), "feature extracted.")
+    L.info("%s feature extracted.", len(all_features_df.columns))
     return all_features_df, features_info_df
 
 
@@ -80,14 +81,11 @@ def _print_runtimes(all_features_df):
     feature_names, runtimes = list(runtimes.keys()), list(runtimes.values())
     runtime_sortid = np.argsort(np.mean(runtimes, axis=1))[::-1]
     for feat_id in runtime_sortid:
-        print(
-            "Runtime of",
+        L.info(
+            "Runtime of %s is %s ( std = %s ) seconds per graph.",
             feature_names[feat_id],
-            "is",
             np.round(np.mean(runtimes[feat_id]), 3),
-            "( std = ",
             np.round(np.std(runtimes[feat_id]), 3),
-            ") seconds per graph.",
         )
 
 
@@ -171,7 +169,7 @@ def compute_all_features(
     graphs, list_feature_classes, n_workers=1, with_runtimes=False,
 ):
     """compute the feature from all graphs."""
-    print("Computing features for {} graphs:".format(len(graphs)))
+    L.info("Computing features for %s graphs:", len(graphs))
     if with_runtimes:
         n_workers = 1
 
