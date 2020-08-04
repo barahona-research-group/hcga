@@ -259,12 +259,12 @@ def generate_data(dataset_name, folder):
         make_synthetic(folder=folder, graph_type=dataset_name.split("_")[1])
 
     elif dataset_name == "TESTDATA":
-        print("--- Building test dataset and creating pickle ---")
+        L.info("--- Building test dataset and creating pickle ---")
         from .dataset_creation import make_test_dataset
 
         make_test_dataset(folder=folder)
     else:
-        print("---Downloading and creating pickle for {}---".format(dataset_name))
+        L.info("---Downloading and creating pickle for %s ---", dataset_name)
         from .dataset_creation import make_benchmark_dataset
 
         make_benchmark_dataset(dataset_name=dataset_name, folder=folder)

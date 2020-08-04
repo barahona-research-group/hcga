@@ -13,7 +13,7 @@ import pandas as pd
 
 from hcga.utils import get_trivial_graph, TimeoutError, timeout_handler
 
-L = logging.getLogger("Feature exceptions")
+L = logging.getLogger(__name__)
 # L.setLevel(logging.DEBUG)
 warnings.simplefilter("ignore")
 

@@ -1,12 +1,19 @@
 """Force centrality class."""
+import logging
 import numpy as np
 
 try:
     from fa2 import ForceAtlas2
+
+    fa2_error = False
 except ImportError:
-    print("Install ForceAtlas2 if you want to use force centrality")
+    fa2_error = True
 
 from ..feature_class import FeatureClass, InterpretabilityScore
+
+L = logging.getLogger(__name__)
+if fa2_error:
+    L.info("Install ForceAtlas2 if you want to use force centrality")
 
 featureclass_name = "ForceCentrality"
 

@@ -4,6 +4,7 @@ import os
 import itertools
 from pathlib import Path
 import warnings
+from copy import deepcopy
 from tqdm import tqdm
 
 import numpy as np
@@ -13,11 +14,11 @@ from sklearn.metrics import accuracy_score, mean_absolute_error
 from sklearn.model_selection import (
     RepeatedStratifiedKFold,
     RepeatedKFold,
-    train_test_split,
+    ShuffleSplit,
 )
 from sklearn.preprocessing import StandardScaler
 
-from .plotting import plot_analysis
+from .plotting import plot_analysis, plot_prediction
 
 L = logging.getLogger(__name__)
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
@@ -203,12 +204,12 @@ def _evaluate_kfold(X, y, model, folds, analysis_type):
 def fit_model_kfold(
     features,
     model,
-    analysis_type,
+    analysis_type="classification",
     reduce_set=True,
     reduced_set_size=100,
     reduced_set_max_correlation=0.9,
     n_repeats=1,
-    random_state=1,
+    random_state=42,
     n_splits=None,
 ):
     """Classify graphs from extracted features with kfold.
@@ -249,17 +250,17 @@ def fit_model_kfold(
     mean_shap_values, shap_feature_importance = _get_shap_feature_importance(
         shap_values
     )
-
+    analysis_results = {
+        "X": X,
+        "y": y,
+        "acc_scores": acc_scores,
+        "mean_shap_values": mean_shap_values,
+        "shap_values": shap_values,
+        "shap_feature_importance": shap_feature_importance,
+        "reduced_features": None,
+    }
     if not reduce_set:
-        return {
-            "X": X,
-            "y": y,
-            "acc_scores": acc_scores,
-            "mean_shap_values": mean_shap_values,
-            "shap_values": shap_values,
-            "shap_feature_importance": shap_feature_importance,
-            "reduced_features": None,
-        }
+        return analysis_results
 
     reduced_features = _get_reduced_feature_set(
         X,
@@ -276,19 +277,81 @@ def fit_model_kfold(
         reduced_shap_feature_importance,
     ) = _get_shap_feature_importance(reduced_shap_values)
 
-    return {
+    analysis_results.update(
+        {
+            "reduced_features": reduced_features,
+            "reduced_shap_values": reduced_shap_values,
+            "shap_values": shap_values,
+            "reduced_acc_scores": reduced_acc_scores,
+            "reduced_mean_shap_values": reduced_mean_shap_values,
+            "reduced_shap_feature_importance": reduced_shap_feature_importance,
+        }
+    )
+    return analysis_results
+
+
+def fit_model(
+    features,
+    model,
+    analysis_type="classification",
+    reduce_set=True,
+    reduced_set_size=100,
+    reduced_set_max_correlation=0.9,
+    test_size=0.2,
+    random_state=42,
+):
+    """Train a single model."""
+    if model is None:
+        raise Exception("Please provide a model for classification")
+
+    X, y = features_to_Xy(features)
+
+    indices = next(
+        ShuffleSplit(test_size=test_size, random_state=random_state).split(X, y)
+    )
+    acc_score, shap_values = compute_fold(X, y, model, indices, analysis_type)
+
+    mean_shap_values, shap_feature_importance = _get_shap_feature_importance(
+        [shap_values]
+    )
+    analysis_results = {
         "X": X,
         "y": y,
-        "acc_scores": acc_scores,
+        "acc_score": acc_score,
         "mean_shap_values": mean_shap_values,
         "shap_feature_importance": shap_feature_importance,
-        "reduced_features": reduced_features,
-        "reduced_shap_values": reduced_shap_values,
-        "shap_values": shap_values,
-        "reduced_acc_scores": reduced_acc_scores,
-        "reduced_mean_shap_values": reduced_mean_shap_values,
-        "reduced_shap_feature_importance": reduced_shap_feature_importance,
+        "model": model,
+        "indices": indices,
+        "reduced_features": None,
     }
+    if not reduce_set:
+        return analysis_results
+
+    reduced_features = _get_reduced_feature_set(
+        X,
+        shap_feature_importance,
+        n_top_features=reduced_set_size,
+        alpha=reduced_set_max_correlation,
+    )
+    reduced_model = deepcopy(model)
+    reduced_acc_score, reduced_shap_values = compute_fold(
+        X[reduced_features], y, reduced_model, indices, analysis_type
+    )
+    (
+        reduced_mean_shap_values,
+        reduced_shap_feature_importance,
+    ) = _get_shap_feature_importance(reduced_shap_values)
+
+    analysis_results.update(
+        {
+            "reduced_features": reduced_features,
+            "reduced_acc_score": reduced_acc_score,
+            "reduced_mean_shap_values": reduced_mean_shap_values,
+            "reduced_shap_feature_importance": reduced_shap_feature_importance,
+            "reduced_model": reduced_model,
+        }
+    )
+    return analysis_results
 
 
 def compute_fold(X, y, model, indices, analysis_type):
@@ -299,18 +362,11 @@ def compute_fold(X, y, model, indices, analysis_type):
     if analysis_type == "classification":
         acc_score = accuracy_score(y.iloc[val_index], model.predict(X.iloc[val_index]))
         L.info("Fold accuracy: --- %s ---", str(np.round(acc_score, 3)))
+
     elif analysis_type == "regression":
         acc_score = mean_absolute_error(
             y.iloc[val_index], model.predict(X.iloc[val_index])
         )
-
-        import matplotlib.pyplot as plt
-
-        plt.figure()
-        plt.plot(y, model.predict(X), "+")
-        plt.savefig("test.png")
-        plt.close()
-
         L.info("Mean Absolute Error: --- %s ---", str(np.round(acc_score, 3)))
 
     explainer = shap.TreeExplainer(model)
@@ -366,7 +422,8 @@ def analysis(
     max_feats_plot_dendrogram=100,
     n_repeats=1,
     n_splits=None,
-    random_state=1,
+    random_state=42,
+    test_size=0.2,
 ):
     """Main function to classify graphs and plot results."""
     features, features_info = _preprocess_features(
@@ -378,7 +435,7 @@ def analysis(
         analysis_results = fit_model_kfold(
             features,
             model,
-            analysis_type,
+            analysis_type=analysis_type,
             reduce_set=reduce_set,
             reduced_set_size=reduced_set_size,
             reduced_set_max_correlation=reduced_set_max_correlation,
@@ -387,7 +444,16 @@ def analysis(
             n_splits=n_splits,
         )
     else:
-        analysis_results = fit_model(features, model)
+        analysis_results = fit_model(
+            features,
+            model,
+            analysis_type=analysis_type,
+            reduce_set=reduce_set,
+            reduced_set_size=reduced_set_size,
+            reduced_set_max_correlation=reduced_set_max_correlation,
+            random_state=random_state,
+            test_size=test_size,
+        )
 
     if analysis_type == "regression":
         analysis_results["mean_shap_values"] = [analysis_results["mean_shap_values"]]
@@ -402,7 +468,7 @@ def analysis(
     if not Path(results_folder).exists():
         os.mkdir(results_folder)
 
-    if plot:
+    if plot and kfold:
         plot_analysis(
             analysis_results,
             results_folder,
@@ -411,8 +477,11 @@ def analysis(
             max_feats_plot,
             max_feats_plot_dendrogram,
         )
+    if plot and not kfold:
+        plot_prediction(analysis_results, results_folder)
 
-    _save_to_csv(features_info, analysis_results, results_folder)
+    if kfold:
+        _save_to_csv(features_info, analysis_results, results_folder)
 
     return analysis_results
 
@@ -534,39 +603,3 @@ def classify_pairwise(
         top_features[pair] = [f_class + "_" + f for f_class, f in top_features_raw]
 
     return accuracy_matrix, top_features
-
-
-def fit_model(features, model):
-    """shapeley analysis."""
-
-    explainer = None
-    shap_values = None
-
-    if model is None:
-        raise Exception("Please provide a model for classification")
-
-    X, y = features_to_Xy(features)
-
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, shuffle=True, stratify=y, random_state=42
-    )
-
-    model.fit(X_train, y_train)
-
-    acc_scores = accuracy_score(y_test, model.predict(X_test))
-
-    explainer = shap.TreeExplainer(model, feature_perturbation="interventional")
-    shap_values = explainer.shap_values(X_test, check_additivity=False)
-
-    L.info("Accuracy: %s", str(acc_scores))
-
-    mean_shap_values, shap_feature_importance = _get_shap_feature_importance(
-        [shap_values]
-    )
-    return {
-        "X": X,
-        "y": y,
-        "acc_scores": acc_scores,
-        "mean_shao_values": mean_shap_values,
-        "shap_feature_importance": shap_feature_importance,
-    }
