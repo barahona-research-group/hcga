@@ -55,13 +55,13 @@ def _number_folds(y):
     return np.clip(n_splits, 2, 10)
 
 
-def _get_reduced_feature_set(X, shap_top_features, n_top_features=100, alpha=0.99):
+def _get_reduced_feature_set(X, shap_top_features, n_top_features=100, alpha=0.9):
     """Reduce the feature set by taking uncorrelated features."""
     rank_feat_ids = np.argsort(shap_top_features)[::-1]
 
     selected_features = [rank_feat_ids[0]]
     corr_matrix = np.abs(np.corrcoef(X.T))
-    for rank_feat_id in rank_feat_ids:
+    for rank_feat_id in rank_feat_ids[1:]:
         if not (corr_matrix[selected_features, rank_feat_id] > alpha).any():
             selected_features.append(rank_feat_id)
         if len(selected_features) >= n_top_features:
@@ -181,13 +181,20 @@ def _get_model(model, analysis_type):
 
 def _get_shap_feature_importance(shap_values):
     """From a list of shap values per folds, compute the global shap feature importance."""
+    # average across folds
     mean_shap_values = np.mean(shap_values, axis=0)
-    if isinstance(mean_shap_values, list):
-        global_mean_shap_values = np.sum(mean_shap_values, axis=0)
+
+    # average accros labels
+    if len(np.shape(mean_shap_values)) > 1:
+        global_mean_shap_values = np.mean(mean_shap_values, axis=0)
+        mean_shap_values = list(mean_shap_values)
     else:
         global_mean_shap_values = mean_shap_values
 
-    return mean_shap_values, np.mean(abs(global_mean_shap_values), axis=0)
+    # average accros graphs
+    shap_feature_importance = np.mean(abs(global_mean_shap_values), axis=0)
+
+    return mean_shap_values, shap_feature_importance
 
 
 def _evaluate_kfold(X, y, model, folds, analysis_type):
@@ -524,7 +531,7 @@ def _save_to_csv(features_info_df, analysis_results, folder="results"):
 def classify_pairwise(
     features,
     features_info,
-    model,
+    model="XG",
     graph_removal=0.3,
     interpretability=1,
     n_top_features=5,
@@ -533,6 +540,7 @@ def classify_pairwise(
     reduced_set_max_correlation=0.5,
     n_repeats=1,
     n_splits=None,
+    analysis_type = "classification"
 ):
     """Classify all possible pairs of clases with kfold and returns top features.
 
@@ -555,7 +563,6 @@ def classify_pairwise(
         features, features_info, graph_removal, interpretability
     )
 
-    analysis_type = "classification"
     classifier = _get_model(model, analysis_type=analysis_type)
     classes = features.label.unique()
     class_pairs = list(itertools.combinations(classes, 2))
@@ -569,7 +576,7 @@ def classify_pairwise(
         analysis_results = fit_model_kfold(
             features_pair,
             classifier,
-            analysis_type,
+            analysis_type=analysis_type,
             reduce_set=reduce_set,
             reduced_set_size=reduced_set_size,
             reduced_set_max_correlation=reduced_set_max_correlation,
@@ -586,20 +593,18 @@ def classify_pairwise(
             )
         accuracy_matrix.loc[pair[1], pair[0]] = accuracy_matrix.loc[pair[0], pair[1]]
 
-        if "reduced_features" in analysis_results:
-            top_features_raw = analysis_results["X"][
-                analysis_results["reduced_features"]
-            ].columns[
-                np.argsort(analysis_results["reduced_shap_feature_importance"])[
-                    -n_top_features:
-                ]
-            ]
+        if "reduced_mean_shap_values" in analysis_results:
+            shap_mean = np.sum(np.mean(np.abs(analysis_results['reduced_mean_shap_values']), axis=1), axis=0)
+            shap_mean = np.sum(np.mean(np.abs(analysis_results['mean_shap_values']), axis=1), axis=0)
+            top_feat_idx = shap_mean.argsort()[-n_top_features:]
+            X_red = analysis_results["X"][analysis_results["reduced_features"]]
+            top_features_raw = X_red[X_red.columns[top_feat_idx]]
         else:
-            top_features_raw = analysis_results["X"].columns[
-                np.argsort(analysis_results["shap_feature_importance"])[
-                    -n_top_features:
-                ]
-            ]
+            shap_mean = np.sum(np.mean(np.abs(analysis_results['mean_shap_values']), axis=1), axis=0)
+            top_feat_idx = shap_mean.argsort()[-n_top_features:]
+            X = analysis_results["X"]
+            top_features_raw = X[X.columns[top_feat_idx]]
+
         top_features[pair] = [f_class + "_" + f for f_class, f in top_features_raw]
 
     return accuracy_matrix, top_features
