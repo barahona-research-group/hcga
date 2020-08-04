@@ -185,7 +185,7 @@ def _get_shap_feature_importance(shap_values):
     mean_shap_values = np.mean(shap_values, axis=0)
 
     # average accros labels
-    if len(np.shape(mean_shap_values)) > 1:
+    if len(np.shape(mean_shap_values)) > 2:
         global_mean_shap_values = np.mean(mean_shap_values, axis=0)
         mean_shap_values = list(mean_shap_values)
     else:
@@ -540,7 +540,7 @@ def classify_pairwise(
     reduced_set_max_correlation=0.5,
     n_repeats=1,
     n_splits=None,
-    analysis_type = "classification"
+    analysis_type="classification",
 ):
     """Classify all possible pairs of clases with kfold and returns top features.
 
@@ -593,17 +593,18 @@ def classify_pairwise(
             )
         accuracy_matrix.loc[pair[1], pair[0]] = accuracy_matrix.loc[pair[0], pair[1]]
 
-        if "reduced_mean_shap_values" in analysis_results:
-            shap_mean = np.sum(np.mean(np.abs(analysis_results['reduced_mean_shap_values']), axis=1), axis=0)
-            shap_mean = np.sum(np.mean(np.abs(analysis_results['mean_shap_values']), axis=1), axis=0)
-            top_feat_idx = shap_mean.argsort()[-n_top_features:]
-            X_red = analysis_results["X"][analysis_results["reduced_features"]]
-            top_features_raw = X_red[X_red.columns[top_feat_idx]]
+        if "reduced_shap_feature_importance" in analysis_results:
+            top_feat_idx = analysis_results[
+                "reduced_shap_feature_importance"
+            ].argsort()[-n_top_features:]
+            top_features_raw = analysis_results["X"][
+                analysis_results["reduced_features"]
+            ].columns[top_feat_idx]
         else:
-            shap_mean = np.sum(np.mean(np.abs(analysis_results['mean_shap_values']), axis=1), axis=0)
-            top_feat_idx = shap_mean.argsort()[-n_top_features:]
-            X = analysis_results["X"]
-            top_features_raw = X[X.columns[top_feat_idx]]
+            top_feat_idx = analysis_results["shap_feature_importance"].argsort()[
+                -n_top_features:
+            ]
+            top_features_raw = analysis_results["X"].columns[top_feat_idx]
 
         top_features[pair] = [f_class + "_" + f for f_class, f in top_features_raw]
 
