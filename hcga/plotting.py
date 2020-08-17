@@ -150,6 +150,7 @@ def _bar_ranking_plot(shap_values, data, folder, max_feats, ext=".png"):
 
 def _dot_summary_plot(shap_values, data, folder, max_feats, ext=".png"):
     """Function for customizing and saving SHAP summary dot plot."""
+    print(np.shape(shap_values))
     num_classes = len(shap_values)
     for i in range(num_classes):
         plt.figure()

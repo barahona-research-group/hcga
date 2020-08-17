@@ -58,6 +58,8 @@ def _number_folds(y):
 def _get_reduced_feature_set(X, shap_top_features, n_top_features=100, alpha=0.99):
     """Reduce the feature set by taking uncorrelated features."""
     rank_feat_ids = np.argsort(shap_top_features)[::-1]
+    print(shap_top_features)
+    print(rank_feat_ids)
 
     selected_features = [rank_feat_ids[0]]
     corr_matrix = np.abs(np.corrcoef(X.T))
@@ -72,6 +74,8 @@ def _get_reduced_feature_set(X, shap_top_features, n_top_features=100, alpha=0.9
         str(len(selected_features)),
         str(alpha),
     )
+    if len(selected_features) == 1:
+        L.warning("Only one features selected, things may break!")
 
     return X.columns[selected_features]
 
@@ -130,7 +134,7 @@ def _filter_graphs(features, graph_removal=0.05):
 def _filter_features(features):
     """Filter features and create feature matrix."""
     nan_features = features.replace([np.inf, -np.inf], np.nan)
-    valid_features = nan_features.dropna(axis=1)
+    valid_features = nan_features.dropna(axis=1).astype('float64')
     return valid_features.drop(
         valid_features.std()[(valid_features.std() == 0)].index, axis=1
     ).columns
@@ -182,7 +186,7 @@ def _get_model(model, analysis_type):
 def _get_shap_feature_importance(shap_values):
     """From a list of shap values per folds, compute the global shap feature importance."""
     mean_shap_values = np.mean(shap_values, axis=0)
-    if isinstance(mean_shap_values, list):
+    if isinstance(mean_shap_values, (list, np.ndarray)):
         global_mean_shap_values = np.sum(mean_shap_values, axis=0)
     else:
         global_mean_shap_values = mean_shap_values
