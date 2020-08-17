@@ -58,8 +58,6 @@ def _number_folds(y):
 def _get_reduced_feature_set(X, shap_top_features, n_top_features=100, alpha=0.9):
     """Reduce the feature set by taking uncorrelated features."""
     rank_feat_ids = np.argsort(shap_top_features)[::-1]
-    print(shap_top_features)
-    print(rank_feat_ids)
 
     selected_features = [rank_feat_ids[0]]
     corr_matrix = np.abs(np.corrcoef(X.T))

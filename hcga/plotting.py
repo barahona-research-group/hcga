@@ -102,48 +102,69 @@ def plot_analysis(
 
     with PdfPages(os.path.join(folder, "analysis_report.pdf")) as pdf:
         L.info("Plot bar ranking")
-        _bar_ranking_plot(shap_values, X, folder, max_feats, ext=ext)
-        _save_to_pdf(pdf)
+        try:
+            _bar_ranking_plot(shap_values, X, folder, max_feats, ext=ext)
+            _save_to_pdf(pdf)
+        except:
+            L.excption("Could not plot!")
 
         L.info("Plot dot summary")
-        figs = _dot_summary_plot(shap_values, X, folder, max_feats, ext=ext)
-        _save_to_pdf(pdf, figs)
+        try:
+            figs = _dot_summary_plot(shap_values, X, folder, max_feats, ext=ext)
+            _save_to_pdf(pdf, figs)
+        except:
+            L.excption("Could not plot!")
 
         L.info("Plot feature correlations")
-        _plot_feature_correlation(
-            analysis_results["shap_feature_importance"],
-            analysis_results["X"],
-            reduced_features,
-            folder,
-            max_feats_dendrogram,
-            ext=ext,
-        )
-        _save_to_pdf(pdf)
+        try:
+            _plot_feature_correlation(
+                analysis_results["shap_feature_importance"],
+                analysis_results["X"],
+                reduced_features,
+                folder,
+                max_feats_dendrogram,
+                ext=ext,
+            )
+            _save_to_pdf(pdf)
+        except:
+            L.excption("Could not plot!")
 
         L.info("Plot dendrogram")
-        _plot_dendrogram_shap(
-            analysis_results["shap_feature_importance"],
-            analysis_results["X"],
-            reduced_features,
-            folder,
-            max_feats_dendrogram,
-            ext=ext,
-        )
-        _save_to_pdf(pdf)
+        try:
+            _plot_dendrogram_shap(
+                analysis_results["shap_feature_importance"],
+                analysis_results["X"],
+                reduced_features,
+                folder,
+                max_feats_dendrogram,
+                ext=ext,
+            )
+            _save_to_pdf(pdf)
+        except:
+            L.excption("Could not plot!")
 
         if analysis_type == "classification":
             L.info("Plot shap violin")
-            _plot_shap_violin(shap_values, X, y, folder, max_feats, ext=ext)
+            try:
+                _plot_shap_violin(shap_values, X, y, folder, max_feats, ext=ext)
+            except:
+                L.excption("Could not plot!")
         elif analysis_type == "regression":
             L.info("Plot trend")
-            _plot_trend(shap_values, X, y, folder, max_feats, ext=ext)
+            try:
+                _plot_trend(shap_values, X, y, folder, max_feats, ext=ext)
+            except:
+                L.excption("Could not plot!")
         _save_to_pdf(pdf)
 
         L.info("Plot feature summaries")
-        figs = _plot_feature_summary(
-            X[reduced_features], y, graphs, folder, shap_values, max_feats, ext=ext
-        )
-        _save_to_pdf(pdf, figs)
+        try:
+            figs = _plot_feature_summary(
+                X[reduced_features], y, graphs, folder, shap_values, max_feats, ext=ext
+            )
+            _save_to_pdf(pdf, figs)
+        except:
+            L.excption("Could not plot!")
 
 
 def _bar_ranking_plot(mean_shap_values, X, folder, max_feats, ext=".png"):
