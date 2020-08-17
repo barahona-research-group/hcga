@@ -9,11 +9,12 @@ import shap
 
 import seaborn as sns
 import matplotlib.pyplot as plt
+import matplotlib
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.gridspec import GridSpec
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
-
+matplotlib.use("Agg")
 L = logging.getLogger(__name__)
 
 
@@ -100,14 +101,17 @@ def plot_analysis(
     y = analysis_results["y"]
 
     with PdfPages(os.path.join(folder, "analysis_report.pdf")) as pdf:
+        L.info("Plot bar ranking")
         _bar_ranking_plot(shap_values, X, folder, max_feats, ext=ext)
         _save_to_pdf(pdf)
 
-        _dot_summary_plot(shap_values, X, folder, max_feats, ext=ext)
-        _save_to_pdf(pdf)
+        L.info("Plot dot summary")
+        figs = _dot_summary_plot(shap_values, X, folder, max_feats, ext=ext)
+        _save_to_pdf(pdf, figs)
 
+        L.info("Plot feature correlations")
         _plot_feature_correlation(
-            analysis_results["shap_values"],
+            analysis_results["shap_feature_importance"],
             analysis_results["X"],
             reduced_features,
             folder,
@@ -115,8 +119,10 @@ def plot_analysis(
             ext=ext,
         )
         _save_to_pdf(pdf)
+
+        L.info("Plot dendrogram")
         _plot_dendrogram_shap(
-            analysis_results["mean_shap_values"],
+            analysis_results["shap_feature_importance"],
             analysis_results["X"],
             reduced_features,
             folder,
@@ -126,21 +132,24 @@ def plot_analysis(
         _save_to_pdf(pdf)
 
         if analysis_type == "classification":
+            L.info("Plot shap violin")
             _plot_shap_violin(shap_values, X, y, folder, max_feats, ext=ext)
         elif analysis_type == "regression":
+            L.info("Plot trend")
             _plot_trend(shap_values, X, y, folder, max_feats, ext=ext)
         _save_to_pdf(pdf)
 
+        L.info("Plot feature summaries")
         figs = _plot_feature_summary(
             X[reduced_features], y, graphs, folder, shap_values, max_feats, ext=ext
         )
         _save_to_pdf(pdf, figs)
 
 
-def _bar_ranking_plot(shap_values, data, folder, max_feats, ext=".png"):
+def _bar_ranking_plot(mean_shap_values, X, folder, max_feats, ext=".png"):
     """Function for customizing and saving SHAP summary bar plot."""
     shap.summary_plot(
-        shap_values, data, plot_type="bar", max_display=max_feats, show=False
+        mean_shap_values, X, plot_type="bar", max_display=max_feats, show=False
     )
     plt.title("Feature Rankings-All Classes")
     plt.savefig(
@@ -150,10 +159,10 @@ def _bar_ranking_plot(shap_values, data, folder, max_feats, ext=".png"):
 
 def _dot_summary_plot(shap_values, data, folder, max_feats, ext=".png"):
     """Function for customizing and saving SHAP summary dot plot."""
-    print(np.shape(shap_values))
+    figs = []
     num_classes = len(shap_values)
     for i in range(num_classes):
-        plt.figure()
+        figs.append(plt.figure())
         shap.summary_plot(
             shap_values[i], data, plot_type="dot", max_display=max_feats, show=False
         )
@@ -163,15 +172,17 @@ def _dot_summary_plot(shap_values, data, folder, max_feats, ext=".png"):
             dpi=200,
             bbox_inches="tight",
         )
+    return figs
 
 
 def _plot_dendrogram_shap(
-    shap_values, X, reduced_features, folder, max_feats, ext=".png"
+    shap_feature_importance, X, reduced_features, folder, max_feats, ext=".png"
 ):
     """Plot dendrogram witth hierarchical clustering."""
-    shap_mean = np.sum(np.mean(np.abs(shap_values), axis=1), axis=0)
-    top_feat_idx = shap_mean.argsort()[-max_feats:]
-    df_topN = X[X.columns[top_feat_idx]]
+    top_feat_idx = shap_feature_importance.argsort()[-max_feats:]
+    X_red = X[X.columns[top_feat_idx]]
+    # to make sure to have the reduced features
+    X_red = X_red.T.append(X[reduced_features].T).drop_duplicates().T
 
     plt.figure(figsize=(20, 1.2 * 20))
     gs = GridSpec(2, 1, height_ratios=[0.2, 1.0])
@@ -179,14 +190,14 @@ def _plot_dendrogram_shap(
     ax1 = plt.subplot(gs[0, 0])
     ax2 = plt.subplot(gs[1, 0])
 
-    cor = np.abs(df_topN.corr())
-    Z = linkage(cor, "ward")
-    dn = dendrogram(Z, labels=X.columns[top_feat_idx], ax=ax1)
+    cor = np.abs(X_red.corr())
+    Z = linkage(cor.to_numpy(), "ward")
+    dn = dendrogram(Z, labels=X_red.columns, ax=ax1)
     ax1.xaxis.set_ticklabels([])
     ax1.set_ylabel("Euclidean Distance")
 
-    top_feats_names = df_topN.columns[dn["leaves"]]
-    cor_sorted = np.abs(df_topN[top_feats_names].corr())
+    top_feats_names = X_red.columns[dn["leaves"]]
+    cor_sorted = np.abs(X_red[top_feats_names].corr())
 
     cb_axis = inset_axes(ax1, width="5%", height="12%", borderpad=2, loc="upper right")
     sns.heatmap(
@@ -198,8 +209,8 @@ def _plot_dendrogram_shap(
         cbar_kws={"label": "|pearson|"},
     )
     cor_sorted["id"] = np.arange(len(cor_sorted))
-    reduced_id = cor_sorted.loc[reduced_features, ("id", "")]
-    ax2.scatter(reduced_id + 0.5, reduced_id + 0.5, c="g", s=100)
+    reduced_pos = cor_sorted.loc[reduced_features, ("id", "")] + 0.5
+    ax2.scatter(reduced_pos, reduced_pos, c="g", s=100)
     ax1.title.set_text("Top {} features heatmap and dendogram".format(max_feats))
     plt.savefig(
         os.path.join(folder, "shap_dendogram" + ext), dpi=200, bbox_inches="tight"
@@ -207,14 +218,15 @@ def _plot_dendrogram_shap(
 
 
 def _plot_feature_correlation(
-    shap_values, X, reduced_features, folder, max_feats, ext=".png"
+    shap_feature_importance, X, reduced_features, folder, max_feats, ext=".png"
 ):
     """Plot correlation matrix."""
-    shap_mean = np.sum(np.mean(np.abs(shap_values), axis=1), axis=0)
-    top_feat_idx = shap_mean.argsort()[-max_feats:]
-    df_topN = X[X.columns[top_feat_idx]]
-    df_topN = df_topN.sort_index(axis=0).sort_index(axis=1)
-    cor_sorted = np.abs(df_topN.corr())
+    top_feat_idx = shap_feature_importance.argsort()[-max_feats:]
+    X_red = X[X.columns[top_feat_idx]].sort_index(axis=0).sort_index(axis=1)
+    # to make sure to have the reduced features
+    X_red = X_red.T.append(X[reduced_features].T).drop_duplicates().T
+
+    cor_sorted = np.abs(X_red.corr())
 
     plt.figure(figsize=(20, 20))
     ax = plt.gca()
@@ -228,8 +240,8 @@ def _plot_feature_correlation(
         cbar_kws={"label": "|pearson|"},
     )
     cor_sorted["id"] = np.arange(len(cor_sorted))
-    reduced_id = cor_sorted.loc[reduced_features, ("id", "")]
-    ax.scatter(reduced_id + 0.5, reduced_id + 0.5, c="g", s=100)
+    reduced_pos = cor_sorted.loc[reduced_features, ("id", "")] + 0.5
+    ax.scatter(reduced_pos, reduced_pos, c="g", s=100)
     plt.savefig(
         os.path.join(folder, "correlation_matrix" + ext), dpi=200, bbox_inches="tight"
     )
