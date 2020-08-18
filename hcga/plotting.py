@@ -180,8 +180,12 @@ def _bar_ranking_plot(mean_shap_values, X, folder, max_feats, ext=".png"):
 
 def _dot_summary_plot(shap_values, data, folder, max_feats, ext=".png"):
     """Function for customizing and saving SHAP summary dot plot."""
-    figs = []
     num_classes = len(shap_values)
+    if len(np.shape(shap_values)) == 2:
+        shap_values = [shap_values]
+        num_classes = 1
+
+    figs = []
     for i in range(num_classes):
         figs.append(plt.figure())
         shap.summary_plot(

@@ -51,6 +51,7 @@ def _normalise_feature_data(features,):
 def _number_folds(y):
     """Get number of folds."""
     counts = y.value_counts()
+    L.info("Counts of graphs/label: \n%s", counts)
     n_splits = int(np.min(counts[counts > 0]) / 2)
     return np.clip(n_splits, 2, 10)
 
@@ -194,7 +195,6 @@ def _get_shap_feature_importance(shap_values):
 
     # average accros graphs
     shap_feature_importance = np.mean(abs(global_mean_shap_values), axis=0)
-
     return mean_shap_values, shap_feature_importance
 
 
