@@ -106,14 +106,14 @@ def plot_analysis(
             _bar_ranking_plot(shap_values, X, folder, max_feats, ext=ext)
             _save_to_pdf(pdf)
         except:
-            L.excption("Could not plot!")
+            L.exception("Could not plot!")
 
         L.info("Plot dot summary")
         try:
             figs = _dot_summary_plot(shap_values, X, folder, max_feats, ext=ext)
             _save_to_pdf(pdf, figs)
         except:
-            L.excption("Could not plot!")
+            L.exception("Could not plot!")
 
         L.info("Plot feature correlations")
         try:
@@ -127,7 +127,7 @@ def plot_analysis(
             )
             _save_to_pdf(pdf)
         except:
-            L.excption("Could not plot!")
+            L.exception("Could not plot!")
 
         L.info("Plot dendrogram")
         try:
@@ -141,20 +141,20 @@ def plot_analysis(
             )
             _save_to_pdf(pdf)
         except:
-            L.excption("Could not plot!")
+            L.exception("Could not plot!")
 
         if analysis_type == "classification":
             L.info("Plot shap violin")
             try:
                 _plot_shap_violin(shap_values, X, y, folder, max_feats, ext=ext)
             except:
-                L.excption("Could not plot!")
+                L.exception("Could not plot!")
         elif analysis_type == "regression":
             L.info("Plot trend")
             try:
                 _plot_trend(shap_values, X, y, folder, max_feats, ext=ext)
             except:
-                L.excption("Could not plot!")
+                L.exception("Could not plot!")
         _save_to_pdf(pdf)
 
         L.info("Plot feature summaries")
@@ -164,7 +164,7 @@ def plot_analysis(
             )
             _save_to_pdf(pdf, figs)
         except:
-            L.excption("Could not plot!")
+            L.exception("Could not plot!")
 
 
 def _bar_ranking_plot(mean_shap_values, X, folder, max_feats, ext=".png"):
