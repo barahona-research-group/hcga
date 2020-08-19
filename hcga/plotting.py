@@ -93,9 +93,11 @@ def plot_analysis(
         L.info("Using reduced features for plotting.")
         shap_values = analysis_results["reduced_mean_shap_values"]
         reduced_features = analysis_results["reduced_features"]
+        feature_importance = analysis_results["reduced_shap_feature_importance"]
     else:
         shap_values = analysis_results["mean_shap_values"]
         reduced_features = analysis_results["X"].columns
+        feature_importance = analysis_results["shap_feature_importance"]
 
     X = analysis_results["X"][reduced_features]
     y = analysis_results["y"]
@@ -106,14 +108,14 @@ def plot_analysis(
             _bar_ranking_plot(shap_values, X, folder, max_feats, ext=ext)
             _save_to_pdf(pdf)
         except:
-            L.excption("Could not plot!")
+            L.exception("Could not plot!")
 
         L.info("Plot dot summary")
         try:
             figs = _dot_summary_plot(shap_values, X, folder, max_feats, ext=ext)
             _save_to_pdf(pdf, figs)
         except:
-            L.excption("Could not plot!")
+            L.exception("Could not plot!")
 
         L.info("Plot feature correlations")
         try:
@@ -127,7 +129,7 @@ def plot_analysis(
             )
             _save_to_pdf(pdf)
         except:
-            L.excption("Could not plot!")
+            L.exception("Could not plot!")
 
         L.info("Plot dendrogram")
         try:
@@ -141,20 +143,20 @@ def plot_analysis(
             )
             _save_to_pdf(pdf)
         except:
-            L.excption("Could not plot!")
+            L.exception("Could not plot!")
 
         if analysis_type == "classification":
             L.info("Plot shap violin")
             try:
-                _plot_shap_violin(shap_values, X, y, folder, max_feats, ext=ext)
+                _plot_shap_violin(feature_importance, X, y, folder, max_feats, ext=ext)
             except:
-                L.excption("Could not plot!")
+                L.exception("Could not plot!")
         elif analysis_type == "regression":
             L.info("Plot trend")
             try:
-                _plot_trend(shap_values, X, y, folder, max_feats, ext=ext)
+                _plot_trend(feature_importance, X, y, folder, max_feats, ext=ext)
             except:
-                L.excption("Could not plot!")
+                L.exception("Could not plot!")
         _save_to_pdf(pdf)
 
         L.info("Plot feature summaries")
@@ -164,7 +166,7 @@ def plot_analysis(
             )
             _save_to_pdf(pdf, figs)
         except:
-            L.excption("Could not plot!")
+            L.exception("Could not plot!")
 
 
 def _bar_ranking_plot(mean_shap_values, X, folder, max_feats, ext=".png"):
@@ -180,8 +182,12 @@ def _bar_ranking_plot(mean_shap_values, X, folder, max_feats, ext=".png"):
 
 def _dot_summary_plot(shap_values, data, folder, max_feats, ext=".png"):
     """Function for customizing and saving SHAP summary dot plot."""
-    figs = []
     num_classes = len(shap_values)
+    if len(np.shape(shap_values)) == 2:
+        shap_values = [shap_values]
+        num_classes = 1
+
+    figs = []
     for i in range(num_classes):
         figs.append(plt.figure())
         shap.summary_plot(
@@ -325,10 +331,11 @@ def _plot_feature_summary(
     return figs
 
 
-def _plot_shap_violin(shap_vals, data, labels, folder, max_feats, ext=".png"):
+def _plot_shap_violin(
+    shap_feature_importance, data, labels, folder, max_feats, ext=".png"
+):
     """Plot the violins of a feature."""
-    shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
-    top_feat_idx = shap_mean.argsort()[::-1][:max_feats]
+    top_feat_idx = shap_feature_importance.argsort()[-max_feats:]
 
     ncols = 4
     nrows = int(np.ceil(len(top_feat_idx) / ncols))
@@ -336,8 +343,8 @@ def _plot_shap_violin(shap_vals, data, labels, folder, max_feats, ext=".png"):
 
     for ax, top_feat in zip(axes.flatten(), top_feat_idx):
         feature_data = data[data.columns[top_feat]].values
-        data_split = []
 
+        data_split = []
         for k in np.unique(labels):
             indices = np.argwhere(labels.values == k)
             data_split.append(feature_data[indices])
@@ -356,10 +363,9 @@ def _plot_shap_violin(shap_vals, data, labels, folder, max_feats, ext=".png"):
     )
 
 
-def _plot_trend(shap_vals, data, labels, folder, max_feats, ext=".png"):
+def _plot_trend(shap_feature_importance, data, labels, folder, max_feats, ext=".png"):
     """Plot the violins of a feature."""
-    shap_mean = np.sum(np.mean(np.abs(shap_vals), axis=1), axis=0)
-    top_feat_idx = shap_mean.argsort()[::-1][:max_feats]
+    top_feat_idx = shap_feature_importance.argsort()[-max_feats:]
 
     ncols = 4
     nrows = int(np.ceil(len(top_feat_idx) / ncols))
