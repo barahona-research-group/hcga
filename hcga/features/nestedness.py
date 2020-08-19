@@ -13,8 +13,8 @@ def nestedness_func(g):
     n = nx.number_of_nodes(g)
     nodes = list(g.nodes())
     neighbors = [0 for i in range(n)]
-    
-    for i,j in enumerate(nodes):
+
+    for i, j in enumerate(nodes):
         neighbors[i] = {k for k in g.neighbors(j)}
 
     sum_n_ij = 0

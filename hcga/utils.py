@@ -25,4 +25,3 @@ def get_trivial_graph(n_node_features=0):
     edges["start_node"] = [0, 1, 2]
     edges["end_node"] = [1, 2, 0]
     return Graph(nodes, edges, 0)
-

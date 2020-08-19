@@ -30,10 +30,10 @@ def jaccard_similarity(graph):
     jsm = np.eye(n)
 
     neighbors = [0 for i in range(n)]
-            
-    for i,j in enumerate(graph.nodes()):
+
+    for i, j in enumerate(graph.nodes()):
         neighbors[i] = set(graph.neighbors(j))
-        
+
     for i in range(n):
         for j in range(i + 1, n):
             a = len(neighbors[i].intersection(neighbors[j]))
@@ -47,6 +47,7 @@ def jaccard_similarity(graph):
 
     return nx.Graph(jsm)
 
+
 class JaccardSimilarity(FeatureClass):
     """Jaccard Similarity class."""
 
@@ -56,9 +57,9 @@ class JaccardSimilarity(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        
+
         g = jaccard_similarity(self.graph)
-        
+
         # Basic stats
         self.add_feature(
             "number_of_edges",
@@ -67,7 +68,7 @@ class JaccardSimilarity(FeatureClass):
             InterpretabilityScore(5),
             function_args=g,
         )
-        
+
         self.add_feature(
             "number_of_edges_no_selfloops",
             lambda graph: remove_selfloops(graph).number_of_edges(),
@@ -75,7 +76,7 @@ class JaccardSimilarity(FeatureClass):
             InterpretabilityScore(5),
             function_args=g,
         )
-        
+
         self.add_feature(
             "connectance",
             lambda graph: nx.density(graph),
@@ -83,7 +84,7 @@ class JaccardSimilarity(FeatureClass):
             InterpretabilityScore(5),
             function_args=g,
         )
-        
+
         self.add_feature(
             "diameter",
             lambda graph: nx.diameter(ensure_connected(graph)),
@@ -91,7 +92,7 @@ class JaccardSimilarity(FeatureClass):
             InterpretabilityScore(5),
             function_args=g,
         )
-        
+
         self.add_feature(
             "radius",
             lambda graph: nx.radius(ensure_connected(graph)),
@@ -99,7 +100,7 @@ class JaccardSimilarity(FeatureClass):
             InterpretabilityScore(5),
             function_args=g,
         )
-        
+
         # Assortativity
         self.add_feature(
             "degree_assortativity_coeff",
@@ -108,7 +109,7 @@ class JaccardSimilarity(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         # Cliques
         self.add_feature(
             "graph_clique_number",
@@ -125,7 +126,7 @@ class JaccardSimilarity(FeatureClass):
             InterpretabilityScore(3),
             function_args=g,
         )
-        
+
         # Clustering
         self.add_feature(
             "transitivity",
@@ -134,7 +135,7 @@ class JaccardSimilarity(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         # Components
         self.add_feature(
             "is_connected",
@@ -151,7 +152,7 @@ class JaccardSimilarity(FeatureClass):
             InterpretabilityScore(5),
             function_args=g,
         )
-        
+
         self.add_feature(
             "largest_connected_component",
             lambda graph: ensure_connected(graph).number_of_nodes(),
@@ -159,7 +160,7 @@ class JaccardSimilarity(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         # Efficiency
         self.add_feature(
             "global_efficiency",
@@ -168,7 +169,7 @@ class JaccardSimilarity(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         # Node connectivity
         self.add_feature(
             "node_connectivity",
@@ -177,7 +178,7 @@ class JaccardSimilarity(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-        
+
         self.add_feature(
             "edge_connectivity",
             lambda graph: nx.edge_connectivity(graph),
@@ -185,6 +186,3 @@ class JaccardSimilarity(FeatureClass):
             InterpretabilityScore(4),
             function_args=g,
         )
-
-        
-

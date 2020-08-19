@@ -26,6 +26,4 @@ def remove_selfloops(graph):
         selfloops = nx.selfloop_edges(graph)
         graph_noselfloop.remove_edges_from(selfloops)
         return graph_noselfloop
-    raise Exception("ensure_conneted is not implemented for this graph type")        
-    
-
+    raise Exception("ensure_conneted is not implemented for this graph type")
