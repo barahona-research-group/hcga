@@ -122,10 +122,16 @@ def _filter_interpretable(features, features_info, interpretability):
 
 def _filter_graphs(features, graph_removal=0.05):
     """Remove samples with more than X% bad values."""
-    samples_to_filter = features.index[
-        features.isnull().sum(axis=1) / len(features.columns) > graph_removal
-    ].tolist()
-    return samples_to_filter
+    n_graphs = len(features.index)
+    features = features[
+        features.isnull().sum(axis=1) / len(features.columns) < graph_removal
+    ]
+    L.info(
+        "%s graphs were removed for more than %s fraction of bad features",
+        str(n_graphs - len(features.index)),
+        str(graph_removal),
+    )
+    return features
 
 
 def _filter_features(features):
@@ -386,14 +392,7 @@ def _preprocess_features(features, features_info, graph_removal, interpretabilit
     """Collect all feature filters."""
     L.info("%s total features", str(len(features.columns)))
 
-    samples_to_filter = _filter_graphs(features, graph_removal=graph_removal)
-    features = features.drop(labels=samples_to_filter)
-    features_info = features_info.drop(labels=samples_to_filter)
-    L.info(
-        "%s graphs were removed for more than %s fraction of bad features",
-        str(len(samples_to_filter)),
-        str(graph_removal),
-    )
+    features = _filter_graphs(features, graph_removal=graph_removal)
 
     good_features = _filter_features(features)
     features = features[good_features]
