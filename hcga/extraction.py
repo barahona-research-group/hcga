@@ -1,15 +1,12 @@
 """functions to extract features from graphs."""
 import logging
-import multiprocessing
 import time
 from collections import defaultdict
-from functools import partial
 from importlib import import_module
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
 
 L = logging.getLogger(__name__)
 
@@ -155,6 +152,7 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
         features = pd.DataFrame(feat_class_inst.get_features(), index=[graph.id])
         columns = [(feat_class_inst.shortname, col) for col in features.columns]
         features_df[columns] = features
+        del feat_class_inst
 
         if with_runtimes:
             runtimes[feature_class.shortname] = time.time() - start_time
@@ -173,17 +171,14 @@ def compute_all_features(
     if with_runtimes:
         n_workers = 1
 
-    with multiprocessing.Pool(n_workers) as pool:
-        results = pool.imap_unordered(
-            partial(
-                feature_extraction,
-                list_feature_classes=list_feature_classes,
-                with_runtimes=with_runtimes,
-            ),
-            graphs,
-        )
+    from joblib import Parallel, delayed
 
-        all_features_df = pd.DataFrame()
-        for features_df in tqdm(results, total=len(graphs)):
-            all_features_df = all_features_df.append(features_df)
-        return all_features_df
+    results = Parallel(n_workers, verbose=10)(
+        delayed(feature_extraction)(
+            graph,
+            list_feature_classes=list_feature_classes,
+            with_runtimes=with_runtimes,
+        )
+        for graph in graphs
+    )
+    return pd.concat(results)
