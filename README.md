@@ -14,14 +14,17 @@ Navigate to the main folder simply type:
 
 ## Documentation
 
-See https://barahona-research-group.github.io/hcga/ for the documentation. 
+Head over to our [documentation](https://barahona-research-group.github.io/hcga/) to find out more about installation, data handling, creation of datasets and a full list of implemented features, transforms, and datasets.
+For a quick start, check out our [examples](https://github.com/barahona-research-group/hcga/tree/master/examples) in the `examples/` directory.
 
 ## Cite
 
 Please cite our paper if you use this code in your own work:
 
 ```
-R. Peach, H. Palasciano, A. Arnaudon, M. Barahona, et al. “hcga: Highly Comparative Graph Analysis for graph phenotyping”, In preparation, 2019
+hcga: Highly Comparative Graph Analysis for network phenotyping
+Robert L Peach, Alexis Arnaudon, Julia A Schmidt, Henry Palasciano, Nathan R Bernier, Kim Jelfs, Sophia Yaliraki, Mauricio Barahona
+bioRxiv 2020.09.25.312926; doi: https://doi.org/10.1101/2020.09.25.312926 
 
 ```
 
@@ -42,4 +45,3 @@ In the paper, we used ``DATASET`` as one of
 * ``REDDIT-MULTI-12K``
 
 More comments are in the scripts for some parameters choices. 
-
