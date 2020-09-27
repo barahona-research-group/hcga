@@ -28,20 +28,13 @@ bioRxiv 2020.09.25.312926; doi: https://doi.org/10.1101/2020.09.25.312926
 
 ```
 
-## Run test file
+## Run example
 
-In the example folder, the script ``run.py`` can be used to run the examples of the paper, simply get the dataset
-``` hcga get_data DATASET```
-then extract features with
-```./run.sh .datasets/DATASET```
-and run analysis suite with
-```./analysis.sh DATASET```
-
-In the paper, we used ``DATASET`` as one of 
+In the example folder, the script ``run_example.sh`` can be used to run the examples of the paper:
+```./run_example.sh DATASET```
+where ``DATASET`` is one of 
 * ``ENZYMES``
 * ``DD``
 * ``COLLAB``
 * ``PROTEINS``
 * ``REDDIT-MULTI-12K``
-
-More comments are in the scripts for some parameters choices. 
