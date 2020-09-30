@@ -30,6 +30,18 @@ bioRxiv 2020.09.25.312926; doi: https://doi.org/10.1101/2020.09.25.312926
 
 ```
 
+The bibtex reference:
+```
+@article{peach2020hcga,
+  title={hcga: Highly Comparative Graph Analysis for network phenotyping},
+  author={Peach, Robert L and Arnaudon, Alexis and Schmidt, Julia A and Palasciano, Henry and Bernier, Nathan R and Jelfs, Kim and Yaliraki, Sophia and Barahona, Mauricio},
+  journal={bioRxiv},
+  year={2020},
+  publisher={Cold Spring Harbor Laboratory}
+}
+
+```
+
 ## Run example
 
 In the example folder, the script ``run_example.sh`` can be used to run the benchmark examples in the paper:
