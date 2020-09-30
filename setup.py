@@ -21,6 +21,7 @@ setup(
         "shap>=0.35.0",
         "pandas>=1.0.3",
         "wget>=3.2",
+        "sympy>=1.4",
     ],
     entry_points={"console_scripts": ["hcga=hcga.app:cli"],},
 )

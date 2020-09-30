@@ -15,7 +15,7 @@ def nestedness_func(g):
     neighbors = [0 for i in range(n)]
 
     for i, j in enumerate(nodes):
-        neighbors[i] = {k for k in g.neighbors(j)}
+        neighbors[i] = set(g.neighbors(j))
 
     sum_n_ij = 0
     sum_n_m = 0

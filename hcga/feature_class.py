@@ -379,6 +379,7 @@ class FeatureClass:
             )
 
     def list_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
+        """Compute list statisttics."""
         if feat_dist is not None:
             for i in range(len(feat_dist)):
                 self.add_feature(

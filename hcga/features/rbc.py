@@ -1,6 +1,5 @@
 """Role-similarity Based Comparison class."""
 import networkx as nx
-from networkx.algorithms import centrality
 import numpy as np
 from sklearn.preprocessing import normalize
 

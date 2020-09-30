@@ -1,7 +1,5 @@
 """Utils functions for feature classes."""
 import networkx as nx
-import numpy as np
-from sklearn.preprocessing import normalize
 
 
 def ensure_connected(graph):

@@ -1,6 +1,5 @@
 """Jaccard Similarity class."""
 import networkx as nx
-from networkx.algorithms import centrality
 import numpy as np
 
 from .utils import ensure_connected, remove_selfloops
