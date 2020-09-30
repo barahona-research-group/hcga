@@ -194,6 +194,18 @@ def extract_features(
     show_default=True,
     help="Number of top features to plot with violins.",
 )
+@click.option(
+    "--n-splits",
+    default=None,
+    show_default=True,
+    help="Number of splits for k-fold, None will use an automatic estimation.",
+)
+@click.option(
+    "--n-repeats",
+    default=1,
+    show_default=True,
+    help="Number of repeats of k-folds for better averaged accuracies.",
+)
 def feature_analysis(
     dataset,
     results_folder,
@@ -208,6 +220,8 @@ def feature_analysis(
     reduced_set_max_correlation,
     plot,
     max_feats_plot,
+    n_splits,
+    n_repeats,
 ):
     """Analysis of the features extracted in feature_file."""
     from hcga.io import load_features
@@ -216,7 +230,7 @@ def feature_analysis(
     results_folder = Path(results_folder) / dataset
     feature_filename = results_folder / feature_file
     features, features_info, graphs = load_features(filename=feature_filename)
-
+    print(n_repeats)
     analysis(
         features,
         features_info,
@@ -232,6 +246,8 @@ def feature_analysis(
         reduced_set_max_correlation=reduced_set_max_correlation,
         plot=plot,
         max_feats_plot=max_feats_plot,
+        n_repeats=n_repeats,
+        n_splits=n_splits,
     )
 
 
