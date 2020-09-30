@@ -97,9 +97,7 @@ def looplessness(graph):  # pylint: disable=too-many-locals
             trophic_diff[i, j] = trophic[i] - trophic[j]
     trophic_diff_sq = np.square(trophic_diff)
     # Compute incoherence parameter
-    incoherence_parameter = np.sqrt(
-        (np.sum(np.multiply(a, trophic_diff_sq)) - 1) / e
-    )
+    incoherence_parameter = np.sqrt((np.sum(np.multiply(a, trophic_diff_sq)) - 1) / e)
 
     # Compute loop exponent
     loop_exponent = (
