@@ -50,3 +50,54 @@ class ShortestPaths(FeatureClass):
             InterpretabilityScore(3),
             statistics="centrality",
         )
+
+        def shortest_paths(graph):
+            ss = list(nx.all_pairs_dijkstra_path_length(graph))
+            p = []
+            for s in ss:
+                p += list(s[1].values())
+            return [j for j in p if j > 0]
+
+        self.add_feature(
+            "number_shortest_paths_directed",
+            lambda graph: len(shortest_paths(graph)),
+            "the number of shortest paths (not counting paths of infinite length)",
+            InterpretabilityScore(3),
+        )
+
+        self.add_feature(
+            "shortest_paths_length_directed",
+            lambda graph: shortest_paths(graph),
+            "the number of shortest path lengths (not counting paths of infinite length)",
+            InterpretabilityScore(3),
+            statistics="centrality",
+        )
+
+        def eccentricity(graph):
+            ss = list(nx.all_pairs_dijkstra_path_length(graph))
+            p = []
+            for s in ss:
+                p.append(max(list(s[1].values())))
+            return p
+
+        self.add_feature(
+            "eccentricity_directed",
+            lambda graph: eccentricity(graph),
+            "the ditribution of eccentricities (not counting paths of infinite length)",
+            InterpretabilityScore(3),
+            statistics="centrality",
+        )
+
+        self.add_feature(
+            "diameter_directed",
+            lambda graph: max(eccentricity(graph)),
+            "the diameter of the graph (not counting paths of infinite length)",
+            InterpretabilityScore(3),
+        )
+
+        self.add_feature(
+            "radius_directed",
+            lambda graph: min(eccentricity(graph)),
+            "the radius of the graph (not counting paths of infinite length)",
+            InterpretabilityScore(3),
+        )

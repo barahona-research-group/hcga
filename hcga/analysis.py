@@ -73,6 +73,8 @@ def _get_reduced_feature_set(X, shap_top_features, n_top_features=100, alpha=0.9
         str(len(selected_features)),
         str(alpha),
     )
+    if len(selected_features) == 1:
+        L.warning("Only one features selected, things may break!")
 
     return X.columns[selected_features]
 
@@ -137,7 +139,7 @@ def _filter_graphs(features, graph_removal=0.05):
 def _filter_features(features):
     """Filter features and create feature matrix."""
     nan_features = features.replace([np.inf, -np.inf], np.nan)
-    valid_features = nan_features.dropna(axis=1)
+    valid_features = nan_features.dropna(axis=1).astype("float64")
     return valid_features.drop(
         valid_features.std()[(valid_features.std() == 0)].index, axis=1
     ).columns
@@ -190,7 +192,6 @@ def _get_shap_feature_importance(shap_values):
     """From a list of shap values per folds, compute the global shap feature importance."""
     # average across folds
     mean_shap_values = np.mean(shap_values, axis=0)
-
     # average accros labels
     if len(np.shape(mean_shap_values)) > 2:
         global_mean_shap_values = np.mean(mean_shap_values, axis=0)

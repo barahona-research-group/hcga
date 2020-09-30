@@ -3,6 +3,7 @@ import networkx as nx
 import numpy as np
 import scipy as sc
 
+
 MIN_NUM_NODES = 2
 MIN_NUM_EDGES = 1
 
@@ -74,7 +75,7 @@ class GraphCollection:
 class Graph:
     """Class to encode a generic graph structure for hcga."""
 
-    def __init__(self, nodes, edges, label, label_name=None):
+    def __init__(self, nodes, edges, label, graph_type=None, label_name=None):
         """Set main graphs quantities.
 
         Args:
@@ -97,6 +98,7 @@ class Graph:
         self.edges = edges.reset_index()
 
         self.label = label
+        self.graph_type = graph_type
         self.label_name = label_name
         self.disabled = False
         self.id = -1
@@ -134,7 +136,6 @@ class Graph:
 
     def get_graph(self, encoding=None):
         """Get usable graph structure with given encoding.
-
         For now, only networkx is implemented."""
         if encoding is None:
             return self
@@ -148,7 +149,12 @@ class Graph:
 
     def set_networkx(self):
         """Set the networkx graph encoding."""
-        self._graph_networkx = nx.Graph()
+        if self.graph_type is None:
+            self._graph_networkx = nx.Graph()
+        elif self.graph_type == "directed":
+            self._graph_networkx = nx.DiGraph()
+        else:
+            raise Exception("graph type not reconised or not yet implemented")
         if self.n_node_features == 0:
             nodes = [(node, {"feat": [0]}) for node, node_data in self.nodes.iterrows()]
         else:

@@ -7,6 +7,8 @@ import warnings
 import numpy as np
 import scipy.stats as st
 from networkx.algorithms.community import quality
+from networkx import to_undirected
+from networkx.exception import NetworkXNotImplemented
 import pandas as pd
 
 from hcga.utils import get_trivial_graph, TimeoutError, timeout_handler
@@ -67,6 +69,7 @@ class FeatureClass:
         if graph is not None:
             self.graph = graph.get_graph(self.__class__.encoding)
             self.graph_id = graph.id
+            self.graph_type = graph.graph_type
         else:
             self.graph = None
         self.features = {}
@@ -156,9 +159,14 @@ class FeatureClass:
         try:
             signal.signal(signal.SIGALRM, timeout_handler)
             signal.alarm(int(self.__class__.timeout))
-            feature = feature_function(function_args)
+            try:
+                feature = feature_function(function_args)
+            except NetworkXNotImplemented:
+                if self.graph_type == "directed":
+                    feature = feature_function(to_undirected(function_args))
             signal.alarm(0)
             return feature
+
         except (KeyboardInterrupt, SystemExit):
             sys.exit(0)
 
@@ -249,6 +257,11 @@ class FeatureClass:
 
         elif statistics == "node_features":
             self.node_feature_statistics(
+                func_result, feature_name, feature_description, feature_interpret,
+            )
+
+        elif statistics == "list":
+            self.list_statistics(
                 func_result, feature_name, feature_description, feature_interpret,
             )
 
@@ -364,6 +377,18 @@ class FeatureClass:
             self.feature_statistics_advanced(
                 feat_dist, feat_name, feat_desc, feat_interpret
             )
+
+    def list_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
+        """Compute list statisttics."""
+        if feat_dist is not None:
+            for i in range(len(feat_dist)):
+                self.add_feature(
+                    feat_name[i],
+                    lambda args: args[i],
+                    feat_desc,
+                    feat_interpret,
+                    function_args=feat_dist,
+                )
 
     def feature_statistics_basic(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes basic summary statistics of distributions."""
