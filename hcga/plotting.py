@@ -353,9 +353,7 @@ def _plot_trend(shap_feature_importance, data, labels, folder, max_feats, ext=".
     for ax, top_feat in zip(axes.flatten(), top_feat_idx):
         feature_data = data[data.columns[top_feat]].values
 
-        sns.scatterplot(
-            feature_data, labels, ax=ax, palette="muted"
-        )  # pylint: disable=too-many-function-args
+        sns.scatterplot(data=feature_data, y=labels, ax=ax, palette="muted")
         ax.set(xlabel=data.columns[top_feat], ylabel="y-label")
 
         ax.tick_params(axis="both", which="major", labelsize=5)
