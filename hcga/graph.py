@@ -2,7 +2,7 @@
 import networkx as nx
 import numpy as np
 import scipy as sc
-
+import pandas as pd
 
 MIN_NUM_NODES = 2
 MIN_NUM_EDGES = 1
@@ -15,12 +15,21 @@ class GraphCollection:
         """Set empty list of graphs."""
         self.graphs = []
 
-    def add_graph(self, graph):
+    def add_graph(self, graph, node_features=None, label=None):
         """Add a graph to the list."""
         if not isinstance(graph, Graph):
-            raise Exception("Only add class Graph to GraphCollection")
+            graph = convert_graph(graph, node_features, label)
+            #raise Exception("Only add class Graph to GraphCollection")
         graph.id = len(self.graphs)
         self.graphs.append(graph)
+
+    def add_graph_list(self, graph_list, node_features_list=None, graph_labels=None):
+        """ Add a list of graphs """
+        for i, graph in enumerate(graph_list):
+            if not isinstance(graph, Graph):
+                graph = convert_graph(graph, node_features_list[i], graph_labels[i])                
+                #raise Exception("Only add class Graph to GraphCollection")      
+            self.graphs.append(graph)
 
     def __iter__(self):
         """Makes this class iterable over the graphs."""
@@ -199,3 +208,74 @@ class Graph:
             if edge.start_node in drop_nodes and edge.end_node in drop_nodes
         ]
         self.edges = self.edges.drop(drop_edges)
+
+def convert_graph(g, node_features=None, label=None):
+    """ Function to convert different graph types to the class Graph """
+    
+    if node_features is not None:
+        if isinstance(node_features,np.ndarray):
+            node_features = node_features.tolist()
+
+    if label is not None:
+        label = [label]            
+    
+    if isinstance(g, nx.Graph):
+        A = nx.to_scipy_sparse_matrix(g, weight='weight', format='coo')
+        
+        if not node_features:
+            try:
+                node_features = list(nx.get_node_attributes(g,'features').values())
+                if isinstance(node_features[0],np.ndarray):
+                    node_features = [x.tolist() for x in node_features]
+            except:
+                node_features = None
+                
+                
+        if not label:
+            try:
+                graph_label = list(nx.get_node_attributes(g,'label').values())
+                if not isinstance(graph_label, list):
+                    graph_label = [graph_label]       
+            except:
+                raise Exception('Graph label not present. Try renaming networkx attribute to \'label\'')
+                         
+        
+        edges = np.array([A.row,A.col,A.data]).T
+        edges_df = pd.DataFrame(edges, columns = ['start_node', 'end_node', 'weight'])
+
+        nodes = np.arange(0,A.shape[0])
+        nodes_df = pd.DataFrame(index=nodes) 
+        
+        if node_features is not None:
+            nodes_df['attributes'] = node_features
+        
+        graph = Graph(nodes_df, edges_df, label)
+                
+
+    if isinstance(g, np.ndarray):
+        g = sc.sparse.coo_matrix(g)
+        edges = np.array([g.row,g.col,g.data]).T
+        edges_df = pd.DataFrame(edges, columns = ['start_node', 'end_node', 'weight'])
+        
+        nodes = np.arange(0,g.shape[0])
+        nodes_df = pd.DataFrame(index=nodes) 
+
+        if node_features is not None:
+            nodes_df['attributes'] = node_features    
+            
+        graph = Graph(nodes_df, edges_df, label)
+
+    
+    return graph
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
