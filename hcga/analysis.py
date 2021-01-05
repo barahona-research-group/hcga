@@ -319,6 +319,7 @@ def fit_model(
         raise Exception("Please provide a model for classification")
 
     X, y = features_to_Xy(features)
+       
 
     indices = next(
         ShuffleSplit(test_size=test_size, random_state=random_state).split(X, y)
@@ -372,7 +373,8 @@ def compute_fold(X, y, model, indices, analysis_type):
     """Compute a single fold for parallel computation."""
     train_index, val_index = indices
     model.fit(X.iloc[train_index], y.iloc[train_index])
-
+    
+    
     if analysis_type == "classification":
         acc_score = accuracy_score(y.iloc[val_index], model.predict(X.iloc[val_index]))
         L.info("Fold accuracy: --- %s ---", str(np.round(acc_score, 3)))
@@ -397,7 +399,10 @@ def _preprocess_features(features, features_info, graph_removal, interpretabilit
 
     good_features = _filter_features(features)
     features = features[good_features]
-    features_info = features_info[good_features.drop("label")]
+    
+    if 'label' in good_features:    
+        features_info = features_info[good_features.drop("label")]
+        
     L.info("%s valid features", str(len(features.columns)))
 
     features, features_info = _filter_interpretable(
@@ -411,10 +416,39 @@ def _preprocess_features(features, features_info, graph_removal, interpretabilit
     return features, features_info
 
 
+def predict_evaluation_set(
+        features,
+        features_info,
+        analysis_type="classification",
+        graph_removal=0.3,
+        interpretability=1,
+        model="XG",      
+):
+    """function to classify unlabelled graphs"""
+    label = features.iloc[:,-1]
+    features, features_info = _preprocess_features(
+        features, features_info, graph_removal, interpretability
+    )
+    features = pd.concat([features,label],axis=1)
+    model = _get_model(model, analysis_type) 
+    
+    features_train = features[features['label'].notnull()]
+    features_evaluate = features[~features['label'].notnull()]
+    
+    X_train, y_train = features_to_Xy(features_train)
+    X_eval, _ = features_to_Xy(features_evaluate)
+    
+    model.fit(X_train,y_train)
+    
+    y_eval = model.predict(X_eval)
+    
+    return y_eval
+    
+
 def analysis(
     features,
     features_info,
-    graphs,
+    graphs=None,
     analysis_type="classification",
     folder=".",
     graph_removal=0.3,
@@ -437,6 +471,7 @@ def analysis(
         features, features_info, graph_removal, interpretability
     )
     model = _get_model(model, analysis_type)
+
 
     if kfold:
         analysis_results = fit_model_kfold(
@@ -468,6 +503,8 @@ def analysis(
             analysis_results["reduced_mean_shap_values"] = [
                 analysis_results["reduced_mean_shap_values"]
             ]
+
+
 
     results_folder = Path(folder) / (
         "results_interpretability_" + str(interpretability)

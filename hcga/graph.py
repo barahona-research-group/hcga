@@ -19,16 +19,25 @@ class GraphCollection:
         """Add a graph to the list."""
         if not isinstance(graph, Graph):
             graph = convert_graph(graph, node_features, label)
-            #raise Exception("Only add class Graph to GraphCollection")
         graph.id = len(self.graphs)
         self.graphs.append(graph)
 
     def add_graph_list(self, graph_list, node_features_list=None, graph_labels=None):
         """ Add a list of graphs """
         for i, graph in enumerate(graph_list):
-            if not isinstance(graph, Graph):
-                graph = convert_graph(graph, node_features_list[i], graph_labels[i])                
-                #raise Exception("Only add class Graph to GraphCollection")      
+            if not isinstance(graph, Graph):   
+                if not graph_labels:
+                    graph_label = None
+                else:
+                    graph_label=graph_labels[i]
+                
+                if not node_features_list:
+                    node_features = None
+                else:
+                    node_features=node_features_list[i]
+                    
+                graph = convert_graph(graph, node_features, graph_label)                
+            graph.id = len(self.graphs)
             self.graphs.append(graph)
 
     def __iter__(self):
@@ -242,11 +251,11 @@ def convert_graph(g, node_features=None, label=None):
                 
         if not label:
             try:
-                graph_label = list(nx.get_node_attributes(g,'label').values())
+                label = list(nx.get_node_attributes(g,'label').values())
                 if not isinstance(graph_label, list):
                     graph_label = [graph_label]       
             except:
-                raise Exception('Graph label not present. Try renaming networkx attribute to \'label\'')
+                label = None
                          
         
         edges = np.array([A.row,A.col,A.data]).T

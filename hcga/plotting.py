@@ -140,12 +140,13 @@ def plot_analysis(
             L.info("Plot trend")
             _plot_trend(feature_importance, X, y, folder, max_feats, ext=ext)
         _save_to_pdf(pdf)
-
-        L.info("Plot feature summaries")
-        figs = _plot_feature_summary(
-            X[reduced_features], y, graphs, folder, shap_values, max_feats, ext=ext
-        )
-        _save_to_pdf(pdf, figs)
+        
+        if graphs is not None:
+            L.info("Plot feature summaries")
+            figs = _plot_feature_summary(
+                X[reduced_features], y, graphs, folder, shap_values, max_feats, ext=ext
+            )
+            _save_to_pdf(pdf, figs)
 
 
 def _bar_ranking_plot(mean_shap_values, X, folder, max_feats, ext=".png"):
@@ -215,7 +216,7 @@ def _plot_dendrogram_shap(
         cbar_kws={"label": "|pearson|"},
     )
     cor_sorted["id"] = np.arange(len(cor_sorted))
-    reduced_pos = cor_sorted.loc[reduced_features, ("id", "")] + 0.5
+    reduced_pos = cor_sorted.loc[cor_sorted.index.intersection(reduced_features), ("id", "")] + 0.5
     ax2.scatter(reduced_pos, reduced_pos, c="g", s=100)
     ax1.title.set_text("Top {} features heatmap and dendogram".format(max_feats))
     plt.savefig(
@@ -246,7 +247,7 @@ def _plot_feature_correlation(
         cbar_kws={"label": "|pearson|"},
     )
     cor_sorted["id"] = np.arange(len(cor_sorted))
-    reduced_pos = cor_sorted.loc[reduced_features, ("id", "")] + 0.5
+    reduced_pos = cor_sorted.loc[cor_sorted.index.intersection(reduced_features), ("id", "")] + 0.5
     ax.scatter(reduced_pos, reduced_pos, c="g", s=100)
     plt.savefig(
         os.path.join(folder, "correlation_matrix" + ext), dpi=200, bbox_inches="tight"
