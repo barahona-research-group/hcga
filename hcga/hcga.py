@@ -56,6 +56,7 @@ class Hcga:
         node_feat=True,
         timeout=30,
         connected=False,
+        weighted=True,
     ):
 
         self.features, self.features_info = extract(

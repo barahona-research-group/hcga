@@ -69,6 +69,11 @@ class GraphCollection:
                 graph.nodes[node_id] = node[0]
             graph.set_n_node_features()
 
+    def remove_edge_weights(self):
+        """ remove edge weights. """        
+        for graph in self.graphs:
+            graph.remove_weights()
+
     def get_graph_ids(self):
         """Get the list of active graph ids."""
         return [graph.id for graph in self.graphs if not graph.disabled]
@@ -136,6 +141,10 @@ class Graph:
             else:
                 self.n_node_features = 0
 
+    def remove_weights(self):
+        """ set edge weights to one """
+        self.edges['weight'] = 1.0
+    
     def _check_length(self):
         """Verify if the graph is large enough to be considered."""
         if len(self.nodes.index) <= MIN_NUM_NODES:

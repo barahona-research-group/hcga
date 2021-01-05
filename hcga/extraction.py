@@ -21,6 +21,7 @@ def extract(
     with_node_features=True,
     timeout=10,
     connected=False,
+    weighted=True,
 ):
     """main function to extract features."""
     if not with_node_features:
@@ -31,6 +32,9 @@ def extract(
 
     if connected:
         graphs.maximal_subgraphs()
+    
+    if not weighted:
+        graphs.remove_edge_weights()
 
     feat_classes, features_info_df = get_list_feature_classes(
         mode,
