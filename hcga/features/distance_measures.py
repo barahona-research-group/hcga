@@ -24,7 +24,13 @@ class DistanceMeasures(FeatureClass):
             "The barycenter is the subgraph which minimises a distance function",
             InterpretabilityScore(4),
         )
-
+        self.add_feature(
+            "barycenter_size_weighted",
+            lambda graph: len(nx.barycenter(ensure_connected(graph, weight='weight'))),
+            "The barycenter is the subgraph which minimises a distance function",
+            InterpretabilityScore(4),
+        )
+        
         # center
         self.add_feature(
             "center_size",

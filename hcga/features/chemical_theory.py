@@ -23,7 +23,16 @@ class ChemicalTheory(FeatureClass):
             "The wiener index is defined as the sum of the lengths of the shortest paths between all pairs of vertices",
             InterpretabilityScore(4),
         )
-
+        
+        wiener_index = lambda graph: nx.wiener_index(graph, weight='weight')
+        self.add_feature(
+            "wiener index weighted",
+            wiener_index,
+            "The wiener index is defined as the sum of the lengths of the shortest paths between all pairs of vertices",
+            InterpretabilityScore(4),
+        )
+        
+        
         estrada_index = lambda graph: nx.estrada_index(graph)
         self.add_feature(
             "estrada_index",
