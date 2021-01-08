@@ -2,9 +2,12 @@ import logging
 
 from .analysis import analysis, predict_evaluation_set
 from .extraction import extract
-from .io import load_dataset, load_features, save_dataset, save_features, load_model, save_model
+from .io import load_dataset, load_features, save_dataset, save_features, load_fitted_model, save_fitted_model
 
 import pandas as pd
+
+import os
+from pathlib import Path
 
 
 # pylint: disable-all
@@ -173,11 +176,13 @@ class Hcga:
         n_splits=None,
         random_state=42,
         test_size=0.2,
+        trained_model=None,
+        save_model=False,
     ):
         
         if feature_file is not None:
             self.load_features(feature_file=feature_file)
-
+        
 
         analysis(
                 self.features,
@@ -199,4 +204,6 @@ class Hcga:
                 n_splits=n_splits,
                 random_state=random_state,
                 test_size=test_size,
+                trained_model=trained_model,
+                save_model=save_model,
             )

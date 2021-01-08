@@ -6,6 +6,7 @@ from pathlib import Path
 import warnings
 from copy import deepcopy
 from tqdm import tqdm
+from .io import save_fitted_model, load_fitted_model
 
 import numpy as np
 import pandas as pd
@@ -27,25 +28,43 @@ warnings.simplefilter("ignore")
 
 def features_to_Xy(features):
     """decompose features dataframe to numpy arrayes X and y."""
-    X = features.drop(columns=["label"])
-    y = features["label"]
+    if 'label' in features:
+        X = features.drop(columns=["label"])
+        y = features["label"]
+    else:
+        X = features
+        y = None
+        
     return X, y
 
 
-def _normalise_feature_data(features,):
+def _normalise_feature_data(features,scalar=None,fit_scalar=True):
     """Normalise the feature matrix to remove the mean and scale to unit variance."""
     if "label" in features:
         label = features["label"]
-
-    normed_features = pd.DataFrame(
-        StandardScaler().fit_transform(features), columns=features.columns
-    )
+        
+    if scalar is None:
+        scalar = StandardScaler()        
+        normed_features = pd.DataFrame(
+            scalar.fit_transform(features), columns=features.columns
+        )
+    else:
+        if fit_scalar:
+            normed_features = pd.DataFrame(
+                scalar.fit_transform(features), columns=features.columns
+            )        
+        else:
+             normed_features = pd.DataFrame(
+                scalar.transform(features), columns=features.columns
+            )     
+             
+    
     normed_features.index = features.index
 
     if "label" in features:
         normed_features["label"] = label
 
-    return normed_features
+    return normed_features, scalar
 
 
 def _number_folds(y):
@@ -391,15 +410,26 @@ def compute_fold(X, y, model, indices, analysis_type):
     return acc_score, shap_values
 
 
-def _preprocess_features(features, features_info, graph_removal, interpretability):
+def _preprocess_features(features, features_info, graph_removal, interpretability, trained_model=None):
     """Collect all feature filters."""
     L.info("%s total features", str(len(features.columns)))
 
     features = _filter_graphs(features, graph_removal=graph_removal)
-
+   
     good_features = _filter_features(features)
     features = features[good_features]
     
+    scalar = None
+    if trained_model is not None:        
+        scalar = trained_model[1]
+        feature_info_pretrained = trained_model[2]  
+        model_feature_subset = feature_info_pretrained.columns
+        try:
+            features = features[model_feature_subset]
+        except:
+            raise Exception("You may have features in your pre-trained model that weren't \
+                            computeable in your new evaluation set.")
+ 
     if 'label' in good_features:    
         features_info = features_info[good_features.drop("label")]
         
@@ -412,38 +442,22 @@ def _preprocess_features(features, features_info, graph_removal, interpretabilit
         "%s with interpretability %s", str(len(features.columns)), str(interpretability)
     )
 
-    features = _normalise_feature_data(features)
-    return features, features_info
+    features, scalar = _normalise_feature_data(features, scalar=scalar)
+    
+    return features, features_info, scalar
 
+    
+def train_all(features, model):
+    """ Train on all available data."""
+    X, y = features_to_Xy(features)
+    model.fit(X, y)    
+    L.info("Fitting model to all data")
+    return model
 
-def predict_evaluation_set(
-        features,
-        features_info,
-        analysis_type="classification",
-        graph_removal=0.3,
-        interpretability=1,
-        model="XG",      
-):
-    """function to classify unlabelled graphs"""
-    label = features.iloc[:,-1]
-    features, features_info = _preprocess_features(
-        features, features_info, graph_removal, interpretability
-    )
-    features = pd.concat([features,label],axis=1)
-    model = _get_model(model, analysis_type) 
-    
-    features_train = features[features['label'].notnull()]
-    features_evaluate = features[~features['label'].notnull()]
-    
-    X_train, y_train = features_to_Xy(features_train)
-    X_eval, _ = features_to_Xy(features_evaluate)
-    
-    model.fit(X_train,y_train)
-    
-    y_eval = model.predict(X_eval)
-    
-    return y_eval
-    
+def predict_unlabelled(model,features):
+    X, y = features_to_Xy(features)
+    return model.predict(X)    
+
 
 def analysis(
     features,
@@ -465,12 +479,32 @@ def analysis(
     n_splits=None,
     random_state=42,
     test_size=0.2,
+    trained_model=None,
+    save_model=False,
 ):
     """Main function to classify graphs and plot results."""
-    features, features_info = _preprocess_features(
-        features, features_info, graph_removal, interpretability
+       
+    
+    if trained_model is None:
+        model = _get_model(model, analysis_type)
+    else:
+        if isinstance(trained_model,tuple):
+            model = trained_model[0]
+        elif isinstance(trained_model,str):
+            trained_model = load_fitted_model(trained_model)
+            model = trained_model[0]
+
+    features, features_info, scalar = _preprocess_features(
+        features, features_info, graph_removal, interpretability, trained_model
     )
-    model = _get_model(model, analysis_type)
+
+    if not Path(folder).exists():
+        os.mkdir(folder)
+
+    if trained_model is not None:
+        y_predictions = predict_unlabelled(model, features)
+        _save_predictions_to_csv(features, y_predictions, folder=folder)  
+        return (y_predictions)
 
 
     if kfold:
@@ -496,6 +530,10 @@ def analysis(
             random_state=random_state,
             test_size=test_size,
         )
+        
+    if save_model:
+        fitted_model = train_all(features,model)
+        
 
     if analysis_type == "regression":
         analysis_results["mean_shap_values"] = [analysis_results["mean_shap_values"]]
@@ -527,8 +565,25 @@ def analysis(
     if kfold:
         _save_to_csv(features_info, analysis_results, results_folder)
 
-    return analysis_results
 
+    model_folder = Path(folder) / (
+        "fitted_model"
+    )
+    if not Path(model_folder).exists():
+        os.mkdir(model_folder)
+        
+    if save_model:
+        save_fitted_model(fitted_model, scalar, features_info, model_folder)
+        
+    return (analysis_results)
+
+
+def _save_predictions_to_csv(features, predictions, folder="results"): 
+    """ Save the prediction results for unlabelled data """
+    results_df = pd.DataFrame(data=predictions, index=features.index, columns=['y_prediction'])
+    results_df.to_csv(os.path.join(folder, "prediction_results.csv"))
+    
+    
 
 def _save_to_csv(features_info_df, analysis_results, folder="results"):
     """Save csv file with analysis data."""
