@@ -23,6 +23,27 @@ pip install .
 Head over to our [documentation](https://barahona-research-group.github.io/hcga/) to find out more about installation, data handling, creation of datasets and a full list of implemented features, transforms, and datasets.
 For a quick start, check out our [examples](https://github.com/barahona-research-group/hcga/tree/master/examples) in the `examples/` directory.
 
+## Contributions
+
+We are always on the look out for individuals that are interested in contributing to this open-source project. Even if you are just using *hcga* and made some minor updates, we would be interested in your input. 
+
+To contribute you just need to follow some simple steps:
+1. Create a github account and sign-in.
+2. Fork the hcga repository to your own github account. You can do this by clicking on the upper right Fork link.
+3. Clone the forked repository to your local machine e.g. ```git clone https://github.com/your_user_name/hcga.git```
+4. Navigate to your local repository in the command terminal.
+5. Add the original hcga repository as your upstream e.g. ```git remote add upstream https://github.com/barahona-research-group/hcga.git```
+6. Pull the latest changes by typing ```git pull upstream master```
+7. Create a new branch with some name by typing ```git checkout -b BRANCH_NAME```
+8. Make the changes to the code that you wanted to make.
+9. Commit your changes with ``` git add -A ``` 
+10. Stage your changes with ``` git commit -m "DESCRIPTION OF CHANGES"```
+11. Push your changes by typing ```git push origin BRANCH_NAME```
+12. Go back to the forked repository on the github website and begin the pull request by clicking the green compare and pull request button. 
+
+Thanks for anyone and everyone that chooses to contribute on this project.
+
+
 ## Cite
 
 Please cite our paper if you use this code in your own work:
@@ -84,7 +105,12 @@ The simplest setup will be to install [Anaconda](https://docs.anaconda.com/anaco
 * [Linux users](https://docs.anaconda.com/anaconda/install/linux/). Linux will often require dependencies depending on your Linux distribution - these are described in the link.
 
 
-Once Anaconda is installed you can open your command terminal (in any operating system), navigate into the *hcga* folder and simply type:
+Once Anaconda is installed can download the *hcga* project. There are two ways to do this:
+1. Manually by clicking on the green Code button and downloading the zip file. Then unzip into your directory of choice.
+2. If you have git then clone the code. Go to your terminal and type ``` git clone https://github.com/barahona-research-group/hcga.git ```
+
+
+Once hcga is on your local machine you can open your command terminal (in any operating system), navigate into the *hcga* folder and simply type:
 
 ```
 pip install .
