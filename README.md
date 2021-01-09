@@ -10,9 +10,13 @@ Networks are widely used as mathematical models of complex systems across many s
 
 ## Installation
 
+For users that are not familiar with python and would like to use this code, we apologise that it isn't available in other languages. However, to help set you up with have provided a description of the steps required to setup python and its necessary dependencies if you scroll down to the bottom.
+
 Navigate to the main folder simply type:
 
-```pip install .```
+```
+pip install .
+```
 
 ## Documentation
 
@@ -45,7 +49,9 @@ The bibtex reference:
 ## Run example
 
 In the example folder, the script ``run_example.sh`` can be used to run the benchmark examples in the paper:
-```./run_example.sh DATASET```
+```
+./run_example.sh DATASET
+```
 where ``DATASET`` is one of 
 * ``ENZYMES``
 * ``DD``
@@ -60,6 +66,33 @@ For custom datasets, two example notebooks for regression and classification are
 If you are interested in trying our other packages, see the below list:
 * [GDR](https://github.com/barahona-research-group/GDR) : Graph diffusion reclassification. A methodology for node classification using graph semi-supervised learning.
 * [MSC](https://github.com/barahona-research-group/MultiscaleCentrality) : MultiScale Centrality: A scale dependent metric of node centrality.
+
+
+## Python, Anaconda and hcga installation
+
+The simplest setup will be to install [Anaconda](https://docs.anaconda.com/anaconda/install/). Anaconda is a package manager and contains useful IDEs for writing and viewing python scripts and notebooks. Choose from one of the following links below depending on your operating system:
+* [Windows users](https://docs.anaconda.com/anaconda/install/windows/). Simply download the installer and make sure to register Anaconda3 as the default Python.
+* [Mac users](https://docs.anaconda.com/anaconda/install/mac-os/). Perform the standard installation.
+* [Linux users](https://docs.anaconda.com/anaconda/install/linux/). Linux will often require dependencies depending on your Linux distribution - these are described in the link.
+
+
+Once Anaconda is installed you can open your command terminal (in any operating system), navigate into the *hcga* folder and simply type:
+
+```
+pip install .
+```
+
+The hcga package should now be installed directly into your Anaconda packages alongside other dependencies. 
+
+If you want to run the example scripts then you need to open jupyter-notebook. Alternatively, you can run the example python scripts directly from the command line. Thankfully jupyter-notebook is automatically installed with Anaconda. To open jupyter-notebook open a command terminal and type:
+```
+jupyter-notebook
+```
+You can then navigate to the examples folder and open the notebook of your choosing.
+
+
+
+
 
 
 
