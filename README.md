@@ -59,7 +59,15 @@ where ``DATASET`` is one of
 * ``PROTEINS``
 * ``REDDIT-MULTI-5K``
 
-For custom datasets, two example notebooks for regression and classification are located in the `examples/` directory.
+Other examples can be found as jupyter-notebooks in `examples/` directory. We have included six examples:
+* Example 1: Classification on synthetic data
+* Example 2: Regression on synthetic data
+* Example 3: Large Molecule dataset and regression
+* Example 4: Training on labelled data, saving the fitted model, and predicting on unseen unlabelled data.
+* Example 5: Pairwise classification. Exploring the similarity of classes.
+* Example 6: Loading data in different ways.
+
+
 
 ## Our other available packages
 
@@ -84,7 +92,7 @@ pip install .
 
 The hcga package should now be installed directly into your Anaconda packages alongside other dependencies. 
 
-If you want to run the example scripts then you need to open jupyter-notebook. Alternatively, you can run the example python scripts directly from the command line. Thankfully jupyter-notebook is automatically installed with Anaconda. To open jupyter-notebook open a command terminal and type:
+If you want to run the example scripts then you need to open jupyter-notebook. Alternatively, you can run the example python scripts directly from the command line (see Run Example above). Thankfully jupyter-notebook is automatically installed with Anaconda. To open jupyter-notebook open a command terminal and type:
 ```
 jupyter-notebook
 ```
