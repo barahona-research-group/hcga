@@ -1,6 +1,6 @@
 import logging
 
-from .analysis import analysis, predict_evaluation_set
+from .analysis import analysis, classify_pairwise
 from .extraction import extract
 from .io import load_dataset, load_features, save_dataset, save_features, load_fitted_model, save_fitted_model
 
@@ -22,9 +22,8 @@ class Hcga:
     def __init__(self):
         """init function."""
         self.graphs=None
-        self.prediction_graphs=[]
         self.features=None
-        self.features_prediction_set=None
+        self.features_info=None
         
     def load_data(
         self,
@@ -131,31 +130,7 @@ class Hcga:
     def combine_features(self):
         self.full_feature_set = pd.concat([self.features,self.features_prediction_set],axis=0)
 
-    def predict_unlabelled_graphs(
-        self,
-        graph_removal=0.3,
-        interpretability=1,
-        analysis_type="classification",
-        model="XG",
-        ):
-        
-        """ function to predict unlabelled graphs given training set """
-        if self.features is None:
-            raise Exception('You must have a feature set for training the model')
-        if self.features_prediction_set is None:
-            raise Exception('You must have a feature set for evaluating - do not forget to extract features for your predction set')
-            
-        self.combine_features()
-        predictions = predict_evaluation_set(
-                self.full_feature_set,
-                self.features_info,
-                analysis_type="classification",
-                graph_removal=0.3,
-                interpretability=1,
-                model="XG",      
-        )
-        return predictions
-        
+
 
     def analyse_features(
         self,
@@ -165,6 +140,7 @@ class Hcga:
         interpretability=1,
         analysis_type="classification",
         model="XG",
+        compute_shap=True,
         kfold=True,
         reduce_set=True,
         reduced_set_size=100,
@@ -193,6 +169,7 @@ class Hcga:
                 graph_removal=graph_removal,
                 interpretability=interpretability,
                 model=model,
+                compute_shap=compute_shap,
                 kfold=kfold,
                 reduce_set=reduce_set,
                 reduced_set_size=reduced_set_size,
@@ -207,3 +184,50 @@ class Hcga:
                 trained_model=trained_model,
                 save_model=save_model,
             )
+        
+        
+    def pairwise_classification(
+        self,
+        feature_file=None,
+        model="XG",
+        graph_removal=0.3,
+        interpretability=1,
+        n_top_features=5,
+        reduce_set=False,
+        reduced_set_size=100,
+        reduced_set_max_correlation=0.5,
+        n_repeats=1,
+        n_splits=None,
+        analysis_type="classification",
+    ):
+        
+        if feature_file is None:            
+            try:                
+                features=self.features
+                features_info=self.features_info
+            except:
+                raise Exception('You have not loaded any feature data. Try loading some data or providing the path to your feature data')
+            
+        if isinstance(feature_file,str):
+            self.load_features(feature_file=feature_file)
+            features=self.features
+            features_info=self.features_info
+        
+        accuracy_matrix, top_features = classify_pairwise(
+            features,
+            features_info,
+            model=model,
+            graph_removal=graph_removal,
+            interpretability=interpretability,
+            n_top_features=n_top_features,
+            reduce_set=reduce_set,
+            reduced_set_size=reduced_set_size,
+            reduced_set_max_correlation=reduced_set_max_correlation,
+            n_repeats=n_repeats,
+            n_splits=n_splits,
+            analysis_type=analysis_type,
+        )
+        
+        return accuracy_matrix, top_features
+        
+        

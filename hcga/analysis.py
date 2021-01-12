@@ -11,6 +11,8 @@ from .io import save_fitted_model, load_fitted_model
 import numpy as np
 import pandas as pd
 import shap
+from shap.common import SHAPError
+
 from sklearn.metrics import accuracy_score, mean_absolute_error
 from sklearn.model_selection import (
     RepeatedStratifiedKFold,
@@ -191,17 +193,6 @@ def _get_model(model, analysis_type):
                 L.info("... Using Xgboost regressor ...")
                 model = XGBRegressor(objective="reg:squarederror")
 
-        elif model == "LGBM":
-            if analysis_type == "classification":
-                L.info("... Using LGBM classifier ...")
-                from lightgbm import LGBMClassifier
-
-                model = LGBMClassifier()
-            if analysis_type == "regression":
-                L.info("... Using LGBM regressor ...")
-                from lightgbm import LGBMRegressor
-
-                model = LGBMRegressor()
         else:
             raise Exception("Unknown model type: {}".format(model))
     return model
@@ -223,12 +214,12 @@ def _get_shap_feature_importance(shap_values):
     return mean_shap_values, shap_feature_importance
 
 
-def _evaluate_kfold(X, y, model, folds, analysis_type):
+def _evaluate_kfold(X, y, model, folds, analysis_type, compute_shap):
     """Evaluate the kfolds."""
     shap_values = []
     acc_scores = []
     for indices in folds.split(X, y=y):
-        acc_score, shap_value = compute_fold(X, y, model, indices, analysis_type)
+        acc_score, shap_value = compute_fold(X, y, model, indices, analysis_type, compute_shap)
         shap_values.append(shap_value)
         acc_scores.append(acc_score)
     return acc_scores, shap_values
@@ -244,6 +235,7 @@ def fit_model_kfold(
     n_repeats=1,
     random_state=42,
     n_splits=None,
+    compute_shap=True,
 ):
     """Classify graphs from extracted features with kfold.
 
@@ -278,11 +270,17 @@ def fit_model_kfold(
             n_splits=n_splits, n_repeats=n_repeats, random_state=random_state
         )
 
-    acc_scores, shap_values = _evaluate_kfold(X, y, model, folds, analysis_type)
+    acc_scores, shap_values = _evaluate_kfold(X, y, model, folds, analysis_type, compute_shap)
     _print_accuracy(acc_scores, analysis_type)
-    mean_shap_values, shap_feature_importance = _get_shap_feature_importance(
-        shap_values
-    )
+    
+    if compute_shap:
+        mean_shap_values, shap_feature_importance = _get_shap_feature_importance(
+            shap_values
+        )
+    else:
+        mean_shap_values=None
+        shap_feature_importance=None
+        
     analysis_results = {
         "X": X,
         "y": y,
@@ -295,6 +293,9 @@ def fit_model_kfold(
     if not reduce_set:
         return analysis_results
 
+    if not compute_shap:
+        return analysis_results
+
     reduced_features = _get_reduced_feature_set(
         X,
         shap_feature_importance,
@@ -302,7 +303,7 @@ def fit_model_kfold(
         alpha=reduced_set_max_correlation,
     )
     reduced_acc_scores, reduced_shap_values = _evaluate_kfold(
-        X[reduced_features], y, model, folds, analysis_type
+        X[reduced_features], y, model, folds, analysis_type, compute_shap
     )
     _print_accuracy(reduced_acc_scores, analysis_type, reduced=True)
     (
@@ -332,6 +333,7 @@ def fit_model(
     reduced_set_max_correlation=0.9,
     test_size=0.2,
     random_state=42,
+    compute_shap=True,
 ):
     """Train a single model."""
     if model is None:
@@ -343,7 +345,7 @@ def fit_model(
     indices = next(
         ShuffleSplit(test_size=test_size, random_state=random_state).split(X, y)
     )
-    acc_score, shap_values = compute_fold(X, y, model, indices, analysis_type)
+    acc_score, shap_values = compute_fold(X, y, model, indices, analysis_type, compute_shap)
 
     mean_shap_values, shap_feature_importance = _get_shap_feature_importance(
         [shap_values]
@@ -369,7 +371,7 @@ def fit_model(
     )
     reduced_model = deepcopy(model)
     reduced_acc_score, reduced_shap_values = compute_fold(
-        X[reduced_features], y, reduced_model, indices, analysis_type
+        X[reduced_features], y, reduced_model, indices, analysis_type, compute_shap
     )
     (
         reduced_mean_shap_values,
@@ -388,7 +390,7 @@ def fit_model(
     return analysis_results
 
 
-def compute_fold(X, y, model, indices, analysis_type):
+def compute_fold(X, y, model, indices, analysis_type, compute_shap):
     """Compute a single fold for parallel computation."""
     train_index, val_index = indices
     model.fit(X.iloc[train_index], y.iloc[train_index])
@@ -404,8 +406,14 @@ def compute_fold(X, y, model, indices, analysis_type):
         )
         L.info("Mean Absolute Error: --- %s ---", str(np.round(acc_score, 3)))
 
-    explainer = shap.TreeExplainer(model)
-    shap_values = explainer.shap_values(X)
+    if compute_shap:
+        try:
+            explainer = shap.TreeExplainer(model)
+        except (ValueError, SHAPError):
+            explainer = shap.KernelExplainer(model.predict_proba, X.iloc[train_index])            
+        shap_values = explainer.shap_values(X)
+    else:
+        shap_values=None
 
     return acc_score, shap_values
 
@@ -468,6 +476,7 @@ def analysis(
     graph_removal=0.3,
     interpretability=1,
     model="XG",
+    compute_shap=True,
     kfold=True,
     reduce_set=True,
     reduced_set_size=100,
@@ -518,6 +527,7 @@ def analysis(
             n_repeats=n_repeats,
             random_state=random_state,
             n_splits=n_splits,
+            compute_shap=compute_shap,
         )
     else:
         analysis_results = fit_model(
@@ -529,6 +539,7 @@ def analysis(
             reduced_set_max_correlation=reduced_set_max_correlation,
             random_state=random_state,
             test_size=test_size,
+            compute_shap=compute_shap,
         )
         
     if save_model:
@@ -550,20 +561,21 @@ def analysis(
     if not Path(results_folder).exists():
         os.mkdir(results_folder)
 
-    if plot and kfold:
-        plot_analysis(
-            analysis_results,
-            results_folder,
-            graphs,
-            analysis_type,
-            max_feats_plot,
-            max_feats_plot_dendrogram,
-        )
-    if plot and not kfold:
-        plot_prediction(analysis_results, results_folder)
+    if compute_shap:
+        if plot and kfold:
+            plot_analysis(
+                analysis_results,
+                results_folder,
+                graphs,
+                analysis_type,
+                max_feats_plot,
+                max_feats_plot_dendrogram,
+            )
+        if plot and not kfold:
+            plot_prediction(analysis_results, results_folder)
 
-    if kfold:
-        _save_to_csv(features_info, analysis_results, results_folder)
+        if kfold:
+            _save_to_csv(features_info, analysis_results, results_folder)
 
 
     model_folder = Path(folder) / (
@@ -651,7 +663,7 @@ def classify_pairwise(
     Returns:
         (dataframe, list, int): accuracies dataframe, list of top features, number of top pairs
     """
-    features, features_info = _preprocess_features(
+    features, features_info, scalar = _preprocess_features(
         features, features_info, graph_removal, interpretability
     )
 
@@ -700,4 +712,4 @@ def classify_pairwise(
 
         top_features[pair] = [f_class + "_" + f for f_class, f in top_features_raw]
 
-    return accuracy_matrix, top_features
+    return accuracy_matrix.astype(float), top_features
