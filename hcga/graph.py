@@ -154,7 +154,7 @@ class Graph:
         elif self.graph_type == "directed":
             self._graph_networkx = nx.DiGraph()
         else:
-            raise Exception("graph type not reconised or not yet implemented")
+            raise Exception("graph type not recognised or not yet implemented")
         if self.n_node_features == 0:
             nodes = [(node, {"feat": [0]}) for node, node_data in self.nodes.iterrows()]
         else:
