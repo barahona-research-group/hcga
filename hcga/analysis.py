@@ -31,33 +31,29 @@ warnings.simplefilter("ignore")
 def features_to_Xy(features):
     """decompose features dataframe to numpy arrayes X and y."""
     if 'label' in features:
-        X = features.drop(columns=["label"])
-        y = features["label"]
-    else:
-        X = features
-        y = None
-        
-    return X, y
+        return features.drop(columns=["label"]), features["label"]
+            
+    return features, None
 
 
-def _normalise_feature_data(features,scalar=None,fit_scalar=True):
+def _normalise_feature_data(features,scaler=None,fit_scaler=True):
     """Normalise the feature matrix to remove the mean and scale to unit variance."""
     if "label" in features:
         label = features["label"]
         
-    if scalar is None:
-        scalar = StandardScaler()        
+    if scaler is None:
+        scaler = StandardScaler()        
         normed_features = pd.DataFrame(
-            scalar.fit_transform(features), columns=features.columns
+            scaler.fit_transform(features), columns=features.columns
         )
     else:
-        if fit_scalar:
+        if fit_scaler:
             normed_features = pd.DataFrame(
-                scalar.fit_transform(features), columns=features.columns
+                scaler.fit_transform(features), columns=features.columns
             )        
         else:
              normed_features = pd.DataFrame(
-                scalar.transform(features), columns=features.columns
+                scaler.transform(features), columns=features.columns
             )     
              
     
@@ -66,7 +62,7 @@ def _normalise_feature_data(features,scalar=None,fit_scalar=True):
     if "label" in features:
         normed_features["label"] = label
 
-    return normed_features, scalar
+    return normed_features, scaler
 
 
 def _number_folds(y):
@@ -427,13 +423,11 @@ def _preprocess_features(features, features_info, graph_removal, interpretabilit
     good_features = _filter_features(features)
     features = features[good_features]
     
-    scalar = None
-    if trained_model is not None:        
-        scalar = trained_model[1]
-        feature_info_pretrained = trained_model[2]  
-        model_feature_subset = feature_info_pretrained.columns
-        try:
-            features = features[model_feature_subset]
+    scaler = None
+    if trained_model is not None:
+        scalar, feature_info_pretrained = trained_model[1:2]        
+        try:            
+            features = features[feature_info_pretrained.columns]
         except:
             raise Exception("You may have features in your pre-trained model that weren't \
                             computeable in your new evaluation set.")
@@ -450,9 +444,9 @@ def _preprocess_features(features, features_info, graph_removal, interpretabilit
         "%s with interpretability %s", str(len(features.columns)), str(interpretability)
     )
 
-    features, scalar = _normalise_feature_data(features, scalar=scalar)
+    features, scaler = _normalise_feature_data(features, scaler=scaler)
     
-    return features, features_info, scalar
+    return features, features_info, scaler
 
     
 def train_all(features, model):
@@ -503,7 +497,7 @@ def analysis(
             trained_model = load_fitted_model(trained_model)
             model = trained_model[0]
 
-    features, features_info, scalar = _preprocess_features(
+    features, features_info, scaler = _preprocess_features(
         features, features_info, graph_removal, interpretability, trained_model
     )
 
@@ -585,9 +579,9 @@ def analysis(
         os.mkdir(model_folder)
         
     if save_model:
-        save_fitted_model(fitted_model, scalar, features_info, model_folder)
+        save_fitted_model(fitted_model, scaler, features_info, model_folder)
         
-    return (analysis_results)
+    return analysis_results
 
 
 def _save_predictions_to_csv(features, predictions, folder="results"): 
@@ -663,7 +657,7 @@ def classify_pairwise(
     Returns:
         (dataframe, list, int): accuracies dataframe, list of top features, number of top pairs
     """
-    features, features_info, scalar = _preprocess_features(
+    features, features_info, scaler = _preprocess_features(
         features, features_info, graph_removal, interpretability
     )
 
