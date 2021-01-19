@@ -1,4 +1,6 @@
-"""function for analysis of graph features."""
+"""
+Functions for the analysis of extracted feature matrix.
+"""
 import logging
 import os
 import itertools

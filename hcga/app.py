@@ -1,4 +1,24 @@
-"""Hcga app module."""
+"""Hcga app module.
+
+Users can interact with hcga directly through the command line using the purpose built
+command line interface app.
+
+For those users that wish to interact with hcga via Python directly (e.g. through a notebook)
+then please use the hcga class.
+
+
+Below is a short example of the commands necessary to run the ENZYMES dataset directly from the command line:
+    
+``hcga get_data ENZYMES``
+
+``hcga extract_features datasets/ENZYMES.pkl -m fast -n -1 --timeout 10``
+
+``hcga feature_analysis ENZYMES```
+
+Alternatively these commands can be bundled together into a single bash file, see 'run_example.sh' in the examples folder.
+
+
+"""
 import os
 from pathlib import Path
 import logging

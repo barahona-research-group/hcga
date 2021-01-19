@@ -1,4 +1,14 @@
-"""Classes representing single and a collection of graphs."""
+"""
+Classes for creating graph objects compatible with hcga.
+
+Graphs can be constructed in various formats in Python, from Networkx Graph objects
+to numpy matrices.  To provide a consistent and reliable format for hcga we have
+constructed a Graph class and a GraphCollection class.
+
+When loading graphs into hcga, the Graph classes will attempt to convert the input
+graph type into a generic hcga Graph object.
+
+"""
 import networkx as nx
 import numpy as np
 import scipy as sc
@@ -9,20 +19,22 @@ MIN_NUM_EDGES = 1
 
 
 class GraphCollection:
-    """Contain a list of graphs."""
+    """
+    A collection of Graph objects (see Graph class).
+    """
 
     def __init__(self):
-        """Set empty list of graphs."""
+        """ Initialise an empty list of graphs."""
         self.graphs = []
 
-    def add_graph(self, graph, node_features=None, label=None):
+    def add_graph(self, graph, node_features=None, label=None, graph_type=None):
         """Add a graph to the list."""
         if not isinstance(graph, Graph):
-            graph = convert_graph(graph, node_features, label)
+            graph = convert_graph(graph, node_features, label, graph_type)
         graph.id = len(self.graphs)
         self.graphs.append(graph)
 
-    def add_graph_list(self, graph_list, node_features_list=None, graph_labels=None):
+    def add_graph_list(self, graph_list, node_features_list=None, graph_labels=None, graph_type=None):
         """ Add a list of graphs """
         for i, graph in enumerate(graph_list):
             if not isinstance(graph, Graph):   
@@ -36,7 +48,7 @@ class GraphCollection:
                 else:
                     node_features=node_features_list[i]
                     
-                graph = convert_graph(graph, node_features, graph_label)                
+                graph = convert_graph(graph, node_features, graph_label, graph_type)                
             graph.id = len(self.graphs)
             self.graphs.append(graph)
 
@@ -96,10 +108,14 @@ class GraphCollection:
 
 
 class Graph:
-    """Class to encode a generic graph structure for hcga."""
+    """
+    Class to encode a generic graph structure for hcga.
+    
+    A graph can be attributed nodes, edges, a graph label and node features.
+    """
 
     def __init__(self, nodes, edges, label, graph_type=None, label_name=None):
-        """Set main graphs quantities.
+        """Defining the main graphs quantities.
 
         Args:
             nodes (DataFrame): node dataframe, index as node id, and optional
@@ -227,7 +243,7 @@ class Graph:
         ]
         self.edges = self.edges.drop(drop_edges)
 
-def convert_graph(g, node_features=None, label=None):
+def convert_graph(g, node_features=None, label=None, graph_type=None):
     """ Function to convert different graph types to the class Graph """
     
     if node_features is not None:
@@ -267,7 +283,7 @@ def convert_graph(g, node_features=None, label=None):
         if node_features is not None:
             nodes_df['attributes'] = node_features
         
-        graph = Graph(nodes_df, edges_df, label)
+        graph = Graph(nodes_df, edges_df, label, graph_type)
                 
 
     if isinstance(g, np.ndarray):
@@ -281,7 +297,7 @@ def convert_graph(g, node_features=None, label=None):
         if node_features is not None:
             nodes_df['attributes'] = node_features    
             
-        graph = Graph(nodes_df, edges_df, label)
+        graph = Graph(nodes_df, edges_df, label, graph_type)
 
     
     return graph

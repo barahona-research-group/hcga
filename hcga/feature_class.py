@@ -1,4 +1,10 @@
-"""template class for feature extraction."""
+""" The master template for a feature class.
+
+Each feature class in the ./features folder can inherit the main feature class functionality.
+
+The functions here are necessary to evaluate each individual feature found inside a feature class.
+
+"""
 import logging
 import sys
 import signal
@@ -19,7 +25,7 @@ warnings.simplefilter("ignore")
 
 
 class FeatureClass:
-    """template class."""
+    """ Main functionality to be inherited by each feature class"""
 
     # Class variables that describe the feature,
     # They should be defined for all child features
