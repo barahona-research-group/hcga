@@ -65,7 +65,14 @@ where ``dataset`` is the name of the dataset, and ``--interpretability 1`` selec
 Head over to our [documentation](https://barahona-research-group.github.io/hcga/) to find out more about installation, data handling, creation of datasets and a full list of implemented features, transforms, and datasets.
 For a quick start, check out our [examples](https://github.com/barahona-research-group/hcga/tree/master/examples) in the `examples/` directory.
 
-## Contributions
+## Contributors
+*****************
+
+- Robert Peach, GitHub: `peach-lucien <https://github.com/peach-lucien>`_
+- Alexis Arnaudon, GitHub: `arnaudon <https://github.com/arnaudon>`_
+- Henry Palasciano, GitHub: `henrypalasciano <https://github.com/henrypalasciano>`_
+- Nathan Bernier, GitHub: `nrbernier <https://github.com/nrbernier>`_
+- Julia Schmidt, Github: `misterblonde <https://github.com/misterblonde>`_
 
 We are always on the look out for individuals that are interested in contributing to this open-source project. Even if you are just using *hcga* and made some minor updates, we would be interested in your input. 
 
@@ -84,6 +91,7 @@ To contribute you just need to follow some simple steps:
 12. Go back to the forked repository on the github website and begin the pull request by clicking the green compare and pull request button. 
 
 Thanks for anyone and everyone that chooses to contribute on this project.
+
 
 
 ## Cite
@@ -158,7 +166,6 @@ If you want to run the example scripts then you need to open jupyter-notebook. A
 jupyter-notebook
 ```
 You can then navigate to the examples folder and open the notebook of your choosing.
-
 
 
 
