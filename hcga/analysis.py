@@ -31,7 +31,7 @@ warnings.simplefilter("ignore")
 
 
 def features_to_Xy(features):
-    """decompose features dataframe to numpy arrayes X and y."""
+    """decompose features dataframe to numpy arrays X and y."""
     if 'label' in features:
         return features.drop(columns=["label"]), features["label"]
             
