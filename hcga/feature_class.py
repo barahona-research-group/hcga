@@ -20,7 +20,6 @@ from networkx.exception import NetworkXNotImplemented
 from hcga.utils import TimeoutError, get_trivial_graph, timeout_handler
 
 L = logging.getLogger(__name__)
-# L.setLevel(logging.DEBUG)
 warnings.simplefilter("ignore")
 
 
