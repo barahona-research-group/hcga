@@ -11,7 +11,8 @@ class NodeCliqueNumber(FeatureClass):
     """Node clique number class.
 
     Clique number calculations using networkx:
-        `Networkx_clique <https://networkx.github.io/documentation/stable/reference/algorithms/clique.html>`_
+        `Networkx_clique <https://networkx.github.io/documentation/stable/reference/algorithms/\
+            clique.html>`_
     """
 
     modes = ["fast", "medium", "slow"]
@@ -23,9 +24,7 @@ class NodeCliqueNumber(FeatureClass):
 
         self.add_feature(
             "clique sizes",
-            lambda graph: list(
-                clique.node_clique_number(ensure_connected(graph)).values()
-            ),
+            lambda graph: list(clique.node_clique_number(ensure_connected(graph)).values()),
             "the distribution of clique sizes",
             InterpretabilityScore(3),
             statistics="centrality",

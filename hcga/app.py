@@ -6,22 +6,21 @@ command line interface app.
 For those users that wish to interact with hcga via Python directly (e.g. through a notebook)
 then please use the hcga class.
 
+Below is a short example of the commands necessary to run the ENZYMES dataset
+directly from the command line:
 
-Below is a short example of the commands necessary to run the ENZYMES dataset directly from the command line:
-    
 ``hcga get_data ENZYMES``
 
 ``hcga extract_features datasets/ENZYMES.pkl -m fast -n -1 --timeout 10``
 
 ``hcga feature_analysis ENZYMES```
 
-Alternatively these commands can be bundled together into a single bash file, see 'run_example.sh' in the examples folder.
-
-
+Alternatively these commands can be bundled together into a single bash file,
+see 'run_example.sh' in the examples folder.
 """
+import logging
 import os
 from pathlib import Path
-import logging
 
 import click
 
@@ -77,18 +76,14 @@ def cli():
     show_default=True,
     help="Level of statistical features (basic, medium, advanced)",
 )
-@click.option(
-    "--timeout", default=10, show_default=True, help="Timeout for feature evaluations."
-)
+@click.option("--timeout", default=10, show_default=True, help="Timeout for feature evaluations.")
 @click.option(
     "-of",
     "--output-file",
     default="all_features.pkl",
     help="Location of results, by default same as initial dataset",
 )
-@click.option(
-    "--runtimes/--no-runtimes", default=False, show_default=True, help="Output runtimes"
-)
+@click.option("--runtimes/--no-runtimes", default=False, show_default=True, help="Output runtimes")
 @click.option(
     "--connected/--no-connected",
     default=False,
@@ -109,8 +104,8 @@ def extract_features(
     connected,
 ):
     """Extract features from dataset of graphs and save the feature matrix, info and labels."""
-    from .io import load_dataset, save_features
     from .extraction import extract
+    from .io import load_dataset, save_features
 
     graphs = load_dataset(dataset)
 
@@ -244,8 +239,8 @@ def feature_analysis(
     n_repeats,
 ):
     """Analysis of the features extracted in feature_file."""
-    from hcga.io import load_features
     from hcga.analysis import analysis
+    from hcga.io import load_features
 
     results_folder = Path(results_folder) / dataset
     feature_filename = results_folder / feature_file

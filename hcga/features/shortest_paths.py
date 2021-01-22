@@ -1,5 +1,6 @@
 """Shortest paths class."""
 from functools import lru_cache
+
 import networkx as nx
 import numpy as np
 

@@ -21,7 +21,7 @@ class SimpleCycles(FeatureClass):
         self.add_feature(
             "number_simple_cycles",
             lambda graph: len(simple_cycles_func(graph)),
-            "A simple path with no repeated nodes (except the first) starting and ending at the same node",
+            "A simple closed path with no repeated nodes (except the first)",
             InterpretabilityScore(3),
         )
 

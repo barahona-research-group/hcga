@@ -23,9 +23,7 @@ class RichClub(FeatureClass):
         def eval_rich_club(graph):
             # extracting feature matrix
             return list(
-                nx.rich_club_coefficient(
-                    remove_selfloops(graph), normalized=False
-                ).values()
+                nx.rich_club_coefficient(remove_selfloops(graph), normalized=False).values()
             )
 
         # k = 1

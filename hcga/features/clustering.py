@@ -44,9 +44,7 @@ class Clustering(FeatureClass):
         )
 
         # generalised degree
-        square_clustering_dist = lambda graph: list(
-            nx.square_clustering(graph).values()
-        )
+        square_clustering_dist = lambda graph: list(nx.square_clustering(graph).values())
         self.add_feature(
             "square_clustering",
             square_clustering_dist,

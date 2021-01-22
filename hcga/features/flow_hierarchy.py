@@ -26,7 +26,7 @@ class FlowHierarchy(FeatureClass):
 
         self.add_feature(
             "flow_hierarchy_weighted",
-            lambda graph: nx.flow_hierarchy(graph, weight='weight'),
+            lambda graph: nx.flow_hierarchy(graph, weight="weight"),
             "fraction of edges not participating in cycles",
             InterpretabilityScore(3),
         )

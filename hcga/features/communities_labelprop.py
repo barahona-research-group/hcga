@@ -1,5 +1,6 @@
 """Communities Label propagation class."""
 from functools import lru_cache
+
 from networkx.algorithms.community import label_propagation_communities
 
 from ..feature_class import FeatureClass, InterpretabilityScore
@@ -33,8 +34,7 @@ class CommunitiesLabelPropagation(FeatureClass):
 
         self.add_feature(
             "ratio_commsize_maxmin",
-            lambda graph: len(eval_labelprop(graph)[0])
-            / len(eval_labelprop(graph)[-1]),
+            lambda graph: len(eval_labelprop(graph)[0]) / len(eval_labelprop(graph)[-1]),
             "The ratio of the largest and second largest communities using label propagation",
             InterpretabilityScore(3),
         )

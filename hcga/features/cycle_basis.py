@@ -1,5 +1,6 @@
 """Cycle Basis class."""
 from functools import lru_cache
+
 import networkx as nx
 import numpy as np
 
@@ -55,6 +56,6 @@ class CycleBasis(FeatureClass):
         self.add_feature(
             "ratio_nodes_cycle",
             ratio_nodes_cycle,
-            "The ratio of nodes that appear in at least one cycle to the total number of nodes in the graph",
+            "The ratio of nodes that appear in at least one cycle to the total number of nodes",
             InterpretabilityScore(3),
         )

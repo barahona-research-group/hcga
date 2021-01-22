@@ -1,15 +1,14 @@
 """Tests suite for hcga.features."""
-import pytest
+import warnings
+
 import numpy as np
+import pytest
 
 from hcga.extraction import get_list_feature_classes
-import warnings
 
 warnings.simplefilter("ignore")
 
-test_feature_classes, _ = get_list_feature_classes(
-    mode="all", statistics_level="advanced"
-)
+test_feature_classes, _ = get_list_feature_classes(mode="all", statistics_level="advanced")
 
 
 def test_shortname_definition():

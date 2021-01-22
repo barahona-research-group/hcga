@@ -11,8 +11,9 @@ class Hits(FeatureClass):
     """HITS hubs class.
 
     Hits calculations using networkx:
-            `Networkx_hits <https://networkx.github.io/documentation/stable/reference/algorithms/generated/\
-            networkx.algorithms.link_analysis.hits_alg.hits.html#networkx.algorithms.link_analysis.hits_alg.hits>`_
+            `Networkx_hits <https://networkx.github.io/documentation/stable/reference/\
+                algorithms/generated/networkx.algorithms.link_analysis.hits_alg.hits.html\
+                #networkx.algorithms.link_analysis.hits_alg.hits>`_
     """
 
     modes = ["medium", "slow"]

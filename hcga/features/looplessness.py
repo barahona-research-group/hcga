@@ -1,6 +1,6 @@
 """Looplessness class."""
-import numpy as np
 import networkx as nx
+import numpy as np
 import sympy as sp
 
 from ..feature_class import FeatureClass, InterpretabilityScore

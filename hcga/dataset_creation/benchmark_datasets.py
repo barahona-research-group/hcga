@@ -45,7 +45,7 @@ def make(dataset_name="ENZYMES", folder="./datasets"):
 
 
 def extract_benchmark_graphs(datadir, dataname):  # pylint: disable=too-many-locals
-    """ Read data from https://ls11-www.cs.tu-dortmund.de/staff/morris/graphkerneldatasets
+    """Read data from https://ls11-www.cs.tu-dortmund.de/staff/morris/graphkerneldatasets
         graph index starts with 1 in file
 
     Returns:
@@ -67,17 +67,13 @@ def extract_benchmark_graphs(datadir, dataname):  # pylint: disable=too-many-loc
         ):
             edges_df = edges_df.append(edges_df_next - 1)
     edges_df.columns = ["start_node", "end_node"]
-    edges_df["graph_id"] = nodes_df["graph_id"][
-        edges_df["start_node"].to_list()
-    ].to_list()
+    edges_df["graph_id"] = nodes_df["graph_id"][edges_df["start_node"].to_list()].to_list()
 
     columns = []
     if Path(prefix + "_node_labels.txt").exists():
         with open(prefix + "_node_labels.txt") as f:
             nodes_df["labels_value"] = pd.read_csv(f, header=None)
-        nodes_df["labels"] = list(
-            pd.get_dummies(nodes_df["labels_value"]).to_numpy(dtype=float)
-        )
+        nodes_df["labels"] = list(pd.get_dummies(nodes_df["labels_value"]).to_numpy(dtype=float))
         columns.append("labels")
 
     if Path(prefix + "_node_attributes.txt").exists():
@@ -89,9 +85,7 @@ def extract_benchmark_graphs(datadir, dataname):  # pylint: disable=too-many-loc
     graphs = GraphCollection()
     for graph_id in graph_ids:
         nodes = nodes_df.loc[nodes_df["graph_id"] == graph_id][columns]
-        edges = edges_df.loc[edges_df["graph_id"] == graph_id][
-            ["start_node", "end_node"]
-        ]
+        edges = edges_df.loc[edges_df["graph_id"] == graph_id][["start_node", "end_node"]]
         graphs.add_graph(Graph(nodes, edges, int(graph_labels.loc[graph_id][0])))
 
     return graphs

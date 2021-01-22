@@ -62,9 +62,7 @@ class Cliques(FeatureClass):
             cliques = [len(u) for u in list(clique.find_cliques(graph)) if len(u) > 1]
             return np.bincount(cliques)[np.nonzero(np.bincount(cliques))]
 
-        maximal_clique_sizes = (
-            lambda graph: eval_cliques(graph)[0] / eval_cliques(graph)[-1]
-        )
+        maximal_clique_sizes = lambda graph: eval_cliques(graph)[0] / eval_cliques(graph)[-1]
         self.add_feature(
             "clique_sizes_maximal",
             maximal_clique_sizes,

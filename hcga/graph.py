@@ -11,8 +11,8 @@ graph type into a generic hcga Graph object.
 """
 import networkx as nx
 import numpy as np
-import scipy as sc
 import pandas as pd
+import scipy as sc
 
 MIN_NUM_NODES = 2
 MIN_NUM_EDGES = 1
@@ -34,21 +34,23 @@ class GraphCollection:
         graph.id = len(self.graphs)
         self.graphs.append(graph)
 
-    def add_graph_list(self, graph_list, node_features_list=None, graph_labels=None, graph_type=None):
+    def add_graph_list(
+        self, graph_list, node_features_list=None, graph_labels=None, graph_type=None
+    ):
         """ Add a list of graphs """
         for i, graph in enumerate(graph_list):
-            if not isinstance(graph, Graph):   
+            if not isinstance(graph, Graph):
                 if not graph_labels:
                     graph_label = None
                 else:
-                    graph_label=graph_labels[i]
-                
+                    graph_label = graph_labels[i]
+
                 if not node_features_list:
                     node_features = None
                 else:
-                    node_features=node_features_list[i]
-                    
-                graph = convert_graph(graph, node_features, graph_label, graph_type)                
+                    node_features = node_features_list[i]
+
+                graph = convert_graph(graph, node_features, graph_label, graph_type)
             graph.id = len(self.graphs)
             self.graphs.append(graph)
 
@@ -91,7 +93,7 @@ class GraphCollection:
             graph.set_n_node_features()
 
     def remove_edge_weights(self):
-        """ remove edge weights. """        
+        """ remove edge weights. """
         for graph in self.graphs:
             graph.remove_weights()
 
@@ -110,7 +112,7 @@ class GraphCollection:
 class Graph:
     """
     Class to encode a generic graph structure for hcga.
-    
+
     A graph can be attributed nodes, edges, a graph label and node features.
     """
 
@@ -168,8 +170,8 @@ class Graph:
 
     def remove_weights(self):
         """ set edge weights to one """
-        self.edges['weight'] = 1.0
-    
+        self.edges["weight"] = 1.0
+
     def _check_length(self):
         """Verify if the graph is large enough to be considered."""
         if len(self.nodes.index) <= MIN_NUM_NODES:
@@ -202,8 +204,7 @@ class Graph:
             nodes = [(node, {"feat": [0]}) for node, node_data in self.nodes.iterrows()]
         else:
             nodes = [
-                (node, {"feat": node_data["features"]})
-                for node, node_data in self.nodes.iterrows()
+                (node, {"feat": node_data["features"]}) for node, node_data in self.nodes.iterrows()
             ]
         self._graph_networkx.add_nodes_from(nodes)
 
@@ -243,73 +244,60 @@ class Graph:
         ]
         self.edges = self.edges.drop(drop_edges)
 
-def convert_graph(g, node_features=None, label=None, graph_type=None):
+
+def convert_graph(  # pylint: disable=too-many-branches
+    graph, node_features=None, label=None, graph_type=None
+):
     """ Function to convert different graph types to the class Graph """
-    
+
     if node_features is not None:
-        if isinstance(node_features,np.ndarray):
+        if isinstance(node_features, np.ndarray):
             node_features = node_features.tolist()
 
     if label is not None:
-        label = [label]            
-    
-    if isinstance(g, nx.Graph):
-        A = nx.to_scipy_sparse_matrix(g, weight='weight', format='coo')
-        
+        label = [label]
+
+    if isinstance(graph, nx.Graph):
+        A = nx.to_scipy_sparse_matrix(graph, weight="weight", format="coo")
+
         if not node_features:
             try:
-                node_features = list(nx.get_node_attributes(g,'features').values())
-                if isinstance(node_features[0],np.ndarray):
+                node_features = list(nx.get_node_attributes(graph, "features").values())
+                if isinstance(node_features[0], np.ndarray):
                     node_features = [x.tolist() for x in node_features]
-            except:
+            except Exception:  # pylint: disable=broad-except
                 node_features = None
-                
-                
+
         if not label:
             try:
-                label = list(nx.get_node_attributes(g,'label').values())
+                graph_label = list(nx.get_node_attributes(graph, "label").values())
                 if not isinstance(graph_label, list):
-                    graph_label = [graph_label]       
-            except:
+                    graph_label = [graph_label]
+            except Exception:  # pylint: disable=broad-except
                 label = None
-                         
-        
-        edges = np.array([A.row,A.col,A.data]).T
-        edges_df = pd.DataFrame(edges, columns = ['start_node', 'end_node', 'weight'])
 
-        nodes = np.arange(0,A.shape[0])
-        nodes_df = pd.DataFrame(index=nodes) 
-        
-        if node_features is not None:
-            nodes_df['attributes'] = node_features
-        
-        graph = Graph(nodes_df, edges_df, label, graph_type)
-                
+        edges = np.array([A.row, A.col, A.data]).T
+        edges_df = pd.DataFrame(edges, columns=["start_node", "end_node", "weight"])
 
-    if isinstance(g, np.ndarray):
-        g = sc.sparse.coo_matrix(g)
-        edges = np.array([g.row,g.col,g.data]).T
-        edges_df = pd.DataFrame(edges, columns = ['start_node', 'end_node', 'weight'])
-        
-        nodes = np.arange(0,g.shape[0])
-        nodes_df = pd.DataFrame(index=nodes) 
+        nodes = np.arange(0, A.shape[0])
+        nodes_df = pd.DataFrame(index=nodes)
 
         if node_features is not None:
-            nodes_df['attributes'] = node_features    
-            
+            nodes_df["attributes"] = node_features
+
         graph = Graph(nodes_df, edges_df, label, graph_type)
 
-    
+    if isinstance(graph, np.ndarray):
+        graph = sc.sparse.coo_matrix(graph)
+        edges = np.array([graph.row, graph.col, graph.data]).T
+        edges_df = pd.DataFrame(edges, columns=["start_node", "end_node", "weight"])
+
+        nodes = np.arange(0, graph.shape[0])
+        nodes_df = pd.DataFrame(index=nodes)
+
+        if node_features is not None:
+            nodes_df["attributes"] = node_features
+
+        graph = Graph(nodes_df, edges_df, label, graph_type)
+
     return graph
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    

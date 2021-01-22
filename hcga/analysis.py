@@ -1,28 +1,22 @@
 """
 Functions for the analysis of extracted feature matrix.
 """
+import itertools
 import logging
 import os
-import itertools
-from pathlib import Path
 import warnings
 from copy import deepcopy
-from tqdm import tqdm
-from .io import save_fitted_model, load_fitted_model
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import shap
-from shap.common import SHAPError
-
 from sklearn.metrics import accuracy_score, mean_absolute_error
-from sklearn.model_selection import (
-    RepeatedStratifiedKFold,
-    RepeatedKFold,
-    ShuffleSplit,
-)
+from sklearn.model_selection import RepeatedKFold, RepeatedStratifiedKFold, ShuffleSplit
 from sklearn.preprocessing import StandardScaler
+from tqdm import tqdm
 
+from .io import load_fitted_model, save_fitted_model
 from .plotting import plot_analysis, plot_prediction
 
 L = logging.getLogger(__name__)
@@ -32,33 +26,26 @@ warnings.simplefilter("ignore")
 
 def features_to_Xy(features):
     """decompose features dataframe to numpy arrays X and y."""
-    if 'label' in features:
+    if "label" in features:
         return features.drop(columns=["label"]), features["label"]
-            
+
     return features, None
 
 
-def _normalise_feature_data(features,scaler=None,fit_scaler=True):
+def _normalise_feature_data(features, scaler=None, fit_scaler=True):
     """Normalise the feature matrix to remove the mean and scale to unit variance."""
     if "label" in features:
         label = features["label"]
-        
+
     if scaler is None:
-        scaler = StandardScaler()        
-        normed_features = pd.DataFrame(
-            scaler.fit_transform(features), columns=features.columns
-        )
+        scaler = StandardScaler()
+        normed_features = pd.DataFrame(scaler.fit_transform(features), columns=features.columns)
     else:
         if fit_scaler:
-            normed_features = pd.DataFrame(
-                scaler.fit_transform(features), columns=features.columns
-            )        
+            normed_features = pd.DataFrame(scaler.fit_transform(features), columns=features.columns)
         else:
-             normed_features = pd.DataFrame(
-                scaler.transform(features), columns=features.columns
-            )     
-             
-    
+            normed_features = pd.DataFrame(scaler.transform(features), columns=features.columns)
+
     normed_features.index = features.index
 
     if "label" in features:
@@ -144,9 +131,7 @@ def _filter_interpretable(features, features_info, interpretability):
 def _filter_graphs(features, graph_removal=0.05):
     """Remove samples with more than X% bad values."""
     n_graphs = len(features.index)
-    features = features[
-        features.isnull().sum(axis=1) / len(features.columns) < graph_removal
-    ]
+    features = features[features.isnull().sum(axis=1) / len(features.columns) < graph_removal]
     L.info(
         "%s graphs were removed for more than %s fraction of bad features",
         str(n_graphs - len(features.index)),
@@ -264,21 +249,17 @@ def fit_model_kfold(
         if n_splits is None:
             n_splits = _number_folds(y)
         L.info("Using %s splits", str(n_splits))
-        folds = RepeatedKFold(
-            n_splits=n_splits, n_repeats=n_repeats, random_state=random_state
-        )
+        folds = RepeatedKFold(n_splits=n_splits, n_repeats=n_repeats, random_state=random_state)
 
     acc_scores, shap_values = _evaluate_kfold(X, y, model, folds, analysis_type, compute_shap)
     _print_accuracy(acc_scores, analysis_type)
-    
+
     if compute_shap:
-        mean_shap_values, shap_feature_importance = _get_shap_feature_importance(
-            shap_values
-        )
+        mean_shap_values, shap_feature_importance = _get_shap_feature_importance(shap_values)
     else:
-        mean_shap_values=None
-        shap_feature_importance=None
-        
+        mean_shap_values = None
+        shap_feature_importance = None
+
     analysis_results = {
         "X": X,
         "y": y,
@@ -338,16 +319,11 @@ def fit_model(
         raise Exception("Please provide a model for classification")
 
     X, y = features_to_Xy(features)
-       
 
-    indices = next(
-        ShuffleSplit(test_size=test_size, random_state=random_state).split(X, y)
-    )
+    indices = next(ShuffleSplit(test_size=test_size, random_state=random_state).split(X, y))
     acc_score, shap_values = compute_fold(X, y, model, indices, analysis_type, compute_shap)
 
-    mean_shap_values, shap_feature_importance = _get_shap_feature_importance(
-        [shap_values]
-    )
+    mean_shap_values, shap_feature_importance = _get_shap_feature_importance([shap_values])
     analysis_results = {
         "X": X,
         "y": y,
@@ -392,78 +368,77 @@ def compute_fold(X, y, model, indices, analysis_type, compute_shap):
     """Compute a single fold for parallel computation."""
     train_index, val_index = indices
     model.fit(X.iloc[train_index], y.iloc[train_index])
-    
-    
+
     if analysis_type == "classification":
         acc_score = accuracy_score(y.iloc[val_index], model.predict(X.iloc[val_index]))
         L.info("Fold accuracy: --- %s ---", str(np.round(acc_score, 3)))
 
     elif analysis_type == "regression":
-        acc_score = mean_absolute_error(
-            y.iloc[val_index], model.predict(X.iloc[val_index])
-        )
+        acc_score = mean_absolute_error(y.iloc[val_index], model.predict(X.iloc[val_index]))
         L.info("Mean Absolute Error: --- %s ---", str(np.round(acc_score, 3)))
 
     if compute_shap:
         try:
             explainer = shap.TreeExplainer(model)
-        except (ValueError, SHAPError):
-            explainer = shap.KernelExplainer(model.predict_proba, X.iloc[train_index])            
+        except Exception:  # pylint: disable=broad-except
+            explainer = shap.KernelExplainer(model.predict_proba, X.iloc[train_index])
         shap_values = explainer.shap_values(X)
     else:
-        shap_values=None
+        shap_values = None
 
     return acc_score, shap_values
 
 
-def _preprocess_features(features, features_info, graph_removal, interpretability, trained_model=None):
+def _preprocess_features(
+    features, features_info, graph_removal, interpretability, trained_model=None
+):
     """Collect all feature filters."""
     L.info("%s total features", str(len(features.columns)))
 
     features = _filter_graphs(features, graph_removal=graph_removal)
-   
+
     good_features = _filter_features(features)
     features = features[good_features]
-    
+
     scaler = None
     if trained_model is not None:
-        scalar, feature_info_pretrained = trained_model[1:2]        
-        try:            
+        scaler, feature_info_pretrained = trained_model[1:2]
+        try:
             features = features[feature_info_pretrained.columns]
-        except:
-            raise Exception("You may have features in your pre-trained model that weren't \
-                            computeable in your new evaluation set.")
- 
-    if 'label' in good_features:    
+        except Exception as e:  # pylint: disable=broad-except
+            raise Exception(
+                "You may have features in your pre-trained model that weren't \
+                            computeable in your new evaluation set."
+            ) from e
+
+    if "label" in good_features:
         features_info = features_info[good_features.drop("label")]
-        
+
     L.info("%s valid features", str(len(features.columns)))
 
-    features, features_info = _filter_interpretable(
-        features, features_info, interpretability
-    )
-    L.info(
-        "%s with interpretability %s", str(len(features.columns)), str(interpretability)
-    )
+    features, features_info = _filter_interpretable(features, features_info, interpretability)
+    L.info("%s with interpretability %s", str(len(features.columns)), str(interpretability))
 
     features, scaler = _normalise_feature_data(features, scaler=scaler)
-    
+
     return features, features_info, scaler
 
-    
+
 def train_all(features, model):
     """ Train on all available data."""
     X, y = features_to_Xy(features)
-    model.fit(X, y)    
+    model.fit(X, y)
     L.info("Fitting model to all data")
     return model
 
-def predict_unlabelled(model,features):
-    X, y = features_to_Xy(features)
-    return model.predict(X)    
+
+def predict_unlabelled(model, features):
+    """Predict unlabelled data."""
+    X, _ = features_to_Xy(features)
+    return model.predict(X)
 
 
-def analysis(
+def analysis(  # pylint: disable=too-many-arguments,too-many-locals,too-many-branches
     features,
     features_info,
     graphs=None,
@@ -488,14 +463,13 @@ def analysis(
     save_model=False,
 ):
     """Main function to classify graphs and plot results."""
-       
-    
+
     if trained_model is None:
         model = _get_model(model, analysis_type)
     else:
-        if isinstance(trained_model,tuple):
+        if isinstance(trained_model, tuple):
             model = trained_model[0]
-        elif isinstance(trained_model,str):
+        elif isinstance(trained_model, str):
             trained_model = load_fitted_model(trained_model)
             model = trained_model[0]
 
@@ -508,9 +482,8 @@ def analysis(
 
     if trained_model is not None:
         y_predictions = predict_unlabelled(model, features)
-        _save_predictions_to_csv(features, y_predictions, folder=folder)  
-        return (y_predictions)
-
+        _save_predictions_to_csv(features, y_predictions, folder=folder)
+        return y_predictions
 
     if kfold:
         analysis_results = fit_model_kfold(
@@ -537,10 +510,9 @@ def analysis(
             test_size=test_size,
             compute_shap=compute_shap,
         )
-        
+
     if save_model:
-        fitted_model = train_all(features,model)
-        
+        fitted_model = train_all(features, model)
 
     if analysis_type == "regression":
         analysis_results["mean_shap_values"] = [analysis_results["mean_shap_values"]]
@@ -549,11 +521,7 @@ def analysis(
                 analysis_results["reduced_mean_shap_values"]
             ]
 
-
-
-    results_folder = Path(folder) / (
-        "results_interpretability_" + str(interpretability)
-    )
+    results_folder = Path(folder) / ("results_interpretability_" + str(interpretability))
     if not Path(results_folder).exists():
         os.mkdir(results_folder)
 
@@ -573,44 +541,36 @@ def analysis(
         if kfold:
             _save_to_csv(features_info, analysis_results, results_folder)
 
-
-    model_folder = Path(folder) / (
-        "fitted_model"
-    )
+    model_folder = Path(folder) / ("fitted_model")
     if not Path(model_folder).exists():
         os.mkdir(model_folder)
-        
+
     if save_model:
         save_fitted_model(fitted_model, scaler, features_info, model_folder)
-        
+
     return analysis_results
 
 
-def _save_predictions_to_csv(features, predictions, folder="results"): 
+def _save_predictions_to_csv(features, predictions, folder="results"):
     """ Save the prediction results for unlabelled data """
-    results_df = pd.DataFrame(data=predictions, index=features.index, columns=['y_prediction'])
+    results_df = pd.DataFrame(data=predictions, index=features.index, columns=["y_prediction"])
     results_df.to_csv(os.path.join(folder, "prediction_results.csv"))
-    
-    
+
 
 def _save_to_csv(features_info_df, analysis_results, folder="results"):
     """Save csv file with analysis data."""
 
     result_df = features_info_df.copy()
-    result_df.loc["shap_feature_importance"] = analysis_results[
-        "shap_feature_importance"
-    ]
+    result_df.loc["shap_feature_importance"] = analysis_results["shap_feature_importance"]
     shap_values = analysis_results["shap_values"]
     for i, shap_class in enumerate(shap_values):
-        result_df.loc["shap_importance: class {}".format(i)] = np.vstack(
-            shap_class
-        ).mean(axis=0)
+        result_df.loc["shap_importance: class {}".format(i)] = np.vstack(shap_class).mean(axis=0)
 
     if analysis_results["reduced_features"] is not None:
         reduced_features = analysis_results["reduced_features"]
-        result_df.loc[
-            "reduced_shap_feature_importance", reduced_features
-        ] = analysis_results["reduced_shap_feature_importance"]
+        result_df.loc["reduced_shap_feature_importance", reduced_features] = analysis_results[
+            "reduced_shap_feature_importance"
+        ]
         shap_values = analysis_results["reduced_shap_values"]
         for i, shap_class in enumerate(shap_values):
             result_df.loc[
@@ -621,14 +581,12 @@ def _save_to_csv(features_info_df, analysis_results, folder="results"):
             "reduced_shap_feature_importance", axis=1, ascending=False
         )
     else:
-        result_df = result_df.sort_values(
-            "shap_feature_importance", axis=1, ascending=False
-        )
+        result_df = result_df.sort_values("shap_feature_importance", axis=1, ascending=False)
 
     result_df.to_csv(os.path.join(folder, "importance_results.csv"))
 
 
-def classify_pairwise(
+def classify_pairwise(  # pylint: disable=too-many-locals
     features,
     features_info,
     model="XG",
@@ -659,7 +617,7 @@ def classify_pairwise(
     Returns:
         (dataframe, list, int): accuracies dataframe, list of top features, number of top pairs
     """
-    features, features_info, scaler = _preprocess_features(
+    features, features_info, _ = _preprocess_features(
         features, features_info, graph_removal, interpretability
     )
 
@@ -670,9 +628,7 @@ def classify_pairwise(
 
     top_features = {}
     for pair in tqdm(class_pairs):
-        features_pair = features.loc[
-            (features.label == pair[0]) | (features.label == pair[1])
-        ]
+        features_pair = features.loc[(features.label == pair[0]) | (features.label == pair[1])]
         analysis_results = fit_model_kfold(
             features_pair,
             classifier,
@@ -694,16 +650,14 @@ def classify_pairwise(
         accuracy_matrix.loc[pair[1], pair[0]] = accuracy_matrix.loc[pair[0], pair[1]]
 
         if "reduced_shap_feature_importance" in analysis_results:
-            top_feat_idx = analysis_results[
-                "reduced_shap_feature_importance"
-            ].argsort()[-n_top_features:]
-            top_features_raw = analysis_results["X"][
-                analysis_results["reduced_features"]
-            ].columns[top_feat_idx]
-        else:
-            top_feat_idx = analysis_results["shap_feature_importance"].argsort()[
+            top_feat_idx = analysis_results["reduced_shap_feature_importance"].argsort()[
                 -n_top_features:
             ]
+            top_features_raw = analysis_results["X"][analysis_results["reduced_features"]].columns[
+                top_feat_idx
+            ]
+        else:
+            top_feat_idx = analysis_results["shap_feature_importance"].argsort()[-n_top_features:]
             top_features_raw = analysis_results["X"].columns[top_feat_idx]
 
         top_features[pair] = [f_class + "_" + f for f_class, f in top_features_raw]

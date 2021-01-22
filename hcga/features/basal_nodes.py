@@ -76,9 +76,7 @@ class BasalNodes(FeatureClass):
 
         self.add_feature(
             "attracting_degrees",
-            lambda graph: [
-                dict(graph.in_degree)[i] for i in attracting_nodes_func(graph)
-            ],
+            lambda graph: [dict(graph.in_degree)[i] for i in attracting_nodes_func(graph)],
             "The distribution of degrees of attracting nodes",
             InterpretabilityScore(3),
             statistics="centrality",
@@ -97,9 +95,9 @@ class BasalNodes(FeatureClass):
 
         def exp_attracting_edge(graph):
             out_degs = list(dict(graph.out_degree).values())
-            r = sum(
-                [dict(graph.in_degree)[i] for i in attracting_nodes_func(graph)]
-            ) / (graph.number_of_edges())
+            r = sum([dict(graph.in_degree)[i] for i in attracting_nodes_func(graph)]) / (
+                graph.number_of_edges()
+            )
             return [i * r for i in out_degs]
 
         self.add_feature(

@@ -2,17 +2,16 @@
 import logging
 import os
 
-import numpy as np
-from scipy.cluster.hierarchy import dendrogram, linkage
-import networkx as nx
-import shap
-
-import seaborn as sns
-import matplotlib.pyplot as plt
 import matplotlib
+import matplotlib.pyplot as plt
+import networkx as nx
+import numpy as np
+import seaborn as sns
+import shap
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.gridspec import GridSpec
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+from scipy.cluster.hierarchy import dendrogram, linkage
 
 matplotlib.use("Agg")
 L = logging.getLogger(__name__)
@@ -140,7 +139,7 @@ def plot_analysis(
             L.info("Plot trend")
             _plot_trend(feature_importance, X, y, folder, max_feats, ext=ext)
         _save_to_pdf(pdf)
-        
+
         if graphs is not None:
             L.info("Plot feature summaries")
             figs = _plot_feature_summary(
@@ -151,13 +150,9 @@ def plot_analysis(
 
 def _bar_ranking_plot(mean_shap_values, X, folder, max_feats, ext=".png"):
     """Function for customizing and saving SHAP summary bar plot."""
-    shap.summary_plot(
-        mean_shap_values, X, plot_type="bar", max_display=max_feats, show=False
-    )
+    shap.summary_plot(mean_shap_values, X, plot_type="bar", max_display=max_feats, show=False)
     plt.title("Feature Rankings-All Classes")
-    plt.savefig(
-        os.path.join(folder, "shap_bar_rank" + ext), dpi=200, bbox_inches="tight"
-    )
+    plt.savefig(os.path.join(folder, "shap_bar_rank" + ext), dpi=200, bbox_inches="tight")
 
 
 def _dot_summary_plot(shap_values, data, folder, max_feats, ext=".png"):
@@ -170,9 +165,7 @@ def _dot_summary_plot(shap_values, data, folder, max_feats, ext=".png"):
     figs = []
     for i in range(num_classes):
         figs.append(plt.figure())
-        shap.summary_plot(
-            shap_values[i], data, plot_type="dot", max_display=max_feats, show=False
-        )
+        shap.summary_plot(shap_values[i], data, plot_type="dot", max_display=max_feats, show=False)
         plt.title("Sample Expanded Feature Summary for Class " + str(i))
         plt.savefig(
             os.path.join(folder, "shap_class_{}_summary{}".format(i, ext)),
@@ -219,9 +212,7 @@ def _plot_dendrogram_shap(
     reduced_pos = cor_sorted.loc[cor_sorted.index.intersection(reduced_features), ("id", "")] + 0.5
     ax2.scatter(reduced_pos, reduced_pos, c="g", s=100)
     ax1.title.set_text("Top {} features heatmap and dendogram".format(max_feats))
-    plt.savefig(
-        os.path.join(folder, "shap_dendogram" + ext), dpi=200, bbox_inches="tight"
-    )
+    plt.savefig(os.path.join(folder, "shap_dendogram" + ext), dpi=200, bbox_inches="tight")
 
 
 def _plot_feature_correlation(
@@ -249,17 +240,13 @@ def _plot_feature_correlation(
     cor_sorted["id"] = np.arange(len(cor_sorted))
     reduced_pos = cor_sorted.loc[cor_sorted.index.intersection(reduced_features), ("id", "")] + 0.5
     ax.scatter(reduced_pos, reduced_pos, c="g", s=100)
-    plt.savefig(
-        os.path.join(folder, "correlation_matrix" + ext), dpi=200, bbox_inches="tight"
-    )
+    plt.savefig(os.path.join(folder, "correlation_matrix" + ext), dpi=200, bbox_inches="tight")
 
 
 PERCENTILES = [2, 25, 50, 75, 98]
 
 
-def _plot_feature_summary(
-    data, labels, graphs, folder, shap_values, max_feats, ext=".png"
-):
+def _plot_feature_summary(data, labels, graphs, folder, shap_values, max_feats, ext=".png"):
     """for a given feature id, plot the feature summary."""
 
     shap_mean = np.sum(np.mean(np.abs(shap_values), axis=1), axis=0)
@@ -311,9 +298,7 @@ def _plot_feature_summary(
     return figs
 
 
-def _plot_shap_violin(
-    shap_feature_importance, data, labels, folder, max_feats, ext=".png"
-):
+def _plot_shap_violin(shap_feature_importance, data, labels, folder, max_feats, ext=".png"):
     """Plot the violins of a feature."""
     top_feat_idx = shap_feature_importance.argsort()[-max_feats:]
 
@@ -339,7 +324,9 @@ def _plot_shap_violin(
 
     plt.subplots_adjust(top=0.9, bottom=0.1, hspace=0.3, wspace=0.2)
     plt.savefig(
-        os.path.join(folder, "shap_violins" + ext), dpi=200, bbox_inches="tight",
+        os.path.join(folder, "shap_violins" + ext),
+        dpi=200,
+        bbox_inches="tight",
     )
 
 
@@ -364,7 +351,9 @@ def _plot_trend(shap_feature_importance, data, labels, folder, max_feats, ext=".
 
     plt.subplots_adjust(top=0.9, bottom=0.1, hspace=0.3, wspace=0.2)
     plt.savefig(
-        os.path.join(folder, "shap_trend" + ext), dpi=200, bbox_inches="tight",
+        os.path.join(folder, "shap_trend" + ext),
+        dpi=200,
+        bbox_inches="tight",
     )
 
 

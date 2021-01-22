@@ -6,18 +6,18 @@ The functions here are necessary to evaluate each individual feature found insid
 
 """
 import logging
-import sys
 import signal
+import sys
 import warnings
 
 import numpy as np
-import scipy.stats as st
-from networkx.algorithms.community import quality
-from networkx import to_undirected
-from networkx.exception import NetworkXNotImplemented
 import pandas as pd
+import scipy.stats as st
+from networkx import to_undirected
+from networkx.algorithms.community import quality
+from networkx.exception import NetworkXNotImplemented
 
-from hcga.utils import get_trivial_graph, TimeoutError, timeout_handler
+from hcga.utils import TimeoutError, get_trivial_graph, timeout_handler
 
 L = logging.getLogger(__name__)
 # L.setLevel(logging.DEBUG)
@@ -54,11 +54,7 @@ class FeatureClass:
                 doc_string += 2 * _indent + "Args: \n"
                 for data in f_info[feature].index:
                     doc_string += (
-                        3 * _indent
-                        + str(data)
-                        + ": "
-                        + str(f_info.loc[data, feature])
-                        + "\n"
+                        3 * _indent + str(data) + ": " + str(f_info.loc[data, feature]) + "\n"
                     )
         return doc_string
 
@@ -71,7 +67,7 @@ class FeatureClass:
         """Initialise a feature class.
 
         Args:
-            graph (Graph): graph for initialisation, converted to given encoding """
+            graph (Graph): graph for initialisation, converted to given encoding"""
         if graph is not None:
             self.graph = graph.get_graph(self.__class__.encoding)
             self.graph_id = graph.id
@@ -113,9 +109,7 @@ class FeatureClass:
     def _test_feature_exists(self, feature_name):
         """Test if feature feature_name exists in description list."""
         if feature_name not in self.__class__.feature_descriptions:
-            raise Exception(
-                "Feature {} does not exist in class {}".format(feature_name, self.name)
-            )
+            raise Exception("Feature {} does not exist in class {}".format(feature_name, self.name))
 
     def get_feature_info(self, feature_name):
         """Returns a dictionary of information about the feature feature_name."""
@@ -151,13 +145,15 @@ class FeatureClass:
             }
 
     def evaluate_feature(  # pylint: disable=too-many-branches
-        self, feature_function, feature_name, function_args=None, statistics=None,
+        self,
+        feature_function,
+        feature_name,
+        function_args=None,
+        statistics=None,
     ):
         """Evaluating a feature function and catching/raising errors."""
         if not callable(feature_function):
-            raise Exception(
-                "The feature function {} is not callable!".format(feature_name)
-            )
+            raise Exception("The feature function {} is not callable!".format(feature_name))
 
         if function_args is None:
             function_args = self.graph
@@ -218,8 +214,11 @@ class FeatureClass:
             expected_types = (int, float, np.int32, np.int64, np.float32, np.float64)
             if not isinstance(feature, expected_types):
                 raise Exception(
-                    "Feature {} of type {} with no statistics does not return expected type{}: {}".format(
-                        feature_name, type(feature), expected_types, feature,
+                    "Feature {} of type {} with no stat does not return expected type{}: {}".format(
+                        feature_name,
+                        type(feature),
+                        expected_types,
+                        feature,
                     )
                 )
 
@@ -253,36 +252,43 @@ class FeatureClass:
 
         elif statistics == "centrality":
             self.feature_statistics(
-                func_result, feature_name, feature_description, feature_interpret,
+                func_result,
+                feature_name,
+                feature_description,
+                feature_interpret,
             )
 
         elif statistics == "clustering":
             self.clustering_statistics(
-                func_result, feature_name, feature_description, feature_interpret,
+                func_result,
+                feature_name,
+                feature_description,
+                feature_interpret,
             )
 
         elif statistics == "node_features":
             self.node_feature_statistics(
-                func_result, feature_name, feature_description, feature_interpret,
+                func_result,
+                feature_name,
+                feature_description,
+                feature_interpret,
             )
 
         elif statistics == "list":
             self.list_statistics(
-                func_result, feature_name, feature_description, feature_interpret,
+                func_result,
+                feature_name,
+                feature_description,
+                feature_interpret,
             )
 
     def compute_features(self):
         """main feature extraction function."""
-        self.add_feature(
-            "test", lambda graph: 0.0, "Test feature for the base feature class", 5
-        )
+        self.add_feature("test", lambda graph: 0.0, "Test feature for the base feature class", 5)
 
     def get_features(self, all_features=False):
         """update the feature dictionary if correct mode provided."""
-        if (
-            self.__class__.shortname == "TP"
-            and self.__class__.__name__ != "FeatureClass"
-        ):
+        if self.__class__.shortname == "TP" and self.__class__.__name__ != "FeatureClass":
             raise Exception(
                 "Shortname not set for feature class {}".format(self.__class__.__name__)
             )
@@ -312,9 +318,7 @@ class FeatureClass:
                 feat_interpret - interpretability_downgrade,
             )
 
-    def clustering_statistics(
-        self, community_partition, feat_name, feat_desc, feat_interpret
-    ):
+    def clustering_statistics(self, community_partition, feat_name, feat_desc, feat_interpret):
         """Compute quality of the community partitions."""
         compl_desc = " of the partition of " + feat_desc
 
@@ -372,17 +376,11 @@ class FeatureClass:
         self.feature_statistics_basic(feat_dist, feat_name, feat_desc, feat_interpret)
 
         if self.statistics_level == "medium":
-            self.feature_statistics_medium(
-                feat_dist, feat_name, feat_desc, feat_interpret
-            )
+            self.feature_statistics_medium(feat_dist, feat_name, feat_desc, feat_interpret)
 
         if self.statistics_level == "advanced":
-            self.feature_statistics_medium(
-                feat_dist, feat_name, feat_desc, feat_interpret
-            )
-            self.feature_statistics_advanced(
-                feat_dist, feat_name, feat_desc, feat_interpret
-            )
+            self.feature_statistics_medium(feat_dist, feat_name, feat_desc, feat_interpret)
+            self.feature_statistics_advanced(feat_dist, feat_name, feat_desc, feat_interpret)
 
     def list_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Compute list statisttics."""
@@ -443,9 +441,7 @@ class FeatureClass:
             function_args=feat_dist,
         )
 
-    def feature_statistics_medium(
-        self, feat_dist, feat_name, feat_desc, feat_interpret
-    ):
+    def feature_statistics_medium(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes medium summary statistics of distributions."""
         compl_desc = " of the distribution of " + feat_desc
 
@@ -478,9 +474,7 @@ class FeatureClass:
             function_args=feat_dist,
         )
 
-    def feature_statistics_advanced(
-        self, feat_dist, feat_name, feat_desc, feat_interpret
-    ):
+    def feature_statistics_advanced(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes advanced summary statistics of distributions."""
         compl_desc = " of the distribution of " + feat_desc
 

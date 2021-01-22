@@ -3,8 +3,8 @@ import networkx as nx
 import numpy as np
 from sklearn.preprocessing import normalize
 
-from .utils import ensure_connected, remove_selfloops
 from ..feature_class import FeatureClass, InterpretabilityScore
+from .utils import ensure_connected, remove_selfloops
 
 featureclass_name = "RolesimilarityBasedComparison"
 

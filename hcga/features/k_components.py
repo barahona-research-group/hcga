@@ -1,5 +1,6 @@
 """K Components class."""
 from functools import lru_cache
+
 import networkx as nx
 
 from ..feature_class import FeatureClass, InterpretabilityScore
@@ -37,9 +38,7 @@ class KComponents(FeatureClass):
 
         self.add_feature(
             "size_max_k_component",
-            lambda graph: len(
-                eval_kcomponents(graph)[len(eval_kcomponents(graph).keys())][0]
-            ),
+            lambda graph: len(eval_kcomponents(graph)[len(eval_kcomponents(graph).keys())][0]),
             "The number of nodes of the component corresponding to the largest k",
             InterpretabilityScore(3),
         )

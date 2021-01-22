@@ -2,14 +2,16 @@
 import networkx as nx
 import numpy as np
 
-from hcga.io import save_dataset
 from hcga.graph import Graph, GraphCollection
+from hcga.io import save_dataset
 
 np.random.seed(0)
 
 
 def make(
-    folder="./datasets", write_to_file=True, graph_type="SBM",
+    folder="./datasets",
+    write_to_file=True,
+    graph_type="SBM",
 ):
     """Make dataset."""
     if graph_type == "SBM":

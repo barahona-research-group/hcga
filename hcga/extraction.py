@@ -1,6 +1,4 @@
-"""
-Functions necessary for the extraction of graph features.
-"""
+"""Functions necessary for the extraction of graph features."""
 import logging
 import time
 from collections import defaultdict
@@ -30,16 +28,20 @@ def extract(
     Args:
         graphs (GraphCollection object): GraphCollection object with loaded graphs (see graph.py)
         n_workers (int): number of workers for parallel processing
-        mode (str): 'fast', 'medium', 'slow' - only features that are fast to compute will be run with 'fast'
+        mode (str): 'fast', 'medium', 'slow' - only features that are fast to compute will
+            be run with 'fast'
         normalize_features (bool): normalise features by number of nodes and number of edges
-        statistics_level (str): 'basic', 'advanced' - for features that provide distributions we must compute statistics.
+        statistics_level (str): 'basic', 'advanced' - for features that provide distributions
+            we must compute statistics.
         with_runtimes (bool): calculating the run time of each feature.
         with_node_features (bool): include node features in feature extraction
         timeout (int): number of seconds before the calculation for a feature is cancelled
-        connected (bool): True will make sure that only the largest connected component of a graph is used for feature extraction.
+        connected (bool): True will make sure that only the largest connected component of a graph
+            is used for feature extraction.
         weighted (bool): calculations will consider edge weights where possible.
     Returns:
-        (dataframe, dataframe): dataframe of features and dataframe of meta information of computed features.
+        (dataframe, dataframe): dataframe of features and dataframe of meta information
+            of computed features.
     """
     if not with_node_features:
         graphs.remove_node_features()
@@ -49,7 +51,7 @@ def extract(
 
     if connected:
         graphs.maximal_subgraphs()
-    
+
     if not weighted:
         graphs.remove_edge_weights()
 
@@ -77,7 +79,10 @@ def extract(
         graphs.get_num_disabled_graphs(),
     )
     all_features_df = compute_all_features(
-        graphs, feat_classes, n_workers=n_workers, with_runtimes=with_runtimes,
+        graphs,
+        feat_classes,
+        n_workers=n_workers,
+        with_runtimes=with_runtimes,
     )
 
     if with_runtimes:
@@ -148,9 +153,7 @@ def get_list_feature_classes(
                     n_node_features=n_node_features,
                     timeout=timeout,
                 )
-                columns = [
-                    (feature_class.shortname, col) for col in features_info.columns
-                ]
+                columns = [(feature_class.shortname, col) for col in features_info.columns]
                 feature_info_df[columns] = features_info
 
     return list_feature_classes, feature_info_df
@@ -158,11 +161,11 @@ def get_list_feature_classes(
 
 def feature_extraction(graph, list_feature_classes, with_runtimes=False):
     """Extract features for a single graph
-    
+
     Args:
         graph (Graph object): Graph object (see graph.py)
         list_feature_classes (list): list of feature classes found in ./features
-        with_runtimes (bool): compute the run time of each feature            
+        with_runtimes (bool): compute the run time of each feature
     Returns:
         (dataframe): dataframe of calculated features for a given graph.
     """
@@ -193,19 +196,22 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
 
 
 def compute_all_features(
-    graphs, list_feature_classes, n_workers=1, with_runtimes=False,
+    graphs,
+    list_feature_classes,
+    n_workers=1,
+    with_runtimes=False,
 ):
     """Compute features for all graphs
-    
+
     Args:
         graphs (GraphCollection object): GraphCollection object with loaded graphs (see graph.py)
         list_feature_classes (list): list of feature classes found in ./features
         n_workers (int): number of workers for parallel processing
-        with_runtimes (bool): compute the run time of each feature            
+        with_runtimes (bool): compute the run time of each feature
     Returns:
         (dataframe): dataframe of calculated features for the graph collection.
     """
-    
+
     L.info("Computing features for %s graphs:", len(graphs))
     if with_runtimes:
         n_workers = 1
