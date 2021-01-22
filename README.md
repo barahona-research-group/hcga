@@ -18,6 +18,48 @@ Navigate to the main folder simply type:
 pip install .
 ```
 
+## Main Work Flow
+
+1. Create a dataset
+--------------------
+
+Benchmarks datasets from `Graphkernel <https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets>`_ can be loaded directly with::
+
+    $ hcga get_data DATASET
+
+where for example, ``DATASET`` can be one of 
+    * ENZYMES
+    * DD
+    * COLLAB
+    * PROTEINS
+    * REDDIT-MULTI-12K
+    
+To create custom dataset, please follow one of the [examples](https://github.com/barahona-research-group/hcga/tree/master/examples) in the `examples/` directory.
+    
+2. Extract features
+--------------------
+
+Once a dataset is created, features can be extracted using for example::
+
+    $ hcga extract_features dataset.pkl --mode fast --timeout 10 --n-workers 4 
+
+we refer to the hcga app documentation for more details, but the main options here include:
+
+- ``--mode fast``: only extract simple features (other options include ``medium/slow`` 
+- ``--timeout 10``: stop features computation after 10 seconds (this prevents some features to get stuck)
+- ``--n-workers 4``: set the number of workers in multiprocessing
+- ``--runtime``: this option runs a small set of graphs and ouput estimated times for each feature
+
+3. Classifiy graphs
+--------------------
+
+Finally, to use the extracted features to classify graphs with respect to their labels, one use::
+
+    $ hcga feature_analysis dataset --interpretability 1
+
+where ``dataset`` is the name of the dataset, and ``--interpretability 1`` selects the features with all interpretabilities. Choices range from ``1-5``, where ``5`` only uses most interpretable features.
+
+
 ## Documentation
 
 Head over to our [documentation](https://barahona-research-group.github.io/hcga/) to find out more about installation, data handling, creation of datasets and a full list of implemented features, transforms, and datasets.
@@ -90,13 +132,6 @@ Other examples can be found as jupyter-notebooks in `examples/` directory. We ha
 
 
 
-## Our other available packages
-
-If you are interested in trying our other packages, see the below list:
-* [GDR](https://github.com/barahona-research-group/GDR) : Graph diffusion reclassification. A methodology for node classification using graph semi-supervised learning.
-* [MSC](https://github.com/barahona-research-group/MultiscaleCentrality) : MultiScale Centrality: A scale dependent metric of node centrality.
-
-
 ## Python, Anaconda and hcga installation
 
 The simplest setup will be to install [Anaconda](https://docs.anaconda.com/anaconda/install/). Anaconda is a package manager and contains useful IDEs for writing and viewing python scripts and notebooks. Choose from one of the following links below depending on your operating system:
@@ -125,6 +160,13 @@ jupyter-notebook
 You can then navigate to the examples folder and open the notebook of your choosing.
 
 
+
+
+## Our other available packages
+
+If you are interested in trying our other packages, see the below list:
+* [GDR](https://github.com/barahona-research-group/GDR) : Graph diffusion reclassification. A methodology for node classification using graph semi-supervised learning.
+* [MSC](https://github.com/barahona-research-group/MultiscaleCentrality) : MultiScale Centrality: A scale dependent metric of node centrality.
 
 
 
