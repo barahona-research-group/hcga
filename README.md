@@ -137,6 +137,7 @@ Other examples can be found as jupyter-notebooks in `examples/` directory. We ha
 * Example 4: Training on labelled data, saving the fitted model, and predicting on unseen unlabelled data.
 * Example 5: Pairwise classification. Exploring the similarity of classes.
 * Example 6: Loading data in different ways.
+* Example 7: Using different classifiers.
 
 
 
