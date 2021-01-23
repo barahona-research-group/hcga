@@ -39,9 +39,10 @@ def extract(
         connected (bool): True will make sure that only the largest connected component of a graph
             is used for feature extraction.
         weighted (bool): calculations will consider edge weights where possible.
+
     Returns:
-        (dataframe, dataframe): dataframe of features and dataframe of meta information
-            of computed features.
+        (DataFrame): dataframe of features
+        (DataFrame): dataframe of meta information of computed features.
     """
     if not with_node_features:
         graphs.remove_node_features()
@@ -131,7 +132,21 @@ def get_list_feature_classes(
     n_node_features=0,
     timeout=10,
 ):
-    """Generates and returns the list of feature classes to compute for a given mode."""
+    """Generates and returns the list of feature classes to compute for a given mode.
+
+    Args:
+        mode (str): 'fast', 'medium', 'slow' - only features that are fast to compute will
+            be run with 'fast'
+        normalize_features (bool): normalise features by number of nodes and number of edges
+        statistics_level (str): 'basic', 'advanced' - for features that provide distributions
+            we must compute statistics.
+        n_node_features (int):  dimension of node features for feature constructors
+        timeout (int): number of seconds before the calculation for a feature is cancelled
+
+    Returns:
+        (list): list of feature classes instances
+        (DataFrame): dataframe with feature information
+    """
     feature_path = Path(__file__).parent / "features"
     non_feature_files = ["__init__", "utils"]
 
@@ -166,8 +181,9 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
         graph (Graph object): Graph object (see graph.py)
         list_feature_classes (list): list of feature classes found in ./features
         with_runtimes (bool): compute the run time of each feature
+
     Returns:
-        (dataframe): dataframe of calculated features for a given graph.
+        (DataFrame): dataframe of calculated features for a given graph.
     """
     if with_runtimes:
         runtimes = {}
@@ -208,8 +224,9 @@ def compute_all_features(
         list_feature_classes (list): list of feature classes found in ./features
         n_workers (int): number of workers for parallel processing
         with_runtimes (bool): compute the run time of each feature
+
     Returns:
-        (dataframe): dataframe of calculated features for the graph collection.
+        (DataDrame): dataframe of calculated features for the graph collection.
     """
 
     L.info("Computing features for %s graphs:", len(graphs))

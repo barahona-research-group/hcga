@@ -66,7 +66,8 @@ class FeatureClass:
         """Initialise a feature class.
 
         Args:
-            graph (Graph): graph for initialisation, converted to given encoding"""
+            graph (Graph): graph for initialisation, converted to given encoding
+        """
         if graph is not None:
             self.graph = graph.get_graph(self.__class__.encoding)
             self.graph_id = graph.id
@@ -83,7 +84,18 @@ class FeatureClass:
         n_node_features=0,
         timeout=10,
     ):
-        """Initializes the class by adding descriptions for all features."""
+        """Initializes the class by adding descriptions for all features.
+
+        Args:
+            normalize_features (bool): normalise features by number of nodes and number of edges
+            statistics_level (str): 'basic', 'advanced' - for features that provide distributions
+                we must compute statistics.
+            n_node_features (int):  dimension of node features for feature constructors
+            timeout (int): number of seconds before the calculation for a feature is cancelled
+
+        Returns:
+            (DataFrame): dataframe with feature information
+        """
         cls.normalize_features = normalize_features
         cls.statistics_level = statistics_level
         cls.n_node_features = n_node_features
@@ -99,7 +111,7 @@ class FeatureClass:
         return feature_info
 
     def get_info(self):
-        """return a dictionary of informations about the feature class."""
+        """Return a dictionary of informations about the feature class."""
         return {
             "name": self.__class__.name,
             "shortname": self.__class__.shortname,
@@ -150,7 +162,17 @@ class FeatureClass:
         function_args=None,
         statistics=None,
     ):
-        """Evaluating a feature function and catching/raising errors."""
+        """Evaluating a feature function.
+
+        We catch any error during a computation, which may result in Nan feature value.
+        In addition, the evaluation has to be done before timoeut, or it will return Nan.
+
+        Args:
+            feature_function (function): function to evaluate to compute a feature
+            feature_name (str): name of the feature
+            function_args (list): additional arguments to pass to feature_function
+            statistics (str): type of statistics to apply to high dimensional features.
+        """
         if not callable(feature_function):
             raise Exception("The feature function {} is not callable!".format(feature_name))
 
@@ -230,7 +252,16 @@ class FeatureClass:
         function_args=None,
         statistics=None,
     ):
-        """Adds a computed feature value and its description."""
+        """Adds a computed feature value and its description.
+
+        Args:
+            feature_name (str): name of the feature
+            feature_function (function): function to evaluate to compute a feature
+            feature_description (str): short description of the feature
+            feature_interpret (int): interpretability score of thee feature
+            function_args (list): additional arguments to pass to feature_function
+            statistics (str): type of statistics to apply to high dimensional features.
+        """
         func_result = self.evaluate_feature(
             feature_function,
             feature_name,
@@ -250,7 +281,7 @@ class FeatureClass:
             )
 
         elif statistics == "centrality":
-            self.feature_statistics(
+            self._feature_statistics(
                 func_result,
                 feature_name,
                 feature_description,
@@ -258,7 +289,7 @@ class FeatureClass:
             )
 
         elif statistics == "clustering":
-            self.clustering_statistics(
+            self._clustering_statistics(
                 func_result,
                 feature_name,
                 feature_description,
@@ -266,7 +297,7 @@ class FeatureClass:
             )
 
         elif statistics == "node_features":
-            self.node_feature_statistics(
+            self._node_feature_statistics(
                 func_result,
                 feature_name,
                 feature_description,
@@ -274,7 +305,7 @@ class FeatureClass:
             )
 
         elif statistics == "list":
-            self.list_statistics(
+            self._list_statistics(
                 func_result,
                 feature_name,
                 feature_description,
@@ -282,11 +313,14 @@ class FeatureClass:
             )
 
     def compute_features(self):
-        """main feature extraction function."""
+        """Main feature extraction function.
+
+        This function should be used by each specific feature class to add new features.
+        """
         self.add_feature("test", lambda graph: 0.0, "Test feature for the base feature class", 5)
 
     def get_features(self, all_features=False):
-        """update the feature dictionary if correct mode provided."""
+        """Compute all the possible features."""
         if self.__class__.shortname == "TP" and self.__class__.__name__ != "FeatureClass":
             raise Exception(
                 "Shortname not set for feature class {}".format(self.__class__.__name__)
@@ -298,8 +332,7 @@ class FeatureClass:
         return self.features
 
     def compute_normalize_features(self):
-        """triple the number of features by normalising by node and edges."""
-
+        """Triple the number of features by normalising by node and edges."""
         interpretability_downgrade = 1
         for feature_name in list(self.features.keys()):
             feat_interpret = self.get_feature_interpretability(feature_name)
@@ -317,7 +350,7 @@ class FeatureClass:
                 feat_interpret - interpretability_downgrade,
             )
 
-    def clustering_statistics(self, community_partition, feat_name, feat_desc, feat_interpret):
+    def _clustering_statistics(self, community_partition, feat_name, feat_desc, feat_interpret):
         """Compute quality of the community partitions."""
         compl_desc = " of the partition of " + feat_desc
 
@@ -359,29 +392,28 @@ class FeatureClass:
             feat_interpret,
         )
 
-    def node_feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
+    def _node_feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes summary statistics of each feature distribution."""
         for node_feats in range(feat_dist.shape[1]):
-            self.feature_statistics_basic(
+            self._feature_statistics_basic(
                 feat_dist[:, node_feats],
                 feat_name + str(node_feats),
                 feat_desc + str(node_feats),
                 feat_interpret,
             )
 
-    def feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
+    def _feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes summary statistics of distributions."""
-
-        self.feature_statistics_basic(feat_dist, feat_name, feat_desc, feat_interpret)
+        self._feature_statistics_basic(feat_dist, feat_name, feat_desc, feat_interpret)
 
         if self.statistics_level == "medium":
-            self.feature_statistics_medium(feat_dist, feat_name, feat_desc, feat_interpret)
+            self._feature_statistics_medium(feat_dist, feat_name, feat_desc, feat_interpret)
 
         if self.statistics_level == "advanced":
-            self.feature_statistics_medium(feat_dist, feat_name, feat_desc, feat_interpret)
-            self.feature_statistics_advanced(feat_dist, feat_name, feat_desc, feat_interpret)
+            self._feature_statistics_medium(feat_dist, feat_name, feat_desc, feat_interpret)
+            self._feature_statistics_advanced(feat_dist, feat_name, feat_desc, feat_interpret)
 
-    def list_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
+    def _list_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Compute list statisttics."""
         if feat_dist is not None:
             for i in range(len(feat_dist)):
@@ -393,7 +425,7 @@ class FeatureClass:
                     function_args=feat_dist,
                 )
 
-    def feature_statistics_basic(self, feat_dist, feat_name, feat_desc, feat_interpret):
+    def _feature_statistics_basic(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes basic summary statistics of distributions."""
         compl_desc = " of the distribution of " + feat_desc
 
@@ -440,7 +472,7 @@ class FeatureClass:
             function_args=feat_dist,
         )
 
-    def feature_statistics_medium(self, feat_dist, feat_name, feat_desc, feat_interpret):
+    def _feature_statistics_medium(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes medium summary statistics of distributions."""
         compl_desc = " of the distribution of " + feat_desc
 
@@ -473,7 +505,7 @@ class FeatureClass:
             function_args=feat_dist,
         )
 
-    def feature_statistics_advanced(self, feat_dist, feat_name, feat_desc, feat_interpret):
+    def _feature_statistics_advanced(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes advanced summary statistics of distributions."""
         compl_desc = " of the distribution of " + feat_desc
 

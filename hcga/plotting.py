@@ -18,6 +18,7 @@ L = logging.getLogger(__name__)
 
 
 def _save_to_pdf(pdf, figs=None):
+    """Save a list of figures to a pdf."""
     if figs is not None:
         for fig in figs:
             pdf.savefig(fig, bbox_inches="tight")
@@ -247,7 +248,7 @@ PERCENTILES = [2, 25, 50, 75, 98]
 
 
 def _plot_feature_summary(data, labels, graphs, folder, shap_values, max_feats, ext=".png"):
-    """for a given feature id, plot the feature summary."""
+    """For a given feature id, plot the feature summary."""
 
     shap_mean = np.sum(np.mean(np.abs(shap_values), axis=1), axis=0)
     feature_names = list(data.iloc[:, shap_mean.argsort()[-max_feats:]].columns)
@@ -358,7 +359,7 @@ def _plot_trend(shap_feature_importance, data, labels, folder, max_feats, ext=".
 
 
 def pca_plot(features, pca):
-    """ plot pca of data """
+    """Plot pca of data."""
     X = pca.transform(features)
     plt.scatter(X[:, 0], X[:, 1])
     plt.xlabel("PC1")

@@ -9,6 +9,8 @@ When loading graphs into hcga, the Graph classes will attempt to convert the inp
 graph type into a generic hcga Graph object.
 
 """
+import logging
+
 import networkx as nx
 import numpy as np
 import pandas as pd
@@ -16,19 +18,25 @@ import scipy as sc
 
 MIN_NUM_NODES = 2
 MIN_NUM_EDGES = 1
+L = logging.getLogger(__name__)
 
 
 class GraphCollection:
-    """
-    A collection of Graph objects (see Graph class).
-    """
+    """A collection of Graph objects (see Graph class)."""
 
     def __init__(self):
-        """ Initialise an empty list of graphs."""
+        """Initialise an empty list of graphs."""
         self.graphs = []
 
     def add_graph(self, graph, node_features=None, label=None, graph_type=None):
-        """Add a graph to the list."""
+        """Add a graph to the list.
+
+        Args:
+            graph (graph-like object): valid data representig graph (see convert_graph)
+            node_feature (array): node feature matrix
+            label (int): label of the graph
+            graph_type (str): set to 'directed' for directed graphs
+        """
         if not isinstance(graph, Graph):
             graph = convert_graph(graph, node_features, label, graph_type)
         graph.id = len(self.graphs)
@@ -37,7 +45,14 @@ class GraphCollection:
     def add_graph_list(
         self, graph_list, node_features_list=None, graph_labels=None, graph_type=None
     ):
-        """ Add a list of graphs """
+        """Add a list of graphs.
+
+        Args:
+            graph_list (list(graph-like object)): valid data representig graphs (see convert_graph)
+            node_feature_list (list(array)): node feature matrices
+            graph_labels (list(int)): label of the graphs
+            graph_type (str): set to 'directed' for directed graphs
+        """
         for i, graph in enumerate(graph_list):
             if not isinstance(graph, Graph):
                 if not graph_labels:
@@ -55,12 +70,10 @@ class GraphCollection:
             self.graphs.append(graph)
 
     def __iter__(self):
-        """Makes this class iterable over the graphs."""
         self.current_graph = -1
         return self
 
     def __next__(self):
-        """Get the next enabled graph."""
         self.current_graph += 1
         if self.current_graph >= len(self.graphs):
             raise StopIteration
@@ -71,7 +84,6 @@ class GraphCollection:
         return self.graphs[self.current_graph]
 
     def __len__(self):
-        """Overrites the len() function to get number of enabled graphs."""
         return sum([1 for graph in self.graphs if not graph.disabled])
 
     def get_n_node_features(self):
@@ -93,7 +105,7 @@ class GraphCollection:
             graph.set_n_node_features()
 
     def remove_edge_weights(self):
-        """ remove edge weights. """
+        """Remove edge weights."""
         for graph in self.graphs:
             graph.remove_weights()
 
@@ -103,7 +115,7 @@ class GraphCollection:
 
     def maximal_subgraphs(self):
         """Overwrites each graph with its maximal subgraph."""
-        print("Returning the maximal subgraph for each graph")
+        L.warning("Returning the maximal subgraph for each graph")
 
         for graph in self.graphs:
             graph.maximal_subgraph()
@@ -126,6 +138,7 @@ class Graph:
                 with id corresponding to indices in nodes. And a third optional column 'weight'
                 which if absent all edges will default to weight 1.
             label (int): label of the graph, it has to be an integer
+            graph_type (str): set to 'directed' for directed graphs
             label_name (any): name or other information on the graph label
         """
         nodes["new_index"] = np.arange(0, len(nodes.index))
@@ -169,7 +182,7 @@ class Graph:
                 self.n_node_features = 0
 
     def remove_weights(self):
-        """ set edge weights to one """
+        """Set edge weights to one."""
         self.edges["weight"] = 1.0
 
     def _check_length(self):
@@ -181,7 +194,9 @@ class Graph:
 
     def get_graph(self, encoding=None):
         """Get usable graph structure with given encoding.
-        For now, only networkx is implemented."""
+
+        For now, only networkx is implemented.
+        """
         if encoding is None:
             return self
         if encoding == "networkx":
@@ -248,8 +263,16 @@ class Graph:
 def convert_graph(  # pylint: disable=too-many-branches
     graph, node_features=None, label=None, graph_type=None
 ):
-    """ Function to convert different graph types to the class Graph """
+    """Function to convert different graph types to the class Graph.
 
+    Args:
+        graph (graph like object): valid graph data (NetowrkX or np.ndarray)
+        label (int): label of the graph
+        graph_type (str): set to 'directed' for directed graphs
+
+    Returns:
+        (Graph): converted Graph object
+    """
     if node_features is not None:
         if isinstance(node_features, np.ndarray):
             node_features = node_features.tolist()

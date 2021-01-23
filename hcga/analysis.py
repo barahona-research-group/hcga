@@ -25,7 +25,7 @@ warnings.simplefilter("ignore")
 
 
 def features_to_Xy(features):
-    """decompose features dataframe to numpy arrays X and y."""
+    """Decompose features dataframe to numpy arrays X and y."""
     if "label" in features:
         return features.drop(columns=["label"]), features["label"]
 
@@ -202,7 +202,7 @@ def _evaluate_kfold(X, y, model, folds, analysis_type, compute_shap):
     shap_values = []
     acc_scores = []
     for indices in folds.split(X, y=y):
-        acc_score, shap_value = compute_fold(X, y, model, indices, analysis_type, compute_shap)
+        acc_score, shap_value = _compute_fold(X, y, model, indices, analysis_type, compute_shap)
         shap_values.append(shap_value)
         acc_scores.append(acc_score)
     return acc_scores, shap_values
@@ -224,14 +224,20 @@ def fit_model_kfold(
 
     Args:
         features (dataframe): extracted features
-        classifier (str): name of the classifier to use
+        model (str): model to preform analysis
+        analysis_type (str): 'classification' or 'regression'
         reduce_set (bool): is True, the classification will be rerun
                            on a reduced set of top features (from shapely analysis)
         reduce_set_size (int): number of features to keep for reduces set
         reduced_set_max_correlation (float): to discared highly correlated top features
                                              in reduced set of features
+        n_repeats (int): number of k-fold repeats
+        random_state (int): rng seed
+        n_splits (int): numbere of split for k-fold, None=automatic estimation
+        compute_shap (bool): compute SHAP values or not
+
     Returns:
-        WIP
+        (dict): dictionary with results
     """
     if model is None:
         raise Exception("Please provide a model for classification")
@@ -314,14 +320,31 @@ def fit_model(
     random_state=42,
     compute_shap=True,
 ):
-    """Train a single model."""
+    """Train a single model.
+
+    Args:
+        features (dataframe): extracted features
+        model (str): model to preform analysis
+        analysis_type (str): 'classification' or 'regression'
+        reduce_set (bool): is True, the classification will be rerun
+                           on a reduced set of top features (from shapely analysis)
+        reduce_set_size (int): number of features to keep for reduces set
+        reduced_set_max_correlation (float): to discared highly correlated top features
+                                             in reduced set of features
+        random_state (int): rng seed
+        test_size (float): size of test dataset (see sklearn.model_selection.ShuffleSplit)
+        compute_shap (bool): compute SHAP values or not
+
+    Returns:
+        (dict): dictionary with results
+    """
     if model is None:
         raise Exception("Please provide a model for classification")
 
     X, y = features_to_Xy(features)
 
     indices = next(ShuffleSplit(test_size=test_size, random_state=random_state).split(X, y))
-    acc_score, shap_values = compute_fold(X, y, model, indices, analysis_type, compute_shap)
+    acc_score, shap_values = _compute_fold(X, y, model, indices, analysis_type, compute_shap)
 
     mean_shap_values, shap_feature_importance = _get_shap_feature_importance([shap_values])
     analysis_results = {
@@ -344,7 +367,7 @@ def fit_model(
         alpha=reduced_set_max_correlation,
     )
     reduced_model = deepcopy(model)
-    reduced_acc_score, reduced_shap_values = compute_fold(
+    reduced_acc_score, reduced_shap_values = _compute_fold(
         X[reduced_features], y, reduced_model, indices, analysis_type, compute_shap
     )
     (
@@ -364,7 +387,7 @@ def fit_model(
     return analysis_results
 
 
-def compute_fold(X, y, model, indices, analysis_type, compute_shap):
+def _compute_fold(X, y, model, indices, analysis_type, compute_shap):
     """Compute a single fold for parallel computation."""
     train_index, val_index = indices
     model.fit(X.iloc[train_index], y.iloc[train_index])
@@ -402,11 +425,11 @@ def _preprocess_features(
 
     scaler = None
     if trained_model is not None:
-        scaler, feature_info_pretrained = trained_model[1:3]
-        pretrained_features = feature_info_pretrained.columns
-        missing_cols = pretrained_features[~pretrained_features.isin(features.columns)]
-        features.loc[:, missing_cols] = np.nan
-        features = features[pretrained_features]
+        _, scaler, model_features = trained_model
+        missing_cols = model_features.columns[~model_features.columns.isin(features.columns)]
+        for _col in missing_cols:
+            features[_col] = np.nan
+        features = features[model_features.columns]
 
     if "label" in good_features:
         features_info = features_info[good_features.drop("label")]
@@ -422,7 +445,7 @@ def _preprocess_features(
 
 
 def train_all(features, model):
-    """ Train on all available data."""
+    """Train on all available data."""
     X, y = features_to_Xy(features)
     model.fit(X, y)
     L.info("Fitting model to all data")
@@ -459,7 +482,36 @@ def analysis(  # pylint: disable=too-many-arguments,too-many-locals,too-many-bra
     trained_model=None,
     save_model=False,
 ):
-    """Main function to classify graphs and plot results."""
+    """Main function to classify graphs and plot results.
+
+    Args:
+        features (dataframe): extracted features
+        features_info (dataframe): features information
+        graphs (GraphCollection): input graphs
+        analysis_type (str): 'classification' or 'regression'
+        folder (str): folder to save analysis
+        graph_removal (float): remove samples with more than graph_removal % bad values
+        interpretabiliy (int): filter out features below this interpretability
+        model (str): model to preform analysis
+        compute_shap (bool): compute SHAP values or not
+        kfold (bool): run with kfold
+        reduce_set (bool): is True, the classification will be rerun
+                           on a reduced set of top features (from shapely analysis)
+        reduce_set_size (int): number of features to keep for reduces set
+        reduced_set_max_correlation (float): to discared highly correlated top features
+                                             in reduced set of features
+        plot (bool): save plots
+        max_feats_plot (int): max number of feature analysis to plot
+        n_repeats (int): number of k-fold repeats
+        n_splits (int): numbere of split for k-fold, None=automatic estimation
+        random_state (int): rng seed
+        test_size (float): size of test dataset (see sklearn.model_selection.ShuffleSplit)
+        trained_model (str): provide path to pretrained model to apply to new data
+        save_modeel (bool): save the obtained model to reuse later
+
+    Returns:
+        (dict): dictionary with results
+    """
 
     if trained_model is None:
         model = _get_model(model, analysis_type)
@@ -549,7 +601,7 @@ def analysis(  # pylint: disable=too-many-arguments,too-many-locals,too-many-bra
 
 
 def _save_predictions_to_csv(features, predictions, folder="results"):
-    """ Save the prediction results for unlabelled data """
+    """Save the prediction results for unlabelled data."""
     results_df = pd.DataFrame(data=predictions, index=features.index, columns=["y_prediction"])
     results_df.to_csv(os.path.join(folder, "prediction_results.csv"))
 
@@ -603,14 +655,20 @@ def classify_pairwise(  # pylint: disable=too-many-locals
     for later analysis.
     Args:
         features (dataframe): extracted features
-        features_info (): WIP
-        classifier (str): name of the classifier to use
+        features_info (dataframe): features information
+        model (str): model to preform analysis
+        graph_removal (float): remove samples with more than graph_removal % bad values
         n_top_features (int): number of top features to save
         reduce_set (bool): is True, the classification will be rerun
                            on a reduced set of top features (from shapely analysis)
         reduce_set_size (int): number of features to keep for reduces set
         reduced_set_max_correlation (float): to discared highly correlated top features
                                              in reduced set of features
+
+        n_repeats (int): number of k-fold repeats
+        n_splits (int): numbere of split for k-fold, None=automatic estimation
+        analysis_type (str): 'classification' or 'regression'
+
     Returns:
         (dataframe, list, int): accuracies dataframe, list of top features, number of top pairs
     """
