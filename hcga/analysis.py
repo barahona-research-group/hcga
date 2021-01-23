@@ -402,7 +402,8 @@ def _preprocess_features(
 
     scaler = None
     if trained_model is not None:
-        scaler, feature_info_pretrained = trained_model[1:2]
+        scaler, feature_info_pretrained = trained_model[1:3]
+        features = features[feature_info_pretrained.columns]
         try:
             features = features[feature_info_pretrained.columns]
         except Exception as e:  # pylint: disable=broad-except
