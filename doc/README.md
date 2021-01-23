@@ -8,7 +8,7 @@ This is to be done the first time, then the next to upate it.
 1) Create a folder called hcga-docs near the hcga git folder (same level):
 ``` mkdir hcga-docs```
 2) Clone the hcga repo in subfolder html: 
-```git clone https://github.com/barahona-research-group/hcga.git html```
+```git clone git@github.com:barahona-research-group/hcga.git html```
 3) move into it: 
 ```cd html```
 4) Switch branches to gh-pages:
