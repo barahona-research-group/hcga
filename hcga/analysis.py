@@ -403,14 +403,10 @@ def _preprocess_features(
     scaler = None
     if trained_model is not None:
         scaler, feature_info_pretrained = trained_model[1:3]
-        features = features[feature_info_pretrained.columns]
-        try:
-            features = features[feature_info_pretrained.columns]
-        except Exception as e:  # pylint: disable=broad-except
-            raise Exception(
-                "You may have features in your pre-trained model that weren't \
-                            computeable in your new evaluation set."
-            ) from e
+        pretrained_features = feature_info_pretrained.columns
+        missing_cols = pretrained_features[~pretrained_features.isin(features.columns)]
+        features.loc[:, missing_cols] = np.nan
+        features = features[pretrained_features]
 
     if "label" in good_features:
         features_info = features_info[good_features.drop("label")]
