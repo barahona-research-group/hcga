@@ -4,14 +4,14 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The graph data structure &#8212; hcga 0.1 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="The feature class module" href="feature_class.html" />
@@ -34,20 +34,28 @@
             
   <div class="section" id="module-hcga.graph">
 <span id="the-graph-data-structure"></span><h1>The graph data structure<a class="headerlink" href="#module-hcga.graph" title="Permalink to this headline">¶</a></h1>
-<p>Classes representing single and a collection of graphs.</p>
+<p>Classes for creating graph objects compatible with hcga.</p>
+<p>Graphs can be constructed in various formats in Python, from Networkx Graph objects
+to numpy matrices.  To provide a consistent and reliable format for hcga we have
+constructed a Graph class and a GraphCollection class.</p>
+<p>When loading graphs into hcga, the Graph classes will attempt to convert the input
+graph type into a generic hcga Graph object.</p>
 <dl class="py class">
 <dt id="hcga.graph.Graph">
-<em class="property">class </em><code class="sig-prename descclassname">hcga.graph.</code><code class="sig-name descname">Graph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em>, <em class="sig-param"><span class="n">edges</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">label_name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#Graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.Graph" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">hcga.graph.</code><code class="sig-name descname">Graph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em>, <em class="sig-param"><span class="n">edges</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">graph_type</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">label_name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#Graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.Graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class to encode a generic graph structure for hcga.</p>
-<p>Set main graphs quantities.</p>
+<p>A graph can be attributed nodes, edges, a graph label and node features.</p>
+<p>Defining the main graphs quantities.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>nodes</strong> (<em>DataFrame</em>) – node dataframe, index as node id, and optional
 label and attributes columns (with lists elements)</p></li>
 <li><p><strong>edges</strong> (<em>DataFrame</em>) – edge dataframe, with two columns ‘start_node’ and ‘end_node’
-with id corresponding to indices in nodes</p></li>
+with id corresponding to indices in nodes. And a third optional column ‘weight’
+which if absent all edges will default to weight 1.</p></li>
 <li><p><strong>label</strong> (<em>int</em>) – label of the graph, it has to be an integer</p></li>
+<li><p><strong>graph_type</strong> (<em>str</em>) – set to ‘directed’ for directed graphs</p></li>
 <li><p><strong>label_name</strong> (<em>any</em>) – name or other information on the graph label</p></li>
 </ul>
 </dd>
@@ -72,6 +80,12 @@ with id corresponding to indices in nodes</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt id="hcga.graph.Graph.remove_weights">
+<code class="sig-name descname">remove_weights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#Graph.remove_weights"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.Graph.remove_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set edge weights to one.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="hcga.graph.Graph.set_networkx">
 <code class="sig-name descname">set_networkx</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#Graph.set_networkx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.Graph.set_networkx" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the networkx graph encoding.</p>
@@ -88,30 +102,38 @@ with id corresponding to indices in nodes</p></li>
 <dl class="py class">
 <dt id="hcga.graph.GraphCollection">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.graph.</code><code class="sig-name descname">GraphCollection</code><a class="reference internal" href="_modules/hcga/graph.html#GraphCollection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.GraphCollection" title="Permalink to this definition">¶</a></dt>
-<dd><p>Contain a list of graphs.</p>
-<p>Set empty list of graphs.</p>
-<dl class="py method">
-<dt id="hcga.graph.GraphCollection.__iter__">
-<code class="sig-name descname">__iter__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#GraphCollection.__iter__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.GraphCollection.__iter__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Makes this class iterable over the graphs.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="hcga.graph.GraphCollection.__len__">
-<code class="sig-name descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#GraphCollection.__len__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.GraphCollection.__len__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Overrites the len() function to get number of enabled graphs.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="hcga.graph.GraphCollection.__next__">
-<code class="sig-name descname">__next__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#GraphCollection.__next__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.GraphCollection.__next__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the next enabled graph.</p>
-</dd></dl>
-
+<dd><p>A collection of Graph objects (see Graph class).</p>
+<p>Initialise an empty list of graphs.</p>
 <dl class="py method">
 <dt id="hcga.graph.GraphCollection.add_graph">
-<code class="sig-name descname">add_graph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#GraphCollection.add_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.GraphCollection.add_graph" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_graph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em>, <em class="sig-param"><span class="n">node_features</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">graph_type</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#GraphCollection.add_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.GraphCollection.add_graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a graph to the list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graph</strong> (<em>graph-like object</em>) – valid data representig graph (see convert_graph)</p></li>
+<li><p><strong>node_feature</strong> (<em>array</em>) – node feature matrix</p></li>
+<li><p><strong>label</strong> (<em>int</em>) – label of the graph</p></li>
+<li><p><strong>graph_type</strong> (<em>str</em>) – set to ‘directed’ for directed graphs</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hcga.graph.GraphCollection.add_graph_list">
+<code class="sig-name descname">add_graph_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph_list</span></em>, <em class="sig-param"><span class="n">node_features_list</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">graph_labels</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">graph_type</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#GraphCollection.add_graph_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.GraphCollection.add_graph_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a list of graphs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graph_list</strong> (<em>list</em><em>(</em><em>graph-like object</em><em>)</em>) – valid data representig graphs (see convert_graph)</p></li>
+<li><p><strong>node_feature_list</strong> (<em>list</em><em>(</em><em>array</em><em>)</em>) – node feature matrices</p></li>
+<li><p><strong>graph_labels</strong> (<em>list</em><em>(</em><em>int</em><em>)</em>) – label of the graphs</p></li>
+<li><p><strong>graph_type</strong> (<em>str</em>) – set to ‘directed’ for directed graphs</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -139,11 +161,38 @@ with id corresponding to indices in nodes</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt id="hcga.graph.GraphCollection.remove_edge_weights">
+<code class="sig-name descname">remove_edge_weights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#GraphCollection.remove_edge_weights"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.GraphCollection.remove_edge_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove edge weights.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="hcga.graph.GraphCollection.remove_node_features">
 <code class="sig-name descname">remove_node_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#GraphCollection.remove_node_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.GraphCollection.remove_node_features" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove the node features.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.graph.convert_graph">
+<code class="sig-prename descclassname">hcga.graph.</code><code class="sig-name descname">convert_graph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em>, <em class="sig-param"><span class="n">node_features</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">graph_type</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/graph.html#convert_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.graph.convert_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to convert different graph types to the class Graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graph</strong> (<em>graph like object</em>) – valid graph data (NetowrkX or np.ndarray)</p></li>
+<li><p><strong>label</strong> (<em>int</em>) – label of the graph</p></li>
+<li><p><strong>graph_type</strong> (<em>str</em>) – set to ‘directed’ for directed graphs</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>converted Graph object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(<a class="reference internal" href="#hcga.graph.Graph" title="hcga.graph.Graph">Graph</a>)</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -210,7 +259,7 @@ with id corresponding to indices in nodes</p></li>
       &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

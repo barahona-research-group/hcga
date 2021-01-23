@@ -4,14 +4,14 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The analysis module &#8212; hcga 0.1 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Features" href="Features.html" />
@@ -34,77 +34,247 @@
             
   <div class="section" id="module-hcga.analysis">
 <span id="the-analysis-module"></span><h1>The analysis module<a class="headerlink" href="#module-hcga.analysis" title="Permalink to this headline">¶</a></h1>
-<p>function for analysis of graph features.</p>
+<p>Functions for the analysis of extracted feature matrix.</p>
 <dl class="py function">
-<dt id="hcga.analysis._features_to_Xy">
-<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_features_to_Xy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_features_to_Xy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._features_to_Xy" title="Permalink to this definition">¶</a></dt>
-<dd><p>decompose features dataframe to X and y.</p>
+<dt id="hcga.analysis._compute_fold">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_compute_fold</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">indices</span></em>, <em class="sig-param"><span class="n">analysis_type</span></em>, <em class="sig-param"><span class="n">compute_shap</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_compute_fold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._compute_fold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a single fold for parallel computation.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="hcga.analysis._get_classifier">
-<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_get_classifier</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classifier</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_get_classifier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._get_classifier" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a classifier.</p>
+<dt id="hcga.analysis._evaluate_kfold">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_evaluate_kfold</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">folds</span></em>, <em class="sig-param"><span class="n">analysis_type</span></em>, <em class="sig-param"><span class="n">compute_shap</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_evaluate_kfold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._evaluate_kfold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the kfolds.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis._filter_features">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_filter_features</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_filter_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._filter_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter features and create feature matrix.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis._filter_graphs">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_filter_graphs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">graph_removal</span><span class="o">=</span><span class="default_value">0.05</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_filter_graphs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._filter_graphs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove samples with more than X% bad values.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis._filter_interpretable">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_filter_interpretable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">features_info</span></em>, <em class="sig-param"><span class="n">interpretability</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_filter_interpretable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._filter_interpretable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get only features with certain interpretability.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis._get_model">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_get_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">analysis_type</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_get_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._get_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a model.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis._get_reduced_feature_set">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_get_reduced_feature_set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">shap_top_features</span></em>, <em class="sig-param"><span class="n">n_top_features</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.9</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_get_reduced_feature_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._get_reduced_feature_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduce the feature set by taking uncorrelated features.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis._get_shap_feature_importance">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_get_shap_feature_importance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shap_values</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_get_shap_feature_importance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._get_shap_feature_importance" title="Permalink to this definition">¶</a></dt>
+<dd><p>From a list of shap values per folds, compute the global shap feature importance.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="hcga.analysis._normalise_feature_data">
-<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_normalise_feature_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_normalise_feature_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._normalise_feature_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Normalise the feature matrix using sklearn scaler to remove the mean and scale to unit variance.</p>
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_normalise_feature_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fit_scaler</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_normalise_feature_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._normalise_feature_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalise the feature matrix to remove the mean and scale to unit variance.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis._number_folds">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_number_folds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_number_folds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._number_folds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get number of folds.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis._preprocess_features">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_preprocess_features</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">features_info</span></em>, <em class="sig-param"><span class="n">graph_removal</span></em>, <em class="sig-param"><span class="n">interpretability</span></em>, <em class="sig-param"><span class="n">trained_model</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_preprocess_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._preprocess_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect all feature filters.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis._print_accuracy">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_print_accuracy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">acc_scores</span></em>, <em class="sig-param"><span class="n">analysis_type</span></em>, <em class="sig-param"><span class="n">reduced</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_print_accuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._print_accuracy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the classification or regression accuracies.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis._save_predictions_to_csv">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_save_predictions_to_csv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">predictions</span></em>, <em class="sig-param"><span class="n">folder</span><span class="o">=</span><span class="default_value">'results'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_save_predictions_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._save_predictions_to_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the prediction results for unlabelled data.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.analysis._save_to_csv">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">_save_to_csv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features_info_df</span></em>, <em class="sig-param"><span class="n">analysis_results</span></em>, <em class="sig-param"><span class="n">folder</span><span class="o">=</span><span class="default_value">'results'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#_save_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis._save_to_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save csv file with analysis data.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="hcga.analysis.analysis">
-<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">analysis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">features_info</span></em>, <em class="sig-param"><span class="n">graphs</span></em>, <em class="sig-param"><span class="n">interpretability</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">grid_search</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">shap</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">classifier</span><span class="o">=</span><span class="default_value">'XG'</span></em>, <em class="sig-param"><span class="n">folder</span><span class="o">=</span><span class="default_value">'.'</span></em>, <em class="sig-param"><span class="n">kfold</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">plot</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">max_feats</span><span class="o">=</span><span class="default_value">20</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.analysis" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">analysis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">features_info</span></em>, <em class="sig-param"><span class="n">graphs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">analysis_type</span><span class="o">=</span><span class="default_value">'classification'</span></em>, <em class="sig-param"><span class="n">folder</span><span class="o">=</span><span class="default_value">'.'</span></em>, <em class="sig-param"><span class="n">graph_removal</span><span class="o">=</span><span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">interpretability</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">model</span><span class="o">=</span><span class="default_value">'XG'</span></em>, <em class="sig-param"><span class="n">compute_shap</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">kfold</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">reduce_set</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">reduced_set_size</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">reduced_set_max_correlation</span><span class="o">=</span><span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">plot</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">max_feats_plot</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">max_feats_plot_dendrogram</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">n_repeats</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">n_splits</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">42</span></em>, <em class="sig-param"><span class="n">test_size</span><span class="o">=</span><span class="default_value">0.2</span></em>, <em class="sig-param"><span class="n">trained_model</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">save_model</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.analysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main function to classify graphs and plot results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>interpretability</strong> – an integer in range 1-5
-1 is all features, 5 is features with interpretability=5</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>features</strong> (<em>dataframe</em>) – extracted features</p></li>
+<li><p><strong>features_info</strong> (<em>dataframe</em>) – features information</p></li>
+<li><p><strong>graphs</strong> (<a class="reference internal" href="graph.html#hcga.graph.GraphCollection" title="hcga.graph.GraphCollection"><em>GraphCollection</em></a>) – input graphs</p></li>
+<li><p><strong>analysis_type</strong> (<em>str</em>) – ‘classification’ or ‘regression’</p></li>
+<li><p><strong>folder</strong> (<em>str</em>) – folder to save analysis</p></li>
+<li><p><strong>graph_removal</strong> (<em>float</em>) – remove samples with more than graph_removal % bad values</p></li>
+<li><p><strong>interpretabiliy</strong> (<em>int</em>) – filter out features below this interpretability</p></li>
+<li><p><strong>model</strong> (<em>str</em>) – model to preform analysis</p></li>
+<li><p><strong>compute_shap</strong> (<em>bool</em>) – compute SHAP values or not</p></li>
+<li><p><strong>kfold</strong> (<em>bool</em>) – run with kfold</p></li>
+<li><p><strong>reduce_set</strong> (<em>bool</em>) – is True, the classification will be rerun
+on a reduced set of top features (from shapely analysis)</p></li>
+<li><p><strong>reduce_set_size</strong> (<em>int</em>) – number of features to keep for reduces set</p></li>
+<li><p><strong>reduced_set_max_correlation</strong> (<em>float</em>) – to discared highly correlated top features
+in reduced set of features</p></li>
+<li><p><strong>plot</strong> (<em>bool</em>) – save plots</p></li>
+<li><p><strong>max_feats_plot</strong> (<em>int</em>) – max number of feature analysis to plot</p></li>
+<li><p><strong>n_repeats</strong> (<em>int</em>) – number of k-fold repeats</p></li>
+<li><p><strong>n_splits</strong> (<em>int</em>) – numbere of split for k-fold, None=automatic estimation</p></li>
+<li><p><strong>random_state</strong> (<em>int</em>) – rng seed</p></li>
+<li><p><strong>test_size</strong> (<em>float</em>) – size of test dataset (see sklearn.model_selection.ShuffleSplit)</p></li>
+<li><p><strong>trained_model</strong> (<em>str</em>) – provide path to pretrained model to apply to new data</p></li>
+<li><p><strong>save_modeel</strong> (<em>bool</em>) – save the obtained model to reuse later</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary with results</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(dict)</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="hcga.analysis.compute_fold">
-<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">compute_fold</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">classifier</span></em>, <em class="sig-param"><span class="n">compute_shap</span></em>, <em class="sig-param"><span class="n">indices</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#compute_fold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.compute_fold" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute a single fold for parallel computation.</p>
+<dt id="hcga.analysis.classify_pairwise">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">classify_pairwise</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">features_info</span></em>, <em class="sig-param"><span class="n">model</span><span class="o">=</span><span class="default_value">'XG'</span></em>, <em class="sig-param"><span class="n">graph_removal</span><span class="o">=</span><span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">interpretability</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">n_top_features</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">reduce_set</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">reduced_set_size</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">reduced_set_max_correlation</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">n_repeats</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">n_splits</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">analysis_type</span><span class="o">=</span><span class="default_value">'classification'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#classify_pairwise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.classify_pairwise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classify all possible pairs of clases with kfold and returns top features.</p>
+<p>The top features for each pair with high enough accuracies are collected in a list,
+for later analysis.
+:param features: extracted features
+:type features: dataframe
+:param features_info: features information
+:type features_info: dataframe
+:param model: model to preform analysis
+:type model: str
+:param graph_removal: remove samples with more than graph_removal % bad values
+:type graph_removal: float
+:param n_top_features: number of top features to save
+:type n_top_features: int
+:param reduce_set: is True, the classification will be rerun</p>
+<blockquote>
+<div><p>on a reduced set of top features (from shapely analysis)</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reduce_set_size</strong> (<em>int</em>) – number of features to keep for reduces set</p></li>
+<li><p><strong>reduced_set_max_correlation</strong> (<em>float</em>) – to discared highly correlated top features
+in reduced set of features</p></li>
+<li><p><strong>n_repeats</strong> (<em>int</em>) – number of k-fold repeats</p></li>
+<li><p><strong>n_splits</strong> (<em>int</em>) – numbere of split for k-fold, None=automatic estimation</p></li>
+<li><p><strong>analysis_type</strong> (<em>str</em>) – ‘classification’ or ‘regression’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>accuracies dataframe, list of top features, number of top pairs</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(dataframe, list, int)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="hcga.analysis.filter_interpretable">
-<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">filter_interpretable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">features_info</span></em>, <em class="sig-param"><span class="n">interpretability</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#filter_interpretable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.filter_interpretable" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get only features with certain interpretability.</p>
+<dt id="hcga.analysis.features_to_Xy">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">features_to_Xy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#features_to_Xy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.features_to_Xy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decompose features dataframe to numpy arrays X and y.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="hcga.analysis.fit_model">
-<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">fit_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">compute_shap</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">classifier</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#fit_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.fit_model" title="Permalink to this definition">¶</a></dt>
-<dd><p>shapeley analysis.</p>
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">fit_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">analysis_type</span><span class="o">=</span><span class="default_value">'classification'</span></em>, <em class="sig-param"><span class="n">reduce_set</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">reduced_set_size</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">reduced_set_max_correlation</span><span class="o">=</span><span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">test_size</span><span class="o">=</span><span class="default_value">0.2</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">42</span></em>, <em class="sig-param"><span class="n">compute_shap</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#fit_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.fit_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Train a single model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>features</strong> (<em>dataframe</em>) – extracted features</p></li>
+<li><p><strong>model</strong> (<em>str</em>) – model to preform analysis</p></li>
+<li><p><strong>analysis_type</strong> (<em>str</em>) – ‘classification’ or ‘regression’</p></li>
+<li><p><strong>reduce_set</strong> (<em>bool</em>) – is True, the classification will be rerun
+on a reduced set of top features (from shapely analysis)</p></li>
+<li><p><strong>reduce_set_size</strong> (<em>int</em>) – number of features to keep for reduces set</p></li>
+<li><p><strong>reduced_set_max_correlation</strong> (<em>float</em>) – to discared highly correlated top features
+in reduced set of features</p></li>
+<li><p><strong>random_state</strong> (<em>int</em>) – rng seed</p></li>
+<li><p><strong>test_size</strong> (<em>float</em>) – size of test dataset (see sklearn.model_selection.ShuffleSplit)</p></li>
+<li><p><strong>compute_shap</strong> (<em>bool</em>) – compute SHAP values or not</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary with results</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(dict)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="hcga.analysis.fit_model_kfold">
-<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">fit_model_kfold</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">compute_shap</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">classifier</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">reduced_set_size</span><span class="o">=</span><span class="default_value">100</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#fit_model_kfold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.fit_model_kfold" title="Permalink to this definition">¶</a></dt>
-<dd><p>shapeley analysis.</p>
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">fit_model_kfold</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">analysis_type</span><span class="o">=</span><span class="default_value">'classification'</span></em>, <em class="sig-param"><span class="n">reduce_set</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">reduced_set_size</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">reduced_set_max_correlation</span><span class="o">=</span><span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">n_repeats</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">42</span></em>, <em class="sig-param"><span class="n">n_splits</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">compute_shap</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#fit_model_kfold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.fit_model_kfold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classify graphs from extracted features with kfold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>features</strong> (<em>dataframe</em>) – extracted features</p></li>
+<li><p><strong>model</strong> (<em>str</em>) – model to preform analysis</p></li>
+<li><p><strong>analysis_type</strong> (<em>str</em>) – ‘classification’ or ‘regression’</p></li>
+<li><p><strong>reduce_set</strong> (<em>bool</em>) – is True, the classification will be rerun
+on a reduced set of top features (from shapely analysis)</p></li>
+<li><p><strong>reduce_set_size</strong> (<em>int</em>) – number of features to keep for reduces set</p></li>
+<li><p><strong>reduced_set_max_correlation</strong> (<em>float</em>) – to discared highly correlated top features
+in reduced set of features</p></li>
+<li><p><strong>n_repeats</strong> (<em>int</em>) – number of k-fold repeats</p></li>
+<li><p><strong>random_state</strong> (<em>int</em>) – rng seed</p></li>
+<li><p><strong>n_splits</strong> (<em>int</em>) – numbere of split for k-fold, None=automatic estimation</p></li>
+<li><p><strong>compute_shap</strong> (<em>bool</em>) – compute SHAP values or not</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary with results</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(dict)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="hcga.analysis.output_csv">
-<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">output_csv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">features_info</span></em>, <em class="sig-param"><span class="n">feature_importance</span></em>, <em class="sig-param"><span class="n">shap_values</span></em>, <em class="sig-param"><span class="n">folder</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#output_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.output_csv" title="Permalink to this definition">¶</a></dt>
-<dd><p>save csv file with analysis data.</p>
+<dt id="hcga.analysis.predict_unlabelled">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">predict_unlabelled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">features</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#predict_unlabelled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.predict_unlabelled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predict unlabelled data.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="hcga.analysis.reduce_correlation_feature_set">
-<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">reduce_correlation_feature_set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">shap_top_features</span></em>, <em class="sig-param"><span class="n">n_feats</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.99</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#reduce_correlation_feature_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.reduce_correlation_feature_set" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reduce the feature set by taking uncorrelated features.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="hcga.analysis.reduce_feature_set">
-<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">reduce_feature_set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">top_features</span></em>, <em class="sig-param"><span class="n">importance_threshold</span><span class="o">=</span><span class="default_value">0.5</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#reduce_feature_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.reduce_feature_set" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reduce the feature set.</p>
+<dt id="hcga.analysis.train_all">
+<code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">train_all</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">model</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#train_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.train_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Train on all available data.</p>
 </dd></dl>
 
 </div>
@@ -171,7 +341,7 @@
       &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

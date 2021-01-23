@@ -4,14 +4,14 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>hcga.feature_class &#8212; hcga 0.1 documentation</title>
-    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
    
@@ -31,24 +31,33 @@
           <div class="body" role="main">
             
   <h1>Source code for hcga.feature_class</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;template class for feature extraction.&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot; The master template for a feature class.</span>
+
+<span class="sd">Each feature class in the ./features folder can inherit the main feature class functionality.</span>
+
+<span class="sd">The functions here are necessary to evaluate each individual feature found inside a feature class.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">signal</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
-<span class="kn">from</span> <span class="nn">networkx.algorithms.community</span> <span class="kn">import</span> <span class="n">quality</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
+<span class="kn">from</span> <span class="nn">networkx</span> <span class="kn">import</span> <span class="n">to_undirected</span>
+<span class="kn">from</span> <span class="nn">networkx.algorithms.community</span> <span class="kn">import</span> <span class="n">quality</span>
+<span class="kn">from</span> <span class="nn">networkx.exception</span> <span class="kn">import</span> <span class="n">NetworkXNotImplemented</span>
 
-<span class="kn">from</span> <span class="nn">hcga.utils</span> <span class="kn">import</span> <span class="n">get_trivial_graph</span><span class="p">,</span> <span class="ne">TimeoutError</span><span class="p">,</span> <span class="n">timeout_handler</span>
+<span class="kn">from</span> <span class="nn">hcga.utils</span> <span class="kn">import</span> <span class="ne">TimeoutError</span><span class="p">,</span> <span class="n">get_trivial_graph</span><span class="p">,</span> <span class="n">timeout_handler</span>
 
-<span class="n">L</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;Feature exceptions&quot;</span><span class="p">)</span>
-<span class="n">L</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="n">L</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="FeatureClass"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass">[docs]</a><span class="k">class</span> <span class="nc">FeatureClass</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;template class.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot; Main functionality to be inherited by each feature class&quot;&quot;&quot;</span>
 
     <span class="c1"># Class variables that describe the feature,</span>
     <span class="c1"># They should be defined for all child features</span>
@@ -65,32 +74,37 @@
     <span class="c1"># Feature descriptions as class variable</span>
     <span class="n">feature_descriptions</span> <span class="o">=</span> <span class="p">{}</span>
 
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_doc</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="n">f_info</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">setup_class</span><span class="p">()</span>
-        <span class="n">doc_string</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> This class produces the following features:</span><span class="se">\n</span><span class="s1">&#39;</span>
-        <span class="n">_indent</span> <span class="o">=</span> <span class="s1">&#39;    &#39;</span>
+        <span class="n">doc_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> This class produces the following features:</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">_indent</span> <span class="o">=</span> <span class="s2">&quot;    &quot;</span>
         <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">f_info</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">f_info</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;shortname&#39;</span><span class="p">,</span> <span class="n">feature</span><span class="p">]</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">shortname</span><span class="p">:</span>
-                <span class="n">doc_string</span> <span class="o">+=</span> <span class="s1">&#39;Attributes: </span><span class="se">\n</span><span class="s1">&#39;</span>
-                <span class="n">doc_string</span> <span class="o">+=</span> <span class="n">_indent</span> <span class="o">+</span> <span class="n">feature</span> <span class="o">+</span> <span class="s1">&#39;: </span><span class="se">\n</span><span class="s1">&#39;</span>
-                <span class="n">doc_string</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">_indent</span> <span class="o">+</span> <span class="s1">&#39;Args: </span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="k">if</span> <span class="n">f_info</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;shortname&quot;</span><span class="p">,</span> <span class="n">feature</span><span class="p">]</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">shortname</span><span class="p">:</span>
+                <span class="n">doc_string</span> <span class="o">+=</span> <span class="s2">&quot;Attributes: </span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="n">doc_string</span> <span class="o">+=</span> <span class="n">_indent</span> <span class="o">+</span> <span class="n">feature</span> <span class="o">+</span> <span class="s2">&quot;: </span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="n">doc_string</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">_indent</span> <span class="o">+</span> <span class="s2">&quot;Args: </span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">f_info</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
-                    <span class="n">doc_string</span> <span class="o">+=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">_indent</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">f_info</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="p">,</span> <span class="n">feature</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="n">doc_string</span> <span class="o">+=</span> <span class="p">(</span>
+                        <span class="mi">3</span> <span class="o">*</span> <span class="n">_indent</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">f_info</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="p">,</span> <span class="n">feature</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
         <span class="k">return</span> <span class="n">doc_string</span>
 
 <div class="viewcode-block" id="FeatureClass.__init_subclass__"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass.__init_subclass__">[docs]</a>    <span class="k">def</span> <span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialise class variables to default for each child class.&quot;&quot;&quot;</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">feature_descriptions</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">+=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_doc</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span></div>
+        <span class="bp">cls</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">+=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_doc</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialise a feature class.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Args:</span>
-<span class="sd">            graph (Graph): graph for initialisation, converted to given encoding &quot;&quot;&quot;</span>
+<span class="sd">            graph (Graph): graph for initialisation, converted to given encoding</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">graph</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">get_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">graph_id</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph_type</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">graph_type</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
@@ -103,7 +117,18 @@
         <span class="n">n_node_features</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initializes the class by adding descriptions for all features.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Initializes the class by adding descriptions for all features.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            normalize_features (bool): normalise features by number of nodes and number of edges</span>
+<span class="sd">            statistics_level (str): &#39;basic&#39;, &#39;advanced&#39; - for features that provide distributions</span>
+<span class="sd">                we must compute statistics.</span>
+<span class="sd">            n_node_features (int):  dimension of node features for feature constructors</span>
+<span class="sd">            timeout (int): number of seconds before the calculation for a feature is cancelled</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (DataFrame): dataframe with feature information</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">normalize_features</span> <span class="o">=</span> <span class="n">normalize_features</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">statistics_level</span> <span class="o">=</span> <span class="n">statistics_level</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">n_node_features</span> <span class="o">=</span> <span class="n">n_node_features</span>
@@ -119,7 +144,7 @@
         <span class="k">return</span> <span class="n">feature_info</span></div>
 
 <div class="viewcode-block" id="FeatureClass.get_info"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass.get_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;return a dictionary of informations about the feature class.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return a dictionary of informations about the feature class.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="s2">&quot;shortname&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">shortname</span><span class="p">,</span>
@@ -128,9 +153,7 @@
 <div class="viewcode-block" id="FeatureClass._test_feature_exists"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass._test_feature_exists">[docs]</a>    <span class="k">def</span> <span class="nf">_test_feature_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test if feature feature_name exists in description list.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">feature_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">feature_descriptions</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                <span class="s2">&quot;Feature </span><span class="si">{}</span><span class="s2"> does not exist in class </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">feature_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-            <span class="p">)</span></div>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Feature </span><span class="si">{}</span><span class="s2"> does not exist in class </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">feature_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="FeatureClass.get_feature_info"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass.get_feature_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_feature_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns a dictionary of information about the feature feature_name.&quot;&quot;&quot;</span>
@@ -166,13 +189,25 @@
             <span class="p">}</span></div>
 
 <div class="viewcode-block" id="FeatureClass.evaluate_feature"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass.evaluate_feature">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_feature</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-branches</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">feature_function</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">,</span> <span class="n">function_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">statistics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">feature_function</span><span class="p">,</span>
+        <span class="n">feature_name</span><span class="p">,</span>
+        <span class="n">function_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">statistics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Evaluating a feature function and catching/raising errors.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Evaluating a feature function.</span>
+
+<span class="sd">        We catch any error during a computation, which may result in Nan feature value.</span>
+<span class="sd">        In addition, the evaluation has to be done before timoeut, or it will return Nan.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            feature_function (function): function to evaluate to compute a feature</span>
+<span class="sd">            feature_name (str): name of the feature</span>
+<span class="sd">            function_args (list): additional arguments to pass to feature_function</span>
+<span class="sd">            statistics (str): type of statistics to apply to high dimensional features.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">feature_function</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                <span class="s2">&quot;The feature function </span><span class="si">{}</span><span class="s2"> is not callable!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">feature_name</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;The feature function </span><span class="si">{}</span><span class="s2"> is not callable!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">feature_name</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">function_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">function_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span>
@@ -180,9 +215,14 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGALRM</span><span class="p">,</span> <span class="n">timeout_handler</span><span class="p">)</span>
             <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">timeout</span><span class="p">))</span>
-            <span class="n">feature</span> <span class="o">=</span> <span class="n">feature_function</span><span class="p">(</span><span class="n">function_args</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">feature</span> <span class="o">=</span> <span class="n">feature_function</span><span class="p">(</span><span class="n">function_args</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NetworkXNotImplemented</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph_type</span> <span class="o">==</span> <span class="s2">&quot;directed&quot;</span><span class="p">:</span>
+                    <span class="n">feature</span> <span class="o">=</span> <span class="n">feature_function</span><span class="p">(</span><span class="n">to_undirected</span><span class="p">(</span><span class="n">function_args</span><span class="p">))</span>
             <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">feature</span>
+
         <span class="k">except</span> <span class="p">(</span><span class="ne">KeyboardInterrupt</span><span class="p">,</span> <span class="ne">SystemExit</span><span class="p">):</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
@@ -228,8 +268,11 @@
             <span class="n">expected_types</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">expected_types</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                    <span class="s2">&quot;Feature </span><span class="si">{}</span><span class="s2"> of type </span><span class="si">{}</span><span class="s2"> with no statistics does not return expected type</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">feature_name</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">feature</span><span class="p">),</span> <span class="n">expected_types</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span>
+                    <span class="s2">&quot;Feature </span><span class="si">{}</span><span class="s2"> of type </span><span class="si">{}</span><span class="s2"> with no stat does not return expected type</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">feature_name</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="p">(</span><span class="n">feature</span><span class="p">),</span>
+                        <span class="n">expected_types</span><span class="p">,</span>
+                        <span class="n">feature</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="p">)</span></div>
 
@@ -242,7 +285,16 @@
         <span class="n">function_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">statistics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Adds a computed feature value and its description.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Adds a computed feature value and its description.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            feature_name (str): name of the feature</span>
+<span class="sd">            feature_function (function): function to evaluate to compute a feature</span>
+<span class="sd">            feature_description (str): short description of the feature</span>
+<span class="sd">            feature_interpret (int): interpretability score of thee feature</span>
+<span class="sd">            function_args (list): additional arguments to pass to feature_function</span>
+<span class="sd">            statistics (str): type of statistics to apply to high dimensional features.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">func_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_feature</span><span class="p">(</span>
             <span class="n">feature_function</span><span class="p">,</span>
             <span class="n">feature_name</span><span class="p">,</span>
@@ -262,32 +314,47 @@
             <span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">statistics</span> <span class="o">==</span> <span class="s2">&quot;centrality&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">feature_statistics</span><span class="p">(</span>
-                <span class="n">func_result</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">,</span> <span class="n">feature_description</span><span class="p">,</span> <span class="n">feature_interpret</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_feature_statistics</span><span class="p">(</span>
+                <span class="n">func_result</span><span class="p">,</span>
+                <span class="n">feature_name</span><span class="p">,</span>
+                <span class="n">feature_description</span><span class="p">,</span>
+                <span class="n">feature_interpret</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">statistics</span> <span class="o">==</span> <span class="s2">&quot;clustering&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">clustering_statistics</span><span class="p">(</span>
-                <span class="n">func_result</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">,</span> <span class="n">feature_description</span><span class="p">,</span> <span class="n">feature_interpret</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_clustering_statistics</span><span class="p">(</span>
+                <span class="n">func_result</span><span class="p">,</span>
+                <span class="n">feature_name</span><span class="p">,</span>
+                <span class="n">feature_description</span><span class="p">,</span>
+                <span class="n">feature_interpret</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">statistics</span> <span class="o">==</span> <span class="s2">&quot;node_features&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">node_feature_statistics</span><span class="p">(</span>
-                <span class="n">func_result</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">,</span> <span class="n">feature_description</span><span class="p">,</span> <span class="n">feature_interpret</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_node_feature_statistics</span><span class="p">(</span>
+                <span class="n">func_result</span><span class="p">,</span>
+                <span class="n">feature_name</span><span class="p">,</span>
+                <span class="n">feature_description</span><span class="p">,</span>
+                <span class="n">feature_interpret</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">statistics</span> <span class="o">==</span> <span class="s2">&quot;list&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_list_statistics</span><span class="p">(</span>
+                <span class="n">func_result</span><span class="p">,</span>
+                <span class="n">feature_name</span><span class="p">,</span>
+                <span class="n">feature_description</span><span class="p">,</span>
+                <span class="n">feature_interpret</span><span class="p">,</span>
             <span class="p">)</span></div>
 
 <div class="viewcode-block" id="FeatureClass.compute_features"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;main feature extraction function.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
-            <span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;Test feature for the base feature class&quot;</span><span class="p">,</span> <span class="mi">5</span>
-        <span class="p">)</span></div>
+        <span class="sd">&quot;&quot;&quot;Main feature extraction function.</span>
+
+<span class="sd">        This function should be used by each specific feature class to add new features.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;Test feature for the base feature class&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="FeatureClass.get_features"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass.get_features">[docs]</a>    <span class="k">def</span> <span class="nf">get_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_features</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;update the feature dictionary if correct mode provided.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">shortname</span> <span class="o">==</span> <span class="s2">&quot;TP&quot;</span>
-            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">!=</span> <span class="s2">&quot;FeatureClass&quot;</span>
-        <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute all the possible features.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">shortname</span> <span class="o">==</span> <span class="s2">&quot;TP&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">!=</span> <span class="s2">&quot;FeatureClass&quot;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
                 <span class="s2">&quot;Shortname not set for feature class </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
             <span class="p">)</span>
@@ -298,8 +365,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">features</span></div>
 
 <div class="viewcode-block" id="FeatureClass.compute_normalize_features"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass.compute_normalize_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_normalize_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;triple the number of features by normalising by node and edges.&quot;&quot;&quot;</span>
-
+        <span class="sd">&quot;&quot;&quot;Triple the number of features by normalising by node and edges.&quot;&quot;&quot;</span>
         <span class="n">interpretability_downgrade</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">for</span> <span class="n">feature_name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
             <span class="n">feat_interpret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_feature_interpretability</span><span class="p">(</span><span class="n">feature_name</span><span class="p">)</span>
@@ -317,9 +383,7 @@
                 <span class="n">feat_interpret</span> <span class="o">-</span> <span class="n">interpretability_downgrade</span><span class="p">,</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="FeatureClass.clustering_statistics"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass.clustering_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">clustering_statistics</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">community_partition</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span>
-    <span class="p">):</span>
+<div class="viewcode-block" id="FeatureClass._clustering_statistics"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass._clustering_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">_clustering_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">community_partition</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute quality of the community partitions.&quot;&quot;&quot;</span>
         <span class="n">compl_desc</span> <span class="o">=</span> <span class="s2">&quot; of the partition of &quot;</span> <span class="o">+</span> <span class="n">feat_desc</span>
 
@@ -361,35 +425,40 @@
             <span class="n">feat_interpret</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="FeatureClass.node_feature_statistics"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass.node_feature_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">node_feature_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span><span class="p">):</span>
+<div class="viewcode-block" id="FeatureClass._node_feature_statistics"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass._node_feature_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">_node_feature_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Computes summary statistics of each feature distribution.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">node_feats</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">feat_dist</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">feature_statistics_basic</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_feature_statistics_basic</span><span class="p">(</span>
                 <span class="n">feat_dist</span><span class="p">[:,</span> <span class="n">node_feats</span><span class="p">],</span>
                 <span class="n">feat_name</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">node_feats</span><span class="p">),</span>
                 <span class="n">feat_desc</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">node_feats</span><span class="p">),</span>
                 <span class="n">feat_interpret</span><span class="p">,</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="FeatureClass.feature_statistics"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass.feature_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">feature_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span><span class="p">):</span>
+<div class="viewcode-block" id="FeatureClass._feature_statistics"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass._feature_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">_feature_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Computes summary statistics of distributions.&quot;&quot;&quot;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">feature_statistics_basic</span><span class="p">(</span><span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_feature_statistics_basic</span><span class="p">(</span><span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">statistics_level</span> <span class="o">==</span> <span class="s2">&quot;medium&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">feature_statistics_medium</span><span class="p">(</span>
-                <span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span>
-            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_feature_statistics_medium</span><span class="p">(</span><span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">statistics_level</span> <span class="o">==</span> <span class="s2">&quot;advanced&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">feature_statistics_medium</span><span class="p">(</span>
-                <span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span>
-            <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">feature_statistics_advanced</span><span class="p">(</span>
-                <span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span>
-            <span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_feature_statistics_medium</span><span class="p">(</span><span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_feature_statistics_advanced</span><span class="p">(</span><span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FeatureClass.feature_statistics_basic"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass.feature_statistics_basic">[docs]</a>    <span class="k">def</span> <span class="nf">feature_statistics_basic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span><span class="p">):</span>
+<div class="viewcode-block" id="FeatureClass._list_statistics"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass._list_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">_list_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute list statisttics.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">feat_dist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">feat_dist</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+                    <span class="n">feat_name</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="k">lambda</span> <span class="n">args</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="n">feat_desc</span><span class="p">,</span>
+                    <span class="n">feat_interpret</span><span class="p">,</span>
+                    <span class="n">function_args</span><span class="o">=</span><span class="n">feat_dist</span><span class="p">,</span>
+                <span class="p">)</span></div>
+
+<div class="viewcode-block" id="FeatureClass._feature_statistics_basic"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass._feature_statistics_basic">[docs]</a>    <span class="k">def</span> <span class="nf">_feature_statistics_basic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Computes basic summary statistics of distributions.&quot;&quot;&quot;</span>
         <span class="n">compl_desc</span> <span class="o">=</span> <span class="s2">&quot; of the distribution of &quot;</span> <span class="o">+</span> <span class="n">feat_desc</span>
 
@@ -436,9 +505,7 @@
             <span class="n">function_args</span><span class="o">=</span><span class="n">feat_dist</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="FeatureClass.feature_statistics_medium"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass.feature_statistics_medium">[docs]</a>    <span class="k">def</span> <span class="nf">feature_statistics_medium</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span>
-    <span class="p">):</span>
+<div class="viewcode-block" id="FeatureClass._feature_statistics_medium"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass._feature_statistics_medium">[docs]</a>    <span class="k">def</span> <span class="nf">_feature_statistics_medium</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Computes medium summary statistics of distributions.&quot;&quot;&quot;</span>
         <span class="n">compl_desc</span> <span class="o">=</span> <span class="s2">&quot; of the distribution of &quot;</span> <span class="o">+</span> <span class="n">feat_desc</span>
 
@@ -471,9 +538,7 @@
             <span class="n">function_args</span><span class="o">=</span><span class="n">feat_dist</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="FeatureClass.feature_statistics_advanced"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass.feature_statistics_advanced">[docs]</a>    <span class="k">def</span> <span class="nf">feature_statistics_advanced</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span>
-    <span class="p">):</span>
+<div class="viewcode-block" id="FeatureClass._feature_statistics_advanced"><a class="viewcode-back" href="../../feature_class.html#hcga.feature_class.FeatureClass._feature_statistics_advanced">[docs]</a>    <span class="k">def</span> <span class="nf">_feature_statistics_advanced</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feat_dist</span><span class="p">,</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_desc</span><span class="p">,</span> <span class="n">feat_interpret</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Computes advanced summary statistics of distributions.&quot;&quot;&quot;</span>
         <span class="n">compl_desc</span> <span class="o">=</span> <span class="s2">&quot; of the distribution of &quot;</span> <span class="o">+</span> <span class="n">feat_desc</span>
 
@@ -572,7 +637,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">score</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Init function for InterpretabilityScore.</span>
 
-<span class="sd">        Args: </span>
+<span class="sd">        Args:</span>
 <span class="sd">            score: (int/{&#39;min&#39;, &#39;max&#39;} value of score to set</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">score</span> <span class="o">==</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span>
@@ -678,7 +743,7 @@
       &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

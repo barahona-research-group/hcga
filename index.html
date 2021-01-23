@@ -4,14 +4,14 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>hcga: Highly Comparative Graph Analysis &#8212; hcga 0.1 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="The cli app" href="app.html" />
@@ -33,12 +33,12 @@
             
   <div class="section" id="hcga-highly-comparative-graph-analysis">
 <span id="contents"></span><h1><em>hcga</em>: Highly Comparative Graph Analysis<a class="headerlink" href="#hcga-highly-comparative-graph-analysis" title="Permalink to this headline">¶</a></h1>
-<p><em>hcga</em> is inspired by <em>hctsa</em>, the time serie massive feature extraction framework of <a class="reference internal" href="#hctsa" id="id1"><span>[Hctsa]</span></a> and instead extracts features from graphs to classify or regress them.
-This code comes with the companion paper <a class="reference internal" href="#hcga" id="id2"><span>[Hcga]</span></a>  containing more details and examples of applications.</p>
+<p>This is the official repository of <em>hcga</em>, a highly comparative graph analysis toolbox inspired by <em>hctsa</em>, the time series massive feature extraction framework of <a class="reference internal" href="#hctsa" id="id1"><span>[Hctsa]</span></a>. It performs a massive feature extraction from a set of graphs, and applies supervised classification methods. This code comes with the companion paper <a class="reference internal" href="#hcga" id="id2"><span>[Hcga]</span></a>  containing more details and examples applications.</p>
+<p>Networks are widely used as mathematical models of complex systems across many scientific disciplines, not only in biology and medicine but also in the social sciences, physics, computing and engineering. Decades of work have produced a vast corpus of research characterising the topological, combinatorial, statistical and spectral properties of graphs. Each graph property can be thought of as a feature that captures important (and some times overlapping) characteristics of a network. In the analysis of real-world graphs, it is crucial to integrate systematically a large number of diverse graph features in order to characterise and classify networks, as well as to aid network-based scientific discovery. Here, we introduce <em>hcga</em>, a framework for highly comparative analysis of graph data sets that computes several thousands of graph features from any given network. <em>hcga</em> also offers a suite of statistical learning and data analysis tools for automated identification and selection of important and interpretable features underpinning the characterisation of graph data sets.</p>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>To install the dev version from <a class="reference external" href="https://github.com/imperialcollegelondon/hcga/">GitHub</a> with the commands:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/ImperialCollegeLondon/hcga.git
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone git@github.com:barahona-research-group/hcga.git
 $ cd hcga
 $ pip install .
 </pre></div>
@@ -59,16 +59,14 @@ $ pip install .
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ hcga get_data DATASET
 </pre></div>
 </div>
-<dl class="simple">
-<dt>where for example, <code class="docutils literal notranslate"><span class="pre">DATASET</span></code> can be one of</dt><dd><ul class="simple">
+<p><em>DATASET</em> can be one of:</p>
+<ol class="arabic simple">
 <li><p>ENZYMES</p></li>
 <li><p>DD</p></li>
 <li><p>COLLAB</p></li>
 <li><p>PROTEINS</p></li>
 <li><p>REDDIT-MULTI-12K</p></li>
-</ul>
-</dd>
-</dl>
+</ol>
 <p>To create custom dataset, one must load it in the <code class="docutils literal notranslate"><span class="pre">hcga.graph.GraphCollection</span></code> data structure as follow:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
@@ -115,8 +113,8 @@ $ pip install .
 <li><p><code class="docutils literal notranslate"><span class="pre">--runtime</span></code>: this option runs a small set of graphs and ouput estimated times for each feature</p></li>
 </ul>
 </div>
-<div class="section" id="classifiy-graphs">
-<h3>3. Classifiy graphs<a class="headerlink" href="#classifiy-graphs" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="classify-graphs">
+<h3>3. Classify graphs<a class="headerlink" href="#classify-graphs" title="Permalink to this headline">¶</a></h3>
 <p>Finally, to use the extracted features to classify graphs with respect to their labels, one use:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ hcga feature_analysis dataset --interpretability 1
 </pre></div>
@@ -124,26 +122,49 @@ $ pip install .
 <p>where <code class="docutils literal notranslate"><span class="pre">dataset</span></code> is the name of the dataset, and <code class="docutils literal notranslate"><span class="pre">--interpretability</span> <span class="pre">1</span></code> selects the features with all interpretabilities. Choices range from <code class="docutils literal notranslate"><span class="pre">1-5</span></code>, where <code class="docutils literal notranslate"><span class="pre">5</span></code> only uses most interpretable features.</p>
 </div>
 </div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>In the example folder, the script <code class="docutils literal notranslate"><span class="pre">run_example.sh</span></code> can be used to run the benchmark examples in the paper:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">run_example</span><span class="o">.</span><span class="n">sh</span> <span class="n">DATASET</span>
+</pre></div>
+</div>
+<p><em>DATASET</em> can be one of:</p>
+<ol class="arabic simple">
+<li><p>ENZYMES</p></li>
+<li><p>DD</p></li>
+<li><p>COLLAB</p></li>
+<li><p>PROTEINS</p></li>
+<li><p>REDDIT-MULTI-12K</p></li>
+</ol>
+<dl class="simple">
+<dt>Other examples can be found as jupyter-notebooks in <cite>examples/</cite> directory. We have included six examples:</dt><dd><ol class="arabic simple">
+<li><p>Example 1: Classification on synthetic data</p></li>
+<li><p>Example 2: Regression on synthetic data</p></li>
+<li><p>Example 3: Large Molecule dataset and regression</p></li>
+<li><p>Example 4: Training on labelled data, saving the fitted model, and predicting on unseen unlabelled data.</p></li>
+<li><p>Example 5: Pairwise classification. Exploring the similarity of classes.</p></li>
+<li><p>Example 6: Loading data in different ways.</p></li>
+<li><p>Example 7: Using different classifiers.</p></li>
+</ol>
+</dd>
+</dl>
+</div>
 <div class="section" id="citing">
 <h2>Citing<a class="headerlink" href="#citing" title="Permalink to this headline">¶</a></h2>
 <p>To cite <em>hcga</em>, please use <a class="reference internal" href="#hcga" id="id3"><span>[Hcga]</span></a>.</p>
 </div>
 <div class="section" id="credits">
 <h2>Credits<a class="headerlink" href="#credits" title="Permalink to this headline">¶</a></h2>
-<p>The code is still a preliminary version, and written by us.</p>
-</div>
-<div class="section" id="original-authors">
-<h2>Original authors:<a class="headerlink" href="#original-authors" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Robert Peach, GitHub: <a class="reference external" href="https://github.com/peach-lucien">peach-lucien</a></p></li>
-<li><p>Alexis Arnaudon, GitHub: <a class="reference external" href="https://github.com/arnaudon">arnaudon</a></p></li>
-</ul>
+<p>The code is released in its first version.</p>
 </div>
 <div class="section" id="contributors">
 <h2>Contributors:<a class="headerlink" href="#contributors" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
+<li><p>Robert Peach, GitHub: <a class="reference external" href="https://github.com/peach-lucien">peach-lucien</a></p></li>
+<li><p>Alexis Arnaudon, GitHub: <a class="reference external" href="https://github.com/arnaudon">arnaudon</a></p></li>
 <li><p>Henry Palasciano, GitHub: <a class="reference external" href="https://github.com/henrypalasciano">henrypalasciano</a></p></li>
 <li><p>Nathan Bernier, GitHub: <a class="reference external" href="https://github.com/nrbernier">nrbernier</a></p></li>
+<li><p>Julia Schmidt, GitHub: <a class="reference external" href="https://github.com/misterblonde">misterblonde</a></p></li>
 </ul>
 <p>Any contributors are welcome, please contact us if interested.</p>
 </div>
@@ -151,8 +172,7 @@ $ pip install .
 <h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline">¶</a></h2>
 <dl class="citation">
 <dt class="label" id="hcga"><span class="brackets">Hcga</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id3">2</a>)</span></dt>
-<dd><p>R. Peach, H. Palasciano, A. Arnaudon, M. Barahona,
-“hcga: Highly Comparative Graph Analysis for graph phenotyping”, In preparation, 2019</p>
+<dd><p>Robert L Peach, Alexis Arnaudon, Julia A Schmidt, Henry Palasciano, Nathan R Bernier, Kim Jelfs, Sophia Yaliraki, Mauricio Barahona, “hcga: Highly Comparative Graph Analysis for network phenotyping” bioRxiv 2020.09.25.312926; doi: <a class="reference external" href="https://doi.org/10.1101/2020.09.25.312926">https://doi.org/10.1101/2020.09.25.312926</a></p>
 </dd>
 <dt class="label" id="hctsa"><span class="brackets"><a class="fn-backref" href="#id1">Hctsa</a></span></dt>
 <dd><p>B. D. Fulcher and N. S. Jones,
@@ -176,7 +196,6 @@ $ pip install .
 <li class="toctree-l2"><a class="reference internal" href="Features/assortativity.html">The assortativity module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Features/centrality.html">Centrality modules</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="Features/centrality.html#module-hcga.features.centralities_basic">The basic centrality module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Features/centrality.html#module-hcga.features.centralities_force">The force centrality module</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="Features/chemical_theory.html">The chemical theory module</a></li>
@@ -294,7 +313,7 @@ $ pip install .
       &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

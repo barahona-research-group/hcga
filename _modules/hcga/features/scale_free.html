@@ -4,14 +4,14 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>hcga.features.scale_free &#8212; hcga 0.1 documentation</title>
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
    
@@ -41,7 +41,7 @@
 
 <div class="viewcode-block" id="ScaleFree"><a class="viewcode-back" href="../../../Features/scale_free.html#hcga.features.scale_free.ScaleFree">[docs]</a><span class="k">class</span> <span class="nc">ScaleFree</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Scale Free class.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Scale free calculations using networkx:</span>
 <span class="sd">        `Networkx_scale free &lt;https://networkx.github.io/documentation/stable/\</span>
 <span class="sd">        _modules/networkx/algorithms/smetric.html#s_metric&gt;`_</span>
@@ -58,7 +58,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;s_metric&quot;</span><span class="p">,</span>
             <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">s_metric</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
-            <span class="s2">&quot;The s-metric is defined as the sum of the products deg(u)*deg(v) for every edge (u,v) in G&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Sum of the products deg(u)*deg(v) for every edge (u,v) in G&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
         <span class="p">)</span></div></div>
 </pre></div>
@@ -124,7 +124,7 @@
       &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

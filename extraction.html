@@ -4,14 +4,14 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The extraction module &#8212; hcga 0.1 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="The analysis module" href="analysis.html" />
@@ -34,7 +34,7 @@
             
   <div class="section" id="module-hcga.extraction">
 <span id="the-extraction-module"></span><h1>The extraction module<a class="headerlink" href="#module-hcga.extraction" title="Permalink to this headline">¶</a></h1>
-<p>functions to extract features from graphs.</p>
+<p>Functions necessary for the extraction of graph features.</p>
 <dl class="py function">
 <dt id="hcga.extraction._load_feature_class">
 <code class="sig-prename descclassname">hcga.extraction.</code><code class="sig-name descname">_load_feature_class</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">feature_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/extraction.html#_load_feature_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.extraction._load_feature_class" title="Permalink to this definition">¶</a></dt>
@@ -56,25 +56,102 @@
 <dl class="py function">
 <dt id="hcga.extraction.compute_all_features">
 <code class="sig-prename descclassname">hcga.extraction.</code><code class="sig-name descname">compute_all_features</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graphs</span></em>, <em class="sig-param"><span class="n">list_feature_classes</span></em>, <em class="sig-param"><span class="n">n_workers</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">with_runtimes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/extraction.html#compute_all_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.extraction.compute_all_features" title="Permalink to this definition">¶</a></dt>
-<dd><p>compute the feature from all graphs.</p>
+<dd><p>Compute features for all graphs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graphs</strong> (<em>GraphCollection object</em>) – GraphCollection object with loaded graphs (see graph.py)</p></li>
+<li><p><strong>list_feature_classes</strong> (<em>list</em>) – list of feature classes found in ./features</p></li>
+<li><p><strong>n_workers</strong> (<em>int</em>) – number of workers for parallel processing</p></li>
+<li><p><strong>with_runtimes</strong> (<em>bool</em>) – compute the run time of each feature</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dataframe of calculated features for the graph collection.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(DataDrame)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="hcga.extraction.extract">
-<code class="sig-prename descclassname">hcga.extraction.</code><code class="sig-name descname">extract</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graphs</span></em>, <em class="sig-param"><span class="n">n_workers</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'fast'</span></em>, <em class="sig-param"><span class="n">normalize_features</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">statistics_level</span><span class="o">=</span><span class="default_value">'basic'</span></em>, <em class="sig-param"><span class="n">with_runtimes</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">with_node_features</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">connected</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/extraction.html#extract"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.extraction.extract" title="Permalink to this definition">¶</a></dt>
-<dd><p>main function to extract features.</p>
+<code class="sig-prename descclassname">hcga.extraction.</code><code class="sig-name descname">extract</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graphs</span></em>, <em class="sig-param"><span class="n">n_workers</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'fast'</span></em>, <em class="sig-param"><span class="n">normalize_features</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">statistics_level</span><span class="o">=</span><span class="default_value">'basic'</span></em>, <em class="sig-param"><span class="n">with_runtimes</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">with_node_features</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">connected</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">weighted</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/extraction.html#extract"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.extraction.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main function to extract graph features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graphs</strong> (<em>GraphCollection object</em>) – GraphCollection object with loaded graphs (see graph.py)</p></li>
+<li><p><strong>n_workers</strong> (<em>int</em>) – number of workers for parallel processing</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – ‘fast’, ‘medium’, ‘slow’ - only features that are fast to compute will
+be run with ‘fast’</p></li>
+<li><p><strong>normalize_features</strong> (<em>bool</em>) – normalise features by number of nodes and number of edges</p></li>
+<li><p><strong>statistics_level</strong> (<em>str</em>) – ‘basic’, ‘advanced’ - for features that provide distributions
+we must compute statistics.</p></li>
+<li><p><strong>with_runtimes</strong> (<em>bool</em>) – calculating the run time of each feature.</p></li>
+<li><p><strong>with_node_features</strong> (<em>bool</em>) – include node features in feature extraction</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – number of seconds before the calculation for a feature is cancelled</p></li>
+<li><p><strong>connected</strong> (<em>bool</em>) – True will make sure that only the largest connected component of a graph
+is used for feature extraction.</p></li>
+<li><p><strong>weighted</strong> (<em>bool</em>) – calculations will consider edge weights where possible.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dataframe of features
+(DataFrame): dataframe of meta information of computed features.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(DataFrame)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="hcga.extraction.feature_extraction">
 <code class="sig-prename descclassname">hcga.extraction.</code><code class="sig-name descname">feature_extraction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em>, <em class="sig-param"><span class="n">list_feature_classes</span></em>, <em class="sig-param"><span class="n">with_runtimes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/extraction.html#feature_extraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.extraction.feature_extraction" title="Permalink to this definition">¶</a></dt>
-<dd><p>extract features from a single graph.</p>
+<dd><p>Extract features for a single graph</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graph</strong> (<em>Graph object</em>) – Graph object (see graph.py)</p></li>
+<li><p><strong>list_feature_classes</strong> (<em>list</em>) – list of feature classes found in ./features</p></li>
+<li><p><strong>with_runtimes</strong> (<em>bool</em>) – compute the run time of each feature</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dataframe of calculated features for a given graph.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(DataFrame)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="hcga.extraction.get_list_feature_classes">
-<code class="sig-prename descclassname">hcga.extraction.</code><code class="sig-name descname">get_list_feature_classes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'fast'</span></em>, <em class="sig-param"><span class="n">normalize_features</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">statistics_level</span><span class="o">=</span><span class="default_value">'basic'</span></em>, <em class="sig-param"><span class="n">n_node_features</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/extraction.html#get_list_feature_classes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.extraction.get_list_feature_classes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">hcga.extraction.</code><code class="sig-name descname">get_list_feature_classes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'fast'</span></em>, <em class="sig-param"><span class="n">normalize_features</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">statistics_level</span><span class="o">=</span><span class="default_value">'basic'</span></em>, <em class="sig-param"><span class="n">n_node_features</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/extraction.html#get_list_feature_classes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.extraction.get_list_feature_classes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates and returns the list of feature classes to compute for a given mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> (<em>str</em>) – ‘fast’, ‘medium’, ‘slow’ - only features that are fast to compute will
+be run with ‘fast’</p></li>
+<li><p><strong>normalize_features</strong> (<em>bool</em>) – normalise features by number of nodes and number of edges</p></li>
+<li><p><strong>statistics_level</strong> (<em>str</em>) – ‘basic’, ‘advanced’ - for features that provide distributions
+we must compute statistics.</p></li>
+<li><p><strong>n_node_features</strong> (<em>int</em>) – dimension of node features for feature constructors</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – number of seconds before the calculation for a feature is cancelled</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of feature classes instances
+(DataFrame): dataframe with feature information</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(list)</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -141,7 +218,7 @@
       &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

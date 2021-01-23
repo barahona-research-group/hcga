@@ -4,14 +4,14 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The shortest paths module &#8212; hcga 0.1 documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="The small worldness module" href="small_worldness.html" />
@@ -228,6 +228,246 @@
 <li><p><strong>shortname</strong> – SP</p></li>
 <li><p><strong>fullname</strong> – SP_mean_shortest_path_std</p></li>
 <li><p><strong>description</strong> – Standard deviation of the distribution of For each node we compute the shortest paths to every other node.             We then find the mean of the ‘shortest paths’ for each node.</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.number_shortest_paths_directed">
+<code class="sig-name descname">number_shortest_paths_directed</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.number_shortest_paths_directed" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – number_shortest_paths_directed</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_number_shortest_paths_directed</p></li>
+<li><p><strong>description</strong> – the number of shortest paths (not counting paths of infinite length)</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_mean">
+<code class="sig-name descname">shortest_paths_length_directed_mean</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_mean" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_mean</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of the number of shortest path lengths (not counting paths of infinite length)</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_min">
+<code class="sig-name descname">shortest_paths_length_directed_min</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_min" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_min</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of the number of shortest path lengths (not counting paths of infinite length)</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_sum">
+<code class="sig-name descname">shortest_paths_length_directed_sum</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_sum" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_sum</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of the number of shortest path lengths (not counting paths of infinite length)</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_max">
+<code class="sig-name descname">shortest_paths_length_directed_max</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_max" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_max</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of the number of shortest path lengths (not counting paths of infinite length)</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_median">
+<code class="sig-name descname">shortest_paths_length_directed_median</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_median" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_median</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of the number of shortest path lengths (not counting paths of infinite length)</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_std">
+<code class="sig-name descname">shortest_paths_length_directed_std</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_std" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_std</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of the number of shortest path lengths (not counting paths of infinite length)</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_mean">
+<code class="sig-name descname">eccentricity_directed_mean</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_mean" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_mean</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of the ditribution of eccentricities (not counting paths of infinite length)</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_min">
+<code class="sig-name descname">eccentricity_directed_min</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_min" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_min</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of the ditribution of eccentricities (not counting paths of infinite length)</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_sum">
+<code class="sig-name descname">eccentricity_directed_sum</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_sum" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_sum</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of the ditribution of eccentricities (not counting paths of infinite length)</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_max">
+<code class="sig-name descname">eccentricity_directed_max</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_max" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_max</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of the ditribution of eccentricities (not counting paths of infinite length)</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_median">
+<code class="sig-name descname">eccentricity_directed_median</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_median" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_median</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of the ditribution of eccentricities (not counting paths of infinite length)</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_std">
+<code class="sig-name descname">eccentricity_directed_std</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_std" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_std</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of the ditribution of eccentricities (not counting paths of infinite length)</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.diameter_directed">
+<code class="sig-name descname">diameter_directed</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.diameter_directed" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – diameter_directed</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_diameter_directed</p></li>
+<li><p><strong>description</strong> – the diameter of the graph (not counting paths of infinite length)</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.radius_directed">
+<code class="sig-name descname">radius_directed</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.radius_directed" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – radius_directed</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_radius_directed</p></li>
+<li><p><strong>description</strong> – the radius of the graph (not counting paths of infinite length)</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -618,6 +858,486 @@
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.number_shortest_paths_directed_N">
+<code class="sig-name descname">number_shortest_paths_directed_N</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.number_shortest_paths_directed_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – number_shortest_paths_directed_N</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_number_shortest_paths_directed_N</p></li>
+<li><p><strong>description</strong> – the number of shortest paths (not counting paths of infinite length), normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.number_shortest_paths_directed_E">
+<code class="sig-name descname">number_shortest_paths_directed_E</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.number_shortest_paths_directed_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – number_shortest_paths_directed_E</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_number_shortest_paths_directed_E</p></li>
+<li><p><strong>description</strong> – the number of shortest paths (not counting paths of infinite length), normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_mean_N">
+<code class="sig-name descname">shortest_paths_length_directed_mean_N</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_mean_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_mean_N</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of the number of shortest path lengths (not counting paths of infinite length), normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_mean_E">
+<code class="sig-name descname">shortest_paths_length_directed_mean_E</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_mean_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_mean_E</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of the number of shortest path lengths (not counting paths of infinite length), normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_min_N">
+<code class="sig-name descname">shortest_paths_length_directed_min_N</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_min_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_min_N</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of the number of shortest path lengths (not counting paths of infinite length), normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_min_E">
+<code class="sig-name descname">shortest_paths_length_directed_min_E</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_min_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_min_E</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of the number of shortest path lengths (not counting paths of infinite length), normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_sum_N">
+<code class="sig-name descname">shortest_paths_length_directed_sum_N</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_sum_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_sum_N</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of the number of shortest path lengths (not counting paths of infinite length), normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_sum_E">
+<code class="sig-name descname">shortest_paths_length_directed_sum_E</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_sum_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_sum_E</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of the number of shortest path lengths (not counting paths of infinite length), normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_max_N">
+<code class="sig-name descname">shortest_paths_length_directed_max_N</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_max_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_max_N</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of the number of shortest path lengths (not counting paths of infinite length), normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_max_E">
+<code class="sig-name descname">shortest_paths_length_directed_max_E</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_max_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_max_E</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of the number of shortest path lengths (not counting paths of infinite length), normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_median_N">
+<code class="sig-name descname">shortest_paths_length_directed_median_N</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_median_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_median_N</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of the number of shortest path lengths (not counting paths of infinite length), normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_median_E">
+<code class="sig-name descname">shortest_paths_length_directed_median_E</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_median_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_median_E</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of the number of shortest path lengths (not counting paths of infinite length), normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_std_N">
+<code class="sig-name descname">shortest_paths_length_directed_std_N</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_std_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_std_N</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of the number of shortest path lengths (not counting paths of infinite length), normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_std_E">
+<code class="sig-name descname">shortest_paths_length_directed_std_E</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.shortest_paths_length_directed_std_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shortest_paths_length_directed_std_E</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_shortest_paths_length_directed_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of the number of shortest path lengths (not counting paths of infinite length), normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_mean_N">
+<code class="sig-name descname">eccentricity_directed_mean_N</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_mean_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_mean_N</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of the ditribution of eccentricities (not counting paths of infinite length), normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_mean_E">
+<code class="sig-name descname">eccentricity_directed_mean_E</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_mean_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_mean_E</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of the ditribution of eccentricities (not counting paths of infinite length), normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_min_N">
+<code class="sig-name descname">eccentricity_directed_min_N</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_min_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_min_N</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of the ditribution of eccentricities (not counting paths of infinite length), normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_min_E">
+<code class="sig-name descname">eccentricity_directed_min_E</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_min_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_min_E</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of the ditribution of eccentricities (not counting paths of infinite length), normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_sum_N">
+<code class="sig-name descname">eccentricity_directed_sum_N</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_sum_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_sum_N</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of the ditribution of eccentricities (not counting paths of infinite length), normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_sum_E">
+<code class="sig-name descname">eccentricity_directed_sum_E</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_sum_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_sum_E</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of the ditribution of eccentricities (not counting paths of infinite length), normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_max_N">
+<code class="sig-name descname">eccentricity_directed_max_N</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_max_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_max_N</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of the ditribution of eccentricities (not counting paths of infinite length), normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_max_E">
+<code class="sig-name descname">eccentricity_directed_max_E</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_max_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_max_E</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of the ditribution of eccentricities (not counting paths of infinite length), normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_median_N">
+<code class="sig-name descname">eccentricity_directed_median_N</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_median_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_median_N</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of the ditribution of eccentricities (not counting paths of infinite length), normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_median_E">
+<code class="sig-name descname">eccentricity_directed_median_E</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_median_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_median_E</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of the ditribution of eccentricities (not counting paths of infinite length), normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_std_N">
+<code class="sig-name descname">eccentricity_directed_std_N</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_std_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_std_N</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of the ditribution of eccentricities (not counting paths of infinite length), normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_std_E">
+<code class="sig-name descname">eccentricity_directed_std_E</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.eccentricity_directed_std_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eccentricity_directed_std_E</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_eccentricity_directed_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of the ditribution of eccentricities (not counting paths of infinite length), normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.diameter_directed_N">
+<code class="sig-name descname">diameter_directed_N</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.diameter_directed_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – diameter_directed_N</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_diameter_directed_N</p></li>
+<li><p><strong>description</strong> – the diameter of the graph (not counting paths of infinite length), normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.diameter_directed_E">
+<code class="sig-name descname">diameter_directed_E</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.diameter_directed_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – diameter_directed_E</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_diameter_directed_E</p></li>
+<li><p><strong>description</strong> – the diameter of the graph (not counting paths of infinite length), normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.radius_directed_N">
+<code class="sig-name descname">radius_directed_N</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.radius_directed_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – radius_directed_N</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_radius_directed_N</p></li>
+<li><p><strong>description</strong> – the radius of the graph (not counting paths of infinite length), normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.shortest_paths.ShortestPaths.radius_directed_E">
+<code class="sig-name descname">radius_directed_E</code><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.radius_directed_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – radius_directed_E</p></li>
+<li><p><strong>shortname</strong> – SP</p></li>
+<li><p><strong>fullname</strong> – SP_radius_directed_E</p></li>
+<li><p><strong>description</strong> – the radius of the graph (not counting paths of infinite length), normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <p>Initialise a feature class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -627,7 +1347,8 @@
 <dl class="py method">
 <dt id="hcga.features.shortest_paths.ShortestPaths.compute_features">
 <code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/shortest_paths.html#ShortestPaths.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.shortest_paths.ShortestPaths.compute_features" title="Permalink to this definition">¶</a></dt>
-<dd><p>main feature extraction function.</p>
+<dd><p>Main feature extraction function.</p>
+<p>This function should be used by each specific feature class to add new features.</p>
 </dd></dl>
 
 </dd></dl>
@@ -730,7 +1451,7 @@
       &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

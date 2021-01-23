@@ -4,14 +4,14 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>hcga.features.link_analysis_hits &#8212; hcga 0.1 documentation</title>
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
    
@@ -42,10 +42,11 @@
 
 <div class="viewcode-block" id="Hits"><a class="viewcode-back" href="../../../Features/link_analysis_hits.html#hcga.features.link_analysis_hits.Hits">[docs]</a><span class="k">class</span> <span class="nc">Hits</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;HITS hubs class.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Hits calculations using networkx:</span>
-<span class="sd">            `Networkx_hits &lt;https://networkx.github.io/documentation/stable/reference/algorithms/generated/\</span>
-<span class="sd">            networkx.algorithms.link_analysis.hits_alg.hits.html#networkx.algorithms.link_analysis.hits_alg.hits&gt;`_</span>
+<span class="sd">            `Networkx_hits &lt;https://networkx.github.io/documentation/stable/reference/\</span>
+<span class="sd">                algorithms/generated/networkx.algorithms.link_analysis.hits_alg.hits.html\</span>
+<span class="sd">                #networkx.algorithms.link_analysis.hits_alg.hits&gt;`_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;slow&quot;</span><span class="p">]</span>
@@ -54,7 +55,6 @@
     <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;networkx&quot;</span>
 
 <div class="viewcode-block" id="Hits.compute_features"><a class="viewcode-back" href="../../../Features/link_analysis_hits.html#hcga.features.link_analysis_hits.Hits.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="k">def</span> <span class="nf">hits</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
             <span class="n">h</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">hits_numpy</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
             <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
@@ -129,7 +129,7 @@
       &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

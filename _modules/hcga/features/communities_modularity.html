@@ -4,14 +4,14 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>hcga.features.communities_modularity &#8212; hcga 0.1 documentation</title>
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
    
@@ -33,6 +33,7 @@
   <h1>Source code for hcga.features.communities_modularity</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Communities Modularity propagation class.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+
 <span class="kn">from</span> <span class="nn">networkx.algorithms.community</span> <span class="kn">import</span> <span class="n">greedy_modularity_communities</span>
 
 <span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
@@ -49,14 +50,16 @@
     <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;networkx&quot;</span>
 
 <div class="viewcode-block" id="CommunitiesModularity.compute_features"><a class="viewcode-back" href="../../../Features/communities.html#hcga.features.communities_modularity.CommunitiesModularity.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">eval_modularity</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">eval_modularity</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;this evaluates the main function and cach it for speed up.&quot;&quot;&quot;</span>
-            <span class="n">communities</span> <span class="o">=</span> <span class="p">[</span><span class="nb">set</span><span class="p">(</span><span class="n">comm</span><span class="p">)</span> <span class="k">for</span> <span class="n">comm</span> <span class="ow">in</span> <span class="n">greedy_modularity_communities</span><span class="p">(</span><span class="n">graph</span><span class="p">)]</span>
+            <span class="n">communities</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="nb">set</span><span class="p">(</span><span class="n">comm</span><span class="p">)</span> <span class="k">for</span> <span class="n">comm</span> <span class="ow">in</span> <span class="n">greedy_modularity_communities</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">)</span>
+            <span class="p">]</span>
             <span class="n">communities</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">communities</span>
 
+        <span class="c1"># add unweighted features</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;num_communities&quot;</span><span class="p">,</span>
             <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_modularity</span><span class="p">(</span><span class="n">graph</span><span class="p">)),</span>
@@ -73,8 +76,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;ratio_commsize_maxmin&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_modularity</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_modularity</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_modularity</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_modularity</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
             <span class="s2">&quot;The ratio of the largest and second largest communities using greedy modularity&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
         <span class="p">)</span>
@@ -82,6 +84,37 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;communities&quot;</span><span class="p">,</span>
             <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">eval_modularity</span><span class="p">(</span><span class="n">graph</span><span class="p">),</span>
+            <span class="s2">&quot;The optimal partition using greedy modularity algorithm&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+            <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;clustering&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># add weighted features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;num_communities_weighted&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_modularity</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">)),</span>
+            <span class="s2">&quot;Number of communities&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;largest_commsize_weighted&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_modularity</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="s2">&quot;The ratio of the largest and second largest communities using greedy modularity&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;ratio_commsize_maxmin_weighted&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_modularity</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_modularity</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="s2">&quot;The ratio of the largest and second largest communities using greedy modularity&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;communities_weighted&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">eval_modularity</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">),</span>
             <span class="s2">&quot;The optimal partition using greedy modularity algorithm&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
             <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;clustering&quot;</span><span class="p">,</span>
@@ -149,7 +182,7 @@
       &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

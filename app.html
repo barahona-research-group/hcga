@@ -4,14 +4,14 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The cli app &#8212; hcga 0.1 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="The hcga class" href="hcga.html" />
@@ -35,6 +35,17 @@
   <div class="section" id="module-hcga.app">
 <span id="the-cli-app"></span><h1>The cli app<a class="headerlink" href="#module-hcga.app" title="Permalink to this headline">¶</a></h1>
 <p>Hcga app module.</p>
+<p>Users can interact with hcga directly through the command line using the purpose built
+command line interface app.</p>
+<p>For those users that wish to interact with hcga via Python directly (e.g. through a notebook)
+then please use the hcga class.</p>
+<p>Below is a short example of the commands necessary to run the ENZYMES dataset
+directly from the command line:</p>
+<p><code class="docutils literal notranslate"><span class="pre">hcga</span> <span class="pre">get_data</span> <span class="pre">ENZYMES</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">hcga</span> <span class="pre">extract_features</span> <span class="pre">datasets/ENZYMES.pkl</span> <span class="pre">-m</span> <span class="pre">fast</span> <span class="pre">-n</span> <span class="pre">-1</span> <span class="pre">--timeout</span> <span class="pre">10</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">hcga</span> <span class="pre">feature_analysis</span> <span class="pre">ENZYMES`</span></code></p>
+<p>Alternatively these commands can be bundled together into a single bash file,
+see ‘run_example.sh’ in the examples folder.</p>
 </div>
 
 
@@ -99,7 +110,7 @@
       &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

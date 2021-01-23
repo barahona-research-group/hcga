@@ -4,14 +4,14 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The basic statistics module &#8212; hcga 0.1 documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="The assortativity module" href="assortativity.html" />
@@ -38,10 +38,10 @@
 <dl class="py class">
 <dt id="hcga.features.basic_stats.BasicStats">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.basic_stats.</code><code class="sig-name descname">BasicStats</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/basic_stats.html#BasicStats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.basic_stats.BasicStats" title="Permalink to this definition">¶</a></dt>
-<dd><p>Basic stats class.</p>
-<blockquote>
-<div><p>This class produces the following features:</p>
-</div></blockquote>
+<dd><dl class="simple">
+<dt>Basic stats class.</dt><dd><p>This class produces the following features:</p>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt id="hcga.features.basic_stats.BasicStats.num_nodes">
 <code class="sig-name descname">num_nodes</code><a class="headerlink" href="#hcga.features.basic_stats.BasicStats.num_nodes" title="Permalink to this definition">¶</a></dt>
@@ -579,7 +579,8 @@
 <dl class="py method">
 <dt id="hcga.features.basic_stats.BasicStats.compute_features">
 <code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/basic_stats.html#BasicStats.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.basic_stats.BasicStats.compute_features" title="Permalink to this definition">¶</a></dt>
-<dd><p>main feature extraction function.</p>
+<dd><p>Main feature extraction function.</p>
+<p>This function should be used by each specific feature class to add new features.</p>
 </dd></dl>
 
 </dd></dl>
@@ -682,7 +683,7 @@
       &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -4,14 +4,14 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Communities modules &#8212; hcga 0.1 documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Components modules" href="components.html" />
@@ -181,6 +181,150 @@
 <li><p><strong>name</strong> – communities_intra_community_edges</p></li>
 <li><p><strong>shortname</strong> – CM</p></li>
 <li><p><strong>fullname</strong> – CM_communities_intra_community_edges</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition using greedy modularity algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.num_communities_weighted">
+<code class="sig-name descname">num_communities_weighted</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.num_communities_weighted" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – num_communities_weighted</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_num_communities_weighted</p></li>
+<li><p><strong>description</strong> – Number of communities</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.largest_commsize_weighted">
+<code class="sig-name descname">largest_commsize_weighted</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.largest_commsize_weighted" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – largest_commsize_weighted</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_largest_commsize_weighted</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using greedy modularity</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.ratio_commsize_maxmin_weighted">
+<code class="sig-name descname">ratio_commsize_maxmin_weighted</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.ratio_commsize_maxmin_weighted" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_commsize_maxmin_weighted</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_ratio_commsize_maxmin_weighted</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using greedy modularity</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_modularity">
+<code class="sig-name descname">communities_weighted_modularity</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_modularity" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_modularity</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_modularity</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition using greedy modularity algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_coverage">
+<code class="sig-name descname">communities_weighted_coverage</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_coverage" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_coverage</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_coverage</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition using greedy modularity algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_performance">
+<code class="sig-name descname">communities_weighted_performance</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_performance" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_performance</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_performance</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition using greedy modularity algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_inter_community_edges">
+<code class="sig-name descname">communities_weighted_inter_community_edges</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_inter_community_edges" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_inter_community_edges</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_inter_community_edges</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition using greedy modularity algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_inter_community_non_edges">
+<code class="sig-name descname">communities_weighted_inter_community_non_edges</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_inter_community_non_edges" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_inter_community_non_edges</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_inter_community_non_edges</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition using greedy modularity algorithm</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_intra_community_edges">
+<code class="sig-name descname">communities_weighted_intra_community_edges</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_intra_community_edges" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_intra_community_edges</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_intra_community_edges</p></li>
 <li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition using greedy modularity algorithm</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
@@ -476,6 +620,294 @@
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.num_communities_weighted_N">
+<code class="sig-name descname">num_communities_weighted_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.num_communities_weighted_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – num_communities_weighted_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_num_communities_weighted_N</p></li>
+<li><p><strong>description</strong> – Number of communities, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.num_communities_weighted_E">
+<code class="sig-name descname">num_communities_weighted_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.num_communities_weighted_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – num_communities_weighted_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_num_communities_weighted_E</p></li>
+<li><p><strong>description</strong> – Number of communities, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.largest_commsize_weighted_N">
+<code class="sig-name descname">largest_commsize_weighted_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.largest_commsize_weighted_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – largest_commsize_weighted_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_largest_commsize_weighted_N</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using greedy modularity, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.largest_commsize_weighted_E">
+<code class="sig-name descname">largest_commsize_weighted_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.largest_commsize_weighted_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – largest_commsize_weighted_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_largest_commsize_weighted_E</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using greedy modularity, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.ratio_commsize_maxmin_weighted_N">
+<code class="sig-name descname">ratio_commsize_maxmin_weighted_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.ratio_commsize_maxmin_weighted_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_commsize_maxmin_weighted_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_ratio_commsize_maxmin_weighted_N</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using greedy modularity, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.ratio_commsize_maxmin_weighted_E">
+<code class="sig-name descname">ratio_commsize_maxmin_weighted_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.ratio_commsize_maxmin_weighted_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – ratio_commsize_maxmin_weighted_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_ratio_commsize_maxmin_weighted_E</p></li>
+<li><p><strong>description</strong> – The ratio of the largest and second largest communities using greedy modularity, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_modularity_N">
+<code class="sig-name descname">communities_weighted_modularity_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_modularity_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_modularity_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_modularity_N</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_modularity_E">
+<code class="sig-name descname">communities_weighted_modularity_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_modularity_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_modularity_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_modularity_E</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_coverage_N">
+<code class="sig-name descname">communities_weighted_coverage_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_coverage_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_coverage_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_coverage_N</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_coverage_E">
+<code class="sig-name descname">communities_weighted_coverage_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_coverage_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_coverage_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_coverage_E</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_performance_N">
+<code class="sig-name descname">communities_weighted_performance_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_performance_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_performance_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_performance_N</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_performance_E">
+<code class="sig-name descname">communities_weighted_performance_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_performance_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_performance_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_performance_E</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_inter_community_edges_N">
+<code class="sig-name descname">communities_weighted_inter_community_edges_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_inter_community_edges_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_inter_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_inter_community_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_inter_community_edges_E">
+<code class="sig-name descname">communities_weighted_inter_community_edges_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_inter_community_edges_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_inter_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_inter_community_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_inter_community_non_edges_N">
+<code class="sig-name descname">communities_weighted_inter_community_non_edges_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_inter_community_non_edges_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_inter_community_non_edges_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_inter_community_non_edges_N</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_inter_community_non_edges_E">
+<code class="sig-name descname">communities_weighted_inter_community_non_edges_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_inter_community_non_edges_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_inter_community_non_edges_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_inter_community_non_edges_E</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_intra_community_edges_N">
+<code class="sig-name descname">communities_weighted_intra_community_edges_N</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_intra_community_edges_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_intra_community_edges_N</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_intra_community_edges_N</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_intra_community_edges_E">
+<code class="sig-name descname">communities_weighted_intra_community_edges_E</code><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.communities_weighted_intra_community_edges_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – communities_weighted_intra_community_edges_E</p></li>
+<li><p><strong>shortname</strong> – CM</p></li>
+<li><p><strong>fullname</strong> – CM_communities_weighted_intra_community_edges_E</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition using greedy modularity algorithm, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <p>Initialise a feature class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -485,7 +917,8 @@
 <dl class="py method">
 <dt id="hcga.features.communities_modularity.CommunitiesModularity.compute_features">
 <code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/communities_modularity.html#CommunitiesModularity.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.communities_modularity.CommunitiesModularity.compute_features" title="Permalink to this definition">¶</a></dt>
-<dd><p>main feature extraction function.</p>
+<dd><p>Main feature extraction function.</p>
+<p>This function should be used by each specific feature class to add new features.</p>
 </dd></dl>
 
 </dd></dl>
@@ -510,7 +943,7 @@
 <li><p><strong>name</strong> – sum_density_c=2.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_sum_density_c=2.0</p></li>
-<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>description</strong> – The total density of communities after fluid optimisations for c=2.0</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -526,7 +959,7 @@
 <li><p><strong>name</strong> – ratio_density_c=2.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_ratio_density_c=2.0</p></li>
-<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after fluid optimisations for c=2.0</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -542,7 +975,7 @@
 <li><p><strong>name</strong> – len_most_dense_c=2.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_most_dense_c=2.0</p></li>
-<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after fluid optimisations for c=2.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -558,7 +991,7 @@
 <li><p><strong>name</strong> – len_least_dense_c=2.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_least_dense_c=2.0</p></li>
-<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after fluid optimisations for c=2.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -574,7 +1007,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_modularity</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_modularity</p></li>
-<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after fluid optimisations for c=2.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -590,7 +1023,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_coverage</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_coverage</p></li>
-<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after fluid optimisations for c=2.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -606,7 +1039,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_performance</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_performance</p></li>
-<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after fluid optimisations for c=2.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -622,7 +1055,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_inter_community_edges</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_inter_community_edges</p></li>
-<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after fluid optimisations for c=2.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -638,7 +1071,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_inter_community_non_edges</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_inter_community_non_edges</p></li>
-<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after fluid optimisations for c=2.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -654,7 +1087,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_intra_community_edges</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_intra_community_edges</p></li>
-<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=2.0</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after fluid optimisations for c=2.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -670,7 +1103,7 @@
 <li><p><strong>name</strong> – sum_density_c=4.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_sum_density_c=4.0</p></li>
-<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>description</strong> – The total density of communities after fluid optimisations for c=4.0</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -686,7 +1119,7 @@
 <li><p><strong>name</strong> – ratio_density_c=4.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_ratio_density_c=4.0</p></li>
-<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after fluid optimisations for c=4.0</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -702,7 +1135,7 @@
 <li><p><strong>name</strong> – len_most_dense_c=4.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_most_dense_c=4.0</p></li>
-<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after fluid optimisations for c=4.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -718,7 +1151,7 @@
 <li><p><strong>name</strong> – len_least_dense_c=4.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_least_dense_c=4.0</p></li>
-<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after fluid optimisations for c=4.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -734,7 +1167,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_modularity</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_modularity</p></li>
-<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after fluid optimisations for c=4.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -750,7 +1183,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_coverage</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_coverage</p></li>
-<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after fluid optimisations for c=4.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -766,7 +1199,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_performance</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_performance</p></li>
-<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after fluid optimisations for c=4.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -782,7 +1215,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_inter_community_edges</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_inter_community_edges</p></li>
-<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after fluid optimisations for c=4.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -798,7 +1231,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_inter_community_non_edges</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_inter_community_non_edges</p></li>
-<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after fluid optimisations for c=4.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -814,7 +1247,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_intra_community_edges</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_intra_community_edges</p></li>
-<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=4.0</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after fluid optimisations for c=4.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -830,7 +1263,7 @@
 <li><p><strong>name</strong> – sum_density_c=6.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_sum_density_c=6.0</p></li>
-<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>description</strong> – The total density of communities after fluid optimisations for c=6.0</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -846,7 +1279,7 @@
 <li><p><strong>name</strong> – ratio_density_c=6.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_ratio_density_c=6.0</p></li>
-<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after fluid optimisations for c=6.0</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -862,7 +1295,7 @@
 <li><p><strong>name</strong> – len_most_dense_c=6.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_most_dense_c=6.0</p></li>
-<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after fluid optimisations for c=6.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -878,7 +1311,7 @@
 <li><p><strong>name</strong> – len_least_dense_c=6.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_least_dense_c=6.0</p></li>
-<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after fluid optimisations for c=6.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -894,7 +1327,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_modularity</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_modularity</p></li>
-<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after fluid optimisations for c=6.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -910,7 +1343,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_coverage</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_coverage</p></li>
-<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after fluid optimisations for c=6.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -926,7 +1359,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_performance</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_performance</p></li>
-<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after fluid optimisations for c=6.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -942,7 +1375,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_inter_community_edges</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_inter_community_edges</p></li>
-<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after fluid optimisations for c=6.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -958,7 +1391,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_inter_community_non_edges</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_inter_community_non_edges</p></li>
-<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after fluid optimisations for c=6.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -974,7 +1407,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_intra_community_edges</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_intra_community_edges</p></li>
-<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=6.0</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after fluid optimisations for c=6.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -990,7 +1423,7 @@
 <li><p><strong>name</strong> – sum_density_c=8.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_sum_density_c=8.0</p></li>
-<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>description</strong> – The total density of communities after fluid optimisations for c=8.0</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1006,7 +1439,7 @@
 <li><p><strong>name</strong> – ratio_density_c=8.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_ratio_density_c=8.0</p></li>
-<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after fluid optimisations for c=8.0</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1022,7 +1455,7 @@
 <li><p><strong>name</strong> – len_most_dense_c=8.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_most_dense_c=8.0</p></li>
-<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after fluid optimisations for c=8.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -1038,7 +1471,7 @@
 <li><p><strong>name</strong> – len_least_dense_c=8.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_least_dense_c=8.0</p></li>
-<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after fluid optimisations for c=8.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -1054,7 +1487,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_modularity</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_modularity</p></li>
-<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after fluid optimisations for c=8.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -1070,7 +1503,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_coverage</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_coverage</p></li>
-<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after fluid optimisations for c=8.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -1086,7 +1519,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_performance</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_performance</p></li>
-<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after fluid optimisations for c=8.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -1102,7 +1535,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_inter_community_edges</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_inter_community_edges</p></li>
-<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after fluid optimisations for c=8.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -1118,7 +1551,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_inter_community_non_edges</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_inter_community_non_edges</p></li>
-<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after fluid optimisations for c=8.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -1134,7 +1567,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_intra_community_edges</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_intra_community_edges</p></li>
-<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=8.0</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after fluid optimisations for c=8.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -1150,7 +1583,7 @@
 <li><p><strong>name</strong> – sum_density_c=10.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_sum_density_c=10.0</p></li>
-<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>description</strong> – The total density of communities after fluid optimisations for c=10.0</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1166,7 +1599,7 @@
 <li><p><strong>name</strong> – ratio_density_c=10.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_ratio_density_c=10.0</p></li>
-<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after fluid optimisations for c=10.0</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1182,7 +1615,7 @@
 <li><p><strong>name</strong> – len_most_dense_c=10.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_most_dense_c=10.0</p></li>
-<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after fluid optimisations for c=10.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -1198,7 +1631,7 @@
 <li><p><strong>name</strong> – len_least_dense_c=10.0</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_least_dense_c=10.0</p></li>
-<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after fluid optimisations for c=10.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -1214,7 +1647,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_modularity</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_modularity</p></li>
-<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after fluid optimisations for c=10.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -1230,7 +1663,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_coverage</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_coverage</p></li>
-<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after fluid optimisations for c=10.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -1246,7 +1679,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_performance</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_performance</p></li>
-<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after fluid optimisations for c=10.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -1262,7 +1695,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_inter_community_edges</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_inter_community_edges</p></li>
-<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after fluid optimisations for c=10.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -1278,7 +1711,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_inter_community_non_edges</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_inter_community_non_edges</p></li>
-<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after fluid optimisations for c=10.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -1294,7 +1727,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_intra_community_edges</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_intra_community_edges</p></li>
-<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=10.0</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after fluid optimisations for c=10.0</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -1310,7 +1743,7 @@
 <li><p><strong>name</strong> – sum_density_c=2.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_sum_density_c=2.0_N</p></li>
-<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The total density of communities after fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -1326,7 +1759,7 @@
 <li><p><strong>name</strong> – sum_density_c=2.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_sum_density_c=2.0_E</p></li>
-<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The total density of communities after fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -1342,7 +1775,7 @@
 <li><p><strong>name</strong> – ratio_density_c=2.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_ratio_density_c=2.0_N</p></li>
-<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -1358,7 +1791,7 @@
 <li><p><strong>name</strong> – ratio_density_c=2.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_ratio_density_c=2.0_E</p></li>
-<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -1374,7 +1807,7 @@
 <li><p><strong>name</strong> – len_most_dense_c=2.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_most_dense_c=2.0_N</p></li>
-<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1390,7 +1823,7 @@
 <li><p><strong>name</strong> – len_most_dense_c=2.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_most_dense_c=2.0_E</p></li>
-<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1406,7 +1839,7 @@
 <li><p><strong>name</strong> – len_least_dense_c=2.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_least_dense_c=2.0_N</p></li>
-<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1422,7 +1855,7 @@
 <li><p><strong>name</strong> – len_least_dense_c=2.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_least_dense_c=2.0_E</p></li>
-<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1438,7 +1871,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_modularity_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_modularity_N</p></li>
-<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1454,7 +1887,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_modularity_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_modularity_E</p></li>
-<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1470,7 +1903,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_coverage_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_coverage_N</p></li>
-<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1486,7 +1919,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_coverage_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_coverage_E</p></li>
-<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1502,7 +1935,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_performance_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_performance_N</p></li>
-<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1518,7 +1951,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_performance_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_performance_E</p></li>
-<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1534,7 +1967,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_inter_community_edges_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_inter_community_edges_N</p></li>
-<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1550,7 +1983,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_inter_community_edges_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_inter_community_edges_E</p></li>
-<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1566,7 +1999,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_inter_community_non_edges_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_inter_community_non_edges_N</p></li>
-<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1582,7 +2015,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_inter_community_non_edges_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_inter_community_non_edges_E</p></li>
-<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1598,7 +2031,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_intra_community_edges_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_intra_community_edges_N</p></li>
-<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after fluid optimisations for c=2.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1614,7 +2047,7 @@
 <li><p><strong>name</strong> – partition_c=2.0_intra_community_edges_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=2.0_intra_community_edges_E</p></li>
-<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after fluid optimisations for c=2.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1630,7 +2063,7 @@
 <li><p><strong>name</strong> – sum_density_c=4.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_sum_density_c=4.0_N</p></li>
-<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The total density of communities after fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -1646,7 +2079,7 @@
 <li><p><strong>name</strong> – sum_density_c=4.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_sum_density_c=4.0_E</p></li>
-<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The total density of communities after fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -1662,7 +2095,7 @@
 <li><p><strong>name</strong> – ratio_density_c=4.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_ratio_density_c=4.0_N</p></li>
-<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -1678,7 +2111,7 @@
 <li><p><strong>name</strong> – ratio_density_c=4.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_ratio_density_c=4.0_E</p></li>
-<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -1694,7 +2127,7 @@
 <li><p><strong>name</strong> – len_most_dense_c=4.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_most_dense_c=4.0_N</p></li>
-<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1710,7 +2143,7 @@
 <li><p><strong>name</strong> – len_most_dense_c=4.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_most_dense_c=4.0_E</p></li>
-<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1726,7 +2159,7 @@
 <li><p><strong>name</strong> – len_least_dense_c=4.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_least_dense_c=4.0_N</p></li>
-<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1742,7 +2175,7 @@
 <li><p><strong>name</strong> – len_least_dense_c=4.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_least_dense_c=4.0_E</p></li>
-<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1758,7 +2191,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_modularity_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_modularity_N</p></li>
-<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1774,7 +2207,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_modularity_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_modularity_E</p></li>
-<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1790,7 +2223,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_coverage_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_coverage_N</p></li>
-<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1806,7 +2239,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_coverage_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_coverage_E</p></li>
-<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1822,7 +2255,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_performance_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_performance_N</p></li>
-<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1838,7 +2271,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_performance_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_performance_E</p></li>
-<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1854,7 +2287,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_inter_community_edges_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_inter_community_edges_N</p></li>
-<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1870,7 +2303,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_inter_community_edges_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_inter_community_edges_E</p></li>
-<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1886,7 +2319,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_inter_community_non_edges_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_inter_community_non_edges_N</p></li>
-<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1902,7 +2335,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_inter_community_non_edges_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_inter_community_non_edges_E</p></li>
-<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1918,7 +2351,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_intra_community_edges_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_intra_community_edges_N</p></li>
-<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after fluid optimisations for c=4.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1934,7 +2367,7 @@
 <li><p><strong>name</strong> – partition_c=4.0_intra_community_edges_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=4.0_intra_community_edges_E</p></li>
-<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after fluid optimisations for c=4.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -1950,7 +2383,7 @@
 <li><p><strong>name</strong> – sum_density_c=6.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_sum_density_c=6.0_N</p></li>
-<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The total density of communities after fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -1966,7 +2399,7 @@
 <li><p><strong>name</strong> – sum_density_c=6.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_sum_density_c=6.0_E</p></li>
-<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The total density of communities after fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -1982,7 +2415,7 @@
 <li><p><strong>name</strong> – ratio_density_c=6.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_ratio_density_c=6.0_N</p></li>
-<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -1998,7 +2431,7 @@
 <li><p><strong>name</strong> – ratio_density_c=6.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_ratio_density_c=6.0_E</p></li>
-<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -2014,7 +2447,7 @@
 <li><p><strong>name</strong> – len_most_dense_c=6.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_most_dense_c=6.0_N</p></li>
-<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2030,7 +2463,7 @@
 <li><p><strong>name</strong> – len_most_dense_c=6.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_most_dense_c=6.0_E</p></li>
-<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2046,7 +2479,7 @@
 <li><p><strong>name</strong> – len_least_dense_c=6.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_least_dense_c=6.0_N</p></li>
-<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2062,7 +2495,7 @@
 <li><p><strong>name</strong> – len_least_dense_c=6.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_least_dense_c=6.0_E</p></li>
-<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2078,7 +2511,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_modularity_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_modularity_N</p></li>
-<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2094,7 +2527,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_modularity_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_modularity_E</p></li>
-<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2110,7 +2543,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_coverage_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_coverage_N</p></li>
-<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2126,7 +2559,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_coverage_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_coverage_E</p></li>
-<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2142,7 +2575,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_performance_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_performance_N</p></li>
-<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2158,7 +2591,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_performance_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_performance_E</p></li>
-<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2174,7 +2607,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_inter_community_edges_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_inter_community_edges_N</p></li>
-<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2190,7 +2623,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_inter_community_edges_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_inter_community_edges_E</p></li>
-<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2206,7 +2639,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_inter_community_non_edges_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_inter_community_non_edges_N</p></li>
-<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2222,7 +2655,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_inter_community_non_edges_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_inter_community_non_edges_E</p></li>
-<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2238,7 +2671,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_intra_community_edges_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_intra_community_edges_N</p></li>
-<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after fluid optimisations for c=6.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2254,7 +2687,7 @@
 <li><p><strong>name</strong> – partition_c=6.0_intra_community_edges_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=6.0_intra_community_edges_E</p></li>
-<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after fluid optimisations for c=6.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2270,7 +2703,7 @@
 <li><p><strong>name</strong> – sum_density_c=8.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_sum_density_c=8.0_N</p></li>
-<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The total density of communities after fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -2286,7 +2719,7 @@
 <li><p><strong>name</strong> – sum_density_c=8.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_sum_density_c=8.0_E</p></li>
-<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The total density of communities after fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -2302,7 +2735,7 @@
 <li><p><strong>name</strong> – ratio_density_c=8.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_ratio_density_c=8.0_N</p></li>
-<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -2318,7 +2751,7 @@
 <li><p><strong>name</strong> – ratio_density_c=8.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_ratio_density_c=8.0_E</p></li>
-<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -2334,7 +2767,7 @@
 <li><p><strong>name</strong> – len_most_dense_c=8.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_most_dense_c=8.0_N</p></li>
-<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2350,7 +2783,7 @@
 <li><p><strong>name</strong> – len_most_dense_c=8.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_most_dense_c=8.0_E</p></li>
-<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2366,7 +2799,7 @@
 <li><p><strong>name</strong> – len_least_dense_c=8.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_least_dense_c=8.0_N</p></li>
-<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2382,7 +2815,7 @@
 <li><p><strong>name</strong> – len_least_dense_c=8.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_least_dense_c=8.0_E</p></li>
-<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2398,7 +2831,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_modularity_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_modularity_N</p></li>
-<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2414,7 +2847,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_modularity_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_modularity_E</p></li>
-<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2430,7 +2863,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_coverage_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_coverage_N</p></li>
-<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2446,7 +2879,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_coverage_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_coverage_E</p></li>
-<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2462,7 +2895,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_performance_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_performance_N</p></li>
-<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2478,7 +2911,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_performance_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_performance_E</p></li>
-<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2494,7 +2927,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_inter_community_edges_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_inter_community_edges_N</p></li>
-<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2510,7 +2943,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_inter_community_edges_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_inter_community_edges_E</p></li>
-<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2526,7 +2959,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_inter_community_non_edges_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_inter_community_non_edges_N</p></li>
-<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2542,7 +2975,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_inter_community_non_edges_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_inter_community_non_edges_E</p></li>
-<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2558,7 +2991,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_intra_community_edges_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_intra_community_edges_N</p></li>
-<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after fluid optimisations for c=8.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2574,7 +3007,7 @@
 <li><p><strong>name</strong> – partition_c=8.0_intra_community_edges_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=8.0_intra_community_edges_E</p></li>
-<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after fluid optimisations for c=8.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2590,7 +3023,7 @@
 <li><p><strong>name</strong> – sum_density_c=10.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_sum_density_c=10.0_N</p></li>
-<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The total density of communities after fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -2606,7 +3039,7 @@
 <li><p><strong>name</strong> – sum_density_c=10.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_sum_density_c=10.0_E</p></li>
-<li><p><strong>description</strong> – The total density of communities after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The total density of communities after fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -2622,7 +3055,7 @@
 <li><p><strong>name</strong> – ratio_density_c=10.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_ratio_density_c=10.0_N</p></li>
-<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -2638,7 +3071,7 @@
 <li><p><strong>name</strong> – ratio_density_c=10.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_ratio_density_c=10.0_E</p></li>
-<li><p><strong>description</strong> – The ratio density of communities after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The ratio density of communities after fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 2</p></li>
 </ul>
 </dd>
@@ -2654,7 +3087,7 @@
 <li><p><strong>name</strong> – len_most_dense_c=10.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_most_dense_c=10.0_N</p></li>
-<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2670,7 +3103,7 @@
 <li><p><strong>name</strong> – len_most_dense_c=10.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_most_dense_c=10.0_E</p></li>
-<li><p><strong>description</strong> – The length of the most dense community after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The length of the most dense community after fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2686,7 +3119,7 @@
 <li><p><strong>name</strong> – len_least_dense_c=10.0_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_least_dense_c=10.0_N</p></li>
-<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2702,7 +3135,7 @@
 <li><p><strong>name</strong> – len_least_dense_c=10.0_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_len_least_dense_c=10.0_E</p></li>
-<li><p><strong>description</strong> – The length of the least dense community after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – The length of the least dense community after fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2718,7 +3151,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_modularity_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_modularity_N</p></li>
-<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2734,7 +3167,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_modularity_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_modularity_E</p></li>
-<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Modularity of the partition of The optimal partition after fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2750,7 +3183,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_coverage_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_coverage_N</p></li>
-<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2766,7 +3199,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_coverage_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_coverage_E</p></li>
-<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Coverage of the partition of The optimal partition after fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2782,7 +3215,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_performance_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_performance_N</p></li>
-<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2798,7 +3231,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_performance_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_performance_E</p></li>
-<li><p><strong>description</strong> – Performance of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Performance of the partition of The optimal partition after fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2814,7 +3247,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_inter_community_edges_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_inter_community_edges_N</p></li>
-<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2830,7 +3263,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_inter_community_edges_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_inter_community_edges_E</p></li>
-<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Inter community edges of the partition of The optimal partition after fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2846,7 +3279,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_inter_community_non_edges_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_inter_community_non_edges_N</p></li>
-<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2862,7 +3295,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_inter_community_non_edges_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_inter_community_non_edges_E</p></li>
-<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Inter community non edges of the partition of The optimal partition after fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2878,7 +3311,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_intra_community_edges_N</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_intra_community_edges_N</p></li>
-<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after fluid optimisations for c=10.0, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2894,7 +3327,7 @@
 <li><p><strong>name</strong> – partition_c=10.0_intra_community_edges_E</p></li>
 <li><p><strong>shortname</strong> – CA</p></li>
 <li><p><strong>fullname</strong> – CA_partition_c=10.0_intra_community_edges_E</p></li>
-<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after async fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Intra community edges of the partition of The optimal partition after fluid optimisations for c=10.0, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -2910,7 +3343,8 @@
 <dl class="py method">
 <dt id="hcga.features.communities_asyn.CommunitiesAsyn.compute_features">
 <code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/communities_asyn.html#CommunitiesAsyn.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.communities_asyn.CommunitiesAsyn.compute_features" title="Permalink to this definition">¶</a></dt>
-<dd><p>main feature extraction function.</p>
+<dd><p>Main feature extraction function.</p>
+<p>This function should be used by each specific feature class to add new features.</p>
 </dd></dl>
 
 </dd></dl>
@@ -3277,7 +3711,8 @@
 <dl class="py method">
 <dt id="hcga.features.communities_bisection.CommunitiesBisection.compute_features">
 <code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/communities_bisection.html#CommunitiesBisection.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.communities_bisection.CommunitiesBisection.compute_features" title="Permalink to this definition">¶</a></dt>
-<dd><p>main feature extraction function.</p>
+<dd><p>Main feature extraction function.</p>
+<p>This function should be used by each specific feature class to add new features.</p>
 </dd></dl>
 
 </dd></dl>
@@ -3686,7 +4121,8 @@
 <dl class="py method">
 <dt id="hcga.features.communities_labelprop.CommunitiesLabelPropagation.compute_features">
 <code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/communities_labelprop.html#CommunitiesLabelPropagation.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.communities_labelprop.CommunitiesLabelPropagation.compute_features" title="Permalink to this definition">¶</a></dt>
-<dd><p>main feature extraction function.</p>
+<dd><p>Main feature extraction function.</p>
+<p>This function should be used by each specific feature class to add new features.</p>
 </dd></dl>
 
 </dd></dl>
@@ -3796,7 +4232,7 @@
       &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

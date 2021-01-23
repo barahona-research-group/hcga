@@ -4,14 +4,14 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>hcga.features.centralities_basic &#8212; hcga 0.1 documentation</title>
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
    
@@ -32,8 +32,8 @@
             
   <h1>Source code for hcga.features.centralities_basic</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Centralities class.&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">networkx.algorithms</span> <span class="kn">import</span> <span class="n">centrality</span>
 
 <span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
@@ -56,9 +56,7 @@
 
 <div class="viewcode-block" id="CentralitiesBasic.compute_features"><a class="viewcode-back" href="../../../Features/centrality.html#hcga.features.centralities_basic.CentralitiesBasic.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Degree centrality</span>
-        <span class="n">degree_centrality</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span>
-            <span class="n">centrality</span><span class="o">.</span><span class="n">degree_centrality</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-        <span class="p">)</span>
+        <span class="n">degree_centrality</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">centrality</span><span class="o">.</span><span class="n">degree_centrality</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;degree centrality&quot;</span><span class="p">,</span>
             <span class="n">degree_centrality</span><span class="p">,</span>
@@ -80,10 +78,21 @@
             <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;centrality&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="c1"># Closeness centrality</span>
-        <span class="n">closeness_centrality</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span>
-            <span class="n">centrality</span><span class="o">.</span><span class="n">closeness_centrality</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="c1"># Betweenness Centrality Weighted</span>
+        <span class="n">betweenness_centrality</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="n">centrality</span><span class="o">.</span><span class="n">betweenness_centrality</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
         <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;betweenness centrality_weighted&quot;</span><span class="p">,</span>
+            <span class="n">betweenness_centrality</span><span class="p">,</span>
+            <span class="s2">&quot;Betweenness centrality of a node v is the sum of the fraction of </span><span class="se">\</span>
+<span class="s2">            all-pairs shortest paths that pass through v&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>
+            <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;centrality&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Closeness centrality</span>
+        <span class="n">closeness_centrality</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">centrality</span><span class="o">.</span><span class="n">closeness_centrality</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;closeness centrality&quot;</span><span class="p">,</span>
             <span class="n">closeness_centrality</span><span class="p">,</span>
@@ -107,10 +116,22 @@
             <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;centrality&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="c1"># Harmonic centrality</span>
-        <span class="n">harmonic_centrality</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span>
-            <span class="n">centrality</span><span class="o">.</span><span class="n">harmonic_centrality</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="k">def</span> <span class="nf">weighted_edge_betweenness_centrality</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">centrality</span><span class="o">.</span><span class="n">edge_betweenness_centrality</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;edge betweenness centrality weighted&quot;</span><span class="p">,</span>
+            <span class="n">weighted_edge_betweenness_centrality</span><span class="p">,</span>
+            <span class="s2">&quot;Betweenness centrality of an edge e is the sum of the fraction of </span><span class="se">\</span>
+<span class="s2">            all-pairs shortest paths that pass through e&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
+            <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;centrality&quot;</span><span class="p">,</span>
         <span class="p">)</span>
+
+        <span class="c1"># Harmonic centrality</span>
+        <span class="n">harmonic_centrality</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">centrality</span><span class="o">.</span><span class="n">harmonic_centrality</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;harmonic centrality&quot;</span><span class="p">,</span>
             <span class="n">harmonic_centrality</span><span class="p">,</span>
@@ -121,9 +142,7 @@
         <span class="p">)</span>
 
         <span class="c1"># Subgraph centrality</span>
-        <span class="n">subgraph_centrality</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span>
-            <span class="n">centrality</span><span class="o">.</span><span class="n">subgraph_centrality</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-        <span class="p">)</span>
+        <span class="n">subgraph_centrality</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">centrality</span><span class="o">.</span><span class="n">subgraph_centrality</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;subgraph centrality&quot;</span><span class="p">,</span>
             <span class="n">subgraph_centrality</span><span class="p">,</span>
@@ -149,12 +168,25 @@
 
         <span class="c1"># Eigenvector centrality</span>
         <span class="n">eigenvector_centrality</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span>
-            <span class="n">centrality</span><span class="o">.</span><span class="n">eigenvector_centrality_numpy</span><span class="p">(</span>
-                <span class="n">utils</span><span class="o">.</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="n">centrality</span><span class="o">.</span><span class="n">eigenvector_centrality_numpy</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;eigenvector centrality&quot;</span><span class="p">,</span>
+            <span class="n">eigenvector_centrality</span><span class="p">,</span>
+            <span class="s2">&quot;Eigenvector centrality computes the centrality for a node based </span><span class="se">\</span>
+<span class="s2">            on the centrality of its neighbors&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
+            <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;centrality&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># weighted eigenvector centrality</span>
+        <span class="n">eigenvector_centrality</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="n">centrality</span><span class="o">.</span><span class="n">eigenvector_centrality_numpy</span><span class="p">(</span>
+                <span class="n">utils</span><span class="o">.</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">),</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;eigenvector centrality weighted&quot;</span><span class="p">,</span>
             <span class="n">eigenvector_centrality</span><span class="p">,</span>
             <span class="s2">&quot;Eigenvector centrality computes the centrality for a node based </span><span class="se">\</span>
 <span class="s2">            on the centrality of its neighbors&quot;</span><span class="p">,</span>
@@ -176,9 +208,18 @@
         <span class="p">)</span>
 
         <span class="c1"># Page Rank</span>
-        <span class="n">pagerank</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">pagerank</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">pagerank</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">pagerank_numpy</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;pagerank&quot;</span><span class="p">,</span>
+            <span class="n">pagerank</span><span class="p">,</span>
+            <span class="s2">&quot;The pagerank computes a ranking of the nodes in the graph based on </span><span class="se">\</span>
+<span class="s2">            the structure of the incoming links. &quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
+            <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;centrality&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">pagerank</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">pagerank_numpy</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;pagerank weighted&quot;</span><span class="p">,</span>
             <span class="n">pagerank</span><span class="p">,</span>
             <span class="s2">&quot;The pagerank computes a ranking of the nodes in the graph based on </span><span class="se">\</span>
 <span class="s2">            the structure of the incoming links. &quot;</span><span class="p">,</span>
@@ -248,7 +289,7 @@
       &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

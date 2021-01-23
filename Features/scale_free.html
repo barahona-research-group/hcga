@@ -4,14 +4,14 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The scale free module &#8212; hcga 0.1 documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="The shortest paths module" href="shortest_paths.html" />
@@ -57,7 +57,7 @@
 <li><p><strong>name</strong> – s_metric</p></li>
 <li><p><strong>shortname</strong> – SF</p></li>
 <li><p><strong>fullname</strong> – SF_s_metric</p></li>
-<li><p><strong>description</strong> – The s-metric is defined as the sum of the products deg(u)*deg(v) for every edge (u,v) in G</p></li>
+<li><p><strong>description</strong> – Sum of the products deg(u)*deg(v) for every edge (u,v) in G</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
 </dd>
@@ -73,7 +73,7 @@
 <li><p><strong>name</strong> – s_metric_N</p></li>
 <li><p><strong>shortname</strong> – SF</p></li>
 <li><p><strong>fullname</strong> – SF_s_metric_N</p></li>
-<li><p><strong>description</strong> – The s-metric is defined as the sum of the products deg(u)*deg(v) for every edge (u,v) in G, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>description</strong> – Sum of the products deg(u)*deg(v) for every edge (u,v) in G, normalised by the number of nodes in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -89,7 +89,7 @@
 <li><p><strong>name</strong> – s_metric_E</p></li>
 <li><p><strong>shortname</strong> – SF</p></li>
 <li><p><strong>fullname</strong> – SF_s_metric_E</p></li>
-<li><p><strong>description</strong> – The s-metric is defined as the sum of the products deg(u)*deg(v) for every edge (u,v) in G, normalised by the number of edges in the graph</p></li>
+<li><p><strong>description</strong> – Sum of the products deg(u)*deg(v) for every edge (u,v) in G, normalised by the number of edges in the graph</p></li>
 <li><p><strong>interpretability</strong> – 3</p></li>
 </ul>
 </dd>
@@ -105,7 +105,8 @@
 <dl class="py method">
 <dt id="hcga.features.scale_free.ScaleFree.compute_features">
 <code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/scale_free.html#ScaleFree.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.scale_free.ScaleFree.compute_features" title="Permalink to this definition">¶</a></dt>
-<dd><p>main feature extraction function.</p>
+<dd><p>Main feature extraction function.</p>
+<p>This function should be used by each specific feature class to add new features.</p>
 </dd></dl>
 
 </dd></dl>
@@ -208,7 +209,7 @@
       &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

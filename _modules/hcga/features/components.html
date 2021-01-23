@@ -4,14 +4,14 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>hcga.features.components &#8212; hcga 0.1 documentation</title>
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
    
@@ -33,6 +33,7 @@
   <h1>Source code for hcga.features.components</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Components class.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
 <span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
@@ -42,7 +43,7 @@
 
 <div class="viewcode-block" id="Components"><a class="viewcode-back" href="../../../Features/components.html#hcga.features.components.Components">[docs]</a><span class="k">class</span> <span class="nc">Components</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Components class.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Components calculations using network: `Networkx_components &lt;https://networkx.github.io/\</span>
 <span class="sd">        documentation/stable/reference/algorithms/component.html&gt;`_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -83,9 +84,7 @@
         <span class="k">def</span> <span class="nf">ratio_largest</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_connectedcomponents</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">return</span> <span class="mi">0</span>
-            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_connectedcomponents</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span>
-                <span class="n">eval_connectedcomponents</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="p">)</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_connectedcomponents</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_connectedcomponents</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;ratio_largest_connected_components&quot;</span><span class="p">,</span>
@@ -106,6 +105,84 @@
             <span class="n">ratio_min_max</span><span class="p">,</span>
             <span class="s2">&quot;The size ratio of the max and min largest connected components&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;number_strongly_connected_components&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">number_strongly_connected_components</span><span class="p">(</span><span class="n">graph</span><span class="p">),</span>
+            <span class="s2">&quot;A strongly connected component is a set of nodes in a directed graph such </span><span class="se">\</span>
+<span class="s2">            that each node in the set is reachable from any other node in that set&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;strongly_connected_component_sizes&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">nx</span><span class="o">.</span><span class="n">strongly_connected_components</span><span class="p">(</span><span class="n">graph</span><span class="p">)],</span>
+            <span class="s2">&quot;the distribution of strongly connected component sizes&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+            <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;centrality&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;condensation_nodes&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">condensation</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">(),</span>
+            <span class="s2">&quot;number of nodes in the condensation of the graph&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;condensation_edges&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">condensation</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">(),</span>
+            <span class="s2">&quot;number of edges in the condensation of the graph&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;number_weakly_connected_components&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">number_weakly_connected_components</span><span class="p">(</span><span class="n">graph</span><span class="p">),</span>
+            <span class="s2">&quot;A weakly connected component is a set of nodes in a directed graph such that </span><span class="se">\</span>
+<span class="s2">            there exists as edge between each node and at least one other node in the set&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;weakly_connected_component_sizes&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">nx</span><span class="o">.</span><span class="n">weakly_connected_components</span><span class="p">(</span><span class="n">graph</span><span class="p">)],</span>
+            <span class="s2">&quot;the distribution of weakly connected component sizes&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+            <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;centrality&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;number_attracting_components&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">number_attracting_components</span><span class="p">(</span><span class="n">graph</span><span class="p">),</span>
+            <span class="s2">&quot;An attracting component is a set of nodes in a directed graph such that that </span><span class="se">\</span>
+<span class="s2">            once in that set, all other nodes outside that set are not reachable&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;attracting_component_sizes&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">nx</span><span class="o">.</span><span class="n">attracting_components</span><span class="p">(</span><span class="n">graph</span><span class="p">)],</span>
+            <span class="s2">&quot;the distribution of attracting component sizes&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+            <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;centrality&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;number basal_components&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">number_attracting_components</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">reverse</span><span class="p">(</span><span class="n">graph</span><span class="p">)),</span>
+            <span class="s2">&quot;An basal component is a set of nodes in a directed graph such that there are no </span><span class="se">\</span>
+<span class="s2">            edges pointing into that set&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;basal_component_sizes&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">nx</span><span class="o">.</span><span class="n">attracting_components</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">reverse</span><span class="p">(</span><span class="n">graph</span><span class="p">))],</span>
+            <span class="s2">&quot;the distribution of basal component sizes&quot;</span><span class="p">,</span>
+            <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+            <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;centrality&quot;</span><span class="p">,</span>
         <span class="p">)</span></div></div>
 </pre></div>
 
@@ -170,7 +247,7 @@
       &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
