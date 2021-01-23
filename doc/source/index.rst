@@ -5,8 +5,11 @@
 *hcga*: Highly Comparative Graph Analysis
 #########################################
 
-*hcga* is inspired by *hctsa*, the time serie massive feature extraction framework of [Hctsa]_ and instead extracts features from graphs to classify or regress them.  
-This code comes with the companion paper [Hcga]_  containing more details and examples of applications. 
+
+This is the official repository of *hcga*, a highly comparative graph analysis toolbox inspired by *hctsa*, the time series massive feature extraction framework of [Hctsa]_. It performs a massive feature extraction from a set of graphs, and applies supervised classification methods. This code comes with the companion paper [Hcga]_  containing more details and examples applications. 
+
+Networks are widely used as mathematical models of complex systems across many scientific disciplines, not only in biology and medicine but also in the social sciences, physics, computing and engineering. Decades of work have produced a vast corpus of research characterising the topological, combinatorial, statistical and spectral properties of graphs. Each graph property can be thought of as a feature that captures important (and some times overlapping) characteristics of a network. In the analysis of real-world graphs, it is crucial to integrate systematically a large number of diverse graph features in order to characterise and classify networks, as well as to aid network-based scientific discovery. Here, we introduce *hcga*, a framework for highly comparative analysis of graph data sets that computes several thousands of graph features from any given network. *hcga* also offers a suite of statistical learning and data analysis tools for automated identification and selection of important and interpretable features underpinning the characterisation of graph data sets.
+
 
 Installation
 ************
@@ -35,12 +38,13 @@ Benchmarks datasets from `Graphkernel <https://ls11-www.cs.tu-dortmund.de/people
 
     $ hcga get_data DATASET
 
-where for example, ``DATASET`` can be one of 
-    * ENZYMES
-    * DD
-    * COLLAB
-    * PROTEINS
-    * REDDIT-MULTI-12K
+*DATASET* can be one of:
+
+1. ENZYMES
+2. DD
+3. COLLAB
+4. PROTEINS
+5. REDDIT-MULTI-12K
 
 To create custom dataset, one must load it in the ``hcga.graph.GraphCollection`` data structure as follow::
 
@@ -88,7 +92,7 @@ we refer to the hcga app documentation for more details, but the options here me
 - ``--runtime``: this option runs a small set of graphs and ouput estimated times for each feature
 
 
-3. Classifiy graphs
+3. Classify graphs
 --------------------
 
 Finally, to use the extracted features to classify graphs with respect to their labels, one use::
@@ -96,6 +100,31 @@ Finally, to use the extracted features to classify graphs with respect to their 
     $ hcga feature_analysis dataset --interpretability 1
 
 where ``dataset`` is the name of the dataset, and ``--interpretability 1`` selects the features with all interpretabilities. Choices range from ``1-5``, where ``5`` only uses most interpretable features.
+
+
+Examples
+******
+
+In the example folder, the script ``run_example.sh`` can be used to run the benchmark examples in the paper::
+
+       ./run_example.sh DATASET
+
+*DATASET* can be one of:
+
+1. ENZYMES
+2. DD
+3. COLLAB
+4. PROTEINS
+5. REDDIT-MULTI-12K
+
+Other examples can be found as jupyter-notebooks in `examples/` directory. We have included six examples:
+       1. Example 1: Classification on synthetic data
+       2. Example 2: Regression on synthetic data
+       3. Example 3: Large Molecule dataset and regression
+       4. Example 4: Training on labelled data, saving the fitted model, and predicting on unseen unlabelled data.
+       5. Example 5: Pairwise classification. Exploring the similarity of classes.
+       6. Example 6: Loading data in different ways.
+       7. Example 7: Using different classifiers.
 
 Citing
 ******
@@ -105,27 +134,25 @@ To cite *hcga*, please use [Hcga]_.
 Credits
 *******
 
-The code is still a preliminary version, and written by us.
+The code is released in its first version. 
 
-Original authors:
-*****************
-
-- Robert Peach, GitHub: `peach-lucien <https://github.com/peach-lucien>`_
-- Alexis Arnaudon, GitHub: `arnaudon <https://github.com/arnaudon>`_
 
 Contributors:
 *************
 
+- Robert Peach, GitHub: `peach-lucien <https://github.com/peach-lucien>`_
+- Alexis Arnaudon, GitHub: `arnaudon <https://github.com/arnaudon>`_
 - Henry Palasciano, GitHub: `henrypalasciano <https://github.com/henrypalasciano>`_
 - Nathan Bernier, GitHub: `nrbernier <https://github.com/nrbernier>`_
+- Julia Schmidt, GitHub: `misterblonde <https://github.com/misterblonde>`_
 
 Any contributors are welcome, please contact us if interested. 
 
 Bibliography
 ************
 
-.. [Hcga]  R. Peach, H. Palasciano, A. Arnaudon, M. Barahona, 
-                “hcga: Highly Comparative Graph Analysis for graph phenotyping”, In preparation, 2019
+.. [Hcga] Robert L Peach, Alexis Arnaudon, Julia A Schmidt, Henry Palasciano, Nathan R Bernier, Kim Jelfs, Sophia Yaliraki, Mauricio Barahona, "hcga: Highly Comparative Graph Analysis for network phenotyping" bioRxiv 2020.09.25.312926; doi: https://doi.org/10.1101/2020.09.25.312926 
+
 .. [Hctsa]  B. D. Fulcher and N. S. Jones, 
                 “hctsa:  A computational framework for automated time-series phenotyping using massive feature extraction,” Cell systems, vol. 5, no. 5, pp. 527–531, 2017
 
