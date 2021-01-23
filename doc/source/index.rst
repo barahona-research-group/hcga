@@ -103,7 +103,7 @@ where ``dataset`` is the name of the dataset, and ``--interpretability 1`` selec
 
 
 Examples
-******
+********
 
 In the example folder, the script ``run_example.sh`` can be used to run the benchmark examples in the paper::
 
