@@ -159,6 +159,11 @@ Once hcga is on your local machine you can open your command terminal (in any op
 ```
 pip install .
 ```
+If you are running on windows and receive an 'access denied' then either run your command terminal as administrator or try the command:
+
+```
+pip install --user . 
+```
 
 The hcga package should now be installed directly into your Anaconda packages alongside other dependencies. 
 
