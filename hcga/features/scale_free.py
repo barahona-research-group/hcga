@@ -25,6 +25,6 @@ class ScaleFree(FeatureClass):
         self.add_feature(
             "s_metric",
             lambda graph: nx.s_metric(graph, normalized=False),
-            "The s-metric is defined as the sum of the products deg(u)*deg(v) for every edge (u,v) in G",
+            "Sum of the products deg(u)*deg(v) for every edge (u,v) in G",
             InterpretabilityScore(4),
         )

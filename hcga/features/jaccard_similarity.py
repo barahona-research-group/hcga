@@ -2,8 +2,8 @@
 import networkx as nx
 import numpy as np
 
-from .utils import ensure_connected, remove_selfloops
 from ..feature_class import FeatureClass, InterpretabilityScore
+from .utils import ensure_connected, remove_selfloops
 
 featureclass_name = "JaccardSimilarity"
 

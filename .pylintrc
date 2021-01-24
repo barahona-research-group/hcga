@@ -6,20 +6,20 @@ disable=C0103,R0904,R0903,W0511,W0232,R0922,R0801,R0921,W0141,R0401,I0013,W0142,
 
 [FORMAT]
 # Maximum number of characters on a single line.
-max-line-length=120
+max-line-length=100
 
 [DESIGN]
 # Maximum number of arguments for function / method
-max-args=20
+max-args=22
 # Argument names that match this expression will be ignored. Default to name
 # with leading underscore
 ignored-argument-names=_.*
 # Maximum number of locals for function / method body
-max-locals=22
+max-locals=25
 # Maximum number of return / yield for function / method body
 max-returns=6
 # Maximum number of branch for function / method body
-max-branchs=12
+max-branchs=15
 # Maximum number of statements in function / method body
 max-statements=50
 # Maximum number of parents for a class (see R0901).

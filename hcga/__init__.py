@@ -7,5 +7,4 @@ from .extraction import extract
 
 # expose the class
 from .hcga import Hcga
-
 from .io import load_features

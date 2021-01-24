@@ -20,7 +20,15 @@ class ChemicalTheory(FeatureClass):
         self.add_feature(
             "wiener index",
             wiener_index,
-            "The wiener index is defined as the sum of the lengths of the shortest paths between all pairs of vertices",
+            "Sum of the lengths of the shortest paths between all pairs of vertices",
+            InterpretabilityScore(4),
+        )
+
+        wiener_index = lambda graph: nx.wiener_index(graph, weight="weight")
+        self.add_feature(
+            "wiener index weighted",
+            wiener_index,
+            "Sum of the lengths of the shortest paths between all pairs of vertices",
             InterpretabilityScore(4),
         )
 
@@ -28,6 +36,6 @@ class ChemicalTheory(FeatureClass):
         self.add_feature(
             "estrada_index",
             estrada_index,
-            "The Estrada Index is a topological index of protein folding or 3D compactness",
+            "Topological index of protein folding or 3D compactness",
             InterpretabilityScore(4),
         )

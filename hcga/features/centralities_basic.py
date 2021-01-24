@@ -1,6 +1,6 @@
 """Centralities class."""
-import numpy as np
 import networkx as nx
+import numpy as np
 from networkx.algorithms import centrality
 
 from ..feature_class import FeatureClass, InterpretabilityScore
@@ -23,9 +23,7 @@ class CentralitiesBasic(FeatureClass):
 
     def compute_features(self):
         # Degree centrality
-        degree_centrality = lambda graph: list(
-            centrality.degree_centrality(graph).values()
-        )
+        degree_centrality = lambda graph: list(centrality.degree_centrality(graph).values())
         self.add_feature(
             "degree centrality",
             degree_centrality,
@@ -47,10 +45,21 @@ class CentralitiesBasic(FeatureClass):
             statistics="centrality",
         )
 
-        # Closeness centrality
-        closeness_centrality = lambda graph: list(
-            centrality.closeness_centrality(graph).values()
+        # Betweenness Centrality Weighted
+        betweenness_centrality = lambda graph: list(
+            centrality.betweenness_centrality(graph, weight="weight").values()
         )
+        self.add_feature(
+            "betweenness centrality_weighted",
+            betweenness_centrality,
+            "Betweenness centrality of a node v is the sum of the fraction of \
+            all-pairs shortest paths that pass through v",
+            InterpretabilityScore(5),
+            statistics="centrality",
+        )
+
+        # Closeness centrality
+        closeness_centrality = lambda graph: list(centrality.closeness_centrality(graph).values())
         self.add_feature(
             "closeness centrality",
             closeness_centrality,
@@ -74,10 +83,22 @@ class CentralitiesBasic(FeatureClass):
             statistics="centrality",
         )
 
-        # Harmonic centrality
-        harmonic_centrality = lambda graph: list(
-            centrality.harmonic_centrality(graph).values()
+        def weighted_edge_betweenness_centrality(graph):
+            if graph.edges:
+                return list(centrality.edge_betweenness_centrality(graph, weight="weight").values())
+            return [np.nan]
+
+        self.add_feature(
+            "edge betweenness centrality weighted",
+            weighted_edge_betweenness_centrality,
+            "Betweenness centrality of an edge e is the sum of the fraction of \
+            all-pairs shortest paths that pass through e",
+            InterpretabilityScore(4),
+            statistics="centrality",
         )
+
+        # Harmonic centrality
+        harmonic_centrality = lambda graph: list(centrality.harmonic_centrality(graph).values())
         self.add_feature(
             "harmonic centrality",
             harmonic_centrality,
@@ -88,9 +109,7 @@ class CentralitiesBasic(FeatureClass):
         )
 
         # Subgraph centrality
-        subgraph_centrality = lambda graph: list(
-            centrality.subgraph_centrality(graph).values()
-        )
+        subgraph_centrality = lambda graph: list(centrality.subgraph_centrality(graph).values())
         self.add_feature(
             "subgraph centrality",
             subgraph_centrality,
@@ -116,12 +135,25 @@ class CentralitiesBasic(FeatureClass):
 
         # Eigenvector centrality
         eigenvector_centrality = lambda graph: list(
-            centrality.eigenvector_centrality_numpy(
-                utils.ensure_connected(graph)
-            ).values()
+            centrality.eigenvector_centrality_numpy(utils.ensure_connected(graph)).values()
         )
         self.add_feature(
             "eigenvector centrality",
+            eigenvector_centrality,
+            "Eigenvector centrality computes the centrality for a node based \
+            on the centrality of its neighbors",
+            InterpretabilityScore(4),
+            statistics="centrality",
+        )
+
+        # weighted eigenvector centrality
+        eigenvector_centrality = lambda graph: list(
+            centrality.eigenvector_centrality_numpy(
+                utils.ensure_connected(graph), weight="weight"
+            ).values()
+        )
+        self.add_feature(
+            "eigenvector centrality weighted",
             eigenvector_centrality,
             "Eigenvector centrality computes the centrality for a node based \
             on the centrality of its neighbors",
@@ -146,6 +178,15 @@ class CentralitiesBasic(FeatureClass):
         pagerank = lambda graph: list(nx.pagerank_numpy(graph).values())
         self.add_feature(
             "pagerank",
+            pagerank,
+            "The pagerank computes a ranking of the nodes in the graph based on \
+            the structure of the incoming links. ",
+            InterpretabilityScore(4),
+            statistics="centrality",
+        )
+        pagerank = lambda graph: list(nx.pagerank_numpy(graph, weight="weight").values())
+        self.add_feature(
+            "pagerank weighted",
             pagerank,
             "The pagerank computes a ranking of the nodes in the graph based on \
             the structure of the incoming links. ",

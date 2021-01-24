@@ -53,9 +53,7 @@ class BasicStats(FeatureClass):
         density = lambda graph: np.float64(2 * n_edges(graph)) / np.float64(
             n_nodes(graph) * (n_edges(graph) - 1)
         )
-        self.add_feature(
-            "density", density, "Density of the graph", InterpretabilityScore("max")
-        )
+        self.add_feature("density", density, "Density of the graph", InterpretabilityScore("max"))
 
         self.add_feature(
             "edge_weights",

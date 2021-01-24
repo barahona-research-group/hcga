@@ -1,5 +1,6 @@
 """Components class."""
 from functools import lru_cache
+
 import networkx as nx
 
 from ..feature_class import FeatureClass, InterpretabilityScore
@@ -50,9 +51,7 @@ class Components(FeatureClass):
         def ratio_largest(graph):
             if len(eval_connectedcomponents(graph)) == 1:
                 return 0
-            return len(eval_connectedcomponents(graph)[0]) / len(
-                eval_connectedcomponents(graph)[1]
-            )
+            return len(eval_connectedcomponents(graph)[0]) / len(eval_connectedcomponents(graph)[1])
 
         self.add_feature(
             "ratio_largest_connected_components",

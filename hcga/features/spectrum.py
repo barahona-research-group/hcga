@@ -1,5 +1,6 @@
 """Spectrum class."""
 from functools import lru_cache
+
 import networkx as nx
 import numpy as np
 
@@ -36,8 +37,7 @@ class Spectrum(FeatureClass):
             for j in range(i):
                 self.add_feature(
                     "eigenvalue_ratio_{}_{}".format(i, j),
-                    lambda graph: eval_spectrum_adj(graph)[j]
-                    / eval_spectrum_adj(graph)[i],
+                    lambda graph: eval_spectrum_adj(graph)[j] / eval_spectrum_adj(graph)[i],
                     "The ratio of the {} and {} eigenvalues".format(i, j),
                     InterpretabilityScore(2),
                 )

@@ -32,7 +32,7 @@ class CommunitiesAsyn(FeatureClass):
             self.add_feature(
                 "sum_density_c={}".format(num_comms),
                 lambda graph: sum(eval_asyn(graph, num_comms)[1]),
-                "The total density of communities after async fluid optimisations for c={}".format(
+                "The total density of communities after fluid optimisations for c={}".format(
                     num_comms
                 ),
                 InterpretabilityScore(3),
@@ -42,7 +42,7 @@ class CommunitiesAsyn(FeatureClass):
                 "ratio_density_c={}".format(num_comms),
                 lambda graph: np.min(eval_asyn(graph, num_comms)[1])
                 / np.max(eval_asyn(graph, num_comms)[1]),
-                "The ratio density of communities after async fluid optimisations for c={}".format(
+                "The ratio density of communities after fluid optimisations for c={}".format(
                     num_comms
                 ),
                 InterpretabilityScore(3),
@@ -51,11 +51,9 @@ class CommunitiesAsyn(FeatureClass):
             self.add_feature(
                 "len_most_dense_c={}".format(num_comms),
                 lambda graph: len(
-                    eval_asyn(graph, num_comms)[0][
-                        np.argmax(eval_asyn(graph, num_comms)[1])
-                    ]
+                    eval_asyn(graph, num_comms)[0][np.argmax(eval_asyn(graph, num_comms)[1])]
                 ),
-                "The length of the most dense community after async fluid optimisations for c={}".format(
+                "The length of the most dense community after fluid optimisations for c={}".format(
                     num_comms
                 ),
                 InterpretabilityScore(4),
@@ -64,11 +62,9 @@ class CommunitiesAsyn(FeatureClass):
             self.add_feature(
                 "len_least_dense_c={}".format(num_comms),
                 lambda graph: len(
-                    eval_asyn(graph, num_comms)[0][
-                        np.argmin(eval_asyn(graph, num_comms)[1])
-                    ]
+                    eval_asyn(graph, num_comms)[0][np.argmin(eval_asyn(graph, num_comms)[1])]
                 ),
-                "The length of the least dense community after async fluid optimisations for c={}".format(
+                "The length of the least dense community after fluid optimisations for c={}".format(
                     num_comms
                 ),
                 InterpretabilityScore(4),
@@ -78,9 +74,7 @@ class CommunitiesAsyn(FeatureClass):
             self.add_feature(
                 "partition_c={}".format(num_comms),
                 lambda graph: eval_asyn(graph, num_comms)[0],
-                "The optimal partition after async fluid optimisations for c={}".format(
-                    num_comms
-                ),
+                "The optimal partition after fluid optimisations for c={}".format(num_comms),
                 InterpretabilityScore(4),
                 statistics="clustering",
             )
@@ -138,9 +132,7 @@ def asyn_fluidc(
             if com_counter.keys():
                 max_freq = max(com_counter.values())
                 best_communities = [
-                    com
-                    for com, freq in com_counter.items()
-                    if (max_freq - freq) < 0.0001
+                    com for com, freq in com_counter.items() if (max_freq - freq) < 0.0001
                 ]
                 # If actual vertex com in best communities, it is preserved
                 try:

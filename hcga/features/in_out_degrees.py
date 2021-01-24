@@ -26,9 +26,7 @@ class InOutDegrees(FeatureClass):
 
         in_deg_n = lambda graph: [
             i / d
-            for i, d in zip(
-                list(dict(graph.in_degree).values()), list(dict(graph.degree).values())
-            )
+            for i, d in zip(list(dict(graph.in_degree).values()), list(dict(graph.degree).values()))
         ]
 
         self.add_feature(
