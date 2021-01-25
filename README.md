@@ -148,7 +148,7 @@ The simplest setup will be to install [Anaconda](https://docs.anaconda.com/anaco
 * [Mac users](https://docs.anaconda.com/anaconda/install/mac-os/). Perform the standard installation.
 * [Linux users](https://docs.anaconda.com/anaconda/install/linux/). Linux will often require dependencies depending on your Linux distribution - these are described in the link.
 
-Please update to the most recent version of Python. If you are using anaconda then type ```conda update python```.
+Please update to the most recent version of Python (>3.7). If you are using anaconda then type ```conda update python```.
 
 Once Anaconda is installed can download the *hcga* project. There are two ways to do this:
 1. Manually by clicking on the green Code button and downloading the zip file. Then unzip into your directory of choice.
