@@ -12,7 +12,7 @@ Networks are widely used as mathematical models of complex systems across many s
 
 For users that are not familiar with python and would like to use this code, we apologise that it isn't available in other languages. However, to help set you up with have provided a description of the steps required to setup python and its necessary dependencies if you scroll down to the bottom.
 
-Navigate to the main folder simply type:
+For experienced users please clone the repository, navigate to the main folder and install using:
 
 ```
 pip install .
@@ -148,6 +148,7 @@ The simplest setup will be to install [Anaconda](https://docs.anaconda.com/anaco
 * [Mac users](https://docs.anaconda.com/anaconda/install/mac-os/). Perform the standard installation.
 * [Linux users](https://docs.anaconda.com/anaconda/install/linux/). Linux will often require dependencies depending on your Linux distribution - these are described in the link.
 
+Please update to the most recent version of Python. If you are using anaconda then type ```conda update python```.
 
 Once Anaconda is installed can download the *hcga* project. There are two ways to do this:
 1. Manually by clicking on the green Code button and downloading the zip file. Then unzip into your directory of choice.
