@@ -1,10 +1,22 @@
 """Assortativity class."""
+from functools import partial
+
 import networkx as nx
 from networkx.algorithms import assortativity
 
 from ..feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Assortativity"
+
+
+def average_neighbor_degree(graph):
+    """Average neighbor degree."""
+    return list(assortativity.average_neighbor_degree(graph).values())
+
+
+def weigted_average_neighbor_degree(graph):
+    """Average neighbor degree."""
+    return list(assortativity.average_neighbor_degree(graph, weight="weight").values())
 
 
 class Assortativity(FeatureClass):
@@ -23,33 +35,30 @@ class Assortativity(FeatureClass):
         # Adding basic node and edge numbers
         self.add_feature(
             "degree_assortativity_coeff",
-            lambda graph: nx.degree_assortativity_coefficient(graph),
+            nx.degree_assortativity_coefficient,
             "Similarity of connections in the graph with respect to the node degree",
             InterpretabilityScore(4),
         )
         self.add_feature(
             "degree_assortativity_coeff_weighted",
-            lambda graph: nx.degree_assortativity_coefficient(graph, weight="weight"),
+            partial(nx.degree_assortativity_coefficient, weight="weight"),
             "Similarity of connections in the graph with respect to the node degree",
             InterpretabilityScore(4),
         )
 
         self.add_feature(
             "degree_assortativity_coeff_pearson",
-            lambda graph: nx.degree_pearson_correlation_coefficient(graph),
+            nx.degree_pearson_correlation_coefficient,
             "Similarity of connections in the graph with respect to the node degree",
             InterpretabilityScore(4),
         )
         self.add_feature(
             "degree_assortativity_coeff_pearson_weighted",
-            lambda graph: nx.degree_pearson_correlation_coefficient(graph, weight="weight"),
+            partial(nx.degree_pearson_correlation_coefficient, weight="weight"),
             "Similarity of connections in the graph with respect to the node degree",
             InterpretabilityScore(4),
         )
 
-        average_neighbor_degree = lambda graph: list(
-            assortativity.average_neighbor_degree(graph).values()
-        )
         self.add_feature(
             "degree assortativity",
             average_neighbor_degree,
@@ -57,12 +66,9 @@ class Assortativity(FeatureClass):
             InterpretabilityScore(4),
             statistics="centrality",
         )
-        average_neighbor_degree = lambda graph: list(
-            assortativity.average_neighbor_degree(graph, weight="weight").values()
-        )
         self.add_feature(
             "degree assortativity_weighted",
-            average_neighbor_degree,
+            weigted_average_neighbor_degree,
             "average neighbor degree",
             InterpretabilityScore(4),
             statistics="centrality",

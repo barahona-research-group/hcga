@@ -18,7 +18,7 @@ class Connectance(FeatureClass):
 
         self.add_feature(
             "connectance",
-            lambda graph: nx.density(graph),
+            nx.density,
             "ratio of number of edges to maximum possible number of edges",
             InterpretabilityScore(3),
         )

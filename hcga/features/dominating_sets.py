@@ -6,6 +6,21 @@ from ..feature_class import FeatureClass, InterpretabilityScore
 featureclass_name = "DominatingSets"
 
 
+def size_dominating_set(graph):
+    """size_dominating_set"""
+    return len(list(nx.dominating_set(graph)))
+
+
+def size_min_dominating_set(graph):
+    """size_min_dominating_set"""
+    return len(list(min_weighted_dominating_set(graph)))
+
+
+def size_min_edge_dominating_set(graph):
+    """size_min_edge_dominating_set"""
+    return len(list(min_edge_dominating_set(graph)))
+
+
 class DominatingSets(FeatureClass):
     """Dominating sets class.
 
@@ -22,21 +37,21 @@ class DominatingSets(FeatureClass):
 
         self.add_feature(
             "size_dominating_set",
-            lambda graph: len(list(nx.dominating_set(graph))),
+            size_dominating_set,
             "The number of nodes in the dominating set",
             InterpretabilityScore(3),
         )
 
         self.add_feature(
             "size_min_dominating_set",
-            lambda graph: len(list(min_weighted_dominating_set(graph))),
+            size_min_dominating_set,
             "The number of nodes in the minimum weighted dominating set",
             InterpretabilityScore(3),
         )
 
         self.add_feature(
             "size_min_edge_dominating_set",
-            lambda graph: len(list(min_edge_dominating_set(graph))),
+            size_min_edge_dominating_set,
             "The number of nodes in the minimum edge dominating set",
             InterpretabilityScore(3),
         )

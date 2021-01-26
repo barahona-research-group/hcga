@@ -8,6 +8,71 @@ from ..feature_class import FeatureClass, InterpretabilityScore
 featureclass_name = "Components"
 
 
+@lru_cache(maxsize=None)
+def eval_connected_components(graph):
+    """this evaluates the main function and cach it for speed up."""
+    return list(nx.connected_components(graph))
+
+
+def num_connected_components(graph):
+    """num_connected_components"""
+    return len(eval_connected_components(graph))
+
+
+def largest_connected_component(graph):
+    """largest_connected_components"""
+    return len(eval_connected_components(graph)[0])
+
+
+def ratio_largest(graph):
+    """ratio_largest"""
+    if len(eval_connected_components(graph)) == 1:
+        return 0
+    return len(eval_connected_components(graph)[0]) / len(eval_connected_components(graph)[1])
+
+
+def ratio_min_max(graph):
+    """ratio_min_max"""
+    if len(eval_connected_components(graph)) == 1:
+        return 0
+    return len(eval_connected_components(graph)[0]) / len(eval_connected_components(graph)[-1])
+
+
+def strongly_connected_component_sizes(graph):
+    """strongly_connected_component_sizes"""
+    return [len(i) for i in nx.strongly_connected_components(graph)]
+
+
+def condensation_nodes(graph):
+    """condensation_nodes"""
+    return nx.condensation(graph).number_of_nodes()
+
+
+def condensation_edges(graph):
+    """condensation_edges"""
+    return nx.condensation(graph).number_of_edges()
+
+
+def weakly_connected_component_sizes(graph):
+    """weakly_connected_component_sizes"""
+    return [len(i) for i in nx.weakly_connected_components(graph)]
+
+
+def attracting_component_sizes(graph):
+    """attracting_component_sizes"""
+    return [len(i) for i in nx.attracting_components(graph)]
+
+
+def number_basal_components(graph):
+    """number_basal_components"""
+    return nx.number_attracting_components(nx.reverse(graph))
+
+
+def basal_component_sizes(graph):
+    """basal_component_sizes"""
+    return [len(i) for i in nx.attracting_components(nx.reverse(graph))]
+
+
 class Components(FeatureClass):
     """Components class.
 
@@ -24,34 +89,23 @@ class Components(FeatureClass):
 
         self.add_feature(
             "is_connected",
-            lambda graph: nx.is_connected(graph) * 1,
+            nx.is_connected,
             "Whether the graph is connected or not",
             InterpretabilityScore(5),
         )
 
         self.add_feature(
             "num_connected_components",
-            lambda graph: len(list(nx.connected_components(graph))),
+            num_connected_components,
             "The number of connected components",
             InterpretabilityScore(5),
         )
-
-        @lru_cache(maxsize=None)
-        def eval_connectedcomponents(graph):
-            """this evaluates the main function and cach it for speed up."""
-            return list(nx.connected_components(graph))
-
         self.add_feature(
             "largest_connected_component",
-            lambda graph: len(eval_connectedcomponents(graph)[0]),
+            largest_connected_component,
             "The size of the largest connected component",
             InterpretabilityScore(4),
         )
-
-        def ratio_largest(graph):
-            if len(eval_connectedcomponents(graph)) == 1:
-                return 0
-            return len(eval_connectedcomponents(graph)[0]) / len(eval_connectedcomponents(graph)[1])
 
         self.add_feature(
             "ratio_largest_connected_components",
@@ -59,13 +113,6 @@ class Components(FeatureClass):
             "The size ratio of the two largest connected components",
             InterpretabilityScore(4),
         )
-
-        def ratio_min_max(graph):
-            if len(eval_connectedcomponents(graph)) == 1:
-                return 0
-            return len(eval_connectedcomponents(graph)[0]) / len(
-                eval_connectedcomponents(graph)[-1]
-            )
 
         self.add_feature(
             "ratio_maxmin_connected_components",
@@ -76,7 +123,7 @@ class Components(FeatureClass):
 
         self.add_feature(
             "number_strongly_connected_components",
-            lambda graph: nx.number_strongly_connected_components(graph),
+            nx.number_strongly_connected_components,
             "A strongly connected component is a set of nodes in a directed graph such \
             that each node in the set is reachable from any other node in that set",
             InterpretabilityScore(3),
@@ -84,7 +131,7 @@ class Components(FeatureClass):
 
         self.add_feature(
             "strongly_connected_component_sizes",
-            lambda graph: [len(i) for i in nx.strongly_connected_components(graph)],
+            strongly_connected_component_sizes,
             "the distribution of strongly connected component sizes",
             InterpretabilityScore(3),
             statistics="centrality",
@@ -92,21 +139,21 @@ class Components(FeatureClass):
 
         self.add_feature(
             "condensation_nodes",
-            lambda graph: nx.condensation(graph).number_of_nodes(),
+            condensation_nodes,
             "number of nodes in the condensation of the graph",
             InterpretabilityScore(3),
         )
 
         self.add_feature(
             "condensation_edges",
-            lambda graph: nx.condensation(graph).number_of_edges(),
+            condensation_edges,
             "number of edges in the condensation of the graph",
             InterpretabilityScore(3),
         )
 
         self.add_feature(
             "number_weakly_connected_components",
-            lambda graph: nx.number_weakly_connected_components(graph),
+            nx.number_weakly_connected_components,
             "A weakly connected component is a set of nodes in a directed graph such that \
             there exists as edge between each node and at least one other node in the set",
             InterpretabilityScore(3),
@@ -114,7 +161,7 @@ class Components(FeatureClass):
 
         self.add_feature(
             "weakly_connected_component_sizes",
-            lambda graph: [len(i) for i in nx.weakly_connected_components(graph)],
+            weakly_connected_component_sizes,
             "the distribution of weakly connected component sizes",
             InterpretabilityScore(3),
             statistics="centrality",
@@ -122,7 +169,7 @@ class Components(FeatureClass):
 
         self.add_feature(
             "number_attracting_components",
-            lambda graph: nx.number_attracting_components(graph),
+            nx.number_attracting_components,
             "An attracting component is a set of nodes in a directed graph such that that \
             once in that set, all other nodes outside that set are not reachable",
             InterpretabilityScore(3),
@@ -130,15 +177,15 @@ class Components(FeatureClass):
 
         self.add_feature(
             "attracting_component_sizes",
-            lambda graph: [len(i) for i in nx.attracting_components(graph)],
+            attracting_component_sizes,
             "the distribution of attracting component sizes",
             InterpretabilityScore(3),
             statistics="centrality",
         )
 
         self.add_feature(
-            "number basal_components",
-            lambda graph: nx.number_attracting_components(nx.reverse(graph)),
+            "number_basal_components",
+            number_basal_components,
             "An basal component is a set of nodes in a directed graph such that there are no \
             edges pointing into that set",
             InterpretabilityScore(3),
@@ -146,7 +193,7 @@ class Components(FeatureClass):
 
         self.add_feature(
             "basal_component_sizes",
-            lambda graph: [len(i) for i in nx.attracting_components(nx.reverse(graph))],
+            basal_component_sizes,
             "the distribution of basal component sizes",
             InterpretabilityScore(3),
             statistics="centrality",

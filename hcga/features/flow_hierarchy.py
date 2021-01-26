@@ -1,4 +1,6 @@
 """Flow hierarchy class."""
+from functools import partial
+
 import networkx as nx
 
 from ..feature_class import FeatureClass, InterpretabilityScore
@@ -19,14 +21,14 @@ class FlowHierarchy(FeatureClass):
         # graph clique number
         self.add_feature(
             "flow_hierarchy",
-            lambda graph: nx.flow_hierarchy(graph),
+            nx.flow_hierarchy,
             "fraction of edges not participating in cycles",
             InterpretabilityScore(3),
         )
 
         self.add_feature(
             "flow_hierarchy_weighted",
-            lambda graph: nx.flow_hierarchy(graph, weight="weight"),
+            partial(nx.flow_hierarchy, weight="weight"),
             "fraction of edges not participating in cycles",
             InterpretabilityScore(3),
         )

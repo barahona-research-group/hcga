@@ -7,6 +7,31 @@ from .utils import ensure_connected
 featureclass_name = "DistanceMeasures"
 
 
+def barycenter_size(graph):
+    """barycenter_size"""
+    return len(nx.barycenter(ensure_connected(graph)))
+
+
+def barycenter_size_weighted(graph):
+    """barycenter_size_weighted"""
+    return len(nx.barycenter(ensure_connected(graph, weight="weight")))
+
+
+def center_size(graph):
+    """center_size"""
+    return len(nx.center(ensure_connected(graph)))
+
+
+def periphery(graph):
+    """periphery"""
+    return len(nx.periphery(ensure_connected(graph)))
+
+
+def eccentricity(graph):
+    """eccentricity"""
+    return list(nx.eccentricity(ensure_connected(graph)).values())
+
+
 class DistanceMeasures(FeatureClass):
     """Distance Measures class."""
 
@@ -20,13 +45,13 @@ class DistanceMeasures(FeatureClass):
         # barycenter
         self.add_feature(
             "barycenter_size",
-            lambda graph: len(nx.barycenter(ensure_connected(graph))),
+            barycenter_size,
             "The barycenter is the subgraph which minimises a distance function",
             InterpretabilityScore(4),
         )
         self.add_feature(
             "barycenter_size_weighted",
-            lambda graph: len(nx.barycenter(ensure_connected(graph), weight="weight")),
+            barycenter_size_weighted,
             "The barycenter is the subgraph which minimises a distance function",
             InterpretabilityScore(4),
         )
@@ -34,7 +59,7 @@ class DistanceMeasures(FeatureClass):
         # center
         self.add_feature(
             "center_size",
-            lambda graph: len(nx.center(ensure_connected(graph))),
+            center_size,
             "The center is the subgraph of nodes with eccentricity equal to radius",
             InterpretabilityScore(3),
         )
@@ -42,7 +67,7 @@ class DistanceMeasures(FeatureClass):
         # extrema bounding
         self.add_feature(
             "center_size",
-            lambda graph: nx.extrema_bounding(ensure_connected(graph)),
+            ensure_connected(nx.extrema_bounding),
             "The largest distance in the graph",
             InterpretabilityScore(4),
         )
@@ -50,7 +75,7 @@ class DistanceMeasures(FeatureClass):
         # periphery
         self.add_feature(
             "periphery",
-            lambda graph: len(nx.periphery(ensure_connected(graph))),
+            periphery,
             "The number of peripheral nodes in the graph",
             InterpretabilityScore(4),
         )
@@ -58,7 +83,7 @@ class DistanceMeasures(FeatureClass):
         # eccentricity
         self.add_feature(
             "eccentricity",
-            lambda graph: list(nx.eccentricity(ensure_connected(graph)).values()),
+            eccentricity,
             "The distribution of node eccentricity across the network",
             InterpretabilityScore(3),
             statistics="centrality",

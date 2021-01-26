@@ -22,6 +22,17 @@ from hcga.utils import TimeoutError, get_trivial_graph, timeout_handler
 L = logging.getLogger(__name__)
 warnings.simplefilter("ignore")
 
+import dill
+
+
+def run_dill_encoded(payload, q_worker):
+    fun, args = dill.loads(payload)
+    return fun(*args, q_worker=q_worker)
+
+
+def _lemmiwinks(func, args, kwargs, q):
+    q.put(func(*args, **kwargs))
+
 
 class FeatureClass:
     """ Main functionality to be inherited by each feature class"""
@@ -178,18 +189,26 @@ class FeatureClass:
 
         if function_args is None:
             function_args = self.graph
+        import multiprocessing as mp
+        import multiprocessing.queues as mpq
 
+        q_worker = mp.Queue()
+        payload = dill.dumps((_lemmiwinks, (feature_function, function_args, {})))
+        proc = mp.Process(target=run_dill_encoded, args=(payload, q_worker))
+        proc.start()
         try:
-            signal.signal(signal.SIGALRM, timeout_handler)
-            signal.alarm(int(self.__class__.timeout))
             try:
-                feature = feature_function(function_args)
+                feature = q_worker.get(timeout=1000.0)
             except NetworkXNotImplemented:
                 if self.graph_type == "directed":
                     feature = feature_function(to_undirected(function_args))
             signal.alarm(0)
             return feature
 
+        except mpq.Empty:
+            proc.terminate()
+            print("Timeout!")
+            return None
         except (KeyboardInterrupt, SystemExit):
             sys.exit(0)
 

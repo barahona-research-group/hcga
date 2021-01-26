@@ -9,4 +9,4 @@ echo 'Extracting features'
 hcga extract_features datasets/$1.pkl -m fast -n 2 --timeout 1000
 
 echo 'Run classification'
-#hcga feature_analysis $1
+hcga feature_analysis $1
