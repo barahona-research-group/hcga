@@ -7,7 +7,13 @@ featureclass_name = "Covering"
 
 
 class Covering(FeatureClass):
-    """Covering class."""
+    """Covering class.
+
+    Features based on the minimum edge cover of a graph.
+
+    Uses networkx, see 'https://networkx.org/documentation/stable//reference/algorithms/covering.html
+
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "CV"

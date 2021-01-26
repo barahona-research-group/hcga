@@ -10,7 +10,16 @@ nodes which have out degree equal to zero
 
 
 class BasalNodes(FeatureClass):
-    """Basal nodes class."""
+    """Basal nodes class.
+
+    Basal nodes are nodes which have in degree equal to zero. Attracting nodes are
+    nodes which have out degree equal to zero
+
+    References
+    ----------
+    .. [1]Johnson, Samuel, and Nick S. Jones. "Looplessness in networks is linked to trophic coherence.",
+     Proceedings of the National Academy of Sciences 114.22 (2017): 5618-5623.
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "BN"

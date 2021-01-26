@@ -8,17 +8,27 @@ from .utils import ensure_connected, remove_selfloops
 
 featureclass_name = "RolesimilarityBasedComparison"
 
-"""
-Create the role-similarity based comparison (rbc) matrix for nodes in the network,
-then convert this to a graph and extract some features
-ref: https://arxiv.org/abs/1103.5582
-For some features we remove selfloops, since the diagonal of the rbc matrix
-consists of ones, and therefore all nodes will have a selfloop with weight one
-"""
 
 
 def rbc(graph):
-    """Rbc computation."""
+    """Rbc computation.
+
+    Features based on the role of a node in a directed network.
+
+    Create the role-similarity based comparison (rbc) matrix for nodes in the network,
+    then convert this to a graph and extract some features
+    ref: https://arxiv.org/abs/1103.5582
+    For some features we remove selfloops, since the diagonal of the rbc matrix
+    consists of ones, and therefore all nodes will have a selfloop with weight one
+
+    References
+    ----------
+    .. [1] Cooper, Kathryn, and Mauricio Barahona.
+        "Role-based similarity in directed networks."
+        arXiv preprint arXiv:1012.2726 (2010).
+
+
+    """
     a = np.where(nx.adj_matrix(graph).toarray() > 0, 1, 0)
     g = nx.DiGraph(a)
 

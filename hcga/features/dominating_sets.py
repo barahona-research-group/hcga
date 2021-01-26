@@ -9,8 +9,21 @@ featureclass_name = "DominatingSets"
 class DominatingSets(FeatureClass):
     """Dominating sets class.
 
+    Features based on dominating sets. Where  *dominating set* for a graph
+    with node set *V* is a subset *D* of
+    *V* such that every node not in *D* is adjacent to at least one
+    member of *D* [1]_.
+
     Uses networkx: `Networkx_dominating_set <https://networkx.github.io/documentation/\
         stable/reference/algorithms/dominating.html>`_
+
+    References
+    ----------
+    .. [1] https://en.wikipedia.org/wiki/Dominating_set
+
+    .. [2] Abdol-Hossein Esfahanian. Connectivity Algorithms.
+        http://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf
+
     """
 
     modes = ["fast", "medium", "slow"]

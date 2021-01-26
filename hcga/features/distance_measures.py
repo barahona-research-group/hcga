@@ -8,7 +8,12 @@ featureclass_name = "DistanceMeasures"
 
 
 class DistanceMeasures(FeatureClass):
-    """Distance Measures class."""
+    """Distance Measures class.
+
+    Calculates features based on distance measures.
+
+    Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/distance_measures.html`
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "DM"

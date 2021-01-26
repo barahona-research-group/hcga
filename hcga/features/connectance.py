@@ -7,7 +7,22 @@ featureclass_name = "Connectance"
 
 
 class Connectance(FeatureClass):
-    """Connectance class."""
+    """Connectance class.
+
+    Features based on the connectivity of the graph.
+
+    For now we compute only the density:
+    .. math::
+
+       d = \frac{2m}{n(n-1)},
+
+    and for directed graphs is
+
+    .. math::
+
+       d = \frac{m}{n(n-1)},
+
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "Cns"

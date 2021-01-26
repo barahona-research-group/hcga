@@ -9,8 +9,9 @@ featureclass_name = "Looplessness"
 
 
 def looplessness(graph):  # pylint: disable=too-many-locals
-    """
-    For definitions see: https://www.pnas.org/content/early/2017/05/15/1613786114
+    """ Looplessness measure class
+
+    Implements features based on graph looplessness [1]_.
 
     If a graph is bipartite, the trophic levels of all nodes is 1:
         Proof:
@@ -30,6 +31,12 @@ def looplessness(graph):  # pylint: disable=too-many-locals
     trophic coherence, expected branching factor and loop exponent are all 0:
         Proof:
             Nodes will either have 0 in degree or out degree. Results follows from this
+
+    References
+    ----------
+    .. [1]Johnson, Samuel, and Nick S. Jones. "Looplessness in networks is linked to trophic coherence.",
+     Proceedings of the National Academy of Sciences 114.22 (2017): 5618-5623.
+
     """
 
     n = graph.number_of_nodes()

@@ -7,7 +7,20 @@ featureclass_name = "Vitality"
 
 
 class Vitality(FeatureClass):
-    """Vitality class."""
+    """Vitality measures class.
+
+    Features based on the closeness vitality.
+    The *closeness vitality* of a node, defined in Section 3.6.2 of [1],
+    is the change in the sum of distances between all node pairs when
+    excluding that node.
+
+    References
+    ----------
+    .. [1] Ulrik Brandes, Thomas Erlebach (eds.).
+           *Network Analysis: Methodological Foundations*.
+           Springer, 2005.
+           <http://books.google.com/books?id=TTNhSm7HYrIC>
+    """
 
     modes = ["slow"]
     shortname = "V"

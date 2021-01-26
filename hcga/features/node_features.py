@@ -10,7 +10,24 @@ featureclass_name = "NodeFeatures"
 
 
 class NodeFeatures(FeatureClass):
-    """Node Features class."""
+    """Node Features class.
+
+    Features based on node features.
+
+    Here, we use the node features in various ways to compute new features.
+
+    1. Aggregate node features (ignores graph structure).
+    2. Convolute node features using message-passing, then aggregate (incorporates graph structure).
+
+    Graph convolutions follow a similar pattern to that of graph neural networks [1]_.
+
+    References
+    ----------
+    .. [1] Robert L. Peach,Alexis Arnaudon,Mauricio Barahona.
+           Semi-supervised classification on graphs using explicit diffusion dynamics,
+           Foundations of Data Science,2,1,19,33,2020-2-11,
+
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "NF"

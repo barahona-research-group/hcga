@@ -14,7 +14,20 @@ featureclass_name = "CommunitiesAsyn"
 
 
 class CommunitiesAsyn(FeatureClass):
-    """Communities Asyn class."""
+    """Communities Asyn class.
+
+    The asynchronous fluid communities algorithm is described in
+    [1]_. The algorithm is based on the simple idea of fluids interacting
+    in an environment, expanding and pushing each other. Its initialization is
+    random, so found communities may vary on different executions.
+    
+    References
+    ----------
+    .. [1] Parés F., Garcia-Gasulla D. et al. "Fluid Communities: A
+       Competitive and Highly Scalable Community Detection Algorithm".
+       [https://arxiv.org/pdf/1703.09307.pdf].
+
+    """
 
     modes = ["slow"]
     shortname = "CA"

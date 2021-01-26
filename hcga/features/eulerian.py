@@ -7,7 +7,21 @@ featureclass_name = "Eulerian"
 
 
 class Eulerian(FeatureClass):
-    """Eulerian Measures class."""
+    """Eulerian Measures class.
+
+    Features based on Eulerian circuits. An *Eulerian circuit* is a closed walk
+    that includes each edge of a graph exactly once.
+
+    Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/euler.html`
+
+    References
+    ----------
+    .. [1] J. Edmonds, E. L. Johnson.
+       Matching, Euler tours and the Chinese postman.
+       Mathematical programming, Volume 5, Issue 1 (1973), 111-114.
+    .. [2] https://en.wikipedia.org/wiki/Eulerian_path
+
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "EU"

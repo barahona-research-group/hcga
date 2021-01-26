@@ -14,6 +14,48 @@ class CentralitiesBasic(FeatureClass):
 
     Uses networkx, see 'https://networkx.github.io/documentation/stable/reference/\
         algorithms/centrality.html`
+
+    Here we implement:
+    Degree Centrality
+    Eigenvector Centrality [1]_[2]_
+    Closeness Centrality [3]_[4]_
+    Betweenness Centrality [5]_[6]_[7]_[8]_
+    Harmonic Centrality [9]_
+
+    References
+    ----------
+    .. [1] Phillip Bonacich.
+       "Power and Centrality: A Family of Measures."
+       *American Journal of Sociology* 92(5):1170–1182, 1986
+       <http://www.leonidzhukov.net/hse/2014/socialnetworks/papers/Bonacich-Centrality.pdf>
+    .. [2] Mark E. J. Newman.
+       *Networks: An Introduction.*
+       Oxford University Press, USA, 2010, pp. 169.
+    .. [3] Linton C. Freeman: Centrality in networks: I.
+       Conceptual clarification. Social Networks 1:215-239, 1979.
+       http://leonidzhukov.ru/hse/2013/socialnetworks/papers/freeman79-centrality.pdf
+    .. [4] pg. 201 of Wasserman, S. and Faust, K.,
+       Social Network Analysis: Methods and Applications, 1994,
+       Cambridge University Press.
+    .. [5] Ulrik Brandes:
+       A Faster Algorithm for Betweenness Centrality.
+       Journal of Mathematical Sociology 25(2):163-177, 2001.
+       http://www.inf.uni-konstanz.de/algo/publications/b-fabc-01.pdf
+    .. [6] Ulrik Brandes:
+       On Variants of Shortest-Path Betweenness
+       Centrality and their Generic Computation.
+       Social Networks 30(2):136-145, 2008.
+       http://www.inf.uni-konstanz.de/algo/publications/b-vspbc-08.pdf
+    .. [7] Ulrik Brandes and Christian Pich:
+       Centrality Estimation in Large Networks.
+       International Journal of Bifurcation and Chaos 17(7):2303-2318, 2007.
+       http://www.inf.uni-konstanz.de/algo/publications/bp-celn-06.pdf
+    .. [8] Linton C. Freeman:
+       A set of measures of centrality based on betweenness.
+       Sociometry 40: 35–41, 1977
+       http://moreno.ss.uci.edu/23.pdf
+    .. [9] Boldi, Paolo, and Sebastiano Vigna. "Axioms for centrality."
+           Internet Mathematics 10.3-4 (2014): 222-262.
     """
 
     modes = ["fast", "medium", "slow"]

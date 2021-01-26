@@ -11,7 +11,29 @@ featureclass_name = "RichClub"
 
 
 class RichClub(FeatureClass):
-    """Rich Club class."""
+    """Rich Club class.
+
+    Features based on the Rich Club of a graph.
+
+    For each degree *k*, the *rich-club coefficient* is the ratio of the
+    number of actual to the number of potential edges for nodes with
+    degree greater than *k*:
+
+    Rich club calculations using networkx:
+            `Rich club <https://networkx.org/documentation/stable/reference/algorithms/rich_club.html>`_
+
+    References
+    ----------
+    .. [1] Julian J. McAuley, Luciano da Fontoura Costa,
+       and Tibério S. Caetano,
+       "The rich-club phenomenon across complex network hierarchies",
+       Applied Physics Letters Vol 91 Issue 8, August 2007.
+       https://arxiv.org/abs/physics/0701290
+    .. [2] R. Milo, N. Kashtan, S. Itzkovitz, M. E. J. Newman, U. Alon,
+       "Uniform generation of random graphs with arbitrary degree
+       sequences", 2006. https://arxiv.org/abs/cond-mat/0312028
+
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "RC"

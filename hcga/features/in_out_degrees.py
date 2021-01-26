@@ -7,7 +7,11 @@ featureclass_name = "InOutDegrees"
 
 
 class InOutDegrees(FeatureClass):
-    """In Out degrees class."""
+    """In Out degrees class.
+
+    Features based on the in and out degrees of directed networks.
+
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "IOD"

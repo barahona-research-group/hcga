@@ -9,7 +9,27 @@ featureclass_name = "CommunitiesModularity"
 
 
 class CommunitiesModularity(FeatureClass):
-    """Communities Modularity propagation class."""
+    """Communities Modularity propagation class.
+
+    Features based on the community detection using modularity.
+
+    Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/community.html`
+
+    Find communities in graph using Clauset-Newman-Moore greedy modularity maximization.
+    This method currently supports the Graph class and does not consider edge weights.
+
+    Greedy modularity maximization begins with each node in its own community and joins
+    the pair of communities that most increases modularity until no such pair exists.
+
+    References
+    ----------
+    .. [1] M. E. J Newman 'Networks: An Introduction', page 224
+       Oxford University Press 2011.
+    .. [2] Clauset, A., Newman, M. E., & Moore, C.
+       "Finding community structure in very large networks."
+       Physical Review E 70(6), 2004.
+
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "CM"
