@@ -6,6 +6,11 @@ from ..feature_class import FeatureClass, InterpretabilityScore
 featureclass_name = "IndependentSets"
 
 
+def size_max_indep_set(graph):
+    """size_max_indep_set"""
+    return len(nx.maximal_independent_set(graph))
+
+
 class IndependentSets(FeatureClass):
     """Independent sets class."""
 
@@ -18,7 +23,7 @@ class IndependentSets(FeatureClass):
 
         self.add_feature(
             "size_max_indep_set",
-            lambda graph: len(nx.maximal_independent_set(graph)),
+            size_max_indep_set,
             "The number of nodes in the maximal independent set",
             InterpretabilityScore(3),
         )

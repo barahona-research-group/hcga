@@ -19,7 +19,7 @@ class Reciprocity(FeatureClass):
         # graph clique number
         self.add_feature(
             "reciprocity",
-            lambda graph: nx.overall_reciprocity(graph),
+            nx.overall_reciprocity,
             "fraction of edges pointing in both directions to total number of edges",
             InterpretabilityScore(3),
         )

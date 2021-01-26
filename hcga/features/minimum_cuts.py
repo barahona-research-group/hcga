@@ -7,6 +7,18 @@ from .utils import ensure_connected
 featureclass_name = "MinimumCuts"
 
 
+@ensure_connected
+def min_node_cut_size(graph):
+    """min_node_cut_size"""
+    return len(nx.minimum_node_cut(graph))
+
+
+@ensure_connected
+def min_edge_cut_size(graph):
+    """min_node_cut_size"""
+    return len(nx.minimum_edge_cut(graph))
+
+
 class MinimumCuts(FeatureClass):
     """Minimum cuts class.
 
@@ -23,15 +35,15 @@ class MinimumCuts(FeatureClass):
     def compute_features(self):
 
         self.add_feature(
-            "min_node_cut_size'",
-            lambda graph: len(nx.minimum_node_cut(ensure_connected(graph))),
+            "min_node_cut_size",
+            min_node_cut_size,
             "Minimum node cut size",
             InterpretabilityScore("max"),
         )
 
         self.add_feature(
-            "min_edge_cut_size'",
-            lambda graph: len(nx.minimum_edge_cut(ensure_connected(graph))),
+            "min_edge_cut_size",
+            min_edge_cut_size,
             "Minimum edge cut size",
             InterpretabilityScore("max"),
         )

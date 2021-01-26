@@ -7,6 +7,11 @@ from .utils import ensure_connected
 featureclass_name = "NodeCliqueNumber"
 
 
+def clique_sizes(graph):
+    """clique_sizes"""
+    return list(clique.node_clique_number(ensure_connected(graph)).values())
+
+
 class NodeCliqueNumber(FeatureClass):
     """Node clique number class.
 
@@ -23,8 +28,8 @@ class NodeCliqueNumber(FeatureClass):
     def compute_features(self):
 
         self.add_feature(
-            "clique sizes",
-            lambda graph: list(clique.node_clique_number(ensure_connected(graph)).values()),
+            "clique_sizes",
+            clique_sizes,
             "the distribution of clique sizes",
             InterpretabilityScore(3),
             statistics="centrality",

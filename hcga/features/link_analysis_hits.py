@@ -7,6 +7,12 @@ from .utils import ensure_connected
 featureclass_name = "Hits"
 
 
+@ensure_connected
+def hits(graph):
+    h, _ = nx.hits_numpy(graph)
+    return list(h.values())
+
+
 class Hits(FeatureClass):
     """HITS hubs class.
 
@@ -22,10 +28,6 @@ class Hits(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        def hits(graph):
-            h, _ = nx.hits_numpy(ensure_connected(graph))
-            return list(h.values())
-
         self.add_feature(
             "Hits",
             hits,

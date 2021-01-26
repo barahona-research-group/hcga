@@ -7,6 +7,18 @@ from ..feature_class import FeatureClass, InterpretabilityScore
 featureclass_name = "NodeConnectivity"
 
 
+def node_conn(graph):
+    # calculating node connectivity
+    node_connectivity = nx.all_pairs_node_connectivity(graph)
+    N = graph.number_of_nodes()
+
+    node_conn = np.zeros([N, N])
+    for key1, value1 in node_connectivity.items():
+        for key2, value2 in value1.items():
+            node_conn[key1, key2] = value2
+    return list(np.triu(node_conn).flatten())
+
+
 class NodeConnectivity(FeatureClass):
     """Node connectivity class.
 
@@ -21,16 +33,6 @@ class NodeConnectivity(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        def node_conn(graph):
-            # calculating node connectivity
-            node_connectivity = nx.all_pairs_node_connectivity(graph)
-            N = graph.number_of_nodes()
-
-            node_conn = np.zeros([N, N])
-            for key1, value1 in node_connectivity.items():
-                for key2, value2 in value1.items():
-                    node_conn[key1, key2] = value2
-            return list(np.triu(node_conn).flatten())
 
         self.add_feature(
             "node_conn",
@@ -59,13 +61,3 @@ class NodeConnectivity(FeatureClass):
             "Edge connectivity",
             InterpretabilityScore("max") - 1,
         )
-
-        # calculate the wiener index
-
-
-#        self.add_feature(
-#            "wiener_index",
-#            nx.wiener_index,
-#            "Wiener index",
-#            InterpretabilityScore("max") - 1,
-#        )

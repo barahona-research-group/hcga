@@ -6,6 +6,11 @@ from ..feature_class import FeatureClass, InterpretabilityScore
 featureclass_name = "MaximalMatching"
 
 
+def maximal_matching(graph):
+    """maximal_matching"""
+    return len(nx.maximal_matching(graph))
+
+
 class MaximalMatching(FeatureClass):
     """Maximal matching class.
 
@@ -23,7 +28,7 @@ class MaximalMatching(FeatureClass):
 
         self.add_feature(
             "maximal_matching",
-            lambda graph: len(nx.maximal_matching(graph)),
+            maximal_matching,
             "Maximal matching",
             InterpretabilityScore(4),
         )

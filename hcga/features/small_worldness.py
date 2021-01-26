@@ -24,7 +24,7 @@ class SmallWorldness(FeatureClass):
         # omega metric
         self.add_feature(
             "omega",
-            lambda graph: nx.omega(graph),
+            nx.omega,
             "The small world coefficient omega",
             InterpretabilityScore(4),
         )

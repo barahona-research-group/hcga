@@ -11,6 +11,55 @@ featureclass_name = "ShortestPaths"
 # pylint: disable=no-value-for-parameter
 
 
+@lru_cache(maxsize=None)
+def eval_shortest_paths(graph):
+    """eval_shortest_paths"""
+    return nx.shortest_path(graph)
+
+
+def largest_shortest_path(graph):
+    return [
+        len(list(eval_shortest_paths(graph)[u].values())[-1]) for u in eval_shortest_paths(graph)
+    ]
+
+
+def mean_shortest_path(graph):
+    return [
+        np.mean([len(k) for k in list(eval_shortest_paths(graph)[u].values())])
+        for u in eval_shortest_paths(graph)
+    ]
+
+
+@lru_cache
+def shortest_paths(graph):
+    ss = list(nx.all_pairs_dijkstra_path_length(graph))
+    p = []
+    for s in ss:
+        p += list(s[1].values())
+    return [j for j in p if j > 0]
+
+
+def number_shortest_paths_directed(graph):
+    return len(shortest_paths(graph))
+
+
+@lru_cache(maxsize=None)
+def eccentricity(graph):
+    ss = list(nx.all_pairs_dijkstra_path_length(graph))
+    p = []
+    for s in ss:
+        p.append(max(list(s[1].values())))
+    return p
+
+
+def diameter_directed(graph):
+    return max(eccentricity(graph))
+
+
+def radius_directed(graph):
+    min(eccentricity(graph))
+
+
 class ShortestPaths(FeatureClass):
     """Shortest paths class."""
 
@@ -20,15 +69,8 @@ class ShortestPaths(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        @lru_cache(maxsize=None)
-        def eval_shortest_paths(graph):
-            return nx.shortest_path(graph)
 
         # the longest path for each node
-        largest_shortest_path = lambda graph: [
-            len(list(eval_shortest_paths(graph)[u].values())[-1])
-            for u in eval_shortest_paths(graph)
-        ]
         self.add_feature(
             "largest_shortest_path",
             largest_shortest_path,
@@ -39,10 +81,6 @@ class ShortestPaths(FeatureClass):
         )
 
         # the mean shortest path for each node
-        mean_shortest_path = lambda graph: [
-            np.mean([len(k) for k in list(eval_shortest_paths(graph)[u].values())])
-            for u in eval_shortest_paths(graph)
-        ]
         self.add_feature(
             "mean_shortest_path",
             mean_shortest_path,
@@ -51,39 +89,23 @@ class ShortestPaths(FeatureClass):
             InterpretabilityScore(3),
             statistics="centrality",
         )
-
-        def shortest_paths(graph):
-            ss = list(nx.all_pairs_dijkstra_path_length(graph))
-            p = []
-            for s in ss:
-                p += list(s[1].values())
-            return [j for j in p if j > 0]
-
         self.add_feature(
             "number_shortest_paths_directed",
-            lambda graph: len(shortest_paths(graph)),
+            number_shortest_paths_directed,
             "the number of shortest paths (not counting paths of infinite length)",
             InterpretabilityScore(3),
         )
 
         self.add_feature(
             "shortest_paths_length_directed",
-            lambda graph: shortest_paths(graph),
+            shortest_paths,
             "the number of shortest path lengths (not counting paths of infinite length)",
             InterpretabilityScore(3),
             statistics="centrality",
         )
-
-        def eccentricity(graph):
-            ss = list(nx.all_pairs_dijkstra_path_length(graph))
-            p = []
-            for s in ss:
-                p.append(max(list(s[1].values())))
-            return p
-
         self.add_feature(
             "eccentricity_directed",
-            lambda graph: eccentricity(graph),
+            eccentricity,
             "the ditribution of eccentricities (not counting paths of infinite length)",
             InterpretabilityScore(3),
             statistics="centrality",
@@ -91,14 +113,14 @@ class ShortestPaths(FeatureClass):
 
         self.add_feature(
             "diameter_directed",
-            lambda graph: max(eccentricity(graph)),
+            diameter_directed,
             "the diameter of the graph (not counting paths of infinite length)",
             InterpretabilityScore(3),
         )
 
         self.add_feature(
             "radius_directed",
-            lambda graph: min(eccentricity(graph)),
+            radius_directed,
             "the radius of the graph (not counting paths of infinite length)",
             InterpretabilityScore(3),
         )

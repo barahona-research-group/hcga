@@ -40,7 +40,7 @@ def len_least_dense(graph, num_comms):
 
 def partitions(graph, num_comms):
     """partitions"""
-    lambda graph: eval_asyn(graph, num_comms)[0]
+    return eval_asyn(graph, num_comms)[0]
 
 
 class CommunitiesAsyn(FeatureClass):

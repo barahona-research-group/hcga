@@ -8,14 +8,14 @@ featureclass_name = "Nestedness"
 "A graph has a nested structure when smaller components contain a subset of larger components"
 
 
-def nestedness_func(g):
+def nestedness(graph):
     """Compute nestedness."""
-    n = nx.number_of_nodes(g)
-    nodes = list(g.nodes())
+    n = nx.number_of_nodes(graph)
+    nodes = list(graph.nodes())
     neighbors = [0 for i in range(n)]
 
     for i, j in enumerate(nodes):
-        neighbors[i] = set(g.neighbors(j))
+        neighbors[i] = set(graph.neighbors(j))
 
     sum_n_ij = 0
     sum_n_m = 0
@@ -43,7 +43,7 @@ class Nestedness(FeatureClass):
 
         self.add_feature(
             "nestedness",
-            lambda graph: nestedness_func(graph),
+            nestedness,
             "A measure of the nested structure of the network",
             InterpretabilityScore(3),
         )
