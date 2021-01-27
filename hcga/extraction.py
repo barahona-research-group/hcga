@@ -2,12 +2,15 @@
 import logging
 import time
 from collections import defaultdict
+from functools import partial
 from importlib import import_module
 from pathlib import Path
-import multiprocessing as mp
 
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
+
+from hcga.utils import NestedPool
 
 L = logging.getLogger(__name__)
 
@@ -155,21 +158,22 @@ def get_list_feature_classes(
         levels=[[], []], codes=[[], []], names=["feature_class", "feature_name"]
     )
     feature_info_df = pd.DataFrame(columns=column_indexes)
-    for f_name in feature_path.glob("*.py"):
-        feature_name = f_name.stem
-        if feature_name not in non_feature_files:
-            feature_class = _load_feature_class(feature_name)
-            if mode in feature_class.modes or mode == "all":
-                list_feature_classes.append(feature_class)
-                # runs once update_feature with trivial graph to create class variables
-                features_info = feature_class.setup_class(
-                    normalize_features=normalize_features,
-                    statistics_level=statistics_level,
-                    n_node_features=n_node_features,
-                    timeout=timeout,
-                )
-                columns = [(feature_class.shortname, col) for col in features_info.columns]
-                feature_info_df[columns] = features_info
+    feature_names = [
+        _f.stem for _f in feature_path.glob("*.py") if _f.stem not in non_feature_files
+    ]
+    for feature_name in tqdm(feature_names):
+        feature_class = _load_feature_class(feature_name)
+        if mode in feature_class.modes or mode == "all":
+            list_feature_classes.append(feature_class)
+            # runs once update_feature with trivial graph to create class variables
+            features_info = feature_class.setup_class(
+                normalize_features=normalize_features,
+                statistics_level=statistics_level,
+                n_node_features=n_node_features,
+                timeout=timeout,
+            )
+            columns = [(feature_class.shortname, col) for col in features_info.columns]
+            feature_info_df[columns] = features_info
 
     return list_feature_classes, feature_info_df
 
@@ -196,7 +200,7 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
         if with_runtimes:
             start_time = time.time()
 
-        feat_class_inst = feature_class(graph, mp=mp)
+        feat_class_inst = feature_class(graph)
         features = pd.DataFrame(feat_class_inst.get_features(), index=[graph.id])
         columns = [(feat_class_inst.shortname, col) for col in features.columns]
         features_df[columns] = features
@@ -233,20 +237,18 @@ def compute_all_features(
     if with_runtimes:
         n_workers = 1
 
-    # for graph in graphs:
-    #    res = feature_extraction(
-    #        graph,
-    #        list_feature_classes=list_feature_classes,
-    #        with_runtimes=with_runtimes)
-
-    from joblib import Parallel, delayed
-
-    results = Parallel(n_workers, verbose=10)(
-        delayed(feature_extraction)(
-            graph,
-            list_feature_classes=list_feature_classes,
-            with_runtimes=with_runtimes,
+    with NestedPool(n_workers) as pool:
+        return pd.concat(
+            tqdm(
+                pool.imap(
+                    partial(
+                        feature_extraction,
+                        list_feature_classes=list_feature_classes,
+                        with_runtimes=with_runtimes,
+                    ),
+                    graphs,
+                    chunksize=max(1, int(len(graphs) / n_workers)),
+                ),
+                total=len(graphs),
+            )
         )
-        for graph in graphs[:2]
-    )
-    return pd.concat(results)

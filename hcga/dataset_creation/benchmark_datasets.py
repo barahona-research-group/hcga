@@ -8,9 +8,8 @@ import numpy as np
 import pandas as pd
 import wget
 
-from hcga.graph import Graph, GraphCollection
-
 from hcga.dataset_creation.io import save_dataset
+from hcga.graph import Graph, GraphCollection
 
 
 def unzip(zip_filename):

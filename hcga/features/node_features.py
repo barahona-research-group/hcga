@@ -26,7 +26,7 @@ def conv_node_feature(graph):
 
 
 def conv2_node_feature(graph):
-    return (np.linalg.matrix_power(get_conv_matrix(graph), 2).dot(get_feature_matrix(graph)),)
+    return np.linalg.matrix_power(get_conv_matrix(graph), 2).dot(get_feature_matrix(graph))
 
 
 def mean_node_features_featurewise(graph):

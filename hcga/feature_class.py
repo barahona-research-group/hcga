@@ -6,9 +6,10 @@ The functions here are necessary to evaluate each individual feature found insid
 
 """
 import logging
-from functools import partial
 import sys
+import traceback
 import warnings
+from functools import partial
 
 import numpy as np
 import pandas as pd
@@ -17,24 +18,10 @@ from networkx import to_undirected
 from networkx.algorithms.community import quality
 from networkx.exception import NetworkXNotImplemented
 
-from hcga.utils import TimeoutError, get_trivial_graph, timeout_handler, _eval
+from hcga.utils import TimeoutError, get_trivial_graph, timeout_eval
 
 L = logging.getLogger(__name__)
 warnings.simplefilter("ignore")
-
-
-def _eval2(feature_function, function_args, timeout):
-
-    import pebble
-
-    with pebble.ProcessPool(max_workers=1, max_tasks=1) as pool:
-        tasks = pool.schedule(feature_function, (function_args,), timeout=timeout)
-        feature = tasks.result()
-        print("feeat", feature)
-
-
-def _trivial(graph):
-    return 0
 
 
 def _feat_N(graph, features):
@@ -58,7 +45,7 @@ class FeatureClass:
     encoding = None
     normalize_features = True
     with_node_features = False
-    timeout = 10
+    timeout = None
 
     # Feature descriptions as class variable
     feature_descriptions = {}
@@ -122,15 +109,17 @@ class FeatureClass:
         cls.normalize_features = normalize_features
         cls.statistics_level = statistics_level
         cls.n_node_features = n_node_features
-        cls.timeout = timeout
 
         inst = cls(get_trivial_graph(n_node_features=n_node_features))
         features = inst.get_features(all_features=True)
+
         feature_info = pd.DataFrame()
         for feature in features:
             feat_info = inst.get_feature_info(feature)
             feature_info[feature] = pd.Series(feat_info)
 
+        # we set the timeout only for real computation for setup speed up
+        cls.timeout = timeout
         return feature_info
 
     def get_info(self):
@@ -201,19 +190,17 @@ class FeatureClass:
 
         if function_args is None:
             function_args = self.graph
-        from concurrent.futures import TimeoutError
 
         try:
             try:
-                # feature = feature_function(function_args)
-                # feature = _eval2(feature_function,function_args, timeout=1)
-                feature = _eval(feature_function, (function_args,), timeout=100, mp=self.mp)
+                feature = timeout_eval(feature_function, (function_args,), timeout=self.timeout)
             except NetworkXNotImplemented:
                 if self.graph_type == "directed":
-                    feature = _eval(
-                        feature_function, (to_undirected(function_args),), timeout=1, mp=self.mp
+                    feature = timeout_eval(
+                        feature_function, (to_undirected(function_args),), timeout=self.timeout
                     )
-            return feature
+                else:
+                    return None
 
         except (KeyboardInterrupt, SystemExit):
             sys.exit(0)
@@ -226,19 +213,20 @@ class FeatureClass:
                 str(self.timeout),
             )
             return None
-        except Exception as exc:  # pylint: disable=broad-except
-            import traceback, sys
-
+        except Exception:  # pylint: disable=broad-except
             exception = "".join(traceback.format_exception(*sys.exc_info()))
-            print(exception)
             if self.graph_id != -10:
-                L.warning(
+                L.debug(
                     "Failed feature %s for graph %d with exception: %s",
                     feature_name,
                     self.graph_id,
-                    str(exc),
+                    str(exception),
                 )
             return None
+
+        if feature is None:
+            return None
+
         if statistics == "clustering":
             if not isinstance(feature, list):
                 raise Exception(
@@ -271,6 +259,7 @@ class FeatureClass:
                         feature,
                     )
                 )
+        return feature
 
     def add_feature(  # pylint: disable=inconsistent-return-statements
         self,
@@ -346,7 +335,7 @@ class FeatureClass:
 
         This function should be used by each specific feature class to add new features.
         """
-        self.add_feature("test", _trivial, "Test feature for the base feature class", 5)
+        self.add_feature("test", lambda graph: 0, "Test feature for the base feature class", 5)
 
     def get_features(self, all_features=False):
         """Compute all the possible features."""

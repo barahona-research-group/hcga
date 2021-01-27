@@ -19,7 +19,7 @@ consists of ones, and therefore all nodes will have a selfloop with weight one
 """
 
 
-#@lru_cache(maxsize=None)
+# @lru_cache(maxsize=None)
 def rbc(graph):
     """Rbc computation."""
     a = np.where(nx.adj_matrix(graph).toarray() > 0, 1, 0)
@@ -61,7 +61,7 @@ def number_of_edges_no_selfloops(graph):
 
 
 def connectance(graph):
-    return 0# nx.density(rbc(graph))
+    return 0  # nx.density(rbc(graph))
 
 
 @ensure_connected
