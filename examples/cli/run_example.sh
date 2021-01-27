@@ -6,7 +6,7 @@ export OMP_NUM_THREADS=1  # set to one to prevent numpy to run in parallel
 #hcga get_data $1
 
 echo 'Extracting features'
-hcga extract_features datasets/$1.pkl -m fast -n 2 --timeout 1000
+hcga extract_features datasets/$1.pkl -m fast -n 10 --timeout 1.0
 
 #echo 'Run classification'
 #hcga feature_analysis $1

@@ -30,7 +30,7 @@ def mean_shortest_path(graph):
     ]
 
 
-@lru_cache
+@lru_cache(maxsize=None)
 def shortest_paths(graph):
     ss = list(nx.all_pairs_dijkstra_path_length(graph))
     p = []

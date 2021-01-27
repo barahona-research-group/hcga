@@ -6,6 +6,7 @@ from hcga.features.utils import ensure_connected
 
 featureclass_name = "NodeCliqueNumber"
 
+
 @ensure_connected
 def clique_sizes(graph):
     """clique_sizes"""

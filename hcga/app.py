@@ -76,7 +76,7 @@ def cli():
     show_default=True,
     help="Level of statistical features (basic, medium, advanced)",
 )
-@click.option("--timeout", default=10, show_default=True, help="Timeout for feature evaluations.")
+@click.option("--timeout", default=10.0, show_default=True, help="Timeout for feature evaluations.")
 @click.option(
     "-of",
     "--output-file",

@@ -6,25 +6,30 @@ from hcga.features.utils import ensure_connected
 
 featureclass_name = "DistanceMeasures"
 
+
 @ensure_connected
 def barycenter_size(graph):
     """barycenter_size"""
     return len(nx.barycenter(graph))
+
 
 @ensure_connected
 def barycenter_size_weighted(graph):
     """barycenter_size_weighted"""
     return len(nx.barycenter(graph, weight="weight"))
 
+
 @ensure_connected
 def center_size(graph):
     """center_size"""
     return len(nx.center(graph))
 
+
 @ensure_connected
 def periphery(graph):
     """periphery"""
     return len(nx.periphery(graph))
+
 
 @ensure_connected
 def eccentricity(graph):

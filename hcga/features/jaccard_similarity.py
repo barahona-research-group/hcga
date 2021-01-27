@@ -57,7 +57,7 @@ def number_of_edges(graph):
 
 def number_of_edges_no_selfloops(graph):
     """number_of_edges_no_selfloops"""
-    return (remove_selfloops(jaccard_similarity(graph)).number_of_edges(),)
+    return remove_selfloops(jaccard_similarity(graph)).number_of_edges()
 
 
 def connectance(graph):
