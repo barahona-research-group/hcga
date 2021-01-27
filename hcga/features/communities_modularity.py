@@ -3,7 +3,7 @@ from functools import lru_cache, partial
 
 from networkx.algorithms.community import greedy_modularity_communities
 
-from ..feature_class import FeatureClass, InterpretabilityScore
+from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "CommunitiesModularity"
 

@@ -5,7 +5,7 @@ import networkx as nx
 import numpy as np
 import sympy as sp
 
-from ..feature_class import FeatureClass, InterpretabilityScore
+from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Looplessness"
 

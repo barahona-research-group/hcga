@@ -4,7 +4,7 @@ from functools import lru_cache
 import networkx as nx
 import numpy as np
 
-from ..feature_class import FeatureClass, InterpretabilityScore
+from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "CycleBasis"
 

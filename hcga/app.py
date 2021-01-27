@@ -104,8 +104,8 @@ def extract_features(
     connected,
 ):
     """Extract features from dataset of graphs and save the feature matrix, info and labels."""
-    from .extraction import extract
-    from .io import load_dataset, save_features
+    from hcga.extraction import extract
+    from hcga.io import load_dataset, save_features
 
     graphs = load_dataset(dataset)
 
@@ -285,17 +285,17 @@ def generate_data(dataset_name, folder):
         https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets
     """
     if dataset_name.split("_")[0] == "SYNTH":
-        from .dataset_creation import make_synthetic
+        from hcga.dataset_creation import make_synthetic
 
         make_synthetic(folder=folder, graph_type=dataset_name.split("_")[1])
 
     elif dataset_name == "TESTDATA":
         L.info("--- Building test dataset and creating pickle ---")
-        from .dataset_creation import make_test_dataset
+        from hcga.dataset_creation import make_test_dataset
 
         make_test_dataset(folder=folder)
     else:
         L.info("---Downloading and creating pickle for %s ---", dataset_name)
-        from .dataset_creation import make_benchmark_dataset
+        from hcga.dataset_creation import make_benchmark_dataset
 
         make_benchmark_dataset(dataset_name=dataset_name, folder=folder)

@@ -1,7 +1,7 @@
 """Vitality class."""
 import networkx as nx
 
-from ..feature_class import FeatureClass, InterpretabilityScore
+from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Vitality"
 

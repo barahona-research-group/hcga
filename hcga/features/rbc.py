@@ -5,8 +5,8 @@ import networkx as nx
 import numpy as np
 from sklearn.preprocessing import normalize
 
-from ..feature_class import FeatureClass, InterpretabilityScore
-from .utils import ensure_connected, remove_selfloops
+from hcga.feature_class import FeatureClass, InterpretabilityScore
+from hcga.features.utils import ensure_connected, remove_selfloops
 
 featureclass_name = "RolesimilarityBasedComparison"
 
@@ -19,7 +19,7 @@ consists of ones, and therefore all nodes will have a selfloop with weight one
 """
 
 
-@lru_cache(maxisize=None)
+#@lru_cache(maxsize=None)
 def rbc(graph):
     """Rbc computation."""
     a = np.where(nx.adj_matrix(graph).toarray() > 0, 1, 0)
@@ -61,7 +61,7 @@ def number_of_edges_no_selfloops(graph):
 
 
 def connectance(graph):
-    return nx.density(rbc(graph))
+    return 0# nx.density(rbc(graph))
 
 
 @ensure_connected

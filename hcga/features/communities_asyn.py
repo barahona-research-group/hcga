@@ -7,8 +7,8 @@ from networkx.algorithms.components import is_connected
 from networkx.exception import NetworkXError
 from networkx.utils import groups, py_random_state
 
-from ..feature_class import FeatureClass, InterpretabilityScore
-from . import utils
+from hcga.feature_class import FeatureClass, InterpretabilityScore
+from hcga.features.utils import ensure_connected
 
 featureclass_name = "CommunitiesAsyn"
 
@@ -16,7 +16,7 @@ featureclass_name = "CommunitiesAsyn"
 @lru_cache(maxsize=None)
 def eval_asyn(graph, num_comms):
     """this evaluates the main function and cach it for speed up."""
-    return asyn_fluidc(utils.ensure_connected(graph), int(num_comms))
+    return ensure_connected(asyn_fluidc)(graph, int(num_comms))
 
 
 def sum_density(graph, num_comms):

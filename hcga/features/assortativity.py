@@ -4,7 +4,7 @@ from functools import partial
 import networkx as nx
 from networkx.algorithms import assortativity
 
-from ..feature_class import FeatureClass, InterpretabilityScore
+from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Assortativity"
 

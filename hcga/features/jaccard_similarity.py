@@ -4,8 +4,8 @@ from functools import lru_cache
 import networkx as nx
 import numpy as np
 
-from ..feature_class import FeatureClass, InterpretabilityScore
-from .utils import ensure_connected, remove_selfloops
+from hcga.feature_class import FeatureClass, InterpretabilityScore
+from hcga.features.utils import ensure_connected, remove_selfloops
 
 featureclass_name = "JaccardSimilarity"
 

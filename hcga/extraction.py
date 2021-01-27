@@ -4,6 +4,7 @@ import time
 from collections import defaultdict
 from importlib import import_module
 from pathlib import Path
+import multiprocessing as mp
 
 import numpy as np
 import pandas as pd
@@ -63,7 +64,6 @@ def extract(
         n_node_features=n_node_features,
         timeout=timeout,
     )
-
     if with_runtimes:
         L.info(
             "Runtime option enable, we will only use 10 graphs and one worker to estimate \
@@ -196,7 +196,7 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
         if with_runtimes:
             start_time = time.time()
 
-        feat_class_inst = feature_class(graph)
+        feat_class_inst = feature_class(graph, mp=mp)
         features = pd.DataFrame(feat_class_inst.get_features(), index=[graph.id])
         columns = [(feat_class_inst.shortname, col) for col in features.columns]
         features_df[columns] = features
@@ -233,6 +233,12 @@ def compute_all_features(
     if with_runtimes:
         n_workers = 1
 
+    # for graph in graphs:
+    #    res = feature_extraction(
+    #        graph,
+    #        list_feature_classes=list_feature_classes,
+    #        with_runtimes=with_runtimes)
+
     from joblib import Parallel, delayed
 
     results = Parallel(n_workers, verbose=10)(
@@ -241,6 +247,6 @@ def compute_all_features(
             list_feature_classes=list_feature_classes,
             with_runtimes=with_runtimes,
         )
-        for graph in graphs
+        for graph in graphs[:2]
     )
     return pd.concat(results)

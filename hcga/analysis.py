@@ -16,8 +16,8 @@ from sklearn.model_selection import RepeatedKFold, RepeatedStratifiedKFold, Shuf
 from sklearn.preprocessing import StandardScaler
 from tqdm import tqdm
 
-from .io import load_fitted_model, save_fitted_model
-from .plotting import plot_analysis, plot_prediction
+from hcga.io import load_fitted_model, save_fitted_model
+from hcga.plotting import plot_analysis, plot_prediction
 
 L = logging.getLogger(__name__)
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))

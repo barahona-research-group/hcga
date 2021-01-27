@@ -3,9 +3,9 @@ import logging
 
 import pandas as pd
 
-from .analysis import analysis, classify_pairwise
-from .extraction import extract
-from .io import load_dataset, load_features, load_fitted_model, save_features
+from hcga.analysis import analysis, classify_pairwise
+from hcga.extraction import extract
+from hcga.io import load_dataset, load_features, load_fitted_model, save_features
 
 L = logging.getLogger(__name__)
 L.setLevel(logging.DEBUG)

@@ -1,7 +1,7 @@
 """Basal nodes class."""
 from functools import lru_cache
 
-from ..feature_class import FeatureClass, InterpretabilityScore
+from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "BasalNodes"
 

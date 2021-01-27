@@ -2,8 +2,8 @@
 import networkx as nx
 import numpy as np
 
-from ..feature_class import FeatureClass, InterpretabilityScore
-from .utils import ensure_connected
+from hcga.feature_class import FeatureClass, InterpretabilityScore
+from hcga.features.utils import ensure_connected
 
 featureclass_name = "BasicStats"
 

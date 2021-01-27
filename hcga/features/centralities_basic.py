@@ -3,8 +3,8 @@ import networkx as nx
 import numpy as np
 from networkx.algorithms import centrality
 
-from ..feature_class import FeatureClass, InterpretabilityScore
-from . import utils
+from hcga.feature_class import FeatureClass, InterpretabilityScore
+from hcga.features.utils import ensure_connected
 
 featureclass_name = "CentralitiesBasic"
 
@@ -53,28 +53,28 @@ def subgraph_centrality(graph):
     return list(centrality.subgraph_centrality(graph).values())
 
 
+@ensure_connected
 def second_order_centrality(graph):
     """second_order_centrality"""
-    return list(centrality.second_order_centrality(utils.ensure_connected(graph)).values())
+    return list(centrality.second_order_centrality(graph).values())
 
 
+@ensure_connected
 def eigenvector_centrality(graph):
     """eigenvector_centrality"""
-    return list(centrality.eigenvector_centrality_numpy(utils.ensure_connected(graph)).values())
+    return list(centrality.eigenvector_centrality_numpy(graph).values())
 
 
+@ensure_connected
 def weighted_eigenvector_centrality(graph):
     """weighted_eigenvector_centrality"""
-    return list(
-        centrality.eigenvector_centrality_numpy(
-            utils.ensure_connected(graph), weight="weight"
-        ).values()
-    )
+    return list(centrality.eigenvector_centrality_numpy(graph, weight="weight").values())
 
 
+@ensure_connected
 def katz_centrality(graph):
     """katz_centrality"""
-    return list(centrality.katz_centrality_numpy(utils.ensure_connected(graph)).values())
+    return list(centrality.katz_centrality_numpy(graph).values())
 
 
 def pagerank(graph):

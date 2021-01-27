@@ -1,8 +1,8 @@
 """HITS hubs class."""
 import networkx as nx
 
-from ..feature_class import FeatureClass, InterpretabilityScore
-from .utils import ensure_connected
+from hcga.feature_class import FeatureClass, InterpretabilityScore
+from hcga.features.utils import ensure_connected
 
 featureclass_name = "Hits"
 

@@ -2,8 +2,8 @@
 import networkx as nx
 import numpy as np
 
-from ..feature_class import FeatureClass, InterpretabilityScore
-from .utils import remove_selfloops
+from hcga.feature_class import FeatureClass, InterpretabilityScore
+from hcga.features.utils import remove_selfloops
 
 featureclass_name = "CoreNumber"
 

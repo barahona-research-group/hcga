@@ -1,35 +1,35 @@
 """Distance Measures class."""
 import networkx as nx
 
-from ..feature_class import FeatureClass, InterpretabilityScore
-from .utils import ensure_connected
+from hcga.feature_class import FeatureClass, InterpretabilityScore
+from hcga.features.utils import ensure_connected
 
 featureclass_name = "DistanceMeasures"
 
-
+@ensure_connected
 def barycenter_size(graph):
     """barycenter_size"""
-    return len(nx.barycenter(ensure_connected(graph)))
+    return len(nx.barycenter(graph))
 
-
+@ensure_connected
 def barycenter_size_weighted(graph):
     """barycenter_size_weighted"""
-    return len(nx.barycenter(ensure_connected(graph, weight="weight")))
+    return len(nx.barycenter(graph, weight="weight"))
 
-
+@ensure_connected
 def center_size(graph):
     """center_size"""
-    return len(nx.center(ensure_connected(graph)))
+    return len(nx.center(graph))
 
-
+@ensure_connected
 def periphery(graph):
     """periphery"""
-    return len(nx.periphery(ensure_connected(graph)))
+    return len(nx.periphery(graph))
 
-
+@ensure_connected
 def eccentricity(graph):
     """eccentricity"""
-    return list(nx.eccentricity(ensure_connected(graph)).values())
+    return list(nx.eccentricity(graph).values())
 
 
 class DistanceMeasures(FeatureClass):

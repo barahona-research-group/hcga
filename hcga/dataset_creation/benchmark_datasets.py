@@ -10,7 +10,7 @@ import wget
 
 from hcga.graph import Graph, GraphCollection
 
-from ..io import save_dataset
+from hcga.dataset_creation.io import save_dataset
 
 
 def unzip(zip_filename):

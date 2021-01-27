@@ -6,7 +6,7 @@ The functions here are necessary to evaluate each individual feature found insid
 
 """
 import logging
-import signal
+from functools import partial
 import sys
 import warnings
 
@@ -17,21 +17,32 @@ from networkx import to_undirected
 from networkx.algorithms.community import quality
 from networkx.exception import NetworkXNotImplemented
 
-from hcga.utils import TimeoutError, get_trivial_graph, timeout_handler
+from hcga.utils import TimeoutError, get_trivial_graph, timeout_handler, _eval
 
 L = logging.getLogger(__name__)
 warnings.simplefilter("ignore")
 
-import dill
+
+def _eval2(feature_function, function_args, timeout):
+
+    import pebble
+
+    with pebble.ProcessPool(max_workers=1, max_tasks=1) as pool:
+        tasks = pool.schedule(feature_function, (function_args,), timeout=timeout)
+        feature = tasks.result()
+        print("feeat", feature)
 
 
-def run_dill_encoded(payload, q_worker):
-    fun, args = dill.loads(payload)
-    return fun(*args, q_worker=q_worker)
+def _trivial(graph):
+    return 0
 
 
-def _lemmiwinks(func, args, kwargs, q):
-    q.put(func(*args, **kwargs))
+def _feat_N(graph, features):
+    return features / len(graph.nodes)
+
+
+def _feat_E(graph, features):
+    return features / len(graph.edges)
 
 
 class FeatureClass:
@@ -71,7 +82,7 @@ class FeatureClass:
     def __init_subclass__(cls):
         """Initialise class variables to default for each child class."""
         cls.feature_descriptions = {}
-        cls.__doc__ += cls._get_doc()
+        # cls.__doc__ += cls._get_doc()
 
     def __init__(self, graph=None):
         """Initialise a feature class.
@@ -94,6 +105,7 @@ class FeatureClass:
         statistics_level="basic",
         n_node_features=0,
         timeout=10,
+        mp=None,
     ):
         """Initializes the class by adding descriptions for all features.
 
@@ -189,26 +201,20 @@ class FeatureClass:
 
         if function_args is None:
             function_args = self.graph
-        import multiprocessing as mp
-        import multiprocessing.queues as mpq
+        from concurrent.futures import TimeoutError
 
-        q_worker = mp.Queue()
-        payload = dill.dumps((_lemmiwinks, (feature_function, function_args, {})))
-        proc = mp.Process(target=run_dill_encoded, args=(payload, q_worker))
-        proc.start()
         try:
             try:
-                feature = q_worker.get(timeout=1000.0)
+                # feature = feature_function(function_args)
+                # feature = _eval2(feature_function,function_args, timeout=1)
+                feature = _eval(feature_function, (function_args,), timeout=100, mp=self.mp)
             except NetworkXNotImplemented:
                 if self.graph_type == "directed":
-                    feature = feature_function(to_undirected(function_args))
-            signal.alarm(0)
+                    feature = _eval(
+                        feature_function, (to_undirected(function_args),), timeout=1, mp=self.mp
+                    )
             return feature
 
-        except mpq.Empty:
-            proc.terminate()
-            print("Timeout!")
-            return None
         except (KeyboardInterrupt, SystemExit):
             sys.exit(0)
 
@@ -221,8 +227,12 @@ class FeatureClass:
             )
             return None
         except Exception as exc:  # pylint: disable=broad-except
-            if self.graph_id != -1:
-                L.debug(
+            import traceback, sys
+
+            exception = "".join(traceback.format_exception(*sys.exc_info()))
+            print(exception)
+            if self.graph_id != -10:
+                L.warning(
                     "Failed feature %s for graph %d with exception: %s",
                     feature_name,
                     self.graph_id,
@@ -336,7 +346,7 @@ class FeatureClass:
 
         This function should be used by each specific feature class to add new features.
         """
-        self.add_feature("test", lambda graph: 0.0, "Test feature for the base feature class", 5)
+        self.add_feature("test", _trivial, "Test feature for the base feature class", 5)
 
     def get_features(self, all_features=False):
         """Compute all the possible features."""
@@ -358,13 +368,13 @@ class FeatureClass:
             feat_desc = self.get_feature_description(feature_name)
             self.add_feature(
                 feature_name + "_N",
-                lambda graph: self.features[feature_name] / len(graph.nodes),
+                partial(_feat_N, features=self.features[feature_name]),
                 feat_desc + ", normalised by the number of nodes in the graph",
                 feat_interpret - interpretability_downgrade,
             )
             self.add_feature(
                 feature_name + "_E",
-                lambda graph: self.features[feature_name] / len(graph.edges),
+                partial(_feat_E, features=self.features[feature_name]),
                 feat_desc + ", normalised by the number of edges in the graph",
                 feat_interpret - interpretability_downgrade,
             )
@@ -375,44 +385,27 @@ class FeatureClass:
 
         self.add_feature(
             feat_name + "_modularity",
-            lambda graph: quality.modularity(graph, community_partition),
+            partial(quality.modularity, communities=community_partition),
             "Modularity" + compl_desc,
             feat_interpret,
         )
 
         self.add_feature(
             feat_name + "_coverage",
-            lambda graph: quality.coverage(graph, community_partition),
+            partial(quality.coverage, partition=community_partition),
             "Coverage" + compl_desc,
             feat_interpret,
         )
         self.add_feature(
             feat_name + "_performance",
-            lambda graph: quality.performance(graph, community_partition),
+            partial(quality.performance, partition=community_partition),
             "Performance" + compl_desc,
-            feat_interpret,
-        )
-        self.add_feature(
-            feat_name + "_inter_community_edges",
-            lambda graph: quality.inter_community_edges(graph, community_partition),
-            "Inter community edges" + compl_desc,
-            feat_interpret,
-        )
-        self.add_feature(
-            feat_name + "_inter_community_non_edges",
-            lambda graph: quality.inter_community_non_edges(graph, community_partition),
-            "Inter community non edges" + compl_desc,
-            feat_interpret,
-        )
-        self.add_feature(
-            feat_name + "_intra_community_edges",
-            lambda graph: quality.intra_community_edges(graph, community_partition),
-            "Intra community edges" + compl_desc,
             feat_interpret,
         )
 
     def _node_feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes summary statistics of each feature distribution."""
+        feat_dist = np.array(feat_dist)
         for node_feats in range(feat_dist.shape[1]):
             self._feature_statistics_basic(
                 feat_dist[:, node_feats],
