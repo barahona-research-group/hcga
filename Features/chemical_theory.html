@@ -38,6 +38,7 @@
 <dl class="py class">
 <dt id="hcga.features.chemical_theory.ChemicalTheory">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.chemical_theory.</code><code class="sig-name descname">ChemicalTheory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/chemical_theory.html#ChemicalTheory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.chemical_theory.ChemicalTheory" title="Permalink to this definition">¶</a></dt>
+<<<<<<< HEAD
 <dd><p>Chemical theory class.</p>
 <p>Here we implement the wiener and estrada indexes.</p>
 <p>The <em>Wiener index</em> of a graph is the sum of the shortest-path
@@ -57,12 +58,156 @@ Topology in Chemistry. Woodhead Publishing, 2002. 16-37.</p>
 <div><p>Topology in Chemistry. Woodhead Publishing, 2002. 16-37.</p>
 </div></blockquote>
 >>>>>>> ecc6e38ff0a30cd4641aa28c3056bb0a6cd914fe
-</dd>
-<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
-<dd><p>E. Estrada,  Characterization of 3D molecular structure,
-Chem. Phys. Lett. 319, 713 (2000).</p>
+=======
+<dd><dl class="simple">
+<dt>Chemical theory class.</dt><dd><p>This class produces the following features:</p>
+>>>>>>> parent of ecc6e38... rebuilt docs
 </dd>
 </dl>
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">wiener index</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – wiener index</p></li>
+<li><p><strong>shortname</strong> – CT</p></li>
+<li><p><strong>fullname</strong> – CT_wiener index</p></li>
+<li><p><strong>description</strong> – Sum of the lengths of the shortest paths between all pairs of vertices</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">wiener index weighted</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – wiener index weighted</p></li>
+<li><p><strong>shortname</strong> – CT</p></li>
+<li><p><strong>fullname</strong> – CT_wiener index weighted</p></li>
+<li><p><strong>description</strong> – Sum of the lengths of the shortest paths between all pairs of vertices</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.chemical_theory.ChemicalTheory.estrada_index">
+<code class="sig-name descname">estrada_index</code><a class="headerlink" href="#hcga.features.chemical_theory.ChemicalTheory.estrada_index" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – estrada_index</p></li>
+<li><p><strong>shortname</strong> – CT</p></li>
+<li><p><strong>fullname</strong> – CT_estrada_index</p></li>
+<li><p><strong>description</strong> – Topological index of protein folding or 3D compactness</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">wiener index_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – wiener index_N</p></li>
+<li><p><strong>shortname</strong> – CT</p></li>
+<li><p><strong>fullname</strong> – CT_wiener index_N</p></li>
+<li><p><strong>description</strong> – Sum of the lengths of the shortest paths between all pairs of vertices, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">wiener index_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – wiener index_E</p></li>
+<li><p><strong>shortname</strong> – CT</p></li>
+<li><p><strong>fullname</strong> – CT_wiener index_E</p></li>
+<li><p><strong>description</strong> – Sum of the lengths of the shortest paths between all pairs of vertices, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">wiener index weighted_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – wiener index weighted_N</p></li>
+<li><p><strong>shortname</strong> – CT</p></li>
+<li><p><strong>fullname</strong> – CT_wiener index weighted_N</p></li>
+<li><p><strong>description</strong> – Sum of the lengths of the shortest paths between all pairs of vertices, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">wiener index weighted_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – wiener index weighted_E</p></li>
+<li><p><strong>shortname</strong> – CT</p></li>
+<li><p><strong>fullname</strong> – CT_wiener index weighted_E</p></li>
+<li><p><strong>description</strong> – Sum of the lengths of the shortest paths between all pairs of vertices, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.chemical_theory.ChemicalTheory.estrada_index_N">
+<code class="sig-name descname">estrada_index_N</code><a class="headerlink" href="#hcga.features.chemical_theory.ChemicalTheory.estrada_index_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – estrada_index_N</p></li>
+<li><p><strong>shortname</strong> – CT</p></li>
+<li><p><strong>fullname</strong> – CT_estrada_index_N</p></li>
+<li><p><strong>description</strong> – Topological index of protein folding or 3D compactness, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.chemical_theory.ChemicalTheory.estrada_index_E">
+<code class="sig-name descname">estrada_index_E</code><a class="headerlink" href="#hcga.features.chemical_theory.ChemicalTheory.estrada_index_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – estrada_index_E</p></li>
+<li><p><strong>shortname</strong> – CT</p></li>
+<li><p><strong>fullname</strong> – CT_estrada_index_E</p></li>
+<li><p><strong>description</strong> – Topological index of protein folding or 3D compactness, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <p>Initialise a feature class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

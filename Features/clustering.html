@@ -38,6 +38,7 @@
 <dl class="py class">
 <dt id="hcga.features.clustering.Clustering">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.clustering.</code><code class="sig-name descname">Clustering</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/clustering.html#Clustering"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.clustering.Clustering" title="Permalink to this definition">¶</a></dt>
+<<<<<<< HEAD
 <dd><p>Clustering class.</p>
 <p>Here we construct features based on the number of triangles in a graph.</p>
 <p>Uses networkx, see ‘<a class="reference external" href="https://networkx.github.io/documentation/stable/reference/">https://networkx.github.io/documentation/stable/reference/</a>        algorithms/clustering.html`</p>
@@ -86,8 +87,684 @@ Physical Review E, 71(6), 065103 (2005).</p>
 >>>>>>> ecc6e38ff0a30cd4641aa28c3056bb0a6cd914fe
 <dd><p>Clustering in complex directed networks by G. Fagiolo,
 Physical Review E, 76(2), 026107 (2007).</p>
+=======
+<dd><dl class="simple">
+<dt>Clustering class.</dt><dd><p>This class produces the following features:</p>
+>>>>>>> parent of ecc6e38... rebuilt docs
 </dd>
 </dl>
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.num_triangles">
+<code class="sig-name descname">num_triangles</code><a class="headerlink" href="#hcga.features.clustering.Clustering.num_triangles" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – num_triangles</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_num_triangles</p></li>
+<li><p><strong>description</strong> – Number of triangles in the graph</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.transitivity">
+<code class="sig-name descname">transitivity</code><a class="headerlink" href="#hcga.features.clustering.Clustering.transitivity" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – transitivity</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_transitivity</p></li>
+<li><p><strong>description</strong> – Transitivity of the graph</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_mean">
+<code class="sig-name descname">clustering_mean</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_mean" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_mean</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of the clustering of the graph</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_min">
+<code class="sig-name descname">clustering_min</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_min" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_min</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of the clustering of the graph</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_sum">
+<code class="sig-name descname">clustering_sum</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_sum" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_sum</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of the clustering of the graph</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_max">
+<code class="sig-name descname">clustering_max</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_max" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_max</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of the clustering of the graph</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_median">
+<code class="sig-name descname">clustering_median</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_median" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_median</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of the clustering of the graph</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_std">
+<code class="sig-name descname">clustering_std</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_std" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_std</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of the clustering of the graph</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_mean">
+<code class="sig-name descname">square_clustering_mean</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_mean" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_mean</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of the square clustering of the graph</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_min">
+<code class="sig-name descname">square_clustering_min</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_min" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_min</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of the square clustering of the graph</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_sum">
+<code class="sig-name descname">square_clustering_sum</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_sum" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_sum</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of the square clustering of the graph</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_max">
+<code class="sig-name descname">square_clustering_max</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_max" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_max</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of the square clustering of the graph</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_median">
+<code class="sig-name descname">square_clustering_median</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_median" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_median</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of the square clustering of the graph</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_std">
+<code class="sig-name descname">square_clustering_std</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_std" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_std</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of the square clustering of the graph</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.num_triangles_N">
+<code class="sig-name descname">num_triangles_N</code><a class="headerlink" href="#hcga.features.clustering.Clustering.num_triangles_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – num_triangles_N</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_num_triangles_N</p></li>
+<li><p><strong>description</strong> – Number of triangles in the graph, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.num_triangles_E">
+<code class="sig-name descname">num_triangles_E</code><a class="headerlink" href="#hcga.features.clustering.Clustering.num_triangles_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – num_triangles_E</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_num_triangles_E</p></li>
+<li><p><strong>description</strong> – Number of triangles in the graph, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.transitivity_N">
+<code class="sig-name descname">transitivity_N</code><a class="headerlink" href="#hcga.features.clustering.Clustering.transitivity_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – transitivity_N</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_transitivity_N</p></li>
+<li><p><strong>description</strong> – Transitivity of the graph, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.transitivity_E">
+<code class="sig-name descname">transitivity_E</code><a class="headerlink" href="#hcga.features.clustering.Clustering.transitivity_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – transitivity_E</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_transitivity_E</p></li>
+<li><p><strong>description</strong> – Transitivity of the graph, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_mean_N">
+<code class="sig-name descname">clustering_mean_N</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_mean_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_mean_N</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of the clustering of the graph, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_mean_E">
+<code class="sig-name descname">clustering_mean_E</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_mean_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_mean_E</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of the clustering of the graph, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_min_N">
+<code class="sig-name descname">clustering_min_N</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_min_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_min_N</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of the clustering of the graph, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_min_E">
+<code class="sig-name descname">clustering_min_E</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_min_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_min_E</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of the clustering of the graph, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_sum_N">
+<code class="sig-name descname">clustering_sum_N</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_sum_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_sum_N</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of the clustering of the graph, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_sum_E">
+<code class="sig-name descname">clustering_sum_E</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_sum_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_sum_E</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of the clustering of the graph, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_max_N">
+<code class="sig-name descname">clustering_max_N</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_max_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_max_N</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of the clustering of the graph, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_max_E">
+<code class="sig-name descname">clustering_max_E</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_max_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_max_E</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of the clustering of the graph, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_median_N">
+<code class="sig-name descname">clustering_median_N</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_median_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_median_N</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of the clustering of the graph, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_median_E">
+<code class="sig-name descname">clustering_median_E</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_median_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_median_E</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of the clustering of the graph, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_std_N">
+<code class="sig-name descname">clustering_std_N</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_std_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_std_N</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of the clustering of the graph, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.clustering_std_E">
+<code class="sig-name descname">clustering_std_E</code><a class="headerlink" href="#hcga.features.clustering.Clustering.clustering_std_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – clustering_std_E</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_clustering_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of the clustering of the graph, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_mean_N">
+<code class="sig-name descname">square_clustering_mean_N</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_mean_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_mean_N</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of the square clustering of the graph, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_mean_E">
+<code class="sig-name descname">square_clustering_mean_E</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_mean_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_mean_E</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of the square clustering of the graph, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_min_N">
+<code class="sig-name descname">square_clustering_min_N</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_min_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_min_N</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of the square clustering of the graph, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_min_E">
+<code class="sig-name descname">square_clustering_min_E</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_min_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_min_E</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of the square clustering of the graph, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_sum_N">
+<code class="sig-name descname">square_clustering_sum_N</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_sum_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_sum_N</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of the square clustering of the graph, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_sum_E">
+<code class="sig-name descname">square_clustering_sum_E</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_sum_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_sum_E</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of the square clustering of the graph, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_max_N">
+<code class="sig-name descname">square_clustering_max_N</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_max_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_max_N</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of the square clustering of the graph, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_max_E">
+<code class="sig-name descname">square_clustering_max_E</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_max_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_max_E</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of the square clustering of the graph, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_median_N">
+<code class="sig-name descname">square_clustering_median_N</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_median_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_median_N</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of the square clustering of the graph, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_median_E">
+<code class="sig-name descname">square_clustering_median_E</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_median_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_median_E</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of the square clustering of the graph, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_std_N">
+<code class="sig-name descname">square_clustering_std_N</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_std_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_std_N</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of the square clustering of the graph, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.clustering.Clustering.square_clustering_std_E">
+<code class="sig-name descname">square_clustering_std_E</code><a class="headerlink" href="#hcga.features.clustering.Clustering.square_clustering_std_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – square_clustering_std_E</p></li>
+<li><p><strong>shortname</strong> – Clu</p></li>
+<li><p><strong>fullname</strong> – Clu_square_clustering_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of the square clustering of the graph, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <p>Initialise a feature class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -102,21 +779,6 @@ Physical Review E, 76(2), 026107 (2007).</p>
 </dd></dl>
 
 </dd></dl>
-
-<dl class="py function">
-<dt id="hcga.features.clustering.clustering_dist">
-<code class="sig-prename descclassname">hcga.features.clustering.</code><code class="sig-name descname">clustering_dist</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/clustering.html#clustering_dist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.clustering.clustering_dist" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt id="hcga.features.clustering.square_clustering_dist">
-<code class="sig-prename descclassname">hcga.features.clustering.</code><code class="sig-name descname">square_clustering_dist</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/clustering.html#square_clustering_dist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.clustering.square_clustering_dist" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt id="hcga.features.clustering.triang">
-<code class="sig-prename descclassname">hcga.features.clustering.</code><code class="sig-name descname">triang</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/clustering.html#triang"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.clustering.triang" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </div>
 

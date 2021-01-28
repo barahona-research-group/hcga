@@ -72,7 +72,7 @@ To create custom dataset, one must load it in the ``hcga.graph.GraphCollection``
 
     # add new graph to the collection
     graph_label = 1  # graph_label should be an integer
-    graphs.add_graph(Graph(nodes_df, edges_df, graph_label))
+    graphs.add_graph(Graph(nodes_df, edges_df, graph_label)
 
     # save dataset to file './dataset.pkl'
     save_dataset(graphs, 'dataset', folder='.')
