@@ -34,14 +34,32 @@
 <span></span><span class="sd">&quot;&quot;&quot;Maximal matching class.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
+<<<<<<< HEAD
 <span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+=======
+<span class="kn">from</span> <span class="nn">hcga.feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 
 <span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;MaximalMatching&quot;</span>
+
+
+<<<<<<< HEAD
+<div class="viewcode-block" id="MaximalMatching"><a class="viewcode-back" href="../../../Features/maximal_matching.html#hcga.features.maximal_matching.MaximalMatching">[docs]</a><span class="k">class</span> <span class="nc">MaximalMatching</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Maximal matching class.</span>
+
+=======
+<div class="viewcode-block" id="maximal_matching"><a class="viewcode-back" href="../../../Features/maximal_matching.html#hcga.features.maximal_matching.maximal_matching">[docs]</a><span class="k">def</span> <span class="nf">maximal_matching</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;maximal_matching&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">maximal_matching</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="MaximalMatching"><a class="viewcode-back" href="../../../Features/maximal_matching.html#hcga.features.maximal_matching.MaximalMatching">[docs]</a><span class="k">class</span> <span class="nc">MaximalMatching</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Maximal matching class.</span>
 
+<span class="sd">    A matching is a subset of edges in which no node occurs more than once.</span>
+<span class="sd">    A maximal matching cannot add more edges and still be a matching.</span>
+
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 <span class="sd">    Maximal matching calculations using networkx:</span>
 <span class="sd">        `Networkx_maximal_matching &lt;https://networkx.github.io/documentation/stable/\</span>
 <span class="sd">        reference/algorithms/matching.html&gt;`_</span>
@@ -56,7 +74,11 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;maximal_matching&quot;</span><span class="p">,</span>
+<<<<<<< HEAD
             <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">maximal_matching</span><span class="p">(</span><span class="n">graph</span><span class="p">)),</span>
+=======
+            <span class="n">maximal_matching</span><span class="p">,</span>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
             <span class="s2">&quot;Maximal matching&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
         <span class="p">)</span></div></div>

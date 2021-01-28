@@ -35,14 +35,44 @@
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<<<<<<< HEAD
 <span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">remove_selfloops</span>
+=======
+<span class="kn">from</span> <span class="nn">hcga.feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+<span class="kn">from</span> <span class="nn">hcga.features.utils</span> <span class="kn">import</span> <span class="n">remove_selfloops</span>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 
 <span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;CoreNumber&quot;</span>
 
 
+<<<<<<< HEAD
 <div class="viewcode-block" id="CoreNumber"><a class="viewcode-back" href="../../../Features/core_number.html#hcga.features.core_number.CoreNumber">[docs]</a><span class="k">class</span> <span class="nc">CoreNumber</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Core number class.&quot;&quot;&quot;</span>
+=======
+<div class="viewcode-block" id="core_number"><a class="viewcode-back" href="../../../Features/core_number.html#hcga.features.core_number.core_number">[docs]</a><span class="k">def</span> <span class="nf">core_number</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;core_number&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">core_number</span><span class="p">(</span><span class="n">remove_selfloops</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span><span class="o">.</span><span class="n">values</span><span class="p">())))</span></div>
+
+
+<div class="viewcode-block" id="CoreNumber"><a class="viewcode-back" href="../../../Features/core_number.html#hcga.features.core_number.CoreNumber">[docs]</a><span class="k">class</span> <span class="nc">CoreNumber</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Core number class.</span>
+
+<span class="sd">    Features based on a k-core analysis.</span>
+
+<span class="sd">    A k-core is a maximal subgraph that contains nodes of degree k or more.</span>
+<span class="sd">    The core number of a node is the largest value k of a k-core containing that node.</span>
+
+<span class="sd">    Uses networkx, see &#39;https://networkx.org/documentation/stable/reference/algorithms/core.html`</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] An O(m) Algorithm for Cores Decomposition of Networks</span>
+<span class="sd">       Vladimir Batagelj and Matjaz Zaversnik, 2003.</span>
+<span class="sd">       https://arxiv.org/abs/cs.DS/0310049</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fast&quot;</span><span class="p">,</span> <span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;slow&quot;</span><span class="p">]</span>
     <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;CoN&quot;</span>
@@ -51,9 +81,12 @@
 
 <div class="viewcode-block" id="CoreNumber.compute_features"><a class="viewcode-back" href="../../../Features/core_number.html#hcga.features.core_number.CoreNumber.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
+<<<<<<< HEAD
         <span class="n">core_number</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span>
             <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">core_number</span><span class="p">(</span><span class="n">remove_selfloops</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
         <span class="p">)</span>
+=======
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;core number&quot;</span><span class="p">,</span>
             <span class="n">core_number</span><span class="p">,</span>

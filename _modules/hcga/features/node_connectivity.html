@@ -35,11 +35,30 @@
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<<<<<<< HEAD
 <span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+=======
+<span class="kn">from</span> <span class="nn">hcga.feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 
 <span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;NodeConnectivity&quot;</span>
 
 
+<<<<<<< HEAD
+=======
+<div class="viewcode-block" id="node_conn"><a class="viewcode-back" href="../../../Features/node_connectivity.html#hcga.features.node_connectivity.node_conn">[docs]</a><span class="k">def</span> <span class="nf">node_conn</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;calculating node connectivity&quot;&quot;&quot;</span>
+    <span class="n">node_connectivity</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">all_pairs_node_connectivity</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+
+    <span class="n">_node_conn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">key1</span><span class="p">,</span> <span class="n">value1</span> <span class="ow">in</span> <span class="n">node_connectivity</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">key2</span><span class="p">,</span> <span class="n">value2</span> <span class="ow">in</span> <span class="n">value1</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">_node_conn</span><span class="p">[</span><span class="n">key1</span><span class="p">,</span> <span class="n">key2</span><span class="p">]</span> <span class="o">=</span> <span class="n">value2</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">_node_conn</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span></div>
+
+
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 <div class="viewcode-block" id="NodeConnectivity"><a class="viewcode-back" href="../../../Features/node_connectivity.html#hcga.features.node_connectivity.NodeConnectivity">[docs]</a><span class="k">class</span> <span class="nc">NodeConnectivity</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Node connectivity class.</span>
 
@@ -54,6 +73,7 @@
     <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;networkx&quot;</span>
 
 <div class="viewcode-block" id="NodeConnectivity.compute_features"><a class="viewcode-back" href="../../../Features/node_connectivity.html#hcga.features.node_connectivity.NodeConnectivity.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<<<<<<< HEAD
         <span class="k">def</span> <span class="nf">node_conn</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
             <span class="c1"># calculating node connectivity</span>
             <span class="n">node_connectivity</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">all_pairs_node_connectivity</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
@@ -64,6 +84,8 @@
                 <span class="k">for</span> <span class="n">key2</span><span class="p">,</span> <span class="n">value2</span> <span class="ow">in</span> <span class="n">value1</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="n">node_conn</span><span class="p">[</span><span class="n">key1</span><span class="p">,</span> <span class="n">key2</span><span class="p">]</span> <span class="o">=</span> <span class="n">value2</span>
             <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">node_conn</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+=======
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;node_conn&quot;</span><span class="p">,</span>
@@ -92,6 +114,7 @@
             <span class="s2">&quot;Edge connectivity&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
         <span class="p">)</span></div></div>
+<<<<<<< HEAD
 
         <span class="c1"># calculate the wiener index</span>
 
@@ -102,6 +125,8 @@
 <span class="c1">#            &quot;Wiener index&quot;,</span>
 <span class="c1">#            InterpretabilityScore(&quot;max&quot;) - 1,</span>
 <span class="c1">#        )</span>
+=======
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 </pre></div>
 
           </div>

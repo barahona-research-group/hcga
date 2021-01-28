@@ -34,15 +34,33 @@
 <span></span><span class="sd">&quot;&quot;&quot;Node clique number class.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">networkx.algorithms</span> <span class="kn">import</span> <span class="n">clique</span>
 
+<<<<<<< HEAD
 <span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">ensure_connected</span>
+=======
+<span class="kn">from</span> <span class="nn">hcga.feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+<span class="kn">from</span> <span class="nn">hcga.features.utils</span> <span class="kn">import</span> <span class="n">ensure_connected</span>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 
 <span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;NodeCliqueNumber&quot;</span>
+
+
+<<<<<<< HEAD
+<div class="viewcode-block" id="NodeCliqueNumber"><a class="viewcode-back" href="../../../Features/node_clique_number.html#hcga.features.node_clique_number.NodeCliqueNumber">[docs]</a><span class="k">class</span> <span class="nc">NodeCliqueNumber</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Node clique number class.</span>
+
+=======
+<div class="viewcode-block" id="clique_sizes"><a class="viewcode-back" href="../../../Features/node_clique_number.html#hcga.features.node_clique_number.clique_sizes">[docs]</a><span class="k">def</span> <span class="nf">clique_sizes</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;clique_sizes&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">clique</span><span class="o">.</span><span class="n">node_clique_number</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></div>
 
 
 <div class="viewcode-block" id="NodeCliqueNumber"><a class="viewcode-back" href="../../../Features/node_clique_number.html#hcga.features.node_clique_number.NodeCliqueNumber">[docs]</a><span class="k">class</span> <span class="nc">NodeCliqueNumber</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Node clique number class.</span>
 
+<span class="sd">    Features based on the size of the largest maximal clique containing each node.</span>
+
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 <span class="sd">    Clique number calculations using networkx:</span>
 <span class="sd">        `Networkx_clique &lt;https://networkx.github.io/documentation/stable/reference/algorithms/\</span>
 <span class="sd">            clique.html&gt;`_</span>
@@ -56,8 +74,13 @@
 <div class="viewcode-block" id="NodeCliqueNumber.compute_features"><a class="viewcode-back" href="../../../Features/node_clique_number.html#hcga.features.node_clique_number.NodeCliqueNumber.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+<<<<<<< HEAD
             <span class="s2">&quot;clique sizes&quot;</span><span class="p">,</span>
             <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">clique</span><span class="o">.</span><span class="n">node_clique_number</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+=======
+            <span class="s2">&quot;clique_sizes&quot;</span><span class="p">,</span>
+            <span class="n">clique_sizes</span><span class="p">,</span>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
             <span class="s2">&quot;the distribution of clique sizes&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
             <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;centrality&quot;</span><span class="p">,</span>

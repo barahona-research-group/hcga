@@ -32,9 +32,17 @@
             
   <h1>Source code for hcga.features.scale_free</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Scale Free class.&quot;&quot;&quot;</span>
+<<<<<<< HEAD
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
 <span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+=======
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+
+<span class="kn">from</span> <span class="nn">hcga.feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 
 <span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;ScaleFree&quot;</span>
 
@@ -42,9 +50,29 @@
 <div class="viewcode-block" id="ScaleFree"><a class="viewcode-back" href="../../../Features/scale_free.html#hcga.features.scale_free.ScaleFree">[docs]</a><span class="k">class</span> <span class="nc">ScaleFree</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Scale Free class.</span>
 
+<<<<<<< HEAD
 <span class="sd">    Scale free calculations using networkx:</span>
 <span class="sd">        `Networkx_scale free &lt;https://networkx.github.io/documentation/stable/\</span>
 <span class="sd">        _modules/networkx/algorithms/smetric.html#s_metric&gt;`_</span>
+=======
+<span class="sd">    Features based on the scalefreeness of a graph. It uses the s-metric.</span>
+<span class="sd">    The s-metric is defined as the sum of the products deg(u)*deg(v)</span>
+<span class="sd">    for every edge (u,v) in G. If norm is provided construct the</span>
+<span class="sd">    s-max graph and compute it&#39;s s_metric, and return the normalized</span>
+<span class="sd">    s value</span>
+
+<span class="sd">    Scale free calculations using networkx:</span>
+<span class="sd">        `Networkx_scale free &lt;https://networkx.github.io/documentation/stable/\</span>
+<span class="sd">        _modules/networkx/algorithms/smetric.html#s_metric&gt;`_</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Lun Li, David Alderson, John C. Doyle, and Walter Willinger,</span>
+<span class="sd">           Towards a Theory of Scale-Free Graphs:</span>
+<span class="sd">           Definition, Properties, and  Implications (Extended Version), 2005.</span>
+<span class="sd">           https://arxiv.org/abs/cond-mat/0501169</span>
+
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fast&quot;</span><span class="p">,</span> <span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;slow&quot;</span><span class="p">]</span>
@@ -57,7 +85,11 @@
         <span class="c1"># s metric</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;s_metric&quot;</span><span class="p">,</span>
+<<<<<<< HEAD
             <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">s_metric</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+=======
+            <span class="n">partial</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">s_metric</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
             <span class="s2">&quot;Sum of the products deg(u)*deg(v) for every edge (u,v) in G&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
         <span class="p">)</span></div></div>

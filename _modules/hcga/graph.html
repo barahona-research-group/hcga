@@ -247,7 +247,11 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph_type</span> <span class="o">==</span> <span class="s2">&quot;directed&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_graph_networkx</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
+<<<<<<< HEAD
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;graph type not reconised or not yet implemented&quot;</span><span class="p">)</span>
+=======
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;graph type not recognised or not yet implemented&quot;</span><span class="p">)</span>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_node_features</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">nodes</span> <span class="o">=</span> <span class="p">[(</span><span class="n">node</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;feat&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]})</span> <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">node_data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()]</span>
         <span class="k">else</span><span class="p">:</span>

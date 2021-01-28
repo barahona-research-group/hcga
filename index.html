@@ -92,7 +92,11 @@ $ pip install .
 
 <span class="c1"># add new graph to the collection</span>
 <span class="n">graph_label</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># graph_label should be an integer</span>
+<<<<<<< HEAD
 <span class="n">graphs</span><span class="o">.</span><span class="n">add_graph</span><span class="p">(</span><span class="n">Graph</span><span class="p">(</span><span class="n">nodes_df</span><span class="p">,</span> <span class="n">edges_df</span><span class="p">,</span> <span class="n">graph_label</span><span class="p">)</span>
+=======
+<span class="n">graphs</span><span class="o">.</span><span class="n">add_graph</span><span class="p">(</span><span class="n">Graph</span><span class="p">(</span><span class="n">nodes_df</span><span class="p">,</span> <span class="n">edges_df</span><span class="p">,</span> <span class="n">graph_label</span><span class="p">))</span>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 
 <span class="c1"># save dataset to file &#39;./dataset.pkl&#39;</span>
 <span class="n">save_dataset</span><span class="p">(</span><span class="n">graphs</span><span class="p">,</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>

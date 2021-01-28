@@ -39,6 +39,7 @@
 <dt id="hcga.features.small_worldness.SmallWorldness">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.small_worldness.</code><code class="sig-name descname">SmallWorldness</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/small_worldness.html#SmallWorldness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.small_worldness.SmallWorldness" title="Permalink to this definition">¶</a></dt>
 <dd><p>Small worldness class.</p>
+<<<<<<< HEAD
 <blockquote>
 <div><blockquote>
 <div><dl class="simple">
@@ -96,6 +97,27 @@
 </dl>
 </dd></dl>
 
+=======
+<p>Fetures based on small-worldness, where the small-world coefficient of a graph G is:</p>
+<p>omega = Lr/L - C/Cl</p>
+<p>where C and L are respectively the average clustering coefficient and
+average shortest path length of G. Lr is the average shortest path length
+of an equivalent random graph and Cl is the average clustering coefficient
+of an equivalent lattice graph.</p>
+<dl class="simple">
+<dt>Small world calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/latest/_modules/networkx/algorithms/smallworld.html#omega">Networkx_omega</a></p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id1"><span class="brackets">1</span></dt>
+<dd><p>Telesford, Joyce, Hayasaka, Burdette, and Laurienti (2011).
+“The Ubiquity of Small-World Networks”.
+Brain Connectivity. 1 (0038): 367-75.  PMC 3604768. PMID 22432451.
+doi:10.1089/brain.2011.0038.</p>
+</dd>
+</dl>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 <p>Initialise a feature class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

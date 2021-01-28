@@ -41,6 +41,7 @@
 <dt id="hcga.features.components.Components">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.components.</code><code class="sig-name descname">Components</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/components.html#Components"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.components.Components" title="Permalink to this definition">¶</a></dt>
 <dd><p>Components class.</p>
+<<<<<<< HEAD
 <blockquote>
 <div><blockquote>
 <div><p>Components calculations using network: <a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/component.html">Networkx_components</a></p>
@@ -1741,6 +1742,85 @@
 </dd></dl>
 
 </dd></dl>
+=======
+<p>Components calculations using network: <a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/component.html">Networkx_components</a></p>
+<p>Initialise a feature class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>graph</strong> (<a class="reference internal" href="../graph.html#hcga.graph.Graph" title="hcga.graph.Graph"><em>Graph</em></a>) – graph for initialisation, converted to given encoding</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="hcga.features.components.Components.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/components.html#Components.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.components.Components.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main feature extraction function.</p>
+<p>This function should be used by each specific feature class to add new features.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.components.attracting_component_sizes">
+<code class="sig-prename descclassname">hcga.features.components.</code><code class="sig-name descname">attracting_component_sizes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/components.html#attracting_component_sizes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.components.attracting_component_sizes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.components.basal_component_sizes">
+<code class="sig-prename descclassname">hcga.features.components.</code><code class="sig-name descname">basal_component_sizes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/components.html#basal_component_sizes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.components.basal_component_sizes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.components.condensation_edges">
+<code class="sig-prename descclassname">hcga.features.components.</code><code class="sig-name descname">condensation_edges</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/components.html#condensation_edges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.components.condensation_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.components.condensation_nodes">
+<code class="sig-prename descclassname">hcga.features.components.</code><code class="sig-name descname">condensation_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/components.html#condensation_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.components.condensation_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.components.eval_connected_components">
+<code class="sig-prename descclassname">hcga.features.components.</code><code class="sig-name descname">eval_connected_components</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/components.html#eval_connected_components"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.components.eval_connected_components" title="Permalink to this definition">¶</a></dt>
+<dd><p>this evaluates the main function and cach it for speed up.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.components.largest_connected_component">
+<code class="sig-prename descclassname">hcga.features.components.</code><code class="sig-name descname">largest_connected_component</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/components.html#largest_connected_component"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.components.largest_connected_component" title="Permalink to this definition">¶</a></dt>
+<dd><p>largest_connected_components</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.components.num_connected_components">
+<code class="sig-prename descclassname">hcga.features.components.</code><code class="sig-name descname">num_connected_components</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/components.html#num_connected_components"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.components.num_connected_components" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.components.number_basal_components">
+<code class="sig-prename descclassname">hcga.features.components.</code><code class="sig-name descname">number_basal_components</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/components.html#number_basal_components"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.components.number_basal_components" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.components.ratio_largest">
+<code class="sig-prename descclassname">hcga.features.components.</code><code class="sig-name descname">ratio_largest</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/components.html#ratio_largest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.components.ratio_largest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.components.ratio_min_max">
+<code class="sig-prename descclassname">hcga.features.components.</code><code class="sig-name descname">ratio_min_max</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/components.html#ratio_min_max"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.components.ratio_min_max" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.components.strongly_connected_component_sizes">
+<code class="sig-prename descclassname">hcga.features.components.</code><code class="sig-name descname">strongly_connected_component_sizes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/components.html#strongly_connected_component_sizes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.components.strongly_connected_component_sizes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.components.weakly_connected_component_sizes">
+<code class="sig-prename descclassname">hcga.features.components.</code><code class="sig-name descname">weakly_connected_component_sizes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/components.html#weakly_connected_component_sizes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.components.weakly_connected_component_sizes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 
 </div>
 </div>

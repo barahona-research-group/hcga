@@ -32,18 +32,65 @@
             
   <h1>Source code for hcga.features.spectrum</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Spectrum class.&quot;&quot;&quot;</span>
+<<<<<<< HEAD
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+=======
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span><span class="p">,</span> <span class="n">partial</span>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<<<<<<< HEAD
 <span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+=======
+<span class="kn">from</span> <span class="nn">hcga.feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 
 <span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;Spectrum&quot;</span>
 
 
+<<<<<<< HEAD
 <div class="viewcode-block" id="Spectrum"><a class="viewcode-back" href="../../../Features/spectrum.html#hcga.features.spectrum.Spectrum">[docs]</a><span class="k">class</span> <span class="nc">Spectrum</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Spectrum class.&quot;&quot;&quot;</span>
+=======
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">eval_spectrum_adj</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">adjacency_spectrum</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">eigenvalue_ratio</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">eval_spectrum_adj</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="n">j</span><span class="p">]</span> <span class="o">/</span> <span class="n">eval_spectrum_adj</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">eval_spectrum_modularity</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">modularity_spectrum</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">eval_spectrum_laplacian</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">laplacian_spectrum</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Spectrum"><a class="viewcode-back" href="../../../Features/spectrum.html#hcga.features.spectrum.Spectrum">[docs]</a><span class="k">class</span> <span class="nc">Spectrum</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Spectrum class.</span>
+
+<span class="sd">    Features based on the eigenvectors and eigenvalues of the graph.</span>
+
+<span class="sd">    The features here are derived from spectral graph theory [1]_.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Cvetkovic, Dragos, et al. Eigenspaces of graphs. No. 66. Cambridge University Press,\</span>
+<span class="sd">        1997.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;slow&quot;</span><span class="p">]</span>
     <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;SPM&quot;</span>
@@ -51,14 +98,21 @@
     <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;networkx&quot;</span>
 
 <div class="viewcode-block" id="Spectrum.compute_features"><a class="viewcode-back" href="../../../Features/spectrum.html#hcga.features.spectrum.Spectrum.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<<<<<<< HEAD
         <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">eval_spectrum_adj</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">adjacency_spectrum</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
+=======
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 
         <span class="c1"># distribution of eigenvalues</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;eigenvalues_adjacency&quot;</span><span class="p">,</span>
+<<<<<<< HEAD
             <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">eval_spectrum_adj</span><span class="p">(</span><span class="n">graph</span><span class="p">),</span>
+=======
+            <span class="n">eval_spectrum_adj</span><span class="p">,</span>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
             <span class="s2">&quot;The summary statistics of eigenvalues of adjacency matrix&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
             <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;centrality&quot;</span><span class="p">,</span>
@@ -70,6 +124,7 @@
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
                     <span class="s2">&quot;eigenvalue_ratio_</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span>
+<<<<<<< HEAD
                     <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">eval_spectrum_adj</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="n">j</span><span class="p">]</span> <span class="o">/</span> <span class="n">eval_spectrum_adj</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="n">i</span><span class="p">],</span>
                     <span class="s2">&quot;The ratio of the </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2"> eigenvalues&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span>
                     <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
@@ -83,11 +138,22 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;eigenvalues_modularity&quot;</span><span class="p">,</span>
             <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">eval_spectrum_modularity</span><span class="p">(</span><span class="n">graph</span><span class="p">),</span>
+=======
+                    <span class="n">partial</span><span class="p">(</span><span class="n">eigenvalue_ratio</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">=</span><span class="n">j</span><span class="p">),</span>
+                    <span class="s2">&quot;The ratio of the </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2"> eigenvalues&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span>
+                    <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+                <span class="p">)</span>
+        <span class="c1"># distribution of eigenvalues</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;eigenvalues_modularity&quot;</span><span class="p">,</span>
+            <span class="n">eval_spectrum_modularity</span><span class="p">,</span>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
             <span class="s2">&quot;The summary statistics of eigenvalues of modularity matrix&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
             <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;centrality&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
+<<<<<<< HEAD
         <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">eval_spectrum_laplacian</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">laplacian_spectrum</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
@@ -96,6 +162,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;eigenvalues_laplacian&quot;</span><span class="p">,</span>
             <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">eval_spectrum_laplacian</span><span class="p">(</span><span class="n">graph</span><span class="p">),</span>
+=======
+        <span class="c1"># distribution of eigenvalues</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="s2">&quot;eigenvalues_laplacian&quot;</span><span class="p">,</span>
+            <span class="n">eval_spectrum_laplacian</span><span class="p">,</span>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
             <span class="s2">&quot;The summary statistics of eigenvalues of laplacian matrix&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
             <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;centrality&quot;</span><span class="p">,</span>

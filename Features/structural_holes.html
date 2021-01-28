@@ -38,6 +38,7 @@
 <dl class="py class">
 <dt id="hcga.features.structural_holes.StructuralHoles">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.structural_holes.</code><code class="sig-name descname">StructuralHoles</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/structural_holes.html#StructuralHoles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.structural_holes.StructuralHoles" title="Permalink to this definition">¶</a></dt>
+<<<<<<< HEAD
 <dd><dl class="simple">
 <dt>Structural Holes class.</dt><dd><p>This class produces the following features:</p>
 </dd>
@@ -618,6 +619,40 @@
 </dl>
 </dd></dl>
 
+=======
+<dd><p>Structural Holes class.</p>
+<dl class="simple">
+<dt>Holes calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.org/documentation/stable//reference/algorithms/structuralholes.html">Structural Holes</a></p>
+</dd>
+</dl>
+<p>The <em>constraint</em> is a measure of the extent to which a node <em>v</em> is
+invested in those nodes that are themselves invested in the
+neighbors of <em>v</em> <a class="footnote-reference brackets" href="#id3" id="id1">1</a>.</p>
+<p>The <em>effective size</em> of a node’s ego network is based on the concept
+of redundancy. A person’s ego network has redundancy to the extent
+that her contacts are connected to each other as well. The
+nonredundant part of a person’s relationships it’s the effective
+size of her ego network <a class="footnote-reference brackets" href="#id4" id="id2">2</a>.</p>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Burt, Ronald S.
+“Structural holes and good ideas”.
+American Journal of Sociology (110): 349–399.</p>
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Burt, Ronald S.
+<em>Structural Holes: The Social Structure of Competition.</em>
+Cambridge: Harvard University Press, 1995.</p>
+</dd>
+<dt class="label" id="id5"><span class="brackets">3</span></dt>
+<dd><p>Borgatti, S.
+“Structural Holes: Unpacking Burt’s Redundancy Measures”
+CONNECTIONS 20(1):35-38.
+<a class="reference external" href="http://www.analytictech.com/connections/v20(1)/holes.htm">http://www.analytictech.com/connections/v20(1)/holes.htm</a></p>
+</dd>
+</dl>
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 <p>Initialise a feature class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -633,6 +668,19 @@
 
 </dd></dl>
 
+<<<<<<< HEAD
+=======
+<dl class="py function">
+<dt id="hcga.features.structural_holes.constraint">
+<code class="sig-prename descclassname">hcga.features.structural_holes.</code><code class="sig-name descname">constraint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/structural_holes.html#constraint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.structural_holes.constraint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.structural_holes.effective_size">
+<code class="sig-prename descclassname">hcga.features.structural_holes.</code><code class="sig-name descname">effective_size</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/structural_holes.html#effective_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.structural_holes.effective_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+>>>>>>> parent of 3451cb1... Revert "rebuilt docs"
 </div>
 
 
