@@ -53,28 +53,26 @@ def subgraph_centrality(graph):
     return list(centrality.subgraph_centrality(graph).values())
 
 
-@ensure_connected
 def second_order_centrality(graph):
     """second_order_centrality"""
-    return list(centrality.second_order_centrality(graph).values())
+    return list(centrality.second_order_centrality(ensure_connected(graph)).values())
 
 
-@ensure_connected
 def eigenvector_centrality(graph):
     """eigenvector_centrality"""
-    return list(centrality.eigenvector_centrality_numpy(graph).values())
+    return list(centrality.eigenvector_centrality_numpy(ensure_connected(graph)).values())
 
 
-@ensure_connected
 def weighted_eigenvector_centrality(graph):
     """weighted_eigenvector_centrality"""
-    return list(centrality.eigenvector_centrality_numpy(graph, weight="weight").values())
+    return list(
+        centrality.eigenvector_centrality_numpy(ensure_connected(graph), weight="weight").values()
+    )
 
 
-@ensure_connected
 def katz_centrality(graph):
     """katz_centrality"""
-    return list(centrality.katz_centrality_numpy(graph).values())
+    return list(centrality.katz_centrality_numpy(ensure_connected(graph)).values())
 
 
 def pagerank(graph):

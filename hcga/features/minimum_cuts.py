@@ -7,16 +7,14 @@ from hcga.features.utils import ensure_connected
 featureclass_name = "MinimumCuts"
 
 
-@ensure_connected
 def min_node_cut_size(graph):
     """min_node_cut_size"""
-    return len(nx.minimum_node_cut(graph))
+    return len(nx.minimum_node_cut(ensure_connected(graph)))
 
 
-@ensure_connected
 def min_edge_cut_size(graph):
     """min_node_cut_size"""
-    return len(nx.minimum_edge_cut(graph))
+    return len(nx.minimum_edge_cut(ensure_connected(graph)))
 
 
 class MinimumCuts(FeatureClass):

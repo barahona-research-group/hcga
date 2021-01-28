@@ -16,7 +16,7 @@ featureclass_name = "CommunitiesAsyn"
 @lru_cache(maxsize=None)
 def eval_asyn(graph, num_comms):
     """this evaluates the main function and cach it for speed up."""
-    return ensure_connected(asyn_fluidc)(graph, int(num_comms))
+    return asyn_fluidc(ensure_connected(graph), int(num_comms))
 
 
 def sum_density(graph, num_comms):
@@ -25,6 +25,7 @@ def sum_density(graph, num_comms):
 
 
 def ratio_density(graph, num_comms):
+    """"""
     return np.min(eval_asyn(graph, num_comms)[1]) / np.max(eval_asyn(graph, num_comms)[1])
 
 

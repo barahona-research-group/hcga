@@ -7,10 +7,12 @@ featureclass_name = "StructuralHoles"
 
 
 def constraint(graph):
+    """constraint"""
     return list(nx.structuralholes.constraint(graph).values())
 
 
 def effective_size(graph):
+    """effective_size"""
     return list(nx.structuralholes.effective_size(graph).values())
 
 

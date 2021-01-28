@@ -13,6 +13,7 @@ nodes which have out degree equal to zero
 
 @lru_cache(maxsize=None)
 def basal_nodes_func(graph):
+    """"""
     in_degrees = dict(graph.in_degree)
     return [i for i in in_degrees if in_degrees[i] == 0]
 
@@ -43,6 +44,7 @@ def exp_basal_edge(graph):
 
 @lru_cache(maxsize=None)
 def attracting_nodes_func(graph):
+    """"""
     out_degrees = dict(graph.out_degree)
     return [i for i in out_degrees if out_degrees[i] == 0]
 
@@ -53,12 +55,12 @@ def n_attracting_nodes(graph):
 
 
 def attracting_degrees(graph):
-    """attracting_degrees""",
+    """attracting_degrees"""
     return [dict(graph.in_degree)[i] for i in attracting_nodes_func(graph)]
 
 
 def n_attracting_edges(graph):
-    "n_attracting_edges" ""
+    """n_attracting_edges"""
     return sum([dict(graph.in_degree)[i] for i in attracting_nodes_func(graph)])
 
 

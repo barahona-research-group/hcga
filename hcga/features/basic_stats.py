@@ -28,6 +28,16 @@ def edge_weights(graph):
     return list(nx.get_edge_attributes(graph, "weight").values())
 
 
+def diameter(graph):
+    """diameter"""
+    return nx.diameter(ensure_connected(graph))
+
+
+def radius(graph):
+    """radius"""
+    return nx.radius(ensure_connected(graph))
+
+
 class BasicStats(FeatureClass):
     """Basic stats class."""
 
@@ -55,13 +65,13 @@ class BasicStats(FeatureClass):
         # Adding diameter stats
         self.add_feature(
             "diameter",
-            ensure_connected(nx.diameter),
+            diameter,
             "Diameter of the graph",
             InterpretabilityScore("max"),
         )
         self.add_feature(
             "radius",
-            ensure_connected(nx.radius),
+            radius,
             "Radius of the graph",
             InterpretabilityScore("max"),
         )

@@ -19,7 +19,7 @@ consists of ones, and therefore all nodes will have a selfloop with weight one
 """
 
 
-# @lru_cache(maxsize=None)
+@lru_cache(maxsize=None)
 def rbc(graph):
     """Rbc computation."""
     a = np.where(nx.adj_matrix(graph).toarray() > 0, 1, 0)
@@ -53,65 +53,77 @@ def rbc(graph):
 
 
 def number_of_edges(graph):
+    """"""
     return rbc(graph).number_of_edges()
 
 
 def number_of_edges_no_selfloops(graph):
+    """"""
     return remove_selfloops(rbc(graph)).number_of_edges()
 
 
 def connectance(graph):
-    return 0  # nx.density(rbc(graph))
+    """"""
+    return nx.density(rbc(graph))
 
 
-@ensure_connected
 def diameter(graph):
-    return nx.diameter(rbc(graph))
+    """"""
+    return nx.diameter(rbc(ensure_connected(graph)))
 
 
-@ensure_connected
 def radius(graph):
-    return nx.radius(rbc(graph))
+    """"""
+    return nx.radius(rbc(ensure_connected(graph)))
 
 
 def degree_assortativity_coeff(graph):
+    """"""
     return nx.degree_assortativity_coefficient(rbc(graph))
 
 
 def graph_clique_number(graph):
+    """"""
     return nx.graph_clique_number(rbc(graph))
 
 
 def num_max_cliques(graph):
+    """"""
     return nx.graph_number_of_cliques(rbc(graph))
 
 
 def transitivity(graph):
+    """"""
     return nx.transitivity(rbc(graph))
 
 
 def is_connected(graph):
+    """"""
     return nx.is_connected(rbc(graph)) * 1
 
 
 def num_connected_components(graph):
+    """"""
     return nx.number_connected_components(rbc(graph))
 
 
-@ensure_connected
 def largest_connected_component(graph):
-    rbc(graph).number_of_nodes()
+    """"""
+    return rbc(ensure_connected(graph)).number_of_nodes()
 
 
 def global_efficiency(graph):
+    """"""
     return nx.global_efficiency(rbc(graph))
 
 
 def node_connectivity(graph):
+    """"""
     return nx.node_connectivity(rbc(graph))
 
 
 def edge_connectivity(graph):
+    """"""
     return nx.edge_connectivity(rbc(graph))
 
 

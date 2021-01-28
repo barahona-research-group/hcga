@@ -22,42 +22,52 @@ def get_conv_matrix(graph):
 
 
 def conv_node_feature(graph):
+    """"""
     return get_conv_matrix(graph).dot(get_feature_matrix(graph))
 
 
 def conv2_node_feature(graph):
+    """"""
     return np.linalg.matrix_power(get_conv_matrix(graph), 2).dot(get_feature_matrix(graph))
 
 
 def mean_node_features_featurewise(graph):
+    """"""
     return np.mean(get_feature_matrix(graph), axis=1).tolist()
 
 
 def mean_node_feature_nodewise(graph):
+    """"""
     return np.mean(get_feature_matrix(graph), axis=0).tolist()
 
 
 def max_node_feature_featurewise(graph):
+    """"""
     return np.max(get_feature_matrix(graph), axis=1).tolist()
 
 
 def max_node_feature_nodewise(graph):
+    """"""
     return np.max(get_feature_matrix(graph), axis=0).tolist()
 
 
 def min_node_feature_featurewise(graph):
+    """"""
     return np.min(get_feature_matrix(graph), axis=1).tolist()
 
 
 def min_node_feature_nodewise(graph):
+    """"""
     return np.min(get_feature_matrix(graph), axis=0).tolist()
 
 
 def sum_node_feature_featurewise(graph):
+    """"""
     return np.sum(get_feature_matrix(graph), axis=1).tolist()
 
 
 def sum_node_feature_nodewise(graph):
+    """"""
     return np.sum(get_feature_matrix(graph), axis=0).tolist()
 
 

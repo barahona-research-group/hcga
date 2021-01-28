@@ -8,15 +8,15 @@ featureclass_name = "NodeConnectivity"
 
 
 def node_conn(graph):
-    # calculating node connectivity
+    """calculating node connectivity"""
     node_connectivity = nx.all_pairs_node_connectivity(graph)
     N = graph.number_of_nodes()
 
-    node_conn = np.zeros([N, N])
+    _node_conn = np.zeros([N, N])
     for key1, value1 in node_connectivity.items():
         for key2, value2 in value1.items():
-            node_conn[key1, key2] = value2
-    return list(np.triu(node_conn).flatten())
+            _node_conn[key1, key2] = value2
+    return list(np.triu(_node_conn).flatten())
 
 
 class NodeConnectivity(FeatureClass):

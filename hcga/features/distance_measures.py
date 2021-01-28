@@ -7,34 +7,34 @@ from hcga.features.utils import ensure_connected
 featureclass_name = "DistanceMeasures"
 
 
-@ensure_connected
 def barycenter_size(graph):
     """barycenter_size"""
-    return len(nx.barycenter(graph))
+    return len(nx.barycenter(ensure_connected(graph)))
 
 
-@ensure_connected
 def barycenter_size_weighted(graph):
     """barycenter_size_weighted"""
-    return len(nx.barycenter(graph, weight="weight"))
+    return len(nx.barycenter(ensure_connected(graph), weight="weight"))
 
 
-@ensure_connected
 def center_size(graph):
     """center_size"""
-    return len(nx.center(graph))
+    return len(nx.center(ensure_connected(graph)))
 
 
-@ensure_connected
 def periphery(graph):
     """periphery"""
-    return len(nx.periphery(graph))
+    return len(nx.periphery(ensure_connected(graph)))
 
 
-@ensure_connected
 def eccentricity(graph):
     """eccentricity"""
-    return list(nx.eccentricity(graph).values())
+    return list(nx.eccentricity(ensure_connected(graph)).values())
+
+
+def extrema_bounding(graph):
+    """extrema_bounding"""
+    return nx.extrema_bounding(ensure_connected(graph))
 
 
 class DistanceMeasures(FeatureClass):
@@ -71,8 +71,8 @@ class DistanceMeasures(FeatureClass):
 
         # extrema bounding
         self.add_feature(
-            "center_size",
-            ensure_connected(nx.extrema_bounding),
+            "extrema_bounding",
+            extrema_bounding,
             "The largest distance in the graph",
             InterpretabilityScore(4),
         )

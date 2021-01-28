@@ -65,16 +65,14 @@ def connectance(graph):
     return nx.density(jaccard_similarity(graph))
 
 
-@ensure_connected
 def diameter(graph):
     """diameter"""
-    return nx.diameter(jaccard_similarity(graph))
+    return nx.diameter(jaccard_similarity(ensure_connected(graph)))
 
 
-@ensure_connected
 def radius(graph):
     """radius"""
-    return nx.radius(jaccard_similarity(graph))
+    return nx.radius(jaccard_similarity(ensure_connected(graph)))
 
 
 def degree_assortativity_coeff(graph):
@@ -107,10 +105,9 @@ def num_connected_components(graph):
     return nx.number_connected_components(jaccard_similarity(graph))
 
 
-@ensure_connected
 def largest_connected_component(graph):
     """largest_connected_component"""
-    return jaccard_similarity(graph).number_of_nodes()
+    return jaccard_similarity(ensure_connected(graph)).number_of_nodes()
 
 
 def global_efficiency(graph):

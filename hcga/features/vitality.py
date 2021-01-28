@@ -7,6 +7,7 @@ featureclass_name = "Vitality"
 
 
 def vitality(graph):
+    """"""
     return list(nx.closeness_vitality(graph).values())
 
 

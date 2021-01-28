@@ -28,7 +28,7 @@ def eval_cliques(graph):
 
 def maximal_clique_sizes(graph):
     """maximal_clique_sizes"""
-    eval_cliques(graph)[0] / eval_cliques(graph)[-1]
+    return eval_cliques(graph)[0] / eval_cliques(graph)[-1]
 
 
 class Cliques(FeatureClass):

@@ -7,9 +7,9 @@ from hcga.features.utils import ensure_connected
 featureclass_name = "Hits"
 
 
-@ensure_connected
 def hits(graph):
-    h, _ = nx.hits_numpy(graph)
+    """"""
+    h, _ = nx.hits_numpy(ensure_connected(graph))
     return list(h.values())
 
 

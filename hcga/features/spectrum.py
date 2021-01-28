@@ -11,20 +11,24 @@ featureclass_name = "Spectrum"
 
 @lru_cache(maxsize=None)
 def eval_spectrum_adj(graph):
+    """"""
     return np.real(nx.linalg.spectrum.adjacency_spectrum(graph))
 
 
 def eigenvalue_ratio(graph, i, j):
+    """"""
     return eval_spectrum_adj(graph)[j] / eval_spectrum_adj(graph)[i]
 
 
 @lru_cache(maxsize=None)
 def eval_spectrum_modularity(graph):
+    """"""
     return np.real(nx.linalg.spectrum.modularity_spectrum(graph))
 
 
 @lru_cache(maxsize=None)
 def eval_spectrum_laplacian(graph):
+    """"""
     return np.real(nx.linalg.spectrum.laplacian_spectrum(graph))
 
 

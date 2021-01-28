@@ -6,10 +6,12 @@ The functions here are necessary to evaluate each individual feature found insid
 
 """
 import logging
+import multiprocessing
 import sys
 import traceback
 import warnings
 from functools import partial
+from multiprocessing import TimeoutError
 
 import numpy as np
 import pandas as pd
@@ -18,17 +20,44 @@ from networkx import to_undirected
 from networkx.algorithms.community import quality
 from networkx.exception import NetworkXNotImplemented
 
-from hcga.utils import TimeoutError, get_trivial_graph, timeout_eval
+from hcga.utils import get_trivial_graph, timeout_eval
 
 L = logging.getLogger(__name__)
 warnings.simplefilter("ignore")
 
 
+def _mean_repeats(dist):
+    """"""
+    return np.mean(st.find_repeats(dist)[1])
+
+
+def _hmean(dist):
+    """"""
+    return st.hmean(np.abs(dist) + 1e-8)
+
+
+def _mode(dist):
+    """"""
+    return st.mode(dist)[0][0]
+
+
+def _get_index(args, i=0):
+    """"""
+    return args[i]
+
+
+def _trivial(graph):  # pylint: disable=unused-argument
+    """"""
+    return 0
+
+
 def _feat_N(graph, features):
+    """"""
     return features / len(graph.nodes)
 
 
 def _feat_E(graph, features):
+    """"""
     return features / len(graph.edges)
 
 
@@ -77,6 +106,7 @@ class FeatureClass:
         Args:
             graph (Graph): graph for initialisation, converted to given encoding
         """
+        self.pool = multiprocessing.Pool(processes=1)
         if graph is not None:
             self.graph = graph.get_graph(self.__class__.encoding)
             self.graph_id = graph.id
@@ -92,7 +122,6 @@ class FeatureClass:
         statistics_level="basic",
         n_node_features=0,
         timeout=10,
-        mp=None,
     ):
         """Initializes the class by adding descriptions for all features.
 
@@ -193,11 +222,16 @@ class FeatureClass:
 
         try:
             try:
-                feature = timeout_eval(feature_function, (function_args,), timeout=self.timeout)
+                feature = timeout_eval(
+                    feature_function, (function_args,), timeout=self.timeout, pool=self.pool
+                )
             except NetworkXNotImplemented:
                 if self.graph_type == "directed":
                     feature = timeout_eval(
-                        feature_function, (to_undirected(function_args),), timeout=self.timeout
+                        feature_function,
+                        (to_undirected(function_args),),
+                        timeout=self.timeout,
+                        pool=self.pool,
                     )
                 else:
                     return None
@@ -335,7 +369,7 @@ class FeatureClass:
 
         This function should be used by each specific feature class to add new features.
         """
-        self.add_feature("test", lambda graph: 0, "Test feature for the base feature class", 5)
+        self.add_feature("test", _trivial, "Test feature for the base feature class", 5)
 
     def get_features(self, all_features=False):
         """Compute all the possible features."""
@@ -420,7 +454,7 @@ class FeatureClass:
             for i in range(len(feat_dist)):
                 self.add_feature(
                     feat_name[i],
-                    lambda args: args[i],
+                    partial(_get_index, i=i),
                     feat_desc,
                     feat_interpret,
                     function_args=feat_dist,
@@ -486,7 +520,7 @@ class FeatureClass:
         )
         self.add_feature(
             feat_name + "_hmean",
-            lambda dist: st.hmean(np.abs(dist) + 1e-8),
+            _hmean,
             "G. Mean" + compl_desc,
             feat_interpret - 1,
             function_args=feat_dist,
@@ -500,7 +534,7 @@ class FeatureClass:
         )
         self.add_feature(
             feat_name + "_mode",
-            lambda dist: st.mode(dist)[0][0],
+            _mode,
             "Mode" + compl_desc,
             feat_interpret - 1,
             function_args=feat_dist,
@@ -575,7 +609,7 @@ class FeatureClass:
         )
         self.add_feature(
             feat_name + "_mean_repeats",
-            lambda dist: np.mean(st.find_repeats(dist)[1]),
+            _mean_repeats,
             "Mean repeats" + compl_desc,
             feat_interpret - 1,
             function_args=feat_dist,

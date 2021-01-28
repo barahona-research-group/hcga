@@ -18,12 +18,14 @@ def eval_shortest_paths(graph):
 
 
 def largest_shortest_path(graph):
+    """"""
     return [
         len(list(eval_shortest_paths(graph)[u].values())[-1]) for u in eval_shortest_paths(graph)
     ]
 
 
 def mean_shortest_path(graph):
+    """"""
     return [
         np.mean([len(k) for k in list(eval_shortest_paths(graph)[u].values())])
         for u in eval_shortest_paths(graph)
@@ -32,6 +34,7 @@ def mean_shortest_path(graph):
 
 @lru_cache(maxsize=None)
 def shortest_paths(graph):
+    """"""
     ss = list(nx.all_pairs_dijkstra_path_length(graph))
     p = []
     for s in ss:
@@ -40,11 +43,13 @@ def shortest_paths(graph):
 
 
 def number_shortest_paths_directed(graph):
+    """"""
     return len(shortest_paths(graph))
 
 
 @lru_cache(maxsize=None)
 def eccentricity(graph):
+    """"""
     ss = list(nx.all_pairs_dijkstra_path_length(graph))
     p = []
     for s in ss:
@@ -53,10 +58,12 @@ def eccentricity(graph):
 
 
 def diameter_directed(graph):
+    """"""
     return max(eccentricity(graph))
 
 
 def radius_directed(graph):
+    """"""
     min(eccentricity(graph))
 
 

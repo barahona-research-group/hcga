@@ -10,14 +10,17 @@ featureclass_name = "SimpleCycles"
 
 @lru_cache(maxsize=None)
 def simple_cycles_func(graph):
+    """simple_cycles_func"""
     return list(nx.simple_cycles(graph))
 
 
 def number_simple_cycles(graph):
+    """number_simple_cycles"""
     return len(simple_cycles_func(graph))
 
 
 def simple_cycles_sizes(graph):
+    """simple_cycles_sizes"""
     return [len(i) for i in simple_cycles_func(graph)]
 
 
@@ -30,7 +33,6 @@ class SimpleCycles(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         self.add_feature(
             "number_simple_cycles",
             number_simple_cycles,

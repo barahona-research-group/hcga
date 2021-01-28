@@ -204,6 +204,7 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
         features = pd.DataFrame(feat_class_inst.get_features(), index=[graph.id])
         columns = [(feat_class_inst.shortname, col) for col in features.columns]
         features_df[columns] = features
+        feat_class_inst.pool.close()
         del feat_class_inst
 
         if with_runtimes:
@@ -247,7 +248,6 @@ def compute_all_features(
                         with_runtimes=with_runtimes,
                     ),
                     graphs,
-                    chunksize=max(1, int(len(graphs) / n_workers)),
                 ),
                 total=len(graphs),
             )
