@@ -9,7 +9,18 @@ featureclass_name = "Nestedness"
 
 
 def nestedness(graph):
-    """Compute nestedness."""
+    """Nestedness measures class
+
+    Features based on the nestedness of a graph.
+    A graph has a nested structure when smaller components contain a subset of larger components
+
+    References
+    ----------
+    .. [1] Grimm, Alexander, and Claudio J. Tessone. "Detecting nestedness in graphs."
+    International Workshop on Complex Networks and their Applications.
+    Springer, Cham, 2016.
+
+    """
     n = nx.number_of_nodes(graph)
     nodes = list(graph.nodes())
     neighbors = [0 for i in range(n)]

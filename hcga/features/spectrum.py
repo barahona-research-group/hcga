@@ -33,7 +33,18 @@ def eval_spectrum_laplacian(graph):
 
 
 class Spectrum(FeatureClass):
-    """Spectrum class."""
+    """Spectrum class.
+
+    Features based on the eigenvectors and eigenvalues of the graph.
+
+    The features here are derived from spectral graph theory [1]_.
+
+    References
+    ----------
+    .. [1] Cvetkovic, Dragos, et al. Eigenspaces of graphs. No. 66. Cambridge University Press,\
+        1997.
+
+    """
 
     modes = ["medium", "slow"]
     shortname = "SPM"

@@ -14,6 +14,9 @@ def maximal_matching(graph):
 class MaximalMatching(FeatureClass):
     """Maximal matching class.
 
+    A matching is a subset of edges in which no node occurs more than once.
+    A maximal matching cannot add more edges and still be a matching.
+
     Maximal matching calculations using networkx:
         `Networkx_maximal_matching <https://networkx.github.io/documentation/stable/\
         reference/algorithms/matching.html>`_

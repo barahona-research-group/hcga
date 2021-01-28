@@ -39,7 +39,17 @@ def radius(graph):
 
 
 class BasicStats(FeatureClass):
-    """Basic stats class."""
+    """Basic stats class.
+
+    Here we compute basic measures statistics of the graphs, e.g. number of nodes.
+
+    References
+    ----------
+    .. [1] Mark E. J. Newman.
+       *Networks: An Introduction.*
+       Oxford University Press, USA, 2010, pp. 169.
+
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "BS"

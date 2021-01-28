@@ -14,7 +14,22 @@ def core_number(graph):
 
 
 class CoreNumber(FeatureClass):
-    """Core number class."""
+    """Core number class.
+
+    Features based on a k-core analysis.
+
+    A k-core is a maximal subgraph that contains nodes of degree k or more.
+    The core number of a node is the largest value k of a k-core containing that node.
+
+    Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/core.html`
+
+    References
+    ----------
+    .. [1] An O(m) Algorithm for Cores Decomposition of Networks
+       Vladimir Batagelj and Matjaz Zaversnik, 2003.
+       https://arxiv.org/abs/cs.DS/0310049
+
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "CoN"

@@ -32,7 +32,30 @@ def maximal_clique_sizes(graph):
 
 
 class Cliques(FeatureClass):
-    """Cliques class."""
+    """Cliques class.
+
+    Here we construct features based on cliques
+    (subsets of vertices, all adjacent to each other, also called complete subgraphs).
+
+    References
+    ----------
+    .. [1] Bron, C. and Kerbosch, J.
+       "Algorithm 457: finding all cliques of an undirected graph".
+       *Communications of the ACM* 16, 9 (Sep. 1973), 575--577.
+       <http://portal.acm.org/citation.cfm?doid=362342.362367>
+    .. [2] F. Cazals, C. Karande,
+       "A note on the problem of reporting maximal cliques",
+       *Theoretical Computer Science*,
+       Volume 407, Issues 1--3, 6 November 2008, Pages 564--568,
+       <https://doi.org/10.1016/j.tcs.2008.05.010>
+    .. [3] Yun Zhang, Abu-Khzam, F.N., Baldwin, N.E., Chesler, E.J.,
+           Langston, M.A., Samatova, N.F.,
+           "Genome-Scale Computational Approaches to Memory-Intensive
+           Applications in Systems Biology".
+           *Supercomputing*, 2005. Proceedings of the ACM/IEEE SC 2005
+           Conference, pp. 12, 12--18 Nov. 2005.
+           <https://doi.org/10.1109/SC.2005.29>.
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "Cli"

@@ -23,7 +23,22 @@ def largest_commsize(graph):
 
 
 class CommunitiesBisection(FeatureClass):
-    """Communities Bisection class."""
+    """Communities Bisection class.
+
+    This algorithm partitions a network into two sets by iteratively
+    swapping pairs of nodes to reduce the edge cut between the two sets.  The
+    pairs are chosen according to a modified form of Kernighan-Lin, which
+    moves node individually, alternating between sides to keep the bisection
+    balanced.
+
+    References
+    ----------
+    .. [1] Kernighan, B. W.; Lin, Shen (1970).
+       "An efficient heuristic procedure for partitioning graphs."
+       *Bell Systems Technical Journal* 49: 291--307.
+       Oxford University Press 2011.
+
+    """
 
     modes = ["medium", "slow"]
     shortname = "CBI"

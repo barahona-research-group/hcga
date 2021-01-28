@@ -38,7 +38,25 @@ def ratio_nodes_cycle(graph):
 
 
 class CycleBasis(FeatureClass):
-    """Cycle Basis class."""
+    """Cycle Basis class.
+
+    Computes features based on the cycles in the graph.
+
+    A basis for cycles of a network is a minimal collection of cycles
+    such that any cycle in the network can be written as a sum of cycles in the basis.
+    Here summation of cycles is defined as “exclusive or” of the edges.
+    Cycle bases are useful, e.g. when deriving equations for electric circuits
+    using Kirchhoff’s Laws.
+
+    Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/generated/\
+        networkx.algorithms.cycles.cycle_basis.html`
+
+    References
+    ----------
+    .. [1] Paton, K. An algorithm for finding a fundamental set of
+       cycles of a graph. Comm. ACM 12, 9 (Sept 1969), 514-518.
+
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "CYB"

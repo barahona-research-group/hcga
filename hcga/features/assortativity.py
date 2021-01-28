@@ -22,8 +22,19 @@ def weigted_average_neighbor_degree(graph):
 class Assortativity(FeatureClass):
     """Assortativity class.
 
+    Features derived from different measures of assortativity of the graph.
+
     Uses networkx, see `https://networkx.github.io/documentation/networkx-2.4/reference/\
         algorithms/assortativity.html`
+
+    References
+    ----------
+    .. [1] M. E. J. Newman, Mixing patterns in networks,
+       Physical Review E, 67 026126, 2003
+    .. [2] Foster, J.G., Foster, D.V., Grassberger, P. & Paczuski, M.
+       Edge direction and the structure of networks, PNAS 107, 10815-20 (2010).
+
+
     """
 
     modes = ["fast", "medium", "slow"]

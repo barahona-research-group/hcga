@@ -28,7 +28,24 @@ def ratio_commsize_maxmin(graph):
 
 
 class CommunitiesLabelPropagation(FeatureClass):
-    """Communities Label propagation class."""
+    """Communities Label propagation class.
+
+    Features based on the community detection using label propagation.
+
+    Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/\
+        community.html`
+
+    Finds communities in `G` using a semi-synchronous label propagation
+    method[1]_. This method combines the advantages of both the synchronous
+    and asynchronous models.
+
+    References
+    ----------
+    .. [1] Cordasco, G., & Gargano, L. (2010, December). Community detection
+       via semi-synchronous label propagation algorithms. In Business
+       Applications of Social Network Analysis (BASNA), 2010 IEEE International
+       Workshop on (pp. 1-8). IEEE.
+    """
 
     modes = ["medium", "slow"]
     shortname = "CLP"

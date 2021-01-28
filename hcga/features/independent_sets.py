@@ -12,7 +12,18 @@ def size_max_indep_set(graph):
 
 
 class IndependentSets(FeatureClass):
-    """Independent sets class."""
+    """Independent sets class.
+
+    Features based on independent sets.
+
+    An independent set is a set of nodes such that the subgraph
+    of G induced by these nodes contains no edges. A maximal
+    independent set is an independent set such that it is not possible
+    to add a new node and still get an independent set.
+
+    Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/mis.html`
+
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "IS"

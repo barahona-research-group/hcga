@@ -12,7 +12,13 @@ def min_edge_cover(graph):
 
 
 class Covering(FeatureClass):
-    """Covering class."""
+    """Covering class.
+
+    Features based on the minimum edge cover of a graph.
+
+    Uses networkx, 'https://networkx.org/documentation/stable//reference/algorithms/covering.html
+
+    """
 
     modes = ["fast", "medium", "slow"]
     shortname = "CV"
