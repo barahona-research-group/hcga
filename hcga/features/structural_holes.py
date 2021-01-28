@@ -21,7 +21,8 @@ class StructuralHoles(FeatureClass):
 
 
     Holes calculations using networkx:
-        `Structural Holes <https://networkx.org/documentation/stable//reference/algorithms/structuralholes.html>`_
+        `Structural Holes <https://networkx.org/documentation/stable//reference/algorithms/\
+            structuralholes.html>`_
 
     The *constraint* is a measure of the extent to which a node *v* is
     invested in those nodes that are themselves invested in the

@@ -51,7 +51,7 @@ class CommunitiesAsyn(FeatureClass):
     [1]_. The algorithm is based on the simple idea of fluids interacting
     in an environment, expanding and pushing each other. Its initialization is
     random, so found communities may vary on different executions.
-    
+
     References
     ----------
     .. [1] Parés F., Garcia-Gasulla D. et al. "Fluid Communities: A

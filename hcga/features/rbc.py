@@ -11,7 +11,6 @@ from hcga.features.utils import ensure_connected, remove_selfloops
 featureclass_name = "RolesimilarityBasedComparison"
 
 
-
 @lru_cache(maxsize=None)
 def rbc(graph):
     """Rbc computation.

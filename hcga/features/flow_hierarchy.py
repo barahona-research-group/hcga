@@ -11,10 +11,11 @@ featureclass_name = "FlowHierarchy"
 class FlowHierarchy(FeatureClass):
     """Flow hierarchy class.
 
-    Features based on flow hierarchy. Flow hierarchy is defined as the fraction of edges not participating
-    in cycles in a directed graph [1]_.
+    Features based on flow hierarchy. Flow hierarchy is defined as the fraction of edges not
+    participating in cycles in a directed graph [1]_.
 
-    Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/hierarchy.html`
+    Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/\
+        hierarchy.html`
 
 
     References

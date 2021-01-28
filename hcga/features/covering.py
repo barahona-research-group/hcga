@@ -16,7 +16,7 @@ class Covering(FeatureClass):
 
     Features based on the minimum edge cover of a graph.
 
-    Uses networkx, see 'https://networkx.org/documentation/stable//reference/algorithms/covering.html
+    Uses networkx, 'https://networkx.org/documentation/stable//reference/algorithms/covering.html
 
     """
 

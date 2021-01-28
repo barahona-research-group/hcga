@@ -81,7 +81,8 @@ class BasalNodes(FeatureClass):
 
     References
     ----------
-    .. [1]Johnson, Samuel, and Nick S. Jones. "Looplessness in networks is linked to trophic coherence.",
+    .. [1]Johnson, Samuel, and Nick S. Jones. "Looplessness in networks is linked to trophic\
+        coherence.",
      Proceedings of the National Academy of Sciences 114.22 (2017): 5618-5623.
     """
 

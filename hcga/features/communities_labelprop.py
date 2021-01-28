@@ -32,7 +32,8 @@ class CommunitiesLabelPropagation(FeatureClass):
 
     Features based on the community detection using label propagation.
 
-    Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/community.html`
+    Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/\
+        community.html`
 
     Finds communities in `G` using a semi-synchronous label propagation
     method[1]_. This method combines the advantages of both the synchronous

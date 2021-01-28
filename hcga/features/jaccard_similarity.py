@@ -10,6 +10,7 @@ from hcga.features.utils import ensure_connected, remove_selfloops
 featureclass_name = "JaccardSimilarity"
 
 
+@lru_cache(maxsize=None)
 def jaccard_similarity(graph):
     """Construct a graph from Jaccard similarity matrix
 
@@ -28,11 +29,6 @@ def jaccard_similarity(graph):
     For further information see `https://en.wikipedia.org/wiki/Jaccard_index'
 
     """
-
-@lru_cache(maxsize=None)
-def jaccard_similarity(graph):
-    """Construct a graph from Jaccard similarity matrix"""
-
     n = nx.number_of_nodes(graph)
     jsm = np.eye(n)
 

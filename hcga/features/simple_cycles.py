@@ -34,7 +34,8 @@ class SimpleCycles(FeatureClass):
     are not cyclic permutations of each other.
 
     Cycles calculations using networkx:
-        `Cycles <https://networkx.org/documentation/stable/_modules/networkx/algorithms/cycles.html>`_
+        `Cycles <https://networkx.org/documentation/stable/_modules/networkx/algorithms/\
+            cycles.html>`_
 
 
     References

@@ -48,7 +48,8 @@ class CycleBasis(FeatureClass):
     Cycle bases are useful, e.g. when deriving equations for electric circuits
     using Kirchhoff’s Laws.
 
-    Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.cycles.cycle_basis.html`
+    Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/generated/\
+        networkx.algorithms.cycles.cycle_basis.html`
 
     References
     ----------

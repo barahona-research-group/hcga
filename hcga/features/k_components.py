@@ -46,7 +46,8 @@ class KComponents(FeatureClass):
     graph can contain several 2-components, each of which can contain
     one or more 3-components, and so forth.
 
-    Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/approximation.html`
+    Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/\
+        approximation.html`
 
     References
     ----------

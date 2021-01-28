@@ -41,7 +41,8 @@ class Spectrum(FeatureClass):
 
     References
     ----------
-    .. [1] Cvetkovic, Dragos, et al. Eigenspaces of graphs. No. 66. Cambridge University Press, 1997.
+    .. [1] Cvetkovic, Dragos, et al. Eigenspaces of graphs. No. 66. Cambridge University Press,\
+        1997.
 
     """
 

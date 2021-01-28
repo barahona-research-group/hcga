@@ -7,14 +7,15 @@ featureclass_name = "Efficiency"
 
 
 class Efficiency(FeatureClass):
-    """ EFficiency Measures class.
+    """EFficiency Measures class.
 
     Features based on the efficiency of a gaph.
     The *efficiency* of a pair of nodes is the multiplicative inverse of the
     shortest path distance between the nodes [1]_. Returns 0 if no path
     between nodes.
 
-    Uses networkx: `Efficiency Measures <https://networkx.org/documentation/stable/reference/algorithms/efficiency_measures.html>`_
+    Uses networkx: `Efficiency Measures <https://networkx.org/documentation/stable/reference/\
+        algorithms/efficiency_measures.html>`_
 
     References
     ----------

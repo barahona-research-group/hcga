@@ -41,7 +41,7 @@ class RichClub(FeatureClass):
     degree greater than *k*:
 
     Rich club calculations using networkx:
-            `Rich club <https://networkx.org/documentation/stable/reference/algorithms/rich_club.html>`_
+        `Rich club <https://networkx.org/documentation/stable/reference/algorithms/rich_club.html>`_
 
     References
     ----------

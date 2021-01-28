@@ -73,7 +73,8 @@ class ShortestPaths(FeatureClass):
     Features based on the shortest paths across the network.
 
     Shortest paths calculations using networkx:
-        `Networkx_scale free <https://networkx.org/documentation/stable/reference/algorithms/shortest_paths.html>`_
+        `Networkx_scale free <https://networkx.org/documentation/stable/reference/algorithms/\
+            shortest_paths.html>`_
 
     """
 

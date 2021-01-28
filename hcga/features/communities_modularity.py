@@ -53,7 +53,8 @@ class CommunitiesModularity(FeatureClass):
 
     Features based on the community detection using modularity.
 
-    Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/community.html`
+    Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/\
+        community.html`
 
     Find communities in graph using Clauset-Newman-Moore greedy modularity maximization.
     This method currently supports the Graph class and does not consider edge weights.

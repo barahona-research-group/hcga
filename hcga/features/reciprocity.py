@@ -21,7 +21,8 @@ class Reciprocity(FeatureClass):
     the total number of edges attached to node u.
 
     Reciprocity calculations using networkx:
-            `Reciprocity <https://networkx.org/documentation/stable/reference/algorithms/reciprocity.html>`_
+            `Reciprocity <https://networkx.org/documentation/stable/reference/algorithms/\
+                reciprocity.html>`_
 
     """
 
