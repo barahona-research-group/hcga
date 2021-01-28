@@ -41,6 +41,7 @@
 <dt id="hcga.features.centralities_basic.CentralitiesBasic">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">CentralitiesBasic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#CentralitiesBasic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Centralities class.</p>
+<<<<<<< HEAD
 <blockquote>
 <div><blockquote>
 <div><p>Uses networkx, see ‘<a class="reference external" href="https://networkx.github.io/documentation/stable/reference/">https://networkx.github.io/documentation/stable/reference/</a>        algorithms/centrality.html`</p>
@@ -667,58 +668,126 @@
 <li><p><strong>description</strong> – Sum of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u</p></li>
 <li><p><strong>interpretability</strong> – 4</p></li>
 </ul>
+=======
+<p>Uses networkx, see ‘<a class="reference external" href="https://networkx.github.io/documentation/stable/reference/">https://networkx.github.io/documentation/stable/reference/</a>        algorithms/centrality.html`</p>
+<p>Here we implement:
+Degree Centrality
+<<<<<<< HEAD
+Eigenvector Centrality <a class="footnote-reference brackets" href="#id10" id="id1">1</a> <a class="footnote-reference brackets" href="#id11" id="id2">2</a>
+Closeness Centrality <a class="footnote-reference brackets" href="#id12" id="id3">3</a> <a class="footnote-reference brackets" href="#id13" id="id4">4</a>
+Betweenness Centrality <a class="footnote-reference brackets" href="#id14" id="id5">5</a> <a class="footnote-reference brackets" href="#id15" id="id6">6</a> <a class="footnote-reference brackets" href="#id16" id="id7">7</a> <a class="footnote-reference brackets" href="#id17" id="id8">8</a>
+Harmonic Centrality <a class="footnote-reference brackets" href="#id18" id="id9">9</a></p>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+=======
+Eigenvector Centrality [1]_[2]_
+Closeness Centrality [3]_[4]_
+Betweenness Centrality [5]_[6]_[7]_[8]_
+Harmonic Centrality <a class="footnote-reference brackets" href="#id10" id="id1">9</a></p>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets">1</span></dt>
+>>>>>>> ecc6e38ff0a30cd4641aa28c3056bb0a6cd914fe
+<dd><p>Phillip Bonacich.
+“Power and Centrality: A Family of Measures.”
+<em>American Journal of Sociology</em> 92(5):1170–1182, 1986
+&lt;<a class="reference external" href="http://www.leonidzhukov.net/hse/2014/socialnetworks/papers/Bonacich-Centrality.pdf">http://www.leonidzhukov.net/hse/2014/socialnetworks/papers/Bonacich-Centrality.pdf</a>&gt;</p>
+</dd>
+<<<<<<< HEAD
+<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+=======
+<dt class="label" id="id3"><span class="brackets">2</span></dt>
+>>>>>>> ecc6e38ff0a30cd4641aa28c3056bb0a6cd914fe
+<dd><p>Mark E. J. Newman.
+<em>Networks: An Introduction.</em>
+Oxford University Press, USA, 2010, pp. 169.</p>
+</dd>
+<<<<<<< HEAD
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+=======
+<dt class="label" id="id4"><span class="brackets">3</span></dt>
+>>>>>>> ecc6e38ff0a30cd4641aa28c3056bb0a6cd914fe
+<dd><p>Linton C. Freeman: Centrality in networks: I.
+Conceptual clarification. Social Networks 1:215-239, 1979.
+<a class="reference external" href="http://leonidzhukov.ru/hse/2013/socialnetworks/papers/freeman79-centrality.pdf">http://leonidzhukov.ru/hse/2013/socialnetworks/papers/freeman79-centrality.pdf</a></p>
+</dd>
+<<<<<<< HEAD
+<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id4">4</a></span></dt>
+=======
+<dt class="label" id="id5"><span class="brackets">4</span></dt>
+>>>>>>> ecc6e38ff0a30cd4641aa28c3056bb0a6cd914fe
+<dd><p>pg. 201 of Wasserman, S. and Faust, K.,
+Social Network Analysis: Methods and Applications, 1994,
+Cambridge University Press.</p>
+</dd>
+<<<<<<< HEAD
+<dt class="label" id="id14"><span class="brackets"><a class="fn-backref" href="#id5">5</a></span></dt>
+=======
+<dt class="label" id="id6"><span class="brackets">5</span></dt>
+>>>>>>> ecc6e38ff0a30cd4641aa28c3056bb0a6cd914fe
+<dd><p>Ulrik Brandes:
+A Faster Algorithm for Betweenness Centrality.
+Journal of Mathematical Sociology 25(2):163-177, 2001.
+<a class="reference external" href="http://www.inf.uni-konstanz.de/algo/publications/b-fabc-01.pdf">http://www.inf.uni-konstanz.de/algo/publications/b-fabc-01.pdf</a></p>
+</dd>
+<<<<<<< HEAD
+<dt class="label" id="id15"><span class="brackets"><a class="fn-backref" href="#id6">6</a></span></dt>
+=======
+<dt class="label" id="id7"><span class="brackets">6</span></dt>
+>>>>>>> ecc6e38ff0a30cd4641aa28c3056bb0a6cd914fe
+<dd><p>Ulrik Brandes:
+On Variants of Shortest-Path Betweenness
+Centrality and their Generic Computation.
+Social Networks 30(2):136-145, 2008.
+<a class="reference external" href="http://www.inf.uni-konstanz.de/algo/publications/b-vspbc-08.pdf">http://www.inf.uni-konstanz.de/algo/publications/b-vspbc-08.pdf</a></p>
+</dd>
+<<<<<<< HEAD
+<dt class="label" id="id16"><span class="brackets"><a class="fn-backref" href="#id7">7</a></span></dt>
+=======
+<dt class="label" id="id8"><span class="brackets">7</span></dt>
+>>>>>>> ecc6e38ff0a30cd4641aa28c3056bb0a6cd914fe
+<dd><p>Ulrik Brandes and Christian Pich:
+Centrality Estimation in Large Networks.
+International Journal of Bifurcation and Chaos 17(7):2303-2318, 2007.
+<a class="reference external" href="http://www.inf.uni-konstanz.de/algo/publications/bp-celn-06.pdf">http://www.inf.uni-konstanz.de/algo/publications/bp-celn-06.pdf</a></p>
+</dd>
+<<<<<<< HEAD
+<dt class="label" id="id17"><span class="brackets"><a class="fn-backref" href="#id8">8</a></span></dt>
+=======
+<dt class="label" id="id9"><span class="brackets">8</span></dt>
+>>>>>>> ecc6e38ff0a30cd4641aa28c3056bb0a6cd914fe
+<dd><p>Linton C. Freeman:
+A set of measures of centrality based on betweenness.
+Sociometry 40: 35–41, 1977
+<a class="reference external" href="http://moreno.ss.uci.edu/23.pdf">http://moreno.ss.uci.edu/23.pdf</a></p>
+</dd>
+<<<<<<< HEAD
+<dt class="label" id="id18"><span class="brackets"><a class="fn-backref" href="#id9">9</a></span></dt>
+=======
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id1">9</a></span></dt>
+>>>>>>> ecc6e38ff0a30cd4641aa28c3056bb0a6cd914fe
+<dd><p>Boldi, Paolo, and Sebastiano Vigna. “Axioms for centrality.”
+Internet Mathematics 10.3-4 (2014): 222-262.</p>
+>>>>>>> parent of c0eaca0... Revert "rebuilt docs"
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt>
-<code class="sig-name descname">harmonic centrality_max</code></dt>
-<dd><dl class="field-list simple">
+<p>Initialise a feature class.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – harmonic centrality_max</p></li>
-<li><p><strong>shortname</strong> – CB</p></li>
-<li><p><strong>fullname</strong> – CB_harmonic centrality_max</p></li>
-<li><p><strong>description</strong> – Maximum of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u</p></li>
-<li><p><strong>interpretability</strong> – 4</p></li>
-</ul>
+<dd class="field-odd"><p><strong>graph</strong> (<a class="reference internal" href="../graph.html#hcga.graph.Graph" title="hcga.graph.Graph"><em>Graph</em></a>) – graph for initialisation, converted to given encoding</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#CentralitiesBasic.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main feature extraction function.</p>
+<p>This function should be used by each specific feature class to add new features.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt>
-<code class="sig-name descname">harmonic centrality_median</code></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – harmonic centrality_median</p></li>
-<li><p><strong>shortname</strong> – CB</p></li>
-<li><p><strong>fullname</strong> – CB_harmonic centrality_median</p></li>
-<li><p><strong>description</strong> – Median of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u</p></li>
-<li><p><strong>interpretability</strong> – 4</p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt>
-<code class="sig-name descname">harmonic centrality_std</code></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – harmonic centrality_std</p></li>
-<li><p><strong>shortname</strong> – CB</p></li>
-<li><p><strong>fullname</strong> – CB_harmonic centrality_std</p></li>
-<li><p><strong>description</strong> – Standard deviation of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u</p></li>
-<li><p><strong>interpretability</strong> – 4</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
+<<<<<<< HEAD
 <dl class="py attribute">
 <dt>
 <code class="sig-name descname">subgraph centrality_mean</code></dt>
@@ -4093,6 +4162,77 @@
 </dd></dl>
 
 </dd></dl>
+=======
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.betweenness_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">betweenness_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#betweenness_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.betweenness_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.closeness_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">closeness_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#closeness_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.closeness_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.degree_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">degree_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#degree_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.degree_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.edge_betweenness_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">edge_betweenness_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#edge_betweenness_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.edge_betweenness_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.eigenvector_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">eigenvector_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#eigenvector_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.eigenvector_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.harmonic_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">harmonic_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#harmonic_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.harmonic_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.katz_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">katz_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#katz_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.katz_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.pagerank">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">pagerank</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#pagerank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.pagerank" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.second_order_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">second_order_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#second_order_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.second_order_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.subgraph_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">subgraph_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#subgraph_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.subgraph_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.weighted_betweenness_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">weighted_betweenness_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#weighted_betweenness_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.weighted_betweenness_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.weighted_edge_betweenness_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">weighted_edge_betweenness_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#weighted_edge_betweenness_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.weighted_edge_betweenness_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.weighted_eigenvector_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">weighted_eigenvector_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#weighted_eigenvector_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.weighted_eigenvector_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.weighted_pagerank">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">weighted_pagerank</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#weighted_pagerank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.weighted_pagerank" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+>>>>>>> parent of c0eaca0... Revert "rebuilt docs"
 
 </div>
 </div>

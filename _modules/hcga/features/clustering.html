@@ -35,13 +35,63 @@
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+<span class="kn">from</span> <span class="nn">hcga.feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
 
 <span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;Clustering&quot;</span>
 
 
+<div class="viewcode-block" id="triang"><a class="viewcode-back" href="../../../Features/clustering.html#hcga.features.clustering.triang">[docs]</a><span class="k">def</span> <span class="nf">triang</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;triang&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">triangles</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="clustering_dist"><a class="viewcode-back" href="../../../Features/clustering.html#hcga.features.clustering.clustering_dist">[docs]</a><span class="k">def</span> <span class="nf">clustering_dist</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;clustering_dist&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">clustering</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="square_clustering_dist"><a class="viewcode-back" href="../../../Features/clustering.html#hcga.features.clustering.square_clustering_dist">[docs]</a><span class="k">def</span> <span class="nf">square_clustering_dist</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;square_clustering_dist&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">square_clustering</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></div>
+
+
 <div class="viewcode-block" id="Clustering"><a class="viewcode-back" href="../../../Features/clustering.html#hcga.features.clustering.Clustering">[docs]</a><span class="k">class</span> <span class="nc">Clustering</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
+<<<<<<< HEAD
     <span class="sd">&quot;&quot;&quot;Clustering class.&quot;&quot;&quot;</span>
+=======
+    <span class="sd">&quot;&quot;&quot;Clustering class.</span>
+
+<span class="sd">    Here we construct features based on the number of triangles in a graph.</span>
+
+<span class="sd">    Uses networkx, see &#39;https://networkx.github.io/documentation/stable/reference/\</span>
+<span class="sd">        algorithms/clustering.html`</span>
+
+<span class="sd">    We compute:</span>
+<span class="sd">    The number of triangles</span>
+<span class="sd">    Transitivity [1]_</span>
+<<<<<<< HEAD
+<span class="sd">    Clustering [2]_ [3]_ [4]_</span>
+=======
+<span class="sd">    Clustering [2]_[3]_[4]_</span>
+>>>>>>> ecc6e38ff0a30cd4641aa28c3056bb0a6cd914fe
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1]  Biggs, Norman (1993).</span>
+<span class="sd">       Algebraic Graph Theory (2nd ed.).</span>
+<span class="sd">       Cambridge: Cambridge University Press. p. 118.</span>
+<span class="sd">    .. [2] Generalizations of the clustering coefficient to weighted</span>
+<span class="sd">       complex networks by J. Saramäki, M. Kivelä, J.-P. Onnela,</span>
+<span class="sd">       K. Kaski, and J. Kertész, Physical Review E, 75 027105 (2007).</span>
+<span class="sd">       http://jponnela.com/web_documents/a9.pdf</span>
+<span class="sd">    .. [3] Intensity and coherence of motifs in weighted complex</span>
+<span class="sd">       networks by J. P. Onnela, J. Saramäki, J. Kertész, and K. Kaski,</span>
+<span class="sd">       Physical Review E, 71(6), 065103 (2005).</span>
+<span class="sd">    .. [4] Clustering in complex directed networks by G. Fagiolo,</span>
+<span class="sd">       Physical Review E, 76(2), 026107 (2007).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+>>>>>>> parent of c0eaca0... Revert "rebuilt docs"
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;slow&quot;</span><span class="p">]</span>
     <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;Clu&quot;</span>
@@ -50,7 +100,6 @@
 
 <div class="viewcode-block" id="Clustering.compute_features"><a class="viewcode-back" href="../../../Features/clustering.html#hcga.features.clustering.Clustering.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="n">triang</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">triangles</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;num_triangles&quot;</span><span class="p">,</span>
             <span class="n">triang</span><span class="p">,</span>
@@ -58,16 +107,14 @@
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">),</span>
         <span class="p">)</span>
 
-        <span class="n">transi</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">transitivity</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;transitivity&quot;</span><span class="p">,</span>
-            <span class="n">transi</span><span class="p">,</span>
+            <span class="n">nx</span><span class="o">.</span><span class="n">transitivity</span><span class="p">,</span>
             <span class="s2">&quot;Transitivity of the graph&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="c1"># Average clustering coefficient</span>
-        <span class="n">clustering_dist</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">clustering</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;clustering&quot;</span><span class="p">,</span>
             <span class="n">clustering_dist</span><span class="p">,</span>
@@ -77,7 +124,6 @@
         <span class="p">)</span>
 
         <span class="c1"># generalised degree</span>
-        <span class="n">square_clustering_dist</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">square_clustering</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;square_clustering&quot;</span><span class="p">,</span>
             <span class="n">square_clustering_dist</span><span class="p">,</span>

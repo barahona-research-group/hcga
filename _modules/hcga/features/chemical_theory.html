@@ -32,15 +32,46 @@
             
   <h1>Source code for hcga.features.chemical_theory</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Chemical theory class.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
-<span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+<span class="kn">from</span> <span class="nn">hcga.feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
 
 <span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;ChemicalTheory&quot;</span>
 
 
 <div class="viewcode-block" id="ChemicalTheory"><a class="viewcode-back" href="../../../Features/chemical_theory.html#hcga.features.chemical_theory.ChemicalTheory">[docs]</a><span class="k">class</span> <span class="nc">ChemicalTheory</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
+<<<<<<< HEAD
     <span class="sd">&quot;&quot;&quot;Chemical theory class.&quot;&quot;&quot;</span>
+=======
+    <span class="sd">&quot;&quot;&quot;Chemical theory class.</span>
+
+<span class="sd">    Here we implement the wiener and estrada indexes.</span>
+
+<span class="sd">    The *Wiener index* of a graph is the sum of the shortest-path</span>
+<span class="sd">    distances between each pair of reachable nodes [1]_. For pairs of nodes</span>
+<span class="sd">    in undirected graphs, only one orientation of the pair is counted.</span>
+
+<span class="sd">    The Estrada Index is a topological index of folding or 3D “compactness” [2]_.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Rouvray, Dennis H.</span>
+<<<<<<< HEAD
+<span class="sd">           &quot;The rich legacy of half a century of the Wiener index.&quot;,</span>
+<span class="sd">           Topology in Chemistry. Woodhead Publishing, 2002. 16-37.</span>
+<span class="sd">    .. [2] E. Estrada,  Characterization of 3D molecular structure,</span>
+<span class="sd">           Chem. Phys. Lett. 319, 713 (2000).</span>
+=======
+<span class="sd">     &quot;The rich legacy of half a century of the Wiener index.&quot;,</span>
+<span class="sd">      Topology in Chemistry. Woodhead Publishing, 2002. 16-37.</span>
+<span class="sd">    .. [2] E. Estrada,  Characterization of 3D molecular structure,</span>
+<span class="sd">       Chem. Phys. Lett. 319, 713 (2000).</span>
+
+>>>>>>> ecc6e38ff0a30cd4641aa28c3056bb0a6cd914fe
+<span class="sd">    &quot;&quot;&quot;</span>
+>>>>>>> parent of c0eaca0... Revert "rebuilt docs"
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fast&quot;</span><span class="p">,</span> <span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;slow&quot;</span><span class="p">]</span>
     <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;CT&quot;</span>
@@ -49,26 +80,23 @@
 
 <div class="viewcode-block" id="ChemicalTheory.compute_features"><a class="viewcode-back" href="../../../Features/chemical_theory.html#hcga.features.chemical_theory.ChemicalTheory.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="n">wiener_index</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">wiener_index</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;wiener index&quot;</span><span class="p">,</span>
-            <span class="n">wiener_index</span><span class="p">,</span>
+            <span class="n">nx</span><span class="o">.</span><span class="n">wiener_index</span><span class="p">,</span>
             <span class="s2">&quot;Sum of the lengths of the shortest paths between all pairs of vertices&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
         <span class="p">)</span>
 
-        <span class="n">wiener_index</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">wiener_index</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;wiener index weighted&quot;</span><span class="p">,</span>
-            <span class="n">wiener_index</span><span class="p">,</span>
+            <span class="n">partial</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">wiener_index</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">),</span>
             <span class="s2">&quot;Sum of the lengths of the shortest paths between all pairs of vertices&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
         <span class="p">)</span>
 
-        <span class="n">estrada_index</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">estrada_index</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;estrada_index&quot;</span><span class="p">,</span>
-            <span class="n">estrada_index</span><span class="p">,</span>
+            <span class="n">nx</span><span class="o">.</span><span class="n">estrada_index</span><span class="p">,</span>
             <span class="s2">&quot;Topological index of protein folding or 3D compactness&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
         <span class="p">)</span></div></div>
