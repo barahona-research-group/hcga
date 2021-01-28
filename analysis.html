@@ -165,6 +165,7 @@ in reduced set of features</p></li>
 <code class="sig-prename descclassname">hcga.analysis.</code><code class="sig-name descname">classify_pairwise</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">features_info</span></em>, <em class="sig-param"><span class="n">model</span><span class="o">=</span><span class="default_value">'XG'</span></em>, <em class="sig-param"><span class="n">graph_removal</span><span class="o">=</span><span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">interpretability</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">n_top_features</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">reduce_set</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">reduced_set_size</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">reduced_set_max_correlation</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">n_repeats</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">n_splits</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">analysis_type</span><span class="o">=</span><span class="default_value">'classification'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hcga/analysis.html#classify_pairwise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.analysis.classify_pairwise" title="Permalink to this definition">¶</a></dt>
 <dd><p>Classify all possible pairs of clases with kfold and returns top features.</p>
 <p>The top features for each pair with high enough accuracies are collected in a list,
+<<<<<<< HEAD
 for later analysis.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -176,6 +177,26 @@ for later analysis.</p>
 <li><p><strong>n_top_features</strong> (<em>int</em>) – number of top features to save</p></li>
 <li><p><strong>reduce_set</strong> (<em>bool</em>) – is True, the classification will be rerun
 on a reduced set of top features (from shapely analysis)</p></li>
+=======
+for later analysis.
+:param features: extracted features
+:type features: dataframe
+:param features_info: features information
+:type features_info: dataframe
+:param model: model to preform analysis
+:type model: str
+:param graph_removal: remove samples with more than graph_removal % bad values
+:type graph_removal: float
+:param n_top_features: number of top features to save
+:type n_top_features: int
+:param reduce_set: is True, the classification will be rerun</p>
+<blockquote>
+<div><p>on a reduced set of top features (from shapely analysis)</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+>>>>>>> ecc6e38ff0a30cd4641aa28c3056bb0a6cd914fe
 <li><p><strong>reduce_set_size</strong> (<em>int</em>) – number of features to keep for reduces set</p></li>
 <li><p><strong>reduced_set_max_correlation</strong> (<em>float</em>) – to discared highly correlated top features
 in reduced set of features</p></li>
