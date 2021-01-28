@@ -1,0 +1,826 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>hcga.analysis &#8212; hcga 0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for hcga.analysis</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions for the analysis of extracted feature matrix.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">shap</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">mean_absolute_error</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">RepeatedKFold</span><span class="p">,</span> <span class="n">RepeatedStratifiedKFold</span><span class="p">,</span> <span class="n">ShuffleSplit</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="kn">from</span> <span class="nn">hcga.io</span> <span class="kn">import</span> <span class="n">load_fitted_model</span><span class="p">,</span> <span class="n">save_fitted_model</span>
+<span class="kn">from</span> <span class="nn">hcga.plotting</span> <span class="kn">import</span> <span class="n">plot_analysis</span><span class="p">,</span> <span class="n">plot_prediction</span>
+
+<span class="n">L</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LOGLEVEL&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">))</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="features_to_Xy"><a class="viewcode-back" href="../../analysis.html#hcga.analysis.features_to_Xy">[docs]</a><span class="k">def</span> <span class="nf">features_to_Xy</span><span class="p">(</span><span class="n">features</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decompose features dataframe to numpy arrays X and y.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;label&quot;</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">features</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]),</span> <span class="n">features</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">features</span><span class="p">,</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="_normalise_feature_data"><a class="viewcode-back" href="../../analysis.html#hcga.analysis._normalise_feature_data">[docs]</a><span class="k">def</span> <span class="nf">_normalise_feature_data</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fit_scaler</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Normalise the feature matrix to remove the mean and scale to unit variance.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;label&quot;</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">scaler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+        <span class="n">normed_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">features</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">features</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fit_scaler</span><span class="p">:</span>
+            <span class="n">normed_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">features</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">features</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">normed_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">features</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">features</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+    <span class="n">normed_features</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">index</span>
+
+    <span class="k">if</span> <span class="s2">&quot;label&quot;</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+        <span class="n">normed_features</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span>
+
+    <span class="k">return</span> <span class="n">normed_features</span><span class="p">,</span> <span class="n">scaler</span></div>
+
+
+<div class="viewcode-block" id="_number_folds"><a class="viewcode-back" href="../../analysis.html#hcga.analysis._number_folds">[docs]</a><span class="k">def</span> <span class="nf">_number_folds</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get number of folds.&quot;&quot;&quot;</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+    <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Counts of graphs/label: </span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">counts</span><span class="p">)</span>
+    <span class="n">n_splits</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="n">counts</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">n_splits</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_get_reduced_feature_set"><a class="viewcode-back" href="../../analysis.html#hcga.analysis._get_reduced_feature_set">[docs]</a><span class="k">def</span> <span class="nf">_get_reduced_feature_set</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">shap_top_features</span><span class="p">,</span> <span class="n">n_top_features</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reduce the feature set by taking uncorrelated features.&quot;&quot;&quot;</span>
+    <span class="n">rank_feat_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">shap_top_features</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">selected_features</span> <span class="o">=</span> <span class="p">[</span><span class="n">rank_feat_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">rank_feat_id</span> <span class="ow">in</span> <span class="n">rank_feat_ids</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">corr_matrix</span><span class="p">[</span><span class="n">selected_features</span><span class="p">,</span> <span class="n">rank_feat_id</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">alpha</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="n">selected_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rank_feat_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_features</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">n_top_features</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="s2">&quot;Now using a reduced set of </span><span class="si">%s</span><span class="s2"> features with &lt; </span><span class="si">%s</span><span class="s2"> correlation.&quot;</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">selected_features</span><span class="p">)),</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_features</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">L</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Only one features selected, things may break!&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">selected_features</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="_print_accuracy"><a class="viewcode-back" href="../../analysis.html#hcga.analysis._print_accuracy">[docs]</a><span class="k">def</span> <span class="nf">_print_accuracy</span><span class="p">(</span><span class="n">acc_scores</span><span class="p">,</span> <span class="n">analysis_type</span><span class="p">,</span> <span class="n">reduced</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Print the classification or regression accuracies.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">reduced</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">analysis_type</span> <span class="o">==</span> <span class="s2">&quot;classification&quot;</span><span class="p">:</span>
+            <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Accuracy with reduced set: </span><span class="si">%s</span><span class="s2"> +/- </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">acc_scores</span><span class="p">),</span> <span class="mi">3</span><span class="p">)),</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">acc_scores</span><span class="p">),</span> <span class="mi">3</span><span class="p">)),</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">analysis_type</span> <span class="o">==</span> <span class="s2">&quot;regression&quot;</span><span class="p">:</span>
+            <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Mean Absolute Error with reduced set: </span><span class="si">%s</span><span class="s2"> +/- </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">acc_scores</span><span class="p">),</span> <span class="mi">3</span><span class="p">)),</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">acc_scores</span><span class="p">),</span> <span class="mi">3</span><span class="p">)),</span>
+            <span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">analysis_type</span> <span class="o">==</span> <span class="s2">&quot;classification&quot;</span><span class="p">:</span>
+            <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Accuracy: </span><span class="si">%s</span><span class="s2"> +/- </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">acc_scores</span><span class="p">),</span> <span class="mi">3</span><span class="p">)),</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">acc_scores</span><span class="p">),</span> <span class="mi">3</span><span class="p">)),</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">analysis_type</span> <span class="o">==</span> <span class="s2">&quot;regression&quot;</span><span class="p">:</span>
+            <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Mean absolute error: </span><span class="si">%s</span><span class="s2"> +/- </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">acc_scores</span><span class="p">),</span> <span class="mi">3</span><span class="p">)),</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">acc_scores</span><span class="p">),</span> <span class="mi">3</span><span class="p">)),</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_filter_interpretable"><a class="viewcode-back" href="../../analysis.html#hcga.analysis._filter_interpretable">[docs]</a><span class="k">def</span> <span class="nf">_filter_interpretable</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">features_info</span><span class="p">,</span> <span class="n">interpretability</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get only features with certain interpretability.&quot;&quot;&quot;</span>
+    <span class="n">interpretability</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">interpretability</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">features_info</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">features_info</span><span class="p">[</span><span class="n">feat</span><span class="p">][</span><span class="s2">&quot;interpretability&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">score</span>
+        <span class="k">if</span> <span class="n">score</span> <span class="o">&lt;</span> <span class="n">interpretability</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">features</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="n">features</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">feat</span><span class="p">])</span>
+                <span class="n">features_info</span> <span class="o">=</span> <span class="n">features_info</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">feat</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">features</span><span class="p">,</span> <span class="n">features_info</span></div>
+
+
+<div class="viewcode-block" id="_filter_graphs"><a class="viewcode-back" href="../../analysis.html#hcga.analysis._filter_graphs">[docs]</a><span class="k">def</span> <span class="nf">_filter_graphs</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">graph_removal</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove samples with more than X% bad values.&quot;&quot;&quot;</span>
+    <span class="n">n_graphs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">features</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">graph_removal</span><span class="p">]</span>
+    <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> graphs were removed for more than </span><span class="si">%s</span><span class="s2"> fraction of bad features&quot;</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">n_graphs</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">index</span><span class="p">)),</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">graph_removal</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">features</span></div>
+
+
+<div class="viewcode-block" id="_filter_features"><a class="viewcode-back" href="../../analysis.html#hcga.analysis._filter_features">[docs]</a><span class="k">def</span> <span class="nf">_filter_features</span><span class="p">(</span><span class="n">features</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Filter features and create feature matrix.&quot;&quot;&quot;</span>
+    <span class="n">nan_features</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">replace</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">valid_features</span> <span class="o">=</span> <span class="n">nan_features</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">valid_features</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span>
+        <span class="n">valid_features</span><span class="o">.</span><span class="n">std</span><span class="p">()[(</span><span class="n">valid_features</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">columns</span></div>
+
+
+<div class="viewcode-block" id="_get_model"><a class="viewcode-back" href="../../analysis.html#hcga.analysis._get_model">[docs]</a><span class="k">def</span> <span class="nf">_get_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">analysis_type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get a model.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;RF&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">analysis_type</span> <span class="o">==</span> <span class="s2">&quot;classification&quot;</span><span class="p">:</span>
+                <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+
+                <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;... Using RandomForest classifier ...&quot;</span><span class="p">)</span>
+                <span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">analysis_type</span> <span class="o">==</span> <span class="s2">&quot;regression&quot;</span><span class="p">:</span>
+                <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestRegressor</span>
+
+                <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;... Using RandomForest regressor ...&quot;</span><span class="p">)</span>
+                <span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;XG&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">analysis_type</span> <span class="o">==</span> <span class="s2">&quot;classification&quot;</span><span class="p">:</span>
+                <span class="kn">from</span> <span class="nn">xgboost</span> <span class="kn">import</span> <span class="n">XGBClassifier</span>
+
+                <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;... Using Xgboost classifier ...&quot;</span><span class="p">)</span>
+                <span class="n">model</span> <span class="o">=</span> <span class="n">XGBClassifier</span><span class="p">(</span><span class="n">objective</span><span class="o">=</span><span class="s2">&quot;reg:squarederror&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">analysis_type</span> <span class="o">==</span> <span class="s2">&quot;regression&quot;</span><span class="p">:</span>
+                <span class="kn">from</span> <span class="nn">xgboost</span> <span class="kn">import</span> <span class="n">XGBRegressor</span>
+
+                <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;... Using Xgboost regressor ...&quot;</span><span class="p">)</span>
+                <span class="n">model</span> <span class="o">=</span> <span class="n">XGBRegressor</span><span class="p">(</span><span class="n">objective</span><span class="o">=</span><span class="s2">&quot;reg:squarederror&quot;</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unknown model type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">model</span></div>
+
+
+<div class="viewcode-block" id="_get_shap_feature_importance"><a class="viewcode-back" href="../../analysis.html#hcga.analysis._get_shap_feature_importance">[docs]</a><span class="k">def</span> <span class="nf">_get_shap_feature_importance</span><span class="p">(</span><span class="n">shap_values</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;From a list of shap values per folds, compute the global shap feature importance.&quot;&quot;&quot;</span>
+    <span class="c1"># average across folds</span>
+    <span class="n">mean_shap_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">shap_values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># average accros labels</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">mean_shap_values</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">global_mean_shap_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mean_shap_values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">mean_shap_values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">mean_shap_values</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">global_mean_shap_values</span> <span class="o">=</span> <span class="n">mean_shap_values</span>
+
+    <span class="c1"># average accros graphs</span>
+    <span class="n">shap_feature_importance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">global_mean_shap_values</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mean_shap_values</span><span class="p">,</span> <span class="n">shap_feature_importance</span></div>
+
+
+<div class="viewcode-block" id="_evaluate_kfold"><a class="viewcode-back" href="../../analysis.html#hcga.analysis._evaluate_kfold">[docs]</a><span class="k">def</span> <span class="nf">_evaluate_kfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">folds</span><span class="p">,</span> <span class="n">analysis_type</span><span class="p">,</span> <span class="n">compute_shap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Evaluate the kfolds.&quot;&quot;&quot;</span>
+    <span class="n">shap_values</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">acc_scores</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">indices</span> <span class="ow">in</span> <span class="n">folds</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">):</span>
+        <span class="n">acc_score</span><span class="p">,</span> <span class="n">shap_value</span> <span class="o">=</span> <span class="n">_compute_fold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">analysis_type</span><span class="p">,</span> <span class="n">compute_shap</span><span class="p">)</span>
+        <span class="n">shap_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shap_value</span><span class="p">)</span>
+        <span class="n">acc_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">acc_score</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">acc_scores</span><span class="p">,</span> <span class="n">shap_values</span></div>
+
+
+<div class="viewcode-block" id="fit_model_kfold"><a class="viewcode-back" href="../../analysis.html#hcga.analysis.fit_model_kfold">[docs]</a><span class="k">def</span> <span class="nf">fit_model_kfold</span><span class="p">(</span>
+    <span class="n">features</span><span class="p">,</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="n">analysis_type</span><span class="o">=</span><span class="s2">&quot;classification&quot;</span><span class="p">,</span>
+    <span class="n">reduce_set</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">reduced_set_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">reduced_set_max_correlation</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+    <span class="n">n_repeats</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="n">n_splits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">compute_shap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Classify graphs from extracted features with kfold.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        features (dataframe): extracted features</span>
+<span class="sd">        model (str): model to preform analysis</span>
+<span class="sd">        analysis_type (str): &#39;classification&#39; or &#39;regression&#39;</span>
+<span class="sd">        reduce_set (bool): is True, the classification will be rerun</span>
+<span class="sd">                           on a reduced set of top features (from shapely analysis)</span>
+<span class="sd">        reduce_set_size (int): number of features to keep for reduces set</span>
+<span class="sd">        reduced_set_max_correlation (float): to discared highly correlated top features</span>
+<span class="sd">                                             in reduced set of features</span>
+<span class="sd">        n_repeats (int): number of k-fold repeats</span>
+<span class="sd">        random_state (int): rng seed</span>
+<span class="sd">        n_splits (int): numbere of split for k-fold, None=automatic estimation</span>
+<span class="sd">        compute_shap (bool): compute SHAP values or not</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (dict): dictionary with results</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Please provide a model for classification&quot;</span><span class="p">)</span>
+
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">features_to_Xy</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">analysis_type</span> <span class="o">==</span> <span class="s2">&quot;classification&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n_splits</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">n_splits</span> <span class="o">=</span> <span class="n">_number_folds</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Using </span><span class="si">%s</span><span class="s2"> splits&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_splits</span><span class="p">))</span>
+        <span class="n">folds</span> <span class="o">=</span> <span class="n">RepeatedStratifiedKFold</span><span class="p">(</span>
+            <span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="n">n_repeats</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">analysis_type</span> <span class="o">==</span> <span class="s2">&quot;regression&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n_splits</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">n_splits</span> <span class="o">=</span> <span class="n">_number_folds</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Using </span><span class="si">%s</span><span class="s2"> splits&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_splits</span><span class="p">))</span>
+        <span class="n">folds</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="n">n_repeats</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
+
+    <span class="n">acc_scores</span><span class="p">,</span> <span class="n">shap_values</span> <span class="o">=</span> <span class="n">_evaluate_kfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">folds</span><span class="p">,</span> <span class="n">analysis_type</span><span class="p">,</span> <span class="n">compute_shap</span><span class="p">)</span>
+    <span class="n">_print_accuracy</span><span class="p">(</span><span class="n">acc_scores</span><span class="p">,</span> <span class="n">analysis_type</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">compute_shap</span><span class="p">:</span>
+        <span class="n">mean_shap_values</span><span class="p">,</span> <span class="n">shap_feature_importance</span> <span class="o">=</span> <span class="n">_get_shap_feature_importance</span><span class="p">(</span><span class="n">shap_values</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mean_shap_values</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">shap_feature_importance</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">analysis_results</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span>
+        <span class="s2">&quot;acc_scores&quot;</span><span class="p">:</span> <span class="n">acc_scores</span><span class="p">,</span>
+        <span class="s2">&quot;mean_shap_values&quot;</span><span class="p">:</span> <span class="n">mean_shap_values</span><span class="p">,</span>
+        <span class="s2">&quot;shap_values&quot;</span><span class="p">:</span> <span class="n">shap_values</span><span class="p">,</span>
+        <span class="s2">&quot;shap_feature_importance&quot;</span><span class="p">:</span> <span class="n">shap_feature_importance</span><span class="p">,</span>
+        <span class="s2">&quot;reduced_features&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">reduce_set</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">analysis_results</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">compute_shap</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">analysis_results</span>
+
+    <span class="n">reduced_features</span> <span class="o">=</span> <span class="n">_get_reduced_feature_set</span><span class="p">(</span>
+        <span class="n">X</span><span class="p">,</span>
+        <span class="n">shap_feature_importance</span><span class="p">,</span>
+        <span class="n">n_top_features</span><span class="o">=</span><span class="n">reduced_set_size</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="n">reduced_set_max_correlation</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">reduced_acc_scores</span><span class="p">,</span> <span class="n">reduced_shap_values</span> <span class="o">=</span> <span class="n">_evaluate_kfold</span><span class="p">(</span>
+        <span class="n">X</span><span class="p">[</span><span class="n">reduced_features</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">folds</span><span class="p">,</span> <span class="n">analysis_type</span><span class="p">,</span> <span class="n">compute_shap</span>
+    <span class="p">)</span>
+    <span class="n">_print_accuracy</span><span class="p">(</span><span class="n">reduced_acc_scores</span><span class="p">,</span> <span class="n">analysis_type</span><span class="p">,</span> <span class="n">reduced</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="p">(</span>
+        <span class="n">reduced_mean_shap_values</span><span class="p">,</span>
+        <span class="n">reduced_shap_feature_importance</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="n">_get_shap_feature_importance</span><span class="p">(</span><span class="n">reduced_shap_values</span><span class="p">)</span>
+
+    <span class="n">analysis_results</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;reduced_features&quot;</span><span class="p">:</span> <span class="n">reduced_features</span><span class="p">,</span>
+            <span class="s2">&quot;reduced_shap_values&quot;</span><span class="p">:</span> <span class="n">reduced_shap_values</span><span class="p">,</span>
+            <span class="s2">&quot;shap_values&quot;</span><span class="p">:</span> <span class="n">shap_values</span><span class="p">,</span>
+            <span class="s2">&quot;reduced_acc_scores&quot;</span><span class="p">:</span> <span class="n">reduced_acc_scores</span><span class="p">,</span>
+            <span class="s2">&quot;reduced_mean_shap_values&quot;</span><span class="p">:</span> <span class="n">reduced_mean_shap_values</span><span class="p">,</span>
+            <span class="s2">&quot;reduced_shap_feature_importance&quot;</span><span class="p">:</span> <span class="n">reduced_shap_feature_importance</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">analysis_results</span></div>
+
+
+<div class="viewcode-block" id="fit_model"><a class="viewcode-back" href="../../analysis.html#hcga.analysis.fit_model">[docs]</a><span class="k">def</span> <span class="nf">fit_model</span><span class="p">(</span>
+    <span class="n">features</span><span class="p">,</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="n">analysis_type</span><span class="o">=</span><span class="s2">&quot;classification&quot;</span><span class="p">,</span>
+    <span class="n">reduce_set</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">reduced_set_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">reduced_set_max_correlation</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="n">compute_shap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Train a single model.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        features (dataframe): extracted features</span>
+<span class="sd">        model (str): model to preform analysis</span>
+<span class="sd">        analysis_type (str): &#39;classification&#39; or &#39;regression&#39;</span>
+<span class="sd">        reduce_set (bool): is True, the classification will be rerun</span>
+<span class="sd">                           on a reduced set of top features (from shapely analysis)</span>
+<span class="sd">        reduce_set_size (int): number of features to keep for reduces set</span>
+<span class="sd">        reduced_set_max_correlation (float): to discared highly correlated top features</span>
+<span class="sd">                                             in reduced set of features</span>
+<span class="sd">        random_state (int): rng seed</span>
+<span class="sd">        test_size (float): size of test dataset (see sklearn.model_selection.ShuffleSplit)</span>
+<span class="sd">        compute_shap (bool): compute SHAP values or not</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (dict): dictionary with results</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Please provide a model for classification&quot;</span><span class="p">)</span>
+
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">features_to_Xy</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+
+    <span class="n">indices</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">ShuffleSplit</span><span class="p">(</span><span class="n">test_size</span><span class="o">=</span><span class="n">test_size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+    <span class="n">acc_score</span><span class="p">,</span> <span class="n">shap_values</span> <span class="o">=</span> <span class="n">_compute_fold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">analysis_type</span><span class="p">,</span> <span class="n">compute_shap</span><span class="p">)</span>
+
+    <span class="n">mean_shap_values</span><span class="p">,</span> <span class="n">shap_feature_importance</span> <span class="o">=</span> <span class="n">_get_shap_feature_importance</span><span class="p">([</span><span class="n">shap_values</span><span class="p">])</span>
+    <span class="n">analysis_results</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span>
+        <span class="s2">&quot;acc_score&quot;</span><span class="p">:</span> <span class="n">acc_score</span><span class="p">,</span>
+        <span class="s2">&quot;mean_shap_values&quot;</span><span class="p">:</span> <span class="n">mean_shap_values</span><span class="p">,</span>
+        <span class="s2">&quot;shap_feature_importance&quot;</span><span class="p">:</span> <span class="n">shap_feature_importance</span><span class="p">,</span>
+        <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span>
+        <span class="s2">&quot;indices&quot;</span><span class="p">:</span> <span class="n">indices</span><span class="p">,</span>
+        <span class="s2">&quot;reduced_features&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">reduce_set</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">analysis_results</span>
+
+    <span class="n">reduced_features</span> <span class="o">=</span> <span class="n">_get_reduced_feature_set</span><span class="p">(</span>
+        <span class="n">X</span><span class="p">,</span>
+        <span class="n">shap_feature_importance</span><span class="p">,</span>
+        <span class="n">n_top_features</span><span class="o">=</span><span class="n">reduced_set_size</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="n">reduced_set_max_correlation</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">reduced_model</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">reduced_acc_score</span><span class="p">,</span> <span class="n">reduced_shap_values</span> <span class="o">=</span> <span class="n">_compute_fold</span><span class="p">(</span>
+        <span class="n">X</span><span class="p">[</span><span class="n">reduced_features</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduced_model</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">analysis_type</span><span class="p">,</span> <span class="n">compute_shap</span>
+    <span class="p">)</span>
+    <span class="p">(</span>
+        <span class="n">reduced_mean_shap_values</span><span class="p">,</span>
+        <span class="n">reduced_shap_feature_importance</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="n">_get_shap_feature_importance</span><span class="p">(</span><span class="n">reduced_shap_values</span><span class="p">)</span>
+
+    <span class="n">analysis_results</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;reduced_features&quot;</span><span class="p">:</span> <span class="n">reduced_features</span><span class="p">,</span>
+            <span class="s2">&quot;reduced_acc_score&quot;</span><span class="p">:</span> <span class="n">reduced_acc_score</span><span class="p">,</span>
+            <span class="s2">&quot;reduced_mean_shap_values&quot;</span><span class="p">:</span> <span class="n">reduced_mean_shap_values</span><span class="p">,</span>
+            <span class="s2">&quot;reduced_shap_feature_importance&quot;</span><span class="p">:</span> <span class="n">reduced_shap_feature_importance</span><span class="p">,</span>
+            <span class="s2">&quot;reduced_model&quot;</span><span class="p">:</span> <span class="n">reduced_model</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">analysis_results</span></div>
+
+
+<div class="viewcode-block" id="_compute_fold"><a class="viewcode-back" href="../../analysis.html#hcga.analysis._compute_fold">[docs]</a><span class="k">def</span> <span class="nf">_compute_fold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">analysis_type</span><span class="p">,</span> <span class="n">compute_shap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute a single fold for parallel computation.&quot;&quot;&quot;</span>
+    <span class="n">train_index</span><span class="p">,</span> <span class="n">val_index</span> <span class="o">=</span> <span class="n">indices</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">y</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">train_index</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">analysis_type</span> <span class="o">==</span> <span class="s2">&quot;classification&quot;</span><span class="p">:</span>
+        <span class="n">acc_score</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">val_index</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">val_index</span><span class="p">]))</span>
+        <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Fold accuracy: --- </span><span class="si">%s</span><span class="s2"> ---&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">acc_score</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+
+    <span class="k">elif</span> <span class="n">analysis_type</span> <span class="o">==</span> <span class="s2">&quot;regression&quot;</span><span class="p">:</span>
+        <span class="n">acc_score</span> <span class="o">=</span> <span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">val_index</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">val_index</span><span class="p">]))</span>
+        <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Mean Absolute Error: --- </span><span class="si">%s</span><span class="s2"> ---&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">acc_score</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="n">compute_shap</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">explainer</span> <span class="o">=</span> <span class="n">shap</span><span class="o">.</span><span class="n">TreeExplainer</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
+            <span class="n">explainer</span> <span class="o">=</span> <span class="n">shap</span><span class="o">.</span><span class="n">KernelExplainer</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">train_index</span><span class="p">])</span>
+        <span class="n">shap_values</span> <span class="o">=</span> <span class="n">explainer</span><span class="o">.</span><span class="n">shap_values</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">shap_values</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">acc_score</span><span class="p">,</span> <span class="n">shap_values</span></div>
+
+
+<div class="viewcode-block" id="_preprocess_features"><a class="viewcode-back" href="../../analysis.html#hcga.analysis._preprocess_features">[docs]</a><span class="k">def</span> <span class="nf">_preprocess_features</span><span class="p">(</span>
+    <span class="n">features</span><span class="p">,</span> <span class="n">features_info</span><span class="p">,</span> <span class="n">graph_removal</span><span class="p">,</span> <span class="n">interpretability</span><span class="p">,</span> <span class="n">trained_model</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Collect all feature filters.&quot;&quot;&quot;</span>
+    <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> total features&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">columns</span><span class="p">)))</span>
+
+    <span class="n">features</span> <span class="o">=</span> <span class="n">_filter_graphs</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">graph_removal</span><span class="o">=</span><span class="n">graph_removal</span><span class="p">)</span>
+
+    <span class="n">good_features</span> <span class="o">=</span> <span class="n">_filter_features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">good_features</span><span class="p">]</span>
+
+    <span class="n">scaler</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">trained_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">model_features</span> <span class="o">=</span> <span class="n">trained_model</span>
+        <span class="n">missing_cols</span> <span class="o">=</span> <span class="n">model_features</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="o">~</span><span class="n">model_features</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">columns</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">_col</span> <span class="ow">in</span> <span class="n">missing_cols</span><span class="p">:</span>
+            <span class="n">features</span><span class="p">[</span><span class="n">_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">model_features</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s2">&quot;label&quot;</span> <span class="ow">in</span> <span class="n">good_features</span><span class="p">:</span>
+        <span class="n">features_info</span> <span class="o">=</span> <span class="n">features_info</span><span class="p">[</span><span class="n">good_features</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">)]</span>
+
+    <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> valid features&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">columns</span><span class="p">)))</span>
+
+    <span class="n">features</span><span class="p">,</span> <span class="n">features_info</span> <span class="o">=</span> <span class="n">_filter_interpretable</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">features_info</span><span class="p">,</span> <span class="n">interpretability</span><span class="p">)</span>
+    <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> with interpretability </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">columns</span><span class="p">)),</span> <span class="nb">str</span><span class="p">(</span><span class="n">interpretability</span><span class="p">))</span>
+
+    <span class="n">features</span><span class="p">,</span> <span class="n">scaler</span> <span class="o">=</span> <span class="n">_normalise_feature_data</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="n">scaler</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">features</span><span class="p">,</span> <span class="n">features_info</span><span class="p">,</span> <span class="n">scaler</span></div>
+
+
+<div class="viewcode-block" id="train_all"><a class="viewcode-back" href="../../analysis.html#hcga.analysis.train_all">[docs]</a><span class="k">def</span> <span class="nf">train_all</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Train on all available data.&quot;&quot;&quot;</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">features_to_Xy</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Fitting model to all data&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span></div>
+
+
+<div class="viewcode-block" id="predict_unlabelled"><a class="viewcode-back" href="../../analysis.html#hcga.analysis.predict_unlabelled">[docs]</a><span class="k">def</span> <span class="nf">predict_unlabelled</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">features</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Predict unlabelled data.&quot;&quot;&quot;</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">features_to_Xy</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="analysis"><a class="viewcode-back" href="../../analysis.html#hcga.analysis.analysis">[docs]</a><span class="k">def</span> <span class="nf">analysis</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-arguments,too-many-locals,too-many-branches</span>
+    <span class="n">features</span><span class="p">,</span>
+    <span class="n">features_info</span><span class="p">,</span>
+    <span class="n">graphs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">analysis_type</span><span class="o">=</span><span class="s2">&quot;classification&quot;</span><span class="p">,</span>
+    <span class="n">folder</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span>
+    <span class="n">graph_removal</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+    <span class="n">interpretability</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;XG&quot;</span><span class="p">,</span>
+    <span class="n">compute_shap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">kfold</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">reduce_set</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">reduced_set_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">reduced_set_max_correlation</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+    <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">max_feats_plot</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">max_feats_plot_dendrogram</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">n_repeats</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">n_splits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">trained_model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">save_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Main function to classify graphs and plot results.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        features (dataframe): extracted features</span>
+<span class="sd">        features_info (dataframe): features information</span>
+<span class="sd">        graphs (GraphCollection): input graphs</span>
+<span class="sd">        analysis_type (str): &#39;classification&#39; or &#39;regression&#39;</span>
+<span class="sd">        folder (str): folder to save analysis</span>
+<span class="sd">        graph_removal (float): remove samples with more than graph_removal % bad values</span>
+<span class="sd">        interpretabiliy (int): filter out features below this interpretability</span>
+<span class="sd">        model (str): model to preform analysis</span>
+<span class="sd">        compute_shap (bool): compute SHAP values or not</span>
+<span class="sd">        kfold (bool): run with kfold</span>
+<span class="sd">        reduce_set (bool): is True, the classification will be rerun</span>
+<span class="sd">                           on a reduced set of top features (from shapely analysis)</span>
+<span class="sd">        reduce_set_size (int): number of features to keep for reduces set</span>
+<span class="sd">        reduced_set_max_correlation (float): to discared highly correlated top features</span>
+<span class="sd">                                             in reduced set of features</span>
+<span class="sd">        plot (bool): save plots</span>
+<span class="sd">        max_feats_plot (int): max number of feature analysis to plot</span>
+<span class="sd">        n_repeats (int): number of k-fold repeats</span>
+<span class="sd">        n_splits (int): numbere of split for k-fold, None=automatic estimation</span>
+<span class="sd">        random_state (int): rng seed</span>
+<span class="sd">        test_size (float): size of test dataset (see sklearn.model_selection.ShuffleSplit)</span>
+<span class="sd">        trained_model (str): provide path to pretrained model to apply to new data</span>
+<span class="sd">        save_modeel (bool): save the obtained model to reuse later</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (dict): dictionary with results</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">trained_model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">_get_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">analysis_type</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trained_model</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">trained_model</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trained_model</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">trained_model</span> <span class="o">=</span> <span class="n">load_fitted_model</span><span class="p">(</span><span class="n">trained_model</span><span class="p">)</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">trained_model</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">features</span><span class="p">,</span> <span class="n">features_info</span><span class="p">,</span> <span class="n">scaler</span> <span class="o">=</span> <span class="n">_preprocess_features</span><span class="p">(</span>
+        <span class="n">features</span><span class="p">,</span> <span class="n">features_info</span><span class="p">,</span> <span class="n">graph_removal</span><span class="p">,</span> <span class="n">interpretability</span><span class="p">,</span> <span class="n">trained_model</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">trained_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">y_predictions</span> <span class="o">=</span> <span class="n">predict_unlabelled</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">features</span><span class="p">)</span>
+        <span class="n">_save_predictions_to_csv</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">y_predictions</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="n">folder</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">y_predictions</span>
+
+    <span class="k">if</span> <span class="n">kfold</span><span class="p">:</span>
+        <span class="n">analysis_results</span> <span class="o">=</span> <span class="n">fit_model_kfold</span><span class="p">(</span>
+            <span class="n">features</span><span class="p">,</span>
+            <span class="n">model</span><span class="p">,</span>
+            <span class="n">analysis_type</span><span class="o">=</span><span class="n">analysis_type</span><span class="p">,</span>
+            <span class="n">reduce_set</span><span class="o">=</span><span class="n">reduce_set</span><span class="p">,</span>
+            <span class="n">reduced_set_size</span><span class="o">=</span><span class="n">reduced_set_size</span><span class="p">,</span>
+            <span class="n">reduced_set_max_correlation</span><span class="o">=</span><span class="n">reduced_set_max_correlation</span><span class="p">,</span>
+            <span class="n">n_repeats</span><span class="o">=</span><span class="n">n_repeats</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+            <span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">,</span>
+            <span class="n">compute_shap</span><span class="o">=</span><span class="n">compute_shap</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">analysis_results</span> <span class="o">=</span> <span class="n">fit_model</span><span class="p">(</span>
+            <span class="n">features</span><span class="p">,</span>
+            <span class="n">model</span><span class="p">,</span>
+            <span class="n">analysis_type</span><span class="o">=</span><span class="n">analysis_type</span><span class="p">,</span>
+            <span class="n">reduce_set</span><span class="o">=</span><span class="n">reduce_set</span><span class="p">,</span>
+            <span class="n">reduced_set_size</span><span class="o">=</span><span class="n">reduced_set_size</span><span class="p">,</span>
+            <span class="n">reduced_set_max_correlation</span><span class="o">=</span><span class="n">reduced_set_max_correlation</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+            <span class="n">test_size</span><span class="o">=</span><span class="n">test_size</span><span class="p">,</span>
+            <span class="n">compute_shap</span><span class="o">=</span><span class="n">compute_shap</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">save_model</span><span class="p">:</span>
+        <span class="n">fitted_model</span> <span class="o">=</span> <span class="n">train_all</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">analysis_type</span> <span class="o">==</span> <span class="s2">&quot;regression&quot;</span><span class="p">:</span>
+        <span class="n">analysis_results</span><span class="p">[</span><span class="s2">&quot;mean_shap_values&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">analysis_results</span><span class="p">[</span><span class="s2">&quot;mean_shap_values&quot;</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="s2">&quot;reduced_mean_shap_values&quot;</span> <span class="ow">in</span> <span class="n">analysis_results</span><span class="p">:</span>
+            <span class="n">analysis_results</span><span class="p">[</span><span class="s2">&quot;reduced_mean_shap_values&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">analysis_results</span><span class="p">[</span><span class="s2">&quot;reduced_mean_shap_values&quot;</span><span class="p">]</span>
+            <span class="p">]</span>
+
+    <span class="n">results_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="s2">&quot;results_interpretability_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">interpretability</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">results_folder</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">results_folder</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">compute_shap</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">plot</span> <span class="ow">and</span> <span class="n">kfold</span><span class="p">:</span>
+            <span class="n">plot_analysis</span><span class="p">(</span>
+                <span class="n">analysis_results</span><span class="p">,</span>
+                <span class="n">results_folder</span><span class="p">,</span>
+                <span class="n">graphs</span><span class="p">,</span>
+                <span class="n">analysis_type</span><span class="p">,</span>
+                <span class="n">max_feats_plot</span><span class="p">,</span>
+                <span class="n">max_feats_plot_dendrogram</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">plot</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">kfold</span><span class="p">:</span>
+            <span class="n">plot_prediction</span><span class="p">(</span><span class="n">analysis_results</span><span class="p">,</span> <span class="n">results_folder</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">kfold</span><span class="p">:</span>
+            <span class="n">_save_to_csv</span><span class="p">(</span><span class="n">features_info</span><span class="p">,</span> <span class="n">analysis_results</span><span class="p">,</span> <span class="n">results_folder</span><span class="p">)</span>
+
+    <span class="n">model_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="s2">&quot;fitted_model&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">model_folder</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">model_folder</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">save_model</span><span class="p">:</span>
+        <span class="n">save_fitted_model</span><span class="p">(</span><span class="n">fitted_model</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">features_info</span><span class="p">,</span> <span class="n">model_folder</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">analysis_results</span></div>
+
+
+<div class="viewcode-block" id="_save_predictions_to_csv"><a class="viewcode-back" href="../../analysis.html#hcga.analysis._save_predictions_to_csv">[docs]</a><span class="k">def</span> <span class="nf">_save_predictions_to_csv</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s2">&quot;results&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Save the prediction results for unlabelled data.&quot;&quot;&quot;</span>
+    <span class="n">results_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">predictions</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">features</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;y_prediction&quot;</span><span class="p">])</span>
+    <span class="n">results_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s2">&quot;prediction_results.csv&quot;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="_save_to_csv"><a class="viewcode-back" href="../../analysis.html#hcga.analysis._save_to_csv">[docs]</a><span class="k">def</span> <span class="nf">_save_to_csv</span><span class="p">(</span><span class="n">features_info_df</span><span class="p">,</span> <span class="n">analysis_results</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s2">&quot;results&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Save csv file with analysis data.&quot;&quot;&quot;</span>
+
+    <span class="n">result_df</span> <span class="o">=</span> <span class="n">features_info_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">result_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;shap_feature_importance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">analysis_results</span><span class="p">[</span><span class="s2">&quot;shap_feature_importance&quot;</span><span class="p">]</span>
+    <span class="n">shap_values</span> <span class="o">=</span> <span class="n">analysis_results</span><span class="p">[</span><span class="s2">&quot;shap_values&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">shap_class</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shap_values</span><span class="p">):</span>
+        <span class="n">result_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;shap_importance: class </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">shap_class</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">analysis_results</span><span class="p">[</span><span class="s2">&quot;reduced_features&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">reduced_features</span> <span class="o">=</span> <span class="n">analysis_results</span><span class="p">[</span><span class="s2">&quot;reduced_features&quot;</span><span class="p">]</span>
+        <span class="n">result_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;reduced_shap_feature_importance&quot;</span><span class="p">,</span> <span class="n">reduced_features</span><span class="p">]</span> <span class="o">=</span> <span class="n">analysis_results</span><span class="p">[</span>
+            <span class="s2">&quot;reduced_shap_feature_importance&quot;</span>
+        <span class="p">]</span>
+        <span class="n">shap_values</span> <span class="o">=</span> <span class="n">analysis_results</span><span class="p">[</span><span class="s2">&quot;reduced_shap_values&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">shap_class</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shap_values</span><span class="p">):</span>
+            <span class="n">result_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+                <span class="s2">&quot;reduced shap_importance: class </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">reduced_features</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">shap_class</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">result_df</span> <span class="o">=</span> <span class="n">result_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span>
+            <span class="s2">&quot;reduced_shap_feature_importance&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result_df</span> <span class="o">=</span> <span class="n">result_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;shap_feature_importance&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">result_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s2">&quot;importance_results.csv&quot;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="classify_pairwise"><a class="viewcode-back" href="../../analysis.html#hcga.analysis.classify_pairwise">[docs]</a><span class="k">def</span> <span class="nf">classify_pairwise</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-locals</span>
+    <span class="n">features</span><span class="p">,</span>
+    <span class="n">features_info</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;XG&quot;</span><span class="p">,</span>
+    <span class="n">graph_removal</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+    <span class="n">interpretability</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">n_top_features</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">reduce_set</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">reduced_set_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">reduced_set_max_correlation</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">n_repeats</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">n_splits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">analysis_type</span><span class="o">=</span><span class="s2">&quot;classification&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Classify all possible pairs of clases with kfold and returns top features.</span>
+
+<span class="sd">    The top features for each pair with high enough accuracies are collected in a list,</span>
+<span class="sd">    for later analysis.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        features (dataframe): extracted features</span>
+<span class="sd">        features_info (dataframe): features information</span>
+<span class="sd">        model (str): model to preform analysis</span>
+<span class="sd">        graph_removal (float): remove samples with more than graph_removal % bad values</span>
+<span class="sd">        n_top_features (int): number of top features to save</span>
+<span class="sd">        reduce_set (bool): is True, the classification will be rerun</span>
+<span class="sd">            on a reduced set of top features (from shapely analysis)</span>
+<span class="sd">        reduce_set_size (int): number of features to keep for reduces set</span>
+<span class="sd">        reduced_set_max_correlation (float): to discared highly correlated top features</span>
+<span class="sd">            in reduced set of features</span>
+<span class="sd">        n_repeats (int): number of k-fold repeats</span>
+<span class="sd">        n_splits (int): numbere of split for k-fold, None=automatic estimation</span>
+<span class="sd">        analysis_type (str): &#39;classification&#39; or &#39;regression&#39;</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (dataframe, list, int): accuracies dataframe, list of top features, number of top pairs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">features</span><span class="p">,</span> <span class="n">features_info</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_preprocess_features</span><span class="p">(</span>
+        <span class="n">features</span><span class="p">,</span> <span class="n">features_info</span><span class="p">,</span> <span class="n">graph_removal</span><span class="p">,</span> <span class="n">interpretability</span>
+    <span class="p">)</span>
+
+    <span class="n">classifier</span> <span class="o">=</span> <span class="n">_get_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="n">analysis_type</span><span class="p">)</span>
+    <span class="n">classes</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+    <span class="n">class_pairs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="n">classes</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">accuracy_matrix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">classes</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">classes</span><span class="p">)</span>
+
+    <span class="n">top_features</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">class_pairs</span><span class="p">):</span>
+        <span class="n">features_pair</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">features</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">|</span> <span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+        <span class="n">analysis_results</span> <span class="o">=</span> <span class="n">fit_model_kfold</span><span class="p">(</span>
+            <span class="n">features_pair</span><span class="p">,</span>
+            <span class="n">classifier</span><span class="p">,</span>
+            <span class="n">analysis_type</span><span class="o">=</span><span class="n">analysis_type</span><span class="p">,</span>
+            <span class="n">reduce_set</span><span class="o">=</span><span class="n">reduce_set</span><span class="p">,</span>
+            <span class="n">reduced_set_size</span><span class="o">=</span><span class="n">reduced_set_size</span><span class="p">,</span>
+            <span class="n">reduced_set_max_correlation</span><span class="o">=</span><span class="n">reduced_set_max_correlation</span><span class="p">,</span>
+            <span class="n">n_repeats</span><span class="o">=</span><span class="n">n_repeats</span><span class="p">,</span>
+            <span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;reduced_acc_scores&quot;</span> <span class="ow">in</span> <span class="n">analysis_results</span><span class="p">:</span>
+            <span class="n">accuracy_matrix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">analysis_results</span><span class="p">[</span><span class="s2">&quot;reduced_acc_scores&quot;</span><span class="p">]),</span> <span class="mi">3</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">accuracy_matrix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">analysis_results</span><span class="p">[</span><span class="s2">&quot;acc_scores&quot;</span><span class="p">]),</span> <span class="mi">3</span>
+            <span class="p">)</span>
+        <span class="n">accuracy_matrix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">accuracy_matrix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="s2">&quot;reduced_shap_feature_importance&quot;</span> <span class="ow">in</span> <span class="n">analysis_results</span><span class="p">:</span>
+            <span class="n">top_feat_idx</span> <span class="o">=</span> <span class="n">analysis_results</span><span class="p">[</span><span class="s2">&quot;reduced_shap_feature_importance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span>
+                <span class="o">-</span><span class="n">n_top_features</span><span class="p">:</span>
+            <span class="p">]</span>
+            <span class="n">top_features_raw</span> <span class="o">=</span> <span class="n">analysis_results</span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">][</span><span class="n">analysis_results</span><span class="p">[</span><span class="s2">&quot;reduced_features&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span>
+                <span class="n">top_feat_idx</span>
+            <span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">top_feat_idx</span> <span class="o">=</span> <span class="n">analysis_results</span><span class="p">[</span><span class="s2">&quot;shap_feature_importance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="o">-</span><span class="n">n_top_features</span><span class="p">:]</span>
+            <span class="n">top_features_raw</span> <span class="o">=</span> <span class="n">analysis_results</span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">top_feat_idx</span><span class="p">]</span>
+
+        <span class="n">top_features</span><span class="p">[</span><span class="n">pair</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">f_class</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">f</span> <span class="k">for</span> <span class="n">f_class</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">top_features_raw</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">accuracy_matrix</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="n">top_features</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">hcga</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../app.html">The cli app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hcga.html">The hcga class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../graph.html">The graph data structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../feature_class.html">The feature class module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extraction.html">The extraction module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../analysis.html">The analysis module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Features.html">Features</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

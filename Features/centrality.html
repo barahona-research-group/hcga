@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Centrality modules &#8212; hcga 0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="The chemical theory module" href="chemical_theory.html" />
+    <link rel="prev" title="The assortativity module" href="assortativity.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="centrality-modules">
+<h1>Centrality modules<a class="headerlink" href="#centrality-modules" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-hcga.features.centralities_basic">
+<span id="the-basic-centrality-module"></span><h2>The basic centrality module<a class="headerlink" href="#module-hcga.features.centralities_basic" title="Permalink to this headline">¶</a></h2>
+<p>Centralities class.</p>
+<dl class="py class">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">CentralitiesBasic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#CentralitiesBasic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Centralities class.</p>
+<p>Uses networkx, see ‘<a class="reference external" href="https://networkx.github.io/documentation/stable/reference/">https://networkx.github.io/documentation/stable/reference/</a>        algorithms/centrality.html`</p>
+<p>Here we implement:
+Degree Centrality
+Eigenvector Centrality <a class="footnote-reference brackets" href="#id10" id="id1">1</a> <a class="footnote-reference brackets" href="#id11" id="id2">2</a>
+Closeness Centrality <a class="footnote-reference brackets" href="#id12" id="id3">3</a> <a class="footnote-reference brackets" href="#id13" id="id4">4</a>
+Betweenness Centrality <a class="footnote-reference brackets" href="#id14" id="id5">5</a> <a class="footnote-reference brackets" href="#id15" id="id6">6</a> <a class="footnote-reference brackets" href="#id16" id="id7">7</a> <a class="footnote-reference brackets" href="#id17" id="id8">8</a>
+Harmonic Centrality <a class="footnote-reference brackets" href="#id18" id="id9">9</a></p>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Phillip Bonacich.
+“Power and Centrality: A Family of Measures.”
+<em>American Journal of Sociology</em> 92(5):1170–1182, 1986
+&lt;<a class="reference external" href="http://www.leonidzhukov.net/hse/2014/socialnetworks/papers/Bonacich-Centrality.pdf">http://www.leonidzhukov.net/hse/2014/socialnetworks/papers/Bonacich-Centrality.pdf</a>&gt;</p>
+</dd>
+<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Mark E. J. Newman.
+<em>Networks: An Introduction.</em>
+Oxford University Press, USA, 2010, pp. 169.</p>
+</dd>
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>Linton C. Freeman: Centrality in networks: I.
+Conceptual clarification. Social Networks 1:215-239, 1979.
+<a class="reference external" href="http://leonidzhukov.ru/hse/2013/socialnetworks/papers/freeman79-centrality.pdf">http://leonidzhukov.ru/hse/2013/socialnetworks/papers/freeman79-centrality.pdf</a></p>
+</dd>
+<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id4">4</a></span></dt>
+<dd><p>pg. 201 of Wasserman, S. and Faust, K.,
+Social Network Analysis: Methods and Applications, 1994,
+Cambridge University Press.</p>
+</dd>
+<dt class="label" id="id14"><span class="brackets"><a class="fn-backref" href="#id5">5</a></span></dt>
+<dd><p>Ulrik Brandes:
+A Faster Algorithm for Betweenness Centrality.
+Journal of Mathematical Sociology 25(2):163-177, 2001.
+<a class="reference external" href="http://www.inf.uni-konstanz.de/algo/publications/b-fabc-01.pdf">http://www.inf.uni-konstanz.de/algo/publications/b-fabc-01.pdf</a></p>
+</dd>
+<dt class="label" id="id15"><span class="brackets"><a class="fn-backref" href="#id6">6</a></span></dt>
+<dd><p>Ulrik Brandes:
+On Variants of Shortest-Path Betweenness
+Centrality and their Generic Computation.
+Social Networks 30(2):136-145, 2008.
+<a class="reference external" href="http://www.inf.uni-konstanz.de/algo/publications/b-vspbc-08.pdf">http://www.inf.uni-konstanz.de/algo/publications/b-vspbc-08.pdf</a></p>
+</dd>
+<dt class="label" id="id16"><span class="brackets"><a class="fn-backref" href="#id7">7</a></span></dt>
+<dd><p>Ulrik Brandes and Christian Pich:
+Centrality Estimation in Large Networks.
+International Journal of Bifurcation and Chaos 17(7):2303-2318, 2007.
+<a class="reference external" href="http://www.inf.uni-konstanz.de/algo/publications/bp-celn-06.pdf">http://www.inf.uni-konstanz.de/algo/publications/bp-celn-06.pdf</a></p>
+</dd>
+<dt class="label" id="id17"><span class="brackets"><a class="fn-backref" href="#id8">8</a></span></dt>
+<dd><p>Linton C. Freeman:
+A set of measures of centrality based on betweenness.
+Sociometry 40: 35–41, 1977
+<a class="reference external" href="http://moreno.ss.uci.edu/23.pdf">http://moreno.ss.uci.edu/23.pdf</a></p>
+</dd>
+<dt class="label" id="id18"><span class="brackets"><a class="fn-backref" href="#id9">9</a></span></dt>
+<dd><p>Boldi, Paolo, and Sebastiano Vigna. “Axioms for centrality.”
+Internet Mathematics 10.3-4 (2014): 222-262.</p>
+</dd>
+</dl>
+<p>Initialise a feature class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>graph</strong> (<a class="reference internal" href="../graph.html#hcga.graph.Graph" title="hcga.graph.Graph"><em>Graph</em></a>) – graph for initialisation, converted to given encoding</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#CentralitiesBasic.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main feature extraction function.</p>
+<p>This function should be used by each specific feature class to add new features.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.betweenness_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">betweenness_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#betweenness_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.betweenness_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.closeness_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">closeness_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#closeness_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.closeness_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.degree_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">degree_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#degree_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.degree_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.edge_betweenness_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">edge_betweenness_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#edge_betweenness_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.edge_betweenness_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.eigenvector_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">eigenvector_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#eigenvector_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.eigenvector_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.harmonic_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">harmonic_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#harmonic_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.harmonic_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.katz_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">katz_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#katz_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.katz_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.pagerank">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">pagerank</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#pagerank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.pagerank" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.second_order_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">second_order_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#second_order_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.second_order_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.subgraph_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">subgraph_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#subgraph_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.subgraph_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.weighted_betweenness_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">weighted_betweenness_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#weighted_betweenness_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.weighted_betweenness_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.weighted_edge_betweenness_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">weighted_edge_betweenness_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#weighted_edge_betweenness_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.weighted_edge_betweenness_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.weighted_eigenvector_centrality">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">weighted_eigenvector_centrality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#weighted_eigenvector_centrality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.weighted_eigenvector_centrality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.centralities_basic.weighted_pagerank">
+<code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">weighted_pagerank</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#weighted_pagerank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.weighted_pagerank" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hcga</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../app.html">The cli app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hcga.html">The hcga class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graph.html">The graph data structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../feature_class.html">The feature class module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extraction.html">The extraction module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysis.html">The analysis module</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="basic_stats.html">The basic statistics module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="assortativity.html">The assortativity module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Centrality modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-hcga.features.centralities_basic">The basic centrality module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chemical_theory.html">The chemical theory module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cliques.html">Cliques modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering.html">The clustering module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="communities.html">Communities modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components.html">Components modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core_number.html">The core_number module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cycle_basis.html">The cycle basis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distance_measures.html">The disttance measure module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dominating_sets.html">The dominating sets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efficiency.html">The efficiency module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eulerian.html">The eulerian module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efficiency.html">The efficiency module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="independent_sets.html">The independent sets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="k_components.html">The k-components module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_analysis_hits.html">The link analysis hits module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maximal_matching.html">The maximal matching module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="minimum_cuts.html">The minimum cuts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node_clique_number.html">The node clique numnber module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node_connectivity.html">The node connectivity module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node_features.html">The node features module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rich_club.html">The rich club module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scale_free.html">The scale free module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shortest_paths.html">The shortest paths module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="small_worldness.html">The small worldness module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structural_holes.html">The structural holes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spectrum.html">The spectrum module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vitality.html">The vitality module</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../Features.html">Features</a><ul>
+      <li>Previous: <a href="assortativity.html" title="previous chapter">The assortativity module</a></li>
+      <li>Next: <a href="chemical_theory.html" title="next chapter">The chemical theory module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/Features/centrality.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
