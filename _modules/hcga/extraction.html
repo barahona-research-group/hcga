@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>hcga.extraction &#8212; hcga 0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for hcga.extraction</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Functions necessary for the extraction of graph features.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">import_module</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="kn">from</span> <span class="nn">hcga.utils</span> <span class="kn">import</span> <span class="n">NestedPool</span>
+
+<span class="n">L</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="extract"><a class="viewcode-back" href="../../extraction.html#hcga.extraction.extract">[docs]</a><span class="k">def</span> <span class="nf">extract</span><span class="p">(</span>
+    <span class="n">graphs</span><span class="p">,</span>
+    <span class="n">n_workers</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;fast&quot;</span><span class="p">,</span>
+    <span class="n">normalize_features</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">statistics_level</span><span class="o">=</span><span class="s2">&quot;basic&quot;</span><span class="p">,</span>
+    <span class="n">with_runtimes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">with_node_features</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">connected</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">weighted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Main function to extract graph features.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        graphs (GraphCollection object): GraphCollection object with loaded graphs (see graph.py)</span>
+<span class="sd">        n_workers (int): number of workers for parallel processing</span>
+<span class="sd">        mode (str): &#39;fast&#39;, &#39;medium&#39;, &#39;slow&#39; - only features that are fast to compute will</span>
+<span class="sd">            be run with &#39;fast&#39;</span>
+<span class="sd">        normalize_features (bool): normalise features by number of nodes and number of edges</span>
+<span class="sd">        statistics_level (str): &#39;basic&#39;, &#39;advanced&#39; - for features that provide distributions</span>
+<span class="sd">            we must compute statistics.</span>
+<span class="sd">        with_runtimes (bool): calculating the run time of each feature.</span>
+<span class="sd">        with_node_features (bool): include node features in feature extraction</span>
+<span class="sd">        timeout (int): number of seconds before the calculation for a feature is cancelled</span>
+<span class="sd">        connected (bool): True will make sure that only the largest connected component of a graph</span>
+<span class="sd">            is used for feature extraction.</span>
+<span class="sd">        weighted (bool): calculations will consider edge weights where possible.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (DataFrame): dataframe of features</span>
+<span class="sd">        (DataFrame): dataframe of meta information of computed features.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">with_node_features</span><span class="p">:</span>
+        <span class="n">graphs</span><span class="o">.</span><span class="n">remove_node_features</span><span class="p">()</span>
+        <span class="n">n_node_features</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">n_node_features</span> <span class="o">=</span> <span class="n">graphs</span><span class="o">.</span><span class="n">get_n_node_features</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">connected</span><span class="p">:</span>
+        <span class="n">graphs</span><span class="o">.</span><span class="n">maximal_subgraphs</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">weighted</span><span class="p">:</span>
+        <span class="n">graphs</span><span class="o">.</span><span class="n">remove_edge_weights</span><span class="p">()</span>
+
+    <span class="n">feat_classes</span><span class="p">,</span> <span class="n">features_info_df</span> <span class="o">=</span> <span class="n">get_list_feature_classes</span><span class="p">(</span>
+        <span class="n">mode</span><span class="p">,</span>
+        <span class="n">normalize_features</span><span class="o">=</span><span class="n">normalize_features</span><span class="p">,</span>
+        <span class="n">statistics_level</span><span class="o">=</span><span class="n">statistics_level</span><span class="p">,</span>
+        <span class="n">n_node_features</span><span class="o">=</span><span class="n">n_node_features</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">with_runtimes</span><span class="p">:</span>
+        <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;Runtime option enable, we will only use 10 graphs and one worker to estimate </span><span class="se">\</span>
+<span class="s2">            the computational time of each feature class.&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">selected_graphs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">graphs</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">graph</span> <span class="ow">in</span> <span class="n">graphs</span><span class="o">.</span><span class="n">graphs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">selected_graphs</span><span class="p">:</span>
+                <span class="n">graph</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="s2">&quot;Extracting features from </span><span class="si">%s</span><span class="s2"> graphs (we disabled </span><span class="si">%s</span><span class="s2"> graphs).&quot;</span><span class="p">,</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">graphs</span><span class="p">),</span>
+        <span class="n">graphs</span><span class="o">.</span><span class="n">get_num_disabled_graphs</span><span class="p">(),</span>
+    <span class="p">)</span>
+    <span class="n">all_features_df</span> <span class="o">=</span> <span class="n">compute_all_features</span><span class="p">(</span>
+        <span class="n">graphs</span><span class="p">,</span>
+        <span class="n">feat_classes</span><span class="p">,</span>
+        <span class="n">n_workers</span><span class="o">=</span><span class="n">n_workers</span><span class="p">,</span>
+        <span class="n">with_runtimes</span><span class="o">=</span><span class="n">with_runtimes</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">with_runtimes</span><span class="p">:</span>
+        <span class="n">_print_runtimes</span><span class="p">(</span><span class="n">all_features_df</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
+
+    <span class="n">_set_graph_labels</span><span class="p">(</span><span class="n">all_features_df</span><span class="p">,</span> <span class="n">graphs</span><span class="p">)</span>
+
+    <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> feature extracted.&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_features_df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">all_features_df</span><span class="p">,</span> <span class="n">features_info_df</span></div>
+
+
+<div class="viewcode-block" id="_print_runtimes"><a class="viewcode-back" href="../../extraction.html#hcga.extraction._print_runtimes">[docs]</a><span class="k">def</span> <span class="nf">_print_runtimes</span><span class="p">(</span><span class="n">all_features_df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Print sorted runtimes.&quot;&quot;&quot;</span>
+    <span class="n">runtimes</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">raw_feature</span> <span class="ow">in</span> <span class="n">all_features_df</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">raw_feature</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">runtimes</span><span class="p">[</span><span class="n">feat</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">raw_feature</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">feat</span><span class="p">])</span>
+    <span class="n">feature_names</span><span class="p">,</span> <span class="n">runtimes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">runtimes</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="nb">list</span><span class="p">(</span><span class="n">runtimes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">runtime_sortid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">runtimes</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">feat_id</span> <span class="ow">in</span> <span class="n">runtime_sortid</span><span class="p">:</span>
+        <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;Runtime of </span><span class="si">%s</span><span class="s2"> is </span><span class="si">%s</span><span class="s2"> ( std = </span><span class="si">%s</span><span class="s2"> ) seconds per graph.&quot;</span><span class="p">,</span>
+            <span class="n">feature_names</span><span class="p">[</span><span class="n">feat_id</span><span class="p">],</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">runtimes</span><span class="p">[</span><span class="n">feat_id</span><span class="p">]),</span> <span class="mi">3</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">runtimes</span><span class="p">[</span><span class="n">feat_id</span><span class="p">]),</span> <span class="mi">3</span><span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_set_graph_labels"><a class="viewcode-back" href="../../extraction.html#hcga.extraction._set_graph_labels">[docs]</a><span class="k">def</span> <span class="nf">_set_graph_labels</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">graphs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set graph labels to features dataframe.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">graph</span> <span class="ow">in</span> <span class="n">graphs</span><span class="p">:</span>
+        <span class="n">features</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">graph</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">label</span></div>
+
+
+<div class="viewcode-block" id="_load_feature_class"><a class="viewcode-back" href="../../extraction.html#hcga.extraction._load_feature_class">[docs]</a><span class="k">def</span> <span class="nf">_load_feature_class</span><span class="p">(</span><span class="n">feature_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;load the feature class from feature name.&quot;&quot;&quot;</span>
+    <span class="n">feature_module</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;hcga.features.&quot;</span> <span class="o">+</span> <span class="n">feature_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">feature_module</span><span class="p">,</span> <span class="n">feature_module</span><span class="o">.</span><span class="n">featureclass_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_list_feature_classes"><a class="viewcode-back" href="../../extraction.html#hcga.extraction.get_list_feature_classes">[docs]</a><span class="k">def</span> <span class="nf">get_list_feature_classes</span><span class="p">(</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;fast&quot;</span><span class="p">,</span>
+    <span class="n">normalize_features</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">statistics_level</span><span class="o">=</span><span class="s2">&quot;basic&quot;</span><span class="p">,</span>
+    <span class="n">n_node_features</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates and returns the list of feature classes to compute for a given mode.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mode (str): &#39;fast&#39;, &#39;medium&#39;, &#39;slow&#39; - only features that are fast to compute will</span>
+<span class="sd">            be run with &#39;fast&#39;</span>
+<span class="sd">        normalize_features (bool): normalise features by number of nodes and number of edges</span>
+<span class="sd">        statistics_level (str): &#39;basic&#39;, &#39;advanced&#39; - for features that provide distributions</span>
+<span class="sd">            we must compute statistics.</span>
+<span class="sd">        n_node_features (int):  dimension of node features for feature constructors</span>
+<span class="sd">        timeout (int): number of seconds before the calculation for a feature is cancelled</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (list): list of feature classes instances</span>
+<span class="sd">        (DataFrame): dataframe with feature information</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">feature_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;features&quot;</span>
+    <span class="n">non_feature_files</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="s2">&quot;utils&quot;</span><span class="p">]</span>
+
+    <span class="n">list_feature_classes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">column_indexes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="p">(</span>
+        <span class="n">levels</span><span class="o">=</span><span class="p">[[],</span> <span class="p">[]],</span> <span class="n">codes</span><span class="o">=</span><span class="p">[[],</span> <span class="p">[]],</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;feature_class&quot;</span><span class="p">,</span> <span class="s2">&quot;feature_name&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">feature_info_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">column_indexes</span><span class="p">)</span>
+    <span class="n">feature_names</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">_f</span><span class="o">.</span><span class="n">stem</span> <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="n">feature_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.py&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">_f</span><span class="o">.</span><span class="n">stem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">non_feature_files</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">feature_name</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">feature_names</span><span class="p">):</span>
+        <span class="n">feature_class</span> <span class="o">=</span> <span class="n">_load_feature_class</span><span class="p">(</span><span class="n">feature_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">feature_class</span><span class="o">.</span><span class="n">modes</span> <span class="ow">or</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="n">list_feature_classes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feature_class</span><span class="p">)</span>
+            <span class="c1"># runs once update_feature with trivial graph to create class variables</span>
+            <span class="n">features_info</span> <span class="o">=</span> <span class="n">feature_class</span><span class="o">.</span><span class="n">setup_class</span><span class="p">(</span>
+                <span class="n">normalize_features</span><span class="o">=</span><span class="n">normalize_features</span><span class="p">,</span>
+                <span class="n">statistics_level</span><span class="o">=</span><span class="n">statistics_level</span><span class="p">,</span>
+                <span class="n">n_node_features</span><span class="o">=</span><span class="n">n_node_features</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="p">[(</span><span class="n">feature_class</span><span class="o">.</span><span class="n">shortname</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">features_info</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+            <span class="n">feature_info_df</span><span class="p">[</span><span class="n">columns</span><span class="p">]</span> <span class="o">=</span> <span class="n">features_info</span>
+
+    <span class="k">return</span> <span class="n">list_feature_classes</span><span class="p">,</span> <span class="n">feature_info_df</span></div>
+
+
+<div class="viewcode-block" id="feature_extraction"><a class="viewcode-back" href="../../extraction.html#hcga.extraction.feature_extraction">[docs]</a><span class="k">def</span> <span class="nf">feature_extraction</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">list_feature_classes</span><span class="p">,</span> <span class="n">with_runtimes</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extract features for a single graph</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        graph (Graph object): Graph object (see graph.py)</span>
+<span class="sd">        list_feature_classes (list): list of feature classes found in ./features</span>
+<span class="sd">        with_runtimes (bool): compute the run time of each feature</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (DataFrame): dataframe of calculated features for a given graph.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">with_runtimes</span><span class="p">:</span>
+        <span class="n">runtimes</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">column_indexes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="p">(</span>
+        <span class="n">levels</span><span class="o">=</span><span class="p">[[],</span> <span class="p">[]],</span> <span class="n">codes</span><span class="o">=</span><span class="p">[[],</span> <span class="p">[]],</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;feature_class&quot;</span><span class="p">,</span> <span class="s2">&quot;feature_name&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">features_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">column_indexes</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">feature_class</span> <span class="ow">in</span> <span class="n">list_feature_classes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">with_runtimes</span><span class="p">:</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="n">feat_class_inst</span> <span class="o">=</span> <span class="n">feature_class</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">feat_class_inst</span><span class="o">.</span><span class="n">get_features</span><span class="p">(),</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">graph</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[(</span><span class="n">feat_class_inst</span><span class="o">.</span><span class="n">shortname</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">features</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+        <span class="n">features_df</span><span class="p">[</span><span class="n">columns</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span>
+        <span class="n">feat_class_inst</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">del</span> <span class="n">feat_class_inst</span>
+
+        <span class="k">if</span> <span class="n">with_runtimes</span><span class="p">:</span>
+            <span class="n">runtimes</span><span class="p">[</span><span class="n">feature_class</span><span class="o">.</span><span class="n">shortname</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+
+    <span class="k">if</span> <span class="n">with_runtimes</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="p">[</span><span class="n">features_df</span><span class="p">,</span> <span class="n">runtimes</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">features_df</span></div>
+
+
+<div class="viewcode-block" id="compute_all_features"><a class="viewcode-back" href="../../extraction.html#hcga.extraction.compute_all_features">[docs]</a><span class="k">def</span> <span class="nf">compute_all_features</span><span class="p">(</span>
+    <span class="n">graphs</span><span class="p">,</span>
+    <span class="n">list_feature_classes</span><span class="p">,</span>
+    <span class="n">n_workers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">with_runtimes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute features for all graphs</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        graphs (GraphCollection object): GraphCollection object with loaded graphs (see graph.py)</span>
+<span class="sd">        list_feature_classes (list): list of feature classes found in ./features</span>
+<span class="sd">        n_workers (int): number of workers for parallel processing</span>
+<span class="sd">        with_runtimes (bool): compute the run time of each feature</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (DataDrame): dataframe of calculated features for the graph collection.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">L</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Computing features for </span><span class="si">%s</span><span class="s2"> graphs:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">graphs</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">with_runtimes</span><span class="p">:</span>
+        <span class="n">n_workers</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">with</span> <span class="n">NestedPool</span><span class="p">(</span><span class="n">n_workers</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+            <span class="n">tqdm</span><span class="p">(</span>
+                <span class="n">pool</span><span class="o">.</span><span class="n">imap</span><span class="p">(</span>
+                    <span class="n">partial</span><span class="p">(</span>
+                        <span class="n">feature_extraction</span><span class="p">,</span>
+                        <span class="n">list_feature_classes</span><span class="o">=</span><span class="n">list_feature_classes</span><span class="p">,</span>
+                        <span class="n">with_runtimes</span><span class="o">=</span><span class="n">with_runtimes</span><span class="p">,</span>
+                    <span class="p">),</span>
+                    <span class="n">graphs</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">graphs</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">hcga</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../app.html">The cli app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hcga.html">The hcga class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../graph.html">The graph data structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../feature_class.html">The feature class module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extraction.html">The extraction module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../analysis.html">The analysis module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Features.html">Features</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
