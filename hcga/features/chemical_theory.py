@@ -22,11 +22,10 @@ class ChemicalTheory(FeatureClass):
     References
     ----------
     .. [1] Rouvray, Dennis H.
-     "The rich legacy of half a century of the Wiener index.",
-      Topology in Chemistry. Woodhead Publishing, 2002. 16-37.
+           "The rich legacy of half a century of the Wiener index.",
+           Topology in Chemistry. Woodhead Publishing, 2002. 16-37.
     .. [2] E. Estrada,  Characterization of 3D molecular structure,
-       Chem. Phys. Lett. 319, 713 (2000).
-
+           Chem. Phys. Lett. 319, 713 (2000).
     """
 
     modes = ["fast", "medium", "slow"]

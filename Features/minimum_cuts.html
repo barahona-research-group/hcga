@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The minimum cuts module &#8212; hcga 0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="The node clique numnber module" href="node_clique_number.html" />
+    <link rel="prev" title="The maximal matching module" href="maximal_matching.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-hcga.features.minimum_cuts">
+<span id="the-minimum-cuts-module"></span><h1>The minimum cuts module<a class="headerlink" href="#module-hcga.features.minimum_cuts" title="Permalink to this headline">¶</a></h1>
+<p>Minimum cuts class.</p>
+<dl class="py class">
+<dt id="hcga.features.minimum_cuts.MinimumCuts">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.features.minimum_cuts.</code><code class="sig-name descname">MinimumCuts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/minimum_cuts.html#MinimumCuts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.minimum_cuts.MinimumCuts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimum cuts class.</p>
+<blockquote>
+<div><blockquote>
+<div><dl class="simple">
+<dt>Calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/connectivity.html">Networkx_minimum_cuts</a></p>
+</dd>
+</dl>
+</div></blockquote>
+<p>This class produces the following features:</p>
+</div></blockquote>
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">min_node_cut_size'</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – min_node_cut_size’</p></li>
+<li><p><strong>shortname</strong> – MiC</p></li>
+<li><p><strong>fullname</strong> – MiC_min_node_cut_size’</p></li>
+<li><p><strong>description</strong> – Minimum node cut size</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">min_edge_cut_size'</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – min_edge_cut_size’</p></li>
+<li><p><strong>shortname</strong> – MiC</p></li>
+<li><p><strong>fullname</strong> – MiC_min_edge_cut_size’</p></li>
+<li><p><strong>description</strong> – Minimum edge cut size</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">min_node_cut_size'_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – min_node_cut_size’_N</p></li>
+<li><p><strong>shortname</strong> – MiC</p></li>
+<li><p><strong>fullname</strong> – MiC_min_node_cut_size’_N</p></li>
+<li><p><strong>description</strong> – Minimum node cut size, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">min_node_cut_size'_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – min_node_cut_size’_E</p></li>
+<li><p><strong>shortname</strong> – MiC</p></li>
+<li><p><strong>fullname</strong> – MiC_min_node_cut_size’_E</p></li>
+<li><p><strong>description</strong> – Minimum node cut size, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">min_edge_cut_size'_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – min_edge_cut_size’_N</p></li>
+<li><p><strong>shortname</strong> – MiC</p></li>
+<li><p><strong>fullname</strong> – MiC_min_edge_cut_size’_N</p></li>
+<li><p><strong>description</strong> – Minimum edge cut size, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">min_edge_cut_size'_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – min_edge_cut_size’_E</p></li>
+<li><p><strong>shortname</strong> – MiC</p></li>
+<li><p><strong>fullname</strong> – MiC_min_edge_cut_size’_E</p></li>
+<li><p><strong>description</strong> – Minimum edge cut size, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Initialise a feature class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>graph</strong> (<a class="reference internal" href="../graph.html#hcga.graph.Graph" title="hcga.graph.Graph"><em>Graph</em></a>) – graph for initialisation, converted to given encoding</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="hcga.features.minimum_cuts.MinimumCuts.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/minimum_cuts.html#MinimumCuts.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.minimum_cuts.MinimumCuts.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main feature extraction function.</p>
+<p>This function should be used by each specific feature class to add new features.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hcga</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../app.html">The cli app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hcga.html">The hcga class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graph.html">The graph data structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../feature_class.html">The feature class module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extraction.html">The extraction module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysis.html">The analysis module</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="basic_stats.html">The basic statistics module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="assortativity.html">The assortativity module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="centrality.html">Centrality modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chemical_theory.html">The chemical theory module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cliques.html">Cliques modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering.html">The clustering module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="communities.html">Communities modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components.html">Components modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core_number.html">The core_number module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cycle_basis.html">The cycle basis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distance_measures.html">The disttance measure module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dominating_sets.html">The dominating sets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efficiency.html">The efficiency module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eulerian.html">The eulerian module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efficiency.html">The efficiency module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="independent_sets.html">The independent sets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="k_components.html">The k-components module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_analysis_hits.html">The link analysis hits module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maximal_matching.html">The maximal matching module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">The minimum cuts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node_clique_number.html">The node clique numnber module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node_connectivity.html">The node connectivity module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node_features.html">The node features module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rich_club.html">The rich club module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scale_free.html">The scale free module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shortest_paths.html">The shortest paths module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="small_worldness.html">The small worldness module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structural_holes.html">The structural holes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spectrum.html">The spectrum module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vitality.html">The vitality module</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../Features.html">Features</a><ul>
+      <li>Previous: <a href="maximal_matching.html" title="previous chapter">The maximal matching module</a></li>
+      <li>Next: <a href="node_clique_number.html" title="next chapter">The node clique numnber module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/Features/minimum_cuts.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

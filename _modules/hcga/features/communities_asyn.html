@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>hcga.features.communities_asyn &#8212; hcga 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for hcga.features.communities_asyn</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Communities Asyn class.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">networkx.algorithms.components</span> <span class="kn">import</span> <span class="n">is_connected</span>
+<span class="kn">from</span> <span class="nn">networkx.exception</span> <span class="kn">import</span> <span class="n">NetworkXError</span>
+<span class="kn">from</span> <span class="nn">networkx.utils</span> <span class="kn">import</span> <span class="n">groups</span><span class="p">,</span> <span class="n">py_random_state</span>
+
+<span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">utils</span>
+
+<span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;CommunitiesAsyn&quot;</span>
+
+
+<div class="viewcode-block" id="CommunitiesAsyn"><a class="viewcode-back" href="../../../Features/communities.html#hcga.features.communities_asyn.CommunitiesAsyn">[docs]</a><span class="k">class</span> <span class="nc">CommunitiesAsyn</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Communities Asyn class.&quot;&quot;&quot;</span>
+
+    <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;slow&quot;</span><span class="p">]</span>
+    <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;CA&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;communities_asyn&quot;</span>
+    <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;networkx&quot;</span>
+
+<div class="viewcode-block" id="CommunitiesAsyn.compute_features"><a class="viewcode-back" href="../../../Features/communities.html#hcga.features.communities_asyn.CommunitiesAsyn.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">eval_asyn</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">num_comms</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;this evaluates the main function and cach it for speed up.&quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">asyn_fluidc</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_comms</span><span class="p">))</span>
+
+        <span class="n">num_communities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">num_comms</span> <span class="ow">in</span> <span class="n">num_communities</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+                <span class="s2">&quot;sum_density_c=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_comms</span><span class="p">),</span>
+                <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">eval_asyn</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">num_comms</span><span class="p">)[</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="s2">&quot;The total density of communities after fluid optimisations for c=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">num_comms</span>
+                <span class="p">),</span>
+                <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+            <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+                <span class="s2">&quot;ratio_density_c=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_comms</span><span class="p">),</span>
+                <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">eval_asyn</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">num_comms</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">eval_asyn</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">num_comms</span><span class="p">)[</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="s2">&quot;The ratio density of communities after fluid optimisations for c=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">num_comms</span>
+                <span class="p">),</span>
+                <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+            <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+                <span class="s2">&quot;len_most_dense_c=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_comms</span><span class="p">),</span>
+                <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span>
+                    <span class="n">eval_asyn</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">num_comms</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">eval_asyn</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">num_comms</span><span class="p">)[</span><span class="mi">1</span><span class="p">])]</span>
+                <span class="p">),</span>
+                <span class="s2">&quot;The length of the most dense community after fluid optimisations for c=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">num_comms</span>
+                <span class="p">),</span>
+                <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
+            <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+                <span class="s2">&quot;len_least_dense_c=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_comms</span><span class="p">),</span>
+                <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span>
+                    <span class="n">eval_asyn</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">num_comms</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">eval_asyn</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">num_comms</span><span class="p">)[</span><span class="mi">1</span><span class="p">])]</span>
+                <span class="p">),</span>
+                <span class="s2">&quot;The length of the least dense community after fluid optimisations for c=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">num_comms</span>
+                <span class="p">),</span>
+                <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
+            <span class="p">)</span>
+
+            <span class="c1"># computing clustering quality</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+                <span class="s2">&quot;partition_c=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_comms</span><span class="p">),</span>
+                <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">eval_asyn</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">num_comms</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="s2">&quot;The optimal partition after fluid optimisations for c=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_comms</span><span class="p">),</span>
+                <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
+                <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;clustering&quot;</span><span class="p">,</span>
+            <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="asyn_fluidc"><a class="viewcode-back" href="../../../Features/communities.html#hcga.features.communities_asyn.asyn_fluidc">[docs]</a><span class="nd">@py_random_state</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">asyn_fluidc</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>  <span class="c1"># noqa, pylint: disable=too-many-locals,too-many-branches,too-many-statements</span>
+    <span class="sd">&quot;&quot;&quot;This function is adapted from networks directly.&quot;&quot;&quot;</span>
+    <span class="c1"># Initial checks</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">NetworkXError</span><span class="p">(</span><span class="s2">&quot;k must be an integer.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">NetworkXError</span><span class="p">(</span><span class="s2">&quot;k must be greater than 0.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_connected</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">NetworkXError</span><span class="p">(</span><span class="s2">&quot;Fluid Communities require connected Graphs.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">k</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">NetworkXError</span><span class="p">(</span><span class="s2">&quot;k cannot be bigger than the number of nodes.&quot;</span><span class="p">)</span>
+    <span class="c1"># Initialization</span>
+    <span class="n">max_density</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">vertices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+    <span class="n">seed</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+    <span class="n">communities</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vertices</span><span class="p">[:</span><span class="n">k</span><span class="p">])}</span>
+    <span class="n">density</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">com_to_numvertices</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">communities</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">com_to_numvertices</span><span class="p">[</span><span class="n">communities</span><span class="p">[</span><span class="n">vertex</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">density</span><span class="p">[</span><span class="n">communities</span><span class="p">[</span><span class="n">vertex</span><span class="p">]]</span> <span class="o">=</span> <span class="n">max_density</span>
+    <span class="c1"># Set up control variables and start iterating</span>
+    <span class="n">iter_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">cont</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">while</span> <span class="n">cont</span><span class="p">:</span>
+        <span class="n">cont</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">iter_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># Loop over all vertices in graph in a random order</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+        <span class="n">seed</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
+            <span class="c1"># Updating rule</span>
+            <span class="n">com_counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+            <span class="c1"># Take into account self vertex community</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">com_counter</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">communities</span><span class="p">[</span><span class="n">vertex</span><span class="p">]:</span> <span class="n">density</span><span class="p">[</span><span class="n">communities</span><span class="p">[</span><span class="n">vertex</span><span class="p">]]})</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="c1"># Gather neighbour vertex communities</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">G</span><span class="p">[</span><span class="n">vertex</span><span class="p">]:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">com_counter</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">communities</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span> <span class="n">density</span><span class="p">[</span><span class="n">communities</span><span class="p">[</span><span class="n">v</span><span class="p">]]})</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="k">continue</span>
+            <span class="c1"># Check which is the community with highest density</span>
+            <span class="n">new_com</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="k">if</span> <span class="n">com_counter</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">max_freq</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">com_counter</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                <span class="n">best_communities</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">com</span> <span class="k">for</span> <span class="n">com</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">com_counter</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="p">(</span><span class="n">max_freq</span> <span class="o">-</span> <span class="n">freq</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.0001</span>
+                <span class="p">]</span>
+                <span class="c1"># If actual vertex com in best communities, it is preserved</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">communities</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="ow">in</span> <span class="n">best_communities</span><span class="p">:</span>
+                        <span class="n">new_com</span> <span class="o">=</span> <span class="n">communities</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="c1"># If vertex community changes...</span>
+                <span class="k">if</span> <span class="n">new_com</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="c1"># Set flag of non-convergence</span>
+                    <span class="n">cont</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="c1"># Randomly chose a new community from candidates</span>
+                    <span class="n">new_com</span> <span class="o">=</span> <span class="n">seed</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">best_communities</span><span class="p">)</span>
+                    <span class="c1"># Update previous community status</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">com_to_numvertices</span><span class="p">[</span><span class="n">communities</span><span class="p">[</span><span class="n">vertex</span><span class="p">]]</span> <span class="o">-=</span> <span class="mi">1</span>
+                        <span class="n">density</span><span class="p">[</span><span class="n">communities</span><span class="p">[</span><span class="n">vertex</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="n">max_density</span> <span class="o">/</span> <span class="n">com_to_numvertices</span><span class="p">[</span><span class="n">communities</span><span class="p">[</span><span class="n">vertex</span><span class="p">]]</span>
+                        <span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                        <span class="k">pass</span>
+                    <span class="c1"># Update new community status</span>
+                    <span class="n">communities</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_com</span>
+                    <span class="n">com_to_numvertices</span><span class="p">[</span><span class="n">communities</span><span class="p">[</span><span class="n">vertex</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">density</span><span class="p">[</span><span class="n">communities</span><span class="p">[</span><span class="n">vertex</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">max_density</span> <span class="o">/</span> <span class="n">com_to_numvertices</span><span class="p">[</span><span class="n">communities</span><span class="p">[</span><span class="n">vertex</span><span class="p">]]</span>
+                    <span class="p">)</span>
+        <span class="c1"># If maximum iterations reached --&gt; output actual results</span>
+        <span class="k">if</span> <span class="n">iter_count</span> <span class="o">&gt;</span> <span class="n">max_iter</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="c1"># Return results by grouping communities as list of vertices</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">groups</span><span class="p">(</span><span class="n">communities</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())),</span> <span class="nb">list</span><span class="p">(</span><span class="n">density</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">hcga</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../app.html">The cli app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hcga.html">The hcga class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../graph.html">The graph data structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../feature_class.html">The feature class module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../extraction.html">The extraction module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">The analysis module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Features.html">Features</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

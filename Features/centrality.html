@@ -1,0 +1,4211 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Centrality modules &#8212; hcga 0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="The chemical theory module" href="chemical_theory.html" />
+    <link rel="prev" title="The assortativity module" href="assortativity.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="centrality-modules">
+<h1>Centrality modules<a class="headerlink" href="#centrality-modules" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-hcga.features.centralities_basic">
+<span id="the-basic-centrality-module"></span><h2>The basic centrality module<a class="headerlink" href="#module-hcga.features.centralities_basic" title="Permalink to this headline">¶</a></h2>
+<p>Centralities class.</p>
+<dl class="py class">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic">
+<em class="property">class </em><code class="sig-prename descclassname">hcga.features.centralities_basic.</code><code class="sig-name descname">CentralitiesBasic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#CentralitiesBasic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Centralities class.</p>
+<blockquote>
+<div><blockquote>
+<div><p>Uses networkx, see ‘<a class="reference external" href="https://networkx.github.io/documentation/stable/reference/">https://networkx.github.io/documentation/stable/reference/</a>        algorithms/centrality.html`</p>
+</div></blockquote>
+<p>This class produces the following features:</p>
+</div></blockquote>
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_mean</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_mean</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of The degree centrality distribution</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_min</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_min</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of The degree centrality distribution</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_sum</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_sum</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of The degree centrality distribution</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_max</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_max</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of The degree centrality distribution</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_median</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_median</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of The degree centrality distribution</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_std</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_std</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of The degree centrality distribution</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_mean</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_mean</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_min</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_min</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_sum</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_sum</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_max</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_max</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_median</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_median</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_std</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_std</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_mean</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_mean</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_min</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_min</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_sum</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_sum</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_max</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_max</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_median</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_median</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_std</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_std</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_mean</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_mean</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Closeness is the reciprocal of the average shortest path distance</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_min</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_min</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Closeness is the reciprocal of the average shortest path distance</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_sum</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_sum</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Closeness is the reciprocal of the average shortest path distance</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_max</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_max</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Closeness is the reciprocal of the average shortest path distance</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_median</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_median</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Closeness is the reciprocal of the average shortest path distance</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_std</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_std</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Closeness is the reciprocal of the average shortest path distance</p></li>
+<li><p><strong>interpretability</strong> – 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_mean</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_mean</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_min</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_min</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_sum</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_sum</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_max</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_max</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_median</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_median</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_std</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_std</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_mean</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_mean</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_min</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_min</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_sum</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_sum</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_max</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_max</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_median</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_median</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_std</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_std</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_mean</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_mean</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_min</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_min</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_sum</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_sum</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_max</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_max</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_median</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_median</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_std</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_std</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_mean</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_mean</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node.</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_min</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_min</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node.</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_sum</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_sum</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node.</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_max</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_max</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node.</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_median</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_median</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node.</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_std</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_std</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node.</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_mean</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_mean</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_min</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_min</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_sum</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_sum</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_max</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_max</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_median</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_median</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_std</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_std</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_mean</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_mean</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_min</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_min</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_sum</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_sum</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_max</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_max</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_median</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_median</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_std</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_std</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_mean</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_mean</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_min</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_min</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_sum</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_sum</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_max</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_max</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_median</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_median</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_std</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_std</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_mean</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_mean</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_min</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_min</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_sum</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_sum</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_max</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_max</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_median</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_median</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_std</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_std</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_mean">
+<code class="sig-name descname">pagerank_mean</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_mean" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_mean</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links.</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_min">
+<code class="sig-name descname">pagerank_min</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_min" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_min</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links.</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_sum">
+<code class="sig-name descname">pagerank_sum</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_sum" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_sum</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links.</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_max">
+<code class="sig-name descname">pagerank_max</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_max" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_max</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links.</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_median">
+<code class="sig-name descname">pagerank_median</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_median" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_median</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links.</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_std">
+<code class="sig-name descname">pagerank_std</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_std" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_std</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links.</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_mean</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_mean</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_mean</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links.</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_min</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_min</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_min</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links.</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_sum</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_sum</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_sum</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links.</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_max</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_max</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_max</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links.</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_median</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_median</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_median</p></li>
+<li><p><strong>description</strong> – Median of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links.</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_std</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_std</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_std</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links.</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_mean_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_mean_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of The degree centrality distribution, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_mean_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_mean_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of The degree centrality distribution, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_min_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_min_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of The degree centrality distribution, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_min_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_min_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of The degree centrality distribution, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_sum_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_sum_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of The degree centrality distribution, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_sum_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_sum_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of The degree centrality distribution, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_max_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_max_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of The degree centrality distribution, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_max_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_max_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of The degree centrality distribution, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_median_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_median_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of The degree centrality distribution, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_median_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_median_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of The degree centrality distribution, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_std_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_std_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of The degree centrality distribution, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">degree centrality_std_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – degree centrality_std_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_degree centrality_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of The degree centrality distribution, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_mean_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_mean_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_mean_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_mean_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_min_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_min_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_min_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_min_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_sum_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_sum_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_sum_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_sum_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_max_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_max_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_max_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_max_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_median_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_median_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_median_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_median_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_std_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_std_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_std_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_std_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_mean_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_mean_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_mean_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_mean_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_min_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_min_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_min_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_min_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_sum_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_sum_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_sum_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_sum_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_max_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_max_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_max_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_max_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_median_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_median_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_median_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_median_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_std_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_std_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">betweenness centrality_weighted_std_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – betweenness centrality_weighted_std_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_betweenness centrality_weighted_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Betweenness centrality of a node v is the sum of the fraction of             all-pairs shortest paths that pass through v, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_mean_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_mean_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Closeness is the reciprocal of the average shortest path distance, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_mean_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_mean_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Closeness is the reciprocal of the average shortest path distance, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_min_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_min_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Closeness is the reciprocal of the average shortest path distance, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_min_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_min_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Closeness is the reciprocal of the average shortest path distance, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_sum_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_sum_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Closeness is the reciprocal of the average shortest path distance, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_sum_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_sum_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Closeness is the reciprocal of the average shortest path distance, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_max_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_max_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Closeness is the reciprocal of the average shortest path distance, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_max_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_max_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Closeness is the reciprocal of the average shortest path distance, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_median_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_median_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Closeness is the reciprocal of the average shortest path distance, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_median_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_median_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Closeness is the reciprocal of the average shortest path distance, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_std_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_std_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Closeness is the reciprocal of the average shortest path distance, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">closeness centrality_std_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – closeness centrality_std_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_closeness centrality_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Closeness is the reciprocal of the average shortest path distance, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 4</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_mean_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_mean_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_mean_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_mean_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_min_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_min_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_min_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_min_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_sum_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_sum_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_sum_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_sum_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_max_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_max_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_max_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_max_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_median_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_median_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_median_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_median_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_std_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_std_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality_std_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality_std_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_mean_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_mean_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_mean_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_mean_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_min_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_min_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_min_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_min_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_sum_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_sum_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_sum_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_sum_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_max_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_max_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_max_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_max_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_median_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_median_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_median_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_median_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_std_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_std_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">edge betweenness centrality weighted_std_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – edge betweenness centrality weighted_std_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_edge betweenness centrality weighted_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Betweenness centrality of an edge e is the sum of the fraction of             all-pairs shortest paths that pass through e, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_mean_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_mean_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_mean_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_mean_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_min_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_min_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_min_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_min_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_sum_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_sum_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_sum_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_sum_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_max_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_max_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_max_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_max_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_median_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_median_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_median_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_median_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_std_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_std_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">harmonic centrality_std_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – harmonic centrality_std_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_harmonic centrality_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Harmonic centrality of a node u is the sum of the reciprocal             of the shortest path distances from all other nodes to u, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_mean_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_mean_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node., normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_mean_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_mean_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node., normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_min_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_min_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node., normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_min_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_min_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node., normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_sum_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_sum_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node., normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_sum_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_sum_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node., normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_max_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_max_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node., normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_max_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_max_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node., normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_median_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_median_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node., normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_median_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_median_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node., normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_std_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_std_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node., normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">subgraph centrality_std_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – subgraph centrality_std_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_subgraph centrality_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of The subgraph centrality for a node is the sum of weighted closed walks             of all lengths starting and ending at that node., normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_mean_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_mean_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_mean_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_mean_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_min_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_min_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_min_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_min_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_sum_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_sum_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_sum_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_sum_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_max_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_max_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_max_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_max_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_median_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_median_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_median_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_median_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_std_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_std_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">second order centrality_std_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – second order centrality_std_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_second order centrality_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of The second order centrality of a given node is the standard deviation             of the return times to that node of a perpetual random walk on G, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_mean_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_mean_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_mean_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_mean_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_min_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_min_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_min_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_min_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_sum_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_sum_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_sum_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_sum_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_max_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_max_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_max_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_max_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_median_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_median_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_median_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_median_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_std_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_std_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality_std_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality_std_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_mean_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_mean_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_mean_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_mean_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_min_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_min_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_min_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_min_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_sum_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_sum_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_sum_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_sum_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_max_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_max_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_max_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_max_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_median_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_median_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_median_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_median_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_std_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_std_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eigenvector centrality weighted_std_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – eigenvector centrality weighted_std_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_eigenvector centrality weighted_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Eigenvector centrality computes the centrality for a node based             on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_mean_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_mean_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_mean_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_mean_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_min_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_min_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_min_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_min_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_sum_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_sum_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_sum_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_sum_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_max_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_max_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_max_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_max_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_median_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_median_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_median_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_median_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_std_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_std_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors, normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">katz centrality_std_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – katz centrality_std_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_katz centrality_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of Generalisation of eigenvector centrality - Katz centrality computes the             centrality for a node based on the centrality of its neighbors, normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_mean_N">
+<code class="sig-name descname">pagerank_mean_N</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_mean_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_mean_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_mean_E">
+<code class="sig-name descname">pagerank_mean_E</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_mean_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_mean_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_min_N">
+<code class="sig-name descname">pagerank_min_N</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_min_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_min_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_min_E">
+<code class="sig-name descname">pagerank_min_E</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_min_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_min_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_sum_N">
+<code class="sig-name descname">pagerank_sum_N</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_sum_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_sum_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_sum_E">
+<code class="sig-name descname">pagerank_sum_E</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_sum_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_sum_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_max_N">
+<code class="sig-name descname">pagerank_max_N</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_max_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_max_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_max_E">
+<code class="sig-name descname">pagerank_max_E</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_max_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_max_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_median_N">
+<code class="sig-name descname">pagerank_median_N</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_median_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_median_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_median_E">
+<code class="sig-name descname">pagerank_median_E</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_median_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_median_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_std_N">
+<code class="sig-name descname">pagerank_std_N</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_std_N" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_std_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.pagerank_std_E">
+<code class="sig-name descname">pagerank_std_E</code><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.pagerank_std_E" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank_std_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_mean_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_mean_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_mean_N</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_mean_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_mean_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_mean_E</p></li>
+<li><p><strong>description</strong> – Mean of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_min_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_min_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_min_N</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_min_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_min_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_min_E</p></li>
+<li><p><strong>description</strong> – Minimum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_sum_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_sum_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_sum_N</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_sum_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_sum_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_sum_E</p></li>
+<li><p><strong>description</strong> – Sum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_max_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_max_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_max_N</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_max_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_max_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_max_E</p></li>
+<li><p><strong>description</strong> – Maximum of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_median_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_median_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_median_N</p></li>
+<li><p><strong>description</strong> – Median of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_median_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_median_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_median_E</p></li>
+<li><p><strong>description</strong> – Median of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_std_N</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_std_N</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_std_N</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of nodes in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">pagerank weighted_std_E</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – pagerank weighted_std_E</p></li>
+<li><p><strong>shortname</strong> – CB</p></li>
+<li><p><strong>fullname</strong> – CB_pagerank weighted_std_E</p></li>
+<li><p><strong>description</strong> – Standard deviation of the distribution of The pagerank computes a ranking of the nodes in the graph based on             the structure of the incoming links. , normalised by the number of edges in the graph</p></li>
+<li><p><strong>interpretability</strong> – 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Initialise a feature class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>graph</strong> (<a class="reference internal" href="../graph.html#hcga.graph.Graph" title="hcga.graph.Graph"><em>Graph</em></a>) – graph for initialisation, converted to given encoding</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="hcga.features.centralities_basic.CentralitiesBasic.compute_features">
+<code class="sig-name descname">compute_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/centralities_basic.html#CentralitiesBasic.compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.centralities_basic.CentralitiesBasic.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main feature extraction function.</p>
+<p>This function should be used by each specific feature class to add new features.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hcga</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../app.html">The cli app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hcga.html">The hcga class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graph.html">The graph data structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../feature_class.html">The feature class module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extraction.html">The extraction module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysis.html">The analysis module</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="basic_stats.html">The basic statistics module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="assortativity.html">The assortativity module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Centrality modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-hcga.features.centralities_basic">The basic centrality module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chemical_theory.html">The chemical theory module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cliques.html">Cliques modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering.html">The clustering module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="communities.html">Communities modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components.html">Components modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core_number.html">The core_number module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cycle_basis.html">The cycle basis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distance_measures.html">The disttance measure module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dominating_sets.html">The dominating sets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efficiency.html">The efficiency module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eulerian.html">The eulerian module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efficiency.html">The efficiency module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="independent_sets.html">The independent sets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="k_components.html">The k-components module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_analysis_hits.html">The link analysis hits module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maximal_matching.html">The maximal matching module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="minimum_cuts.html">The minimum cuts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node_clique_number.html">The node clique numnber module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node_connectivity.html">The node connectivity module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node_features.html">The node features module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rich_club.html">The rich club module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scale_free.html">The scale free module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shortest_paths.html">The shortest paths module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="small_worldness.html">The small worldness module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structural_holes.html">The structural holes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spectrum.html">The spectrum module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vitality.html">The vitality module</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../Features.html">Features</a><ul>
+      <li>Previous: <a href="assortativity.html" title="previous chapter">The assortativity module</a></li>
+      <li>Next: <a href="chemical_theory.html" title="next chapter">The chemical theory module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, R. Peach, H. Palasciano and A. Arnaudon,.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/Features/centrality.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
