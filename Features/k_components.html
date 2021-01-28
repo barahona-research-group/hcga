@@ -38,202 +38,34 @@
 <dl class="py class">
 <dt id="hcga.features.k_components.KComponents">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.k_components.</code><code class="sig-name descname">KComponents</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/k_components.html#KComponents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.k_components.KComponents" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>K Components class.</dt><dd><p>This class produces the following features:</p>
+<dd><p>K Components class.</p>
+<p>Returns features based on the k component structure of a graph.</p>
+<p>A <cite>k</cite>-component is a maximal subgraph of a graph G that has, at least,
+node connectivity <cite>k</cite>: we need to remove at least <cite>k</cite> nodes to break it
+into more components. <cite>k</cite>-components have an inherent hierarchical
+structure because they are nested in terms of connectivity: a connected
+graph can contain several 2-components, each of which can contain
+one or more 3-components, and so forth.</p>
+<p>Uses networkx, see ‘<a class="reference external" href="https://networkx.org/documentation/stable/reference/algorithms/">https://networkx.org/documentation/stable/reference/algorithms/</a>        approximation.html`</p>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id1"><span class="brackets">1</span></dt>
+<dd><p>Torrents, J. and F. Ferraro (2015) Structural Cohesion:
+Visualization and Heuristics for Fast Computation.
+<a class="reference external" href="https://arxiv.org/pdf/1503.04476v1">https://arxiv.org/pdf/1503.04476v1</a></p>
+</dd>
+<dt class="label" id="id2"><span class="brackets">2</span></dt>
+<dd><p>White, Douglas R., and Mark Newman (2001) A Fast Algorithm for
+Node-Independent Paths. Santa Fe Institute Working Paper #01-07-035
+<a class="reference external" href="http://eclectic.ss.uci.edu/~drwhite/working.pdf">http://eclectic.ss.uci.edu/~drwhite/working.pdf</a></p>
+</dd>
+<dt class="label" id="id3"><span class="brackets">3</span></dt>
+<dd><p>Moody, J. and D. White (2003). Social cohesion and embeddedness:
+A hierarchical conception of social groups.
+American Sociological Review 68(1), 103–28.
+<a class="reference external" href="http://www2.asanet.org/journals/ASRFeb03MoodyWhite.pdf">http://www2.asanet.org/journals/ASRFeb03MoodyWhite.pdf</a></p>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt id="hcga.features.k_components.KComponents.num_connectivity_levels_k">
-<code class="sig-name descname">num_connectivity_levels_k</code><a class="headerlink" href="#hcga.features.k_components.KComponents.num_connectivity_levels_k" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – num_connectivity_levels_k</p></li>
-<li><p><strong>shortname</strong> – KC</p></li>
-<li><p><strong>fullname</strong> – KC_num_connectivity_levels_k</p></li>
-<li><p><strong>description</strong> – The number of connectivity levels k in the input graphs</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.k_components.KComponents.max_num_components">
-<code class="sig-name descname">max_num_components</code><a class="headerlink" href="#hcga.features.k_components.KComponents.max_num_components" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – max_num_components</p></li>
-<li><p><strong>shortname</strong> – KC</p></li>
-<li><p><strong>fullname</strong> – KC_max_num_components</p></li>
-<li><p><strong>description</strong> – The maximum number of componenets at any value of k</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.k_components.KComponents.size_max_k_component">
-<code class="sig-name descname">size_max_k_component</code><a class="headerlink" href="#hcga.features.k_components.KComponents.size_max_k_component" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – size_max_k_component</p></li>
-<li><p><strong>shortname</strong> – KC</p></li>
-<li><p><strong>fullname</strong> – KC_size_max_k_component</p></li>
-<li><p><strong>description</strong> – The number of nodes of the component corresponding to the largest k</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.k_components.KComponents.size_2_component">
-<code class="sig-name descname">size_2_component</code><a class="headerlink" href="#hcga.features.k_components.KComponents.size_2_component" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – size_2_component</p></li>
-<li><p><strong>shortname</strong> – KC</p></li>
-<li><p><strong>fullname</strong> – KC_size_2_component</p></li>
-<li><p><strong>description</strong> – The number of nodes in k=2 component</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.k_components.KComponents.num_connectivity_levels_k_N">
-<code class="sig-name descname">num_connectivity_levels_k_N</code><a class="headerlink" href="#hcga.features.k_components.KComponents.num_connectivity_levels_k_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – num_connectivity_levels_k_N</p></li>
-<li><p><strong>shortname</strong> – KC</p></li>
-<li><p><strong>fullname</strong> – KC_num_connectivity_levels_k_N</p></li>
-<li><p><strong>description</strong> – The number of connectivity levels k in the input graphs, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 2</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.k_components.KComponents.num_connectivity_levels_k_E">
-<code class="sig-name descname">num_connectivity_levels_k_E</code><a class="headerlink" href="#hcga.features.k_components.KComponents.num_connectivity_levels_k_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – num_connectivity_levels_k_E</p></li>
-<li><p><strong>shortname</strong> – KC</p></li>
-<li><p><strong>fullname</strong> – KC_num_connectivity_levels_k_E</p></li>
-<li><p><strong>description</strong> – The number of connectivity levels k in the input graphs, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 2</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.k_components.KComponents.max_num_components_N">
-<code class="sig-name descname">max_num_components_N</code><a class="headerlink" href="#hcga.features.k_components.KComponents.max_num_components_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – max_num_components_N</p></li>
-<li><p><strong>shortname</strong> – KC</p></li>
-<li><p><strong>fullname</strong> – KC_max_num_components_N</p></li>
-<li><p><strong>description</strong> – The maximum number of componenets at any value of k, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 2</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.k_components.KComponents.max_num_components_E">
-<code class="sig-name descname">max_num_components_E</code><a class="headerlink" href="#hcga.features.k_components.KComponents.max_num_components_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – max_num_components_E</p></li>
-<li><p><strong>shortname</strong> – KC</p></li>
-<li><p><strong>fullname</strong> – KC_max_num_components_E</p></li>
-<li><p><strong>description</strong> – The maximum number of componenets at any value of k, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 2</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.k_components.KComponents.size_max_k_component_N">
-<code class="sig-name descname">size_max_k_component_N</code><a class="headerlink" href="#hcga.features.k_components.KComponents.size_max_k_component_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – size_max_k_component_N</p></li>
-<li><p><strong>shortname</strong> – KC</p></li>
-<li><p><strong>fullname</strong> – KC_size_max_k_component_N</p></li>
-<li><p><strong>description</strong> – The number of nodes of the component corresponding to the largest k, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 2</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.k_components.KComponents.size_max_k_component_E">
-<code class="sig-name descname">size_max_k_component_E</code><a class="headerlink" href="#hcga.features.k_components.KComponents.size_max_k_component_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – size_max_k_component_E</p></li>
-<li><p><strong>shortname</strong> – KC</p></li>
-<li><p><strong>fullname</strong> – KC_size_max_k_component_E</p></li>
-<li><p><strong>description</strong> – The number of nodes of the component corresponding to the largest k, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 2</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.k_components.KComponents.size_2_component_N">
-<code class="sig-name descname">size_2_component_N</code><a class="headerlink" href="#hcga.features.k_components.KComponents.size_2_component_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – size_2_component_N</p></li>
-<li><p><strong>shortname</strong> – KC</p></li>
-<li><p><strong>fullname</strong> – KC_size_2_component_N</p></li>
-<li><p><strong>description</strong> – The number of nodes in k=2 component, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 2</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.k_components.KComponents.size_2_component_E">
-<code class="sig-name descname">size_2_component_E</code><a class="headerlink" href="#hcga.features.k_components.KComponents.size_2_component_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – size_2_component_E</p></li>
-<li><p><strong>shortname</strong> – KC</p></li>
-<li><p><strong>fullname</strong> – KC_size_2_component_E</p></li>
-<li><p><strong>description</strong> – The number of nodes in k=2 component, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 2</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
 <p>Initialise a feature class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -248,6 +80,32 @@
 </dd></dl>
 
 </dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.k_components.eval_kcomponents">
+<code class="sig-prename descclassname">hcga.features.k_components.</code><code class="sig-name descname">eval_kcomponents</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/k_components.html#eval_kcomponents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.k_components.eval_kcomponents" title="Permalink to this definition">¶</a></dt>
+<dd><p>this evaluates the main function and cach it for speed up.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.k_components.max_num_components">
+<code class="sig-prename descclassname">hcga.features.k_components.</code><code class="sig-name descname">max_num_components</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/k_components.html#max_num_components"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.k_components.max_num_components" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.k_components.num_connectivity_levels_k">
+<code class="sig-prename descclassname">hcga.features.k_components.</code><code class="sig-name descname">num_connectivity_levels_k</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/k_components.html#num_connectivity_levels_k"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.k_components.num_connectivity_levels_k" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.k_components.size_2_component">
+<code class="sig-prename descclassname">hcga.features.k_components.</code><code class="sig-name descname">size_2_component</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/k_components.html#size_2_component"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.k_components.size_2_component" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.k_components.size_max_k_component">
+<code class="sig-prename descclassname">hcga.features.k_components.</code><code class="sig-name descname">size_max_k_component</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/k_components.html#size_max_k_component"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.k_components.size_max_k_component" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 

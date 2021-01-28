@@ -36,13 +36,49 @@
 
 <span class="kn">from</span> <span class="nn">networkx.algorithms.community</span> <span class="kn">import</span> <span class="n">label_propagation_communities</span>
 
-<span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+<span class="kn">from</span> <span class="nn">hcga.feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
 
 <span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;CommunitiesLabelPropagation&quot;</span>
 
 
+<div class="viewcode-block" id="eval_labelprop"><a class="viewcode-back" href="../../../Features/communities.html#hcga.features.communities_labelprop.eval_labelprop">[docs]</a><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">eval_labelprop</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;this evaluates the main function and cach it for speed up.&quot;&quot;&quot;</span>
+    <span class="n">communities</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">label_propagation_communities</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
+    <span class="n">communities</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">communities</span></div>
+
+
+<div class="viewcode-block" id="largest_commsize"><a class="viewcode-back" href="../../../Features/communities.html#hcga.features.communities_labelprop.largest_commsize">[docs]</a><span class="k">def</span> <span class="nf">largest_commsize</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;largest_commsize&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_labelprop</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="ratio_commsize_maxmin"><a class="viewcode-back" href="../../../Features/communities.html#hcga.features.communities_labelprop.ratio_commsize_maxmin">[docs]</a><span class="k">def</span> <span class="nf">ratio_commsize_maxmin</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;ratio_commsize_maxmin&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_labelprop</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_labelprop</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
+
+
 <div class="viewcode-block" id="CommunitiesLabelPropagation"><a class="viewcode-back" href="../../../Features/communities.html#hcga.features.communities_labelprop.CommunitiesLabelPropagation">[docs]</a><span class="k">class</span> <span class="nc">CommunitiesLabelPropagation</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Communities Label propagation class.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Communities Label propagation class.</span>
+
+<span class="sd">    Features based on the community detection using label propagation.</span>
+
+<span class="sd">    Uses networkx, see &#39;https://networkx.org/documentation/stable/reference/algorithms/\</span>
+<span class="sd">        community.html`</span>
+
+<span class="sd">    Finds communities in `G` using a semi-synchronous label propagation</span>
+<span class="sd">    method[1]_. This method combines the advantages of both the synchronous</span>
+<span class="sd">    and asynchronous models.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Cordasco, G., &amp; Gargano, L. (2010, December). Community detection</span>
+<span class="sd">       via semi-synchronous label propagation algorithms. In Business</span>
+<span class="sd">       Applications of Social Network Analysis (BASNA), 2010 IEEE International</span>
+<span class="sd">       Workshop on (pp. 1-8). IEEE.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;slow&quot;</span><span class="p">]</span>
     <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;CLP&quot;</span>
@@ -50,31 +86,23 @@
     <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;networkx&quot;</span>
 
 <div class="viewcode-block" id="CommunitiesLabelPropagation.compute_features"><a class="viewcode-back" href="../../../Features/communities.html#hcga.features.communities_labelprop.CommunitiesLabelPropagation.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">eval_labelprop</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;this evaluates the main function and cach it for speed up.&quot;&quot;&quot;</span>
-            <span class="n">communities</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">label_propagation_communities</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
-            <span class="n">communities</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-            <span class="k">return</span> <span class="n">communities</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;largest_commsize&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_labelprop</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="n">largest_commsize</span><span class="p">,</span>
             <span class="s2">&quot;The ratio of the largest and second largest communities using label propagation&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;ratio_commsize_maxmin&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_labelprop</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_labelprop</span><span class="p">(</span><span class="n">graph</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="n">ratio_commsize_maxmin</span><span class="p">,</span>
             <span class="s2">&quot;The ratio of the largest and second largest communities using label propagation&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;communities&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">eval_labelprop</span><span class="p">(</span><span class="n">graph</span><span class="p">),</span>
+            <span class="n">eval_labelprop</span><span class="p">,</span>
             <span class="s2">&quot;The optimal partition using label propagation algorithm&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
             <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;clustering&quot;</span><span class="p">,</span>

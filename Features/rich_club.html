@@ -38,442 +38,30 @@
 <dl class="py class">
 <dt id="hcga.features.rich_club.RichClub">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.rich_club.</code><code class="sig-name descname">RichClub</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/rich_club.html#RichClub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.rich_club.RichClub" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Rich Club class.</dt><dd><p>This class produces the following features:</p>
+<dd><p>Rich Club class.</p>
+<p>Features based on the Rich Club of a graph.</p>
+<p>For each degree <em>k</em>, the <em>rich-club coefficient</em> is the ratio of the
+number of actual to the number of potential edges for nodes with
+degree greater than <em>k</em>:</p>
+<dl class="simple">
+<dt>Rich club calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.org/documentation/stable/reference/algorithms/rich_club.html">Rich club</a></p>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt>
-<code class="sig-name descname">rich_club_k=1</code></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_k=1</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_k=1</p></li>
-<li><p><strong>description</strong> – The rich-club coefficient is the ratio of the number of actual to the             number of potential edges for nodes with degree greater than k</p></li>
-<li><p><strong>interpretability</strong> – 4</p></li>
-</ul>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id1"><span class="brackets">1</span></dt>
+<dd><p>Julian J. McAuley, Luciano da Fontoura Costa,
+and Tibério S. Caetano,
+“The rich-club phenomenon across complex network hierarchies”,
+Applied Physics Letters Vol 91 Issue 8, August 2007.
+<a class="reference external" href="https://arxiv.org/abs/physics/0701290">https://arxiv.org/abs/physics/0701290</a></p>
+</dd>
+<dt class="label" id="id2"><span class="brackets">2</span></dt>
+<dd><p>R. Milo, N. Kashtan, S. Itzkovitz, M. E. J. Newman, U. Alon,
+“Uniform generation of random graphs with arbitrary degree
+sequences”, 2006. <a class="reference external" href="https://arxiv.org/abs/cond-mat/0312028">https://arxiv.org/abs/cond-mat/0312028</a></p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt>
-<code class="sig-name descname">rich_club_k=max</code></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_k=max</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_k=max</p></li>
-<li><p><strong>description</strong> – The rich-club coefficient is the ratio of the number of actual to the number             of potential edges for nodes with degree greater than k</p></li>
-<li><p><strong>interpretability</strong> – 4</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_maxminratio">
-<code class="sig-name descname">rich_club_maxminratio</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_maxminratio" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_maxminratio</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_maxminratio</p></li>
-<li><p><strong>description</strong> – The ratio of the smallest to largest rich club coefficients</p></li>
-<li><p><strong>interpretability</strong> – 4</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_mean">
-<code class="sig-name descname">rich_club_mean</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_mean" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_mean</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_mean</p></li>
-<li><p><strong>description</strong> – Mean of the distribution of The distribution of rich club coefficients</p></li>
-<li><p><strong>interpretability</strong> – 4</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_min">
-<code class="sig-name descname">rich_club_min</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_min" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_min</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_min</p></li>
-<li><p><strong>description</strong> – Minimum of the distribution of The distribution of rich club coefficients</p></li>
-<li><p><strong>interpretability</strong> – 4</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_sum">
-<code class="sig-name descname">rich_club_sum</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_sum" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_sum</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_sum</p></li>
-<li><p><strong>description</strong> – Sum of the distribution of The distribution of rich club coefficients</p></li>
-<li><p><strong>interpretability</strong> – 4</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_max">
-<code class="sig-name descname">rich_club_max</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_max" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_max</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_max</p></li>
-<li><p><strong>description</strong> – Maximum of the distribution of The distribution of rich club coefficients</p></li>
-<li><p><strong>interpretability</strong> – 4</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_median">
-<code class="sig-name descname">rich_club_median</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_median" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_median</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_median</p></li>
-<li><p><strong>description</strong> – Median of the distribution of The distribution of rich club coefficients</p></li>
-<li><p><strong>interpretability</strong> – 4</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_std">
-<code class="sig-name descname">rich_club_std</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_std" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_std</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_std</p></li>
-<li><p><strong>description</strong> – Standard deviation of the distribution of The distribution of rich club coefficients</p></li>
-<li><p><strong>interpretability</strong> – 4</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt>
-<code class="sig-name descname">rich_club_k=1_N</code></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_k=1_N</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_k=1_N</p></li>
-<li><p><strong>description</strong> – The rich-club coefficient is the ratio of the number of actual to the             number of potential edges for nodes with degree greater than k, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt>
-<code class="sig-name descname">rich_club_k=1_E</code></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_k=1_E</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_k=1_E</p></li>
-<li><p><strong>description</strong> – The rich-club coefficient is the ratio of the number of actual to the             number of potential edges for nodes with degree greater than k, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt>
-<code class="sig-name descname">rich_club_k=max_N</code></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_k=max_N</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_k=max_N</p></li>
-<li><p><strong>description</strong> – The rich-club coefficient is the ratio of the number of actual to the number             of potential edges for nodes with degree greater than k, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt>
-<code class="sig-name descname">rich_club_k=max_E</code></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_k=max_E</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_k=max_E</p></li>
-<li><p><strong>description</strong> – The rich-club coefficient is the ratio of the number of actual to the number             of potential edges for nodes with degree greater than k, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_maxminratio_N">
-<code class="sig-name descname">rich_club_maxminratio_N</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_maxminratio_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_maxminratio_N</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_maxminratio_N</p></li>
-<li><p><strong>description</strong> – The ratio of the smallest to largest rich club coefficients, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_maxminratio_E">
-<code class="sig-name descname">rich_club_maxminratio_E</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_maxminratio_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_maxminratio_E</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_maxminratio_E</p></li>
-<li><p><strong>description</strong> – The ratio of the smallest to largest rich club coefficients, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_mean_N">
-<code class="sig-name descname">rich_club_mean_N</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_mean_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_mean_N</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_mean_N</p></li>
-<li><p><strong>description</strong> – Mean of the distribution of The distribution of rich club coefficients, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_mean_E">
-<code class="sig-name descname">rich_club_mean_E</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_mean_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_mean_E</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_mean_E</p></li>
-<li><p><strong>description</strong> – Mean of the distribution of The distribution of rich club coefficients, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_min_N">
-<code class="sig-name descname">rich_club_min_N</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_min_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_min_N</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_min_N</p></li>
-<li><p><strong>description</strong> – Minimum of the distribution of The distribution of rich club coefficients, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_min_E">
-<code class="sig-name descname">rich_club_min_E</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_min_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_min_E</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_min_E</p></li>
-<li><p><strong>description</strong> – Minimum of the distribution of The distribution of rich club coefficients, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_sum_N">
-<code class="sig-name descname">rich_club_sum_N</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_sum_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_sum_N</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_sum_N</p></li>
-<li><p><strong>description</strong> – Sum of the distribution of The distribution of rich club coefficients, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_sum_E">
-<code class="sig-name descname">rich_club_sum_E</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_sum_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_sum_E</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_sum_E</p></li>
-<li><p><strong>description</strong> – Sum of the distribution of The distribution of rich club coefficients, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_max_N">
-<code class="sig-name descname">rich_club_max_N</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_max_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_max_N</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_max_N</p></li>
-<li><p><strong>description</strong> – Maximum of the distribution of The distribution of rich club coefficients, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_max_E">
-<code class="sig-name descname">rich_club_max_E</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_max_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_max_E</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_max_E</p></li>
-<li><p><strong>description</strong> – Maximum of the distribution of The distribution of rich club coefficients, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_median_N">
-<code class="sig-name descname">rich_club_median_N</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_median_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_median_N</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_median_N</p></li>
-<li><p><strong>description</strong> – Median of the distribution of The distribution of rich club coefficients, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_median_E">
-<code class="sig-name descname">rich_club_median_E</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_median_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_median_E</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_median_E</p></li>
-<li><p><strong>description</strong> – Median of the distribution of The distribution of rich club coefficients, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_std_N">
-<code class="sig-name descname">rich_club_std_N</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_std_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_std_N</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_std_N</p></li>
-<li><p><strong>description</strong> – Standard deviation of the distribution of The distribution of rich club coefficients, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.rich_club.RichClub.rich_club_std_E">
-<code class="sig-name descname">rich_club_std_E</code><a class="headerlink" href="#hcga.features.rich_club.RichClub.rich_club_std_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – rich_club_std_E</p></li>
-<li><p><strong>shortname</strong> – RC</p></li>
-<li><p><strong>fullname</strong> – RC_rich_club_std_E</p></li>
-<li><p><strong>description</strong> – Standard deviation of the distribution of The distribution of rich club coefficients, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
 <p>Initialise a feature class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -488,6 +76,26 @@
 </dd></dl>
 
 </dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.rich_club.eval_rich_club">
+<code class="sig-prename descclassname">hcga.features.rich_club.</code><code class="sig-name descname">eval_rich_club</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/rich_club.html#eval_rich_club"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.rich_club.eval_rich_club" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.rich_club.rich_club_k_1">
+<code class="sig-prename descclassname">hcga.features.rich_club.</code><code class="sig-name descname">rich_club_k_1</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/rich_club.html#rich_club_k_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.rich_club.rich_club_k_1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.rich_club.rich_club_k_max">
+<code class="sig-prename descclassname">hcga.features.rich_club.</code><code class="sig-name descname">rich_club_k_max</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/rich_club.html#rich_club_k_max"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.rich_club.rich_club_k_max" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.rich_club.rich_club_maxminratio">
+<code class="sig-prename descclassname">hcga.features.rich_club.</code><code class="sig-name descname">rich_club_maxminratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/rich_club.html#rich_club_maxminratio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.rich_club.rich_club_maxminratio" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 

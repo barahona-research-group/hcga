@@ -39,63 +39,24 @@
 <dt id="hcga.features.scale_free.ScaleFree">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.scale_free.</code><code class="sig-name descname">ScaleFree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/scale_free.html#ScaleFree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.scale_free.ScaleFree" title="Permalink to this definition">¶</a></dt>
 <dd><p>Scale Free class.</p>
-<blockquote>
-<div><blockquote>
-<div><dl class="simple">
+<p>Features based on the scalefreeness of a graph. It uses the s-metric.
+The s-metric is defined as the sum of the products deg(u)*deg(v)
+for every edge (u,v) in G. If norm is provided construct the
+s-max graph and compute it’s s_metric, and return the normalized
+s value</p>
+<dl class="simple">
 <dt>Scale free calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/smetric.html#s_metric">Networkx_scale free</a></p>
 </dd>
 </dl>
-</div></blockquote>
-<p>This class produces the following features:</p>
-</div></blockquote>
-<dl class="py attribute">
-<dt id="hcga.features.scale_free.ScaleFree.s_metric">
-<code class="sig-name descname">s_metric</code><a class="headerlink" href="#hcga.features.scale_free.ScaleFree.s_metric" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – s_metric</p></li>
-<li><p><strong>shortname</strong> – SF</p></li>
-<li><p><strong>fullname</strong> – SF_s_metric</p></li>
-<li><p><strong>description</strong> – Sum of the products deg(u)*deg(v) for every edge (u,v) in G</p></li>
-<li><p><strong>interpretability</strong> – 4</p></li>
-</ul>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id1"><span class="brackets">1</span></dt>
+<dd><p>Lun Li, David Alderson, John C. Doyle, and Walter Willinger,
+Towards a Theory of Scale-Free Graphs:
+Definition, Properties, and  Implications (Extended Version), 2005.
+<a class="reference external" href="https://arxiv.org/abs/cond-mat/0501169">https://arxiv.org/abs/cond-mat/0501169</a></p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.scale_free.ScaleFree.s_metric_N">
-<code class="sig-name descname">s_metric_N</code><a class="headerlink" href="#hcga.features.scale_free.ScaleFree.s_metric_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – s_metric_N</p></li>
-<li><p><strong>shortname</strong> – SF</p></li>
-<li><p><strong>fullname</strong> – SF_s_metric_N</p></li>
-<li><p><strong>description</strong> – Sum of the products deg(u)*deg(v) for every edge (u,v) in G, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.scale_free.ScaleFree.s_metric_E">
-<code class="sig-name descname">s_metric_E</code><a class="headerlink" href="#hcga.features.scale_free.ScaleFree.s_metric_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – s_metric_E</p></li>
-<li><p><strong>shortname</strong> – SF</p></li>
-<li><p><strong>fullname</strong> – SF_s_metric_E</p></li>
-<li><p><strong>description</strong> – Sum of the products deg(u)*deg(v) for every edge (u,v) in G, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
 <p>Initialise a feature class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

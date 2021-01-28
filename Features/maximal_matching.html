@@ -39,63 +39,12 @@
 <dt id="hcga.features.maximal_matching.MaximalMatching">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.maximal_matching.</code><code class="sig-name descname">MaximalMatching</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/maximal_matching.html#MaximalMatching"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.maximal_matching.MaximalMatching" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maximal matching class.</p>
-<blockquote>
-<div><blockquote>
-<div><dl class="simple">
+<p>A matching is a subset of edges in which no node occurs more than once.
+A maximal matching cannot add more edges and still be a matching.</p>
+<dl class="simple">
 <dt>Maximal matching calculations using networkx:</dt><dd><p><a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/matching.html">Networkx_maximal_matching</a></p>
 </dd>
 </dl>
-</div></blockquote>
-<p>This class produces the following features:</p>
-</div></blockquote>
-<dl class="py attribute">
-<dt id="hcga.features.maximal_matching.MaximalMatching.maximal_matching">
-<code class="sig-name descname">maximal_matching</code><a class="headerlink" href="#hcga.features.maximal_matching.MaximalMatching.maximal_matching" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – maximal_matching</p></li>
-<li><p><strong>shortname</strong> – MM</p></li>
-<li><p><strong>fullname</strong> – MM_maximal_matching</p></li>
-<li><p><strong>description</strong> – Maximal matching</p></li>
-<li><p><strong>interpretability</strong> – 4</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.maximal_matching.MaximalMatching.maximal_matching_N">
-<code class="sig-name descname">maximal_matching_N</code><a class="headerlink" href="#hcga.features.maximal_matching.MaximalMatching.maximal_matching_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – maximal_matching_N</p></li>
-<li><p><strong>shortname</strong> – MM</p></li>
-<li><p><strong>fullname</strong> – MM_maximal_matching_N</p></li>
-<li><p><strong>description</strong> – Maximal matching, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.maximal_matching.MaximalMatching.maximal_matching_E">
-<code class="sig-name descname">maximal_matching_E</code><a class="headerlink" href="#hcga.features.maximal_matching.MaximalMatching.maximal_matching_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – maximal_matching_E</p></li>
-<li><p><strong>shortname</strong> – MM</p></li>
-<li><p><strong>fullname</strong> – MM_maximal_matching_E</p></li>
-<li><p><strong>description</strong> – Maximal matching, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
 <p>Initialise a feature class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -110,6 +59,11 @@
 </dd></dl>
 
 </dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.maximal_matching.maximal_matching">
+<code class="sig-prename descclassname">hcga.features.maximal_matching.</code><code class="sig-name descname">maximal_matching</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/maximal_matching.html#maximal_matching"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.maximal_matching.maximal_matching" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 

@@ -34,13 +34,31 @@
 <span></span><span class="sd">&quot;&quot;&quot;Vitality class.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
-<span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+<span class="kn">from</span> <span class="nn">hcga.feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
 
 <span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;Vitality&quot;</span>
 
 
+<span class="k">def</span> <span class="nf">vitality</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">closeness_vitality</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+
 <div class="viewcode-block" id="Vitality"><a class="viewcode-back" href="../../../Features/vitality.html#hcga.features.vitality.Vitality">[docs]</a><span class="k">class</span> <span class="nc">Vitality</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Vitality class.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Vitality measures class.</span>
+
+<span class="sd">    Features based on the closeness vitality.</span>
+<span class="sd">    The *closeness vitality* of a node, defined in Section 3.6.2 of [1],</span>
+<span class="sd">    is the change in the sum of distances between all node pairs when</span>
+<span class="sd">    excluding that node.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Ulrik Brandes, Thomas Erlebach (eds.).</span>
+<span class="sd">           *Network Analysis: Methodological Foundations*.</span>
+<span class="sd">           Springer, 2005.</span>
+<span class="sd">           &lt;http://books.google.com/books?id=TTNhSm7HYrIC&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;slow&quot;</span><span class="p">]</span>
     <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;V&quot;</span>
@@ -52,7 +70,7 @@
         <span class="c1"># distribution of vitality</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;vitality&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">closeness_vitality</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+            <span class="n">vitality</span><span class="p">,</span>
             <span class="s2">&quot;The closeness vitality of a node is the change in the sum of distances between </span><span class="se">\</span>
 <span class="s2">            all node pairs when excluding that node&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>

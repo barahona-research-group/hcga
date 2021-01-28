@@ -38,106 +38,21 @@
 <dl class="py class">
 <dt id="hcga.features.eulerian.Eulerian">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.eulerian.</code><code class="sig-name descname">Eulerian</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/eulerian.html#Eulerian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.eulerian.Eulerian" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Eulerian Measures class.</dt><dd><p>This class produces the following features:</p>
+<dd><p>Eulerian Measures class.</p>
+<p>Features based on Eulerian circuits. An <em>Eulerian circuit</em> is a closed walk
+that includes each edge of a graph exactly once.</p>
+<p>Uses networkx, see ‘<a class="reference external" href="https://networkx.org/documentation/stable/reference/algorithms/euler">https://networkx.org/documentation/stable/reference/algorithms/euler</a>.html`</p>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id1"><span class="brackets">1</span></dt>
+<dd><p>J. Edmonds, E. L. Johnson.
+Matching, Euler tours and the Chinese postman.
+Mathematical programming, Volume 5, Issue 1 (1973), 111-114.</p>
+</dd>
+<dt class="label" id="id2"><span class="brackets">2</span></dt>
+<dd><p><a class="reference external" href="https://en.wikipedia.org/wiki/Eulerian_path">https://en.wikipedia.org/wiki/Eulerian_path</a></p>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt id="hcga.features.eulerian.Eulerian.eulerian">
-<code class="sig-name descname">eulerian</code><a class="headerlink" href="#hcga.features.eulerian.Eulerian.eulerian" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – eulerian</p></li>
-<li><p><strong>shortname</strong> – EU</p></li>
-<li><p><strong>fullname</strong> – EU_eulerian</p></li>
-<li><p><strong>description</strong> – A graph is eulerian if it has a eulerian circuit: a closed walk that includes             each edges of the graph exactly once</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.eulerian.Eulerian.semi_eulerian">
-<code class="sig-name descname">semi_eulerian</code><a class="headerlink" href="#hcga.features.eulerian.Eulerian.semi_eulerian" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – semi_eulerian</p></li>
-<li><p><strong>shortname</strong> – EU</p></li>
-<li><p><strong>fullname</strong> – EU_semi_eulerian</p></li>
-<li><p><strong>description</strong> – A graph is semi eulerian if it has a eulerian path but no eulerian circuit</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.eulerian.Eulerian.eulerian_N">
-<code class="sig-name descname">eulerian_N</code><a class="headerlink" href="#hcga.features.eulerian.Eulerian.eulerian_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – eulerian_N</p></li>
-<li><p><strong>shortname</strong> – EU</p></li>
-<li><p><strong>fullname</strong> – EU_eulerian_N</p></li>
-<li><p><strong>description</strong> – A graph is eulerian if it has a eulerian circuit: a closed walk that includes             each edges of the graph exactly once, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 2</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.eulerian.Eulerian.eulerian_E">
-<code class="sig-name descname">eulerian_E</code><a class="headerlink" href="#hcga.features.eulerian.Eulerian.eulerian_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – eulerian_E</p></li>
-<li><p><strong>shortname</strong> – EU</p></li>
-<li><p><strong>fullname</strong> – EU_eulerian_E</p></li>
-<li><p><strong>description</strong> – A graph is eulerian if it has a eulerian circuit: a closed walk that includes             each edges of the graph exactly once, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 2</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.eulerian.Eulerian.semi_eulerian_N">
-<code class="sig-name descname">semi_eulerian_N</code><a class="headerlink" href="#hcga.features.eulerian.Eulerian.semi_eulerian_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – semi_eulerian_N</p></li>
-<li><p><strong>shortname</strong> – EU</p></li>
-<li><p><strong>fullname</strong> – EU_semi_eulerian_N</p></li>
-<li><p><strong>description</strong> – A graph is semi eulerian if it has a eulerian path but no eulerian circuit, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 2</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.eulerian.Eulerian.semi_eulerian_E">
-<code class="sig-name descname">semi_eulerian_E</code><a class="headerlink" href="#hcga.features.eulerian.Eulerian.semi_eulerian_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – semi_eulerian_E</p></li>
-<li><p><strong>shortname</strong> – EU</p></li>
-<li><p><strong>fullname</strong> – EU_semi_eulerian_E</p></li>
-<li><p><strong>description</strong> – A graph is semi eulerian if it has a eulerian path but no eulerian circuit, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 2</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
 <p>Initialise a feature class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

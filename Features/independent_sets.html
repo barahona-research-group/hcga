@@ -38,58 +38,13 @@
 <dl class="py class">
 <dt id="hcga.features.independent_sets.IndependentSets">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.independent_sets.</code><code class="sig-name descname">IndependentSets</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/independent_sets.html#IndependentSets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.independent_sets.IndependentSets" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Independent sets class.</dt><dd><p>This class produces the following features:</p>
-</dd>
-</dl>
-<dl class="py attribute">
-<dt id="hcga.features.independent_sets.IndependentSets.size_max_indep_set">
-<code class="sig-name descname">size_max_indep_set</code><a class="headerlink" href="#hcga.features.independent_sets.IndependentSets.size_max_indep_set" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – size_max_indep_set</p></li>
-<li><p><strong>shortname</strong> – IS</p></li>
-<li><p><strong>fullname</strong> – IS_size_max_indep_set</p></li>
-<li><p><strong>description</strong> – The number of nodes in the maximal independent set</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.independent_sets.IndependentSets.size_max_indep_set_N">
-<code class="sig-name descname">size_max_indep_set_N</code><a class="headerlink" href="#hcga.features.independent_sets.IndependentSets.size_max_indep_set_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – size_max_indep_set_N</p></li>
-<li><p><strong>shortname</strong> – IS</p></li>
-<li><p><strong>fullname</strong> – IS_size_max_indep_set_N</p></li>
-<li><p><strong>description</strong> – The number of nodes in the maximal independent set, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 2</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.independent_sets.IndependentSets.size_max_indep_set_E">
-<code class="sig-name descname">size_max_indep_set_E</code><a class="headerlink" href="#hcga.features.independent_sets.IndependentSets.size_max_indep_set_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – size_max_indep_set_E</p></li>
-<li><p><strong>shortname</strong> – IS</p></li>
-<li><p><strong>fullname</strong> – IS_size_max_indep_set_E</p></li>
-<li><p><strong>description</strong> – The number of nodes in the maximal independent set, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 2</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
+<dd><p>Independent sets class.</p>
+<p>Features based on independent sets.</p>
+<p>An independent set is a set of nodes such that the subgraph
+of G induced by these nodes contains no edges. A maximal
+independent set is an independent set such that it is not possible
+to add a new node and still get an independent set.</p>
+<p>Uses networkx, see ‘<a class="reference external" href="https://networkx.org/documentation/stable/reference/algorithms/mis">https://networkx.org/documentation/stable/reference/algorithms/mis</a>.html`</p>
 <p>Initialise a feature class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -104,6 +59,11 @@
 </dd></dl>
 
 </dd></dl>
+
+<dl class="py function">
+<dt id="hcga.features.independent_sets.size_max_indep_set">
+<code class="sig-prename descclassname">hcga.features.independent_sets.</code><code class="sig-name descname">size_max_indep_set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/independent_sets.html#size_max_indep_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.independent_sets.size_max_indep_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 

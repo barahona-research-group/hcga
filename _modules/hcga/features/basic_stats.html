@@ -35,14 +35,54 @@
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">ensure_connected</span>
+<span class="kn">from</span> <span class="nn">hcga.feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+<span class="kn">from</span> <span class="nn">hcga.features.utils</span> <span class="kn">import</span> <span class="n">ensure_connected</span>
 
 <span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;BasicStats&quot;</span>
 
 
+<div class="viewcode-block" id="n_nodes"><a class="viewcode-back" href="../../../Features/basic_stats.html#hcga.features.basic_stats.n_nodes">[docs]</a><span class="k">def</span> <span class="nf">n_nodes</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;n_nodes&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="n_edges"><a class="viewcode-back" href="../../../Features/basic_stats.html#hcga.features.basic_stats.n_edges">[docs]</a><span class="k">def</span> <span class="nf">n_edges</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;n_edges&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="density"><a class="viewcode-back" href="../../../Features/basic_stats.html#hcga.features.basic_stats.density">[docs]</a><span class="k">def</span> <span class="nf">density</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;density&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n_edges</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_edges</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="edge_weights"><a class="viewcode-back" href="../../../Features/basic_stats.html#hcga.features.basic_stats.edge_weights">[docs]</a><span class="k">def</span> <span class="nf">edge_weights</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;edge_weights&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">get_edge_attributes</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="diameter"><a class="viewcode-back" href="../../../Features/basic_stats.html#hcga.features.basic_stats.diameter">[docs]</a><span class="k">def</span> <span class="nf">diameter</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;diameter&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">nx</span><span class="o">.</span><span class="n">diameter</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="radius"><a class="viewcode-back" href="../../../Features/basic_stats.html#hcga.features.basic_stats.radius">[docs]</a><span class="k">def</span> <span class="nf">radius</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;radius&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">nx</span><span class="o">.</span><span class="n">radius</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span></div>
+
+
 <div class="viewcode-block" id="BasicStats"><a class="viewcode-back" href="../../../Features/basic_stats.html#hcga.features.basic_stats.BasicStats">[docs]</a><span class="k">class</span> <span class="nc">BasicStats</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Basic stats class.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Basic stats class.</span>
+
+<span class="sd">    Here we compute basic measures statistics of the graphs, e.g. number of nodes.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Mark E. J. Newman.</span>
+<span class="sd">       *Networks: An Introduction.*</span>
+<span class="sd">       Oxford University Press, USA, 2010, pp. 169.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fast&quot;</span><span class="p">,</span> <span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;slow&quot;</span><span class="p">]</span>
     <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;BS&quot;</span>
@@ -50,9 +90,6 @@
     <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;networkx&quot;</span>
 
 <div class="viewcode-block" id="BasicStats.compute_features"><a class="viewcode-back" href="../../../Features/basic_stats.html#hcga.features.basic_stats.BasicStats.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-        <span class="n">n_nodes</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
-        <span class="n">n_edges</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
 
         <span class="c1"># Adding basic node and edge numbers</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
@@ -71,26 +108,22 @@
         <span class="c1"># Adding diameter stats</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;diameter&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">diameter</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">)),</span>
+            <span class="n">diameter</span><span class="p">,</span>
             <span class="s2">&quot;Diameter of the graph&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;radius&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">radius</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">)),</span>
+            <span class="n">radius</span><span class="p">,</span>
             <span class="s2">&quot;Radius of the graph&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="c1"># Degree stats</span>
-        <span class="n">density</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n_edges</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span>
-            <span class="n">n_nodes</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_edges</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="s2">&quot;density&quot;</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="s2">&quot;Density of the graph&quot;</span><span class="p">,</span> <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">))</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;edge_weights&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">get_edge_attributes</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+            <span class="n">edge_weights</span><span class="p">,</span>
             <span class="s2">&quot;Weights of the edges&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">),</span>
             <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;centrality&quot;</span><span class="p">,</span>

@@ -34,14 +34,50 @@
 <span></span><span class="sd">&quot;&quot;&quot;Distance Measures class.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
-<span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">ensure_connected</span>
+<span class="kn">from</span> <span class="nn">hcga.feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+<span class="kn">from</span> <span class="nn">hcga.features.utils</span> <span class="kn">import</span> <span class="n">ensure_connected</span>
 
 <span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;DistanceMeasures&quot;</span>
 
 
+<div class="viewcode-block" id="barycenter_size"><a class="viewcode-back" href="../../../Features/distance_measures.html#hcga.features.distance_measures.barycenter_size">[docs]</a><span class="k">def</span> <span class="nf">barycenter_size</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;barycenter_size&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">barycenter</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="barycenter_size_weighted"><a class="viewcode-back" href="../../../Features/distance_measures.html#hcga.features.distance_measures.barycenter_size_weighted">[docs]</a><span class="k">def</span> <span class="nf">barycenter_size_weighted</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;barycenter_size_weighted&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">barycenter</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">),</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="center_size"><a class="viewcode-back" href="../../../Features/distance_measures.html#hcga.features.distance_measures.center_size">[docs]</a><span class="k">def</span> <span class="nf">center_size</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;center_size&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="periphery"><a class="viewcode-back" href="../../../Features/distance_measures.html#hcga.features.distance_measures.periphery">[docs]</a><span class="k">def</span> <span class="nf">periphery</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;periphery&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">periphery</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="eccentricity"><a class="viewcode-back" href="../../../Features/distance_measures.html#hcga.features.distance_measures.eccentricity">[docs]</a><span class="k">def</span> <span class="nf">eccentricity</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;eccentricity&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">eccentricity</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="extrema_bounding"><a class="viewcode-back" href="../../../Features/distance_measures.html#hcga.features.distance_measures.extrema_bounding">[docs]</a><span class="k">def</span> <span class="nf">extrema_bounding</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;extrema_bounding&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">nx</span><span class="o">.</span><span class="n">extrema_bounding</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span></div>
+
+
 <div class="viewcode-block" id="DistanceMeasures"><a class="viewcode-back" href="../../../Features/distance_measures.html#hcga.features.distance_measures.DistanceMeasures">[docs]</a><span class="k">class</span> <span class="nc">DistanceMeasures</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Distance Measures class.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Distance Measures class.</span>
+
+<span class="sd">    Calculates features based on distance measures.</span>
+
+<span class="sd">    Uses networkx, see &#39;https://networkx.org/documentation/stable/reference/algorithms/\</span>
+<span class="sd">        distance_measures.html`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fast&quot;</span><span class="p">,</span> <span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;slow&quot;</span><span class="p">]</span>
     <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;DM&quot;</span>
@@ -53,13 +89,13 @@
         <span class="c1"># barycenter</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;barycenter_size&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">barycenter</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">))),</span>
+            <span class="n">barycenter_size</span><span class="p">,</span>
             <span class="s2">&quot;The barycenter is the subgraph which minimises a distance function&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;barycenter_size_weighted&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">barycenter</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">),</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">)),</span>
+            <span class="n">barycenter_size_weighted</span><span class="p">,</span>
             <span class="s2">&quot;The barycenter is the subgraph which minimises a distance function&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
         <span class="p">)</span>
@@ -67,15 +103,15 @@
         <span class="c1"># center</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;center_size&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">))),</span>
+            <span class="n">center_size</span><span class="p">,</span>
             <span class="s2">&quot;The center is the subgraph of nodes with eccentricity equal to radius&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="c1"># extrema bounding</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
-            <span class="s2">&quot;center_size&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">extrema_bounding</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">)),</span>
+            <span class="s2">&quot;extrema_bounding&quot;</span><span class="p">,</span>
+            <span class="n">extrema_bounding</span><span class="p">,</span>
             <span class="s2">&quot;The largest distance in the graph&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
         <span class="p">)</span>
@@ -83,7 +119,7 @@
         <span class="c1"># periphery</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;periphery&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">periphery</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">))),</span>
+            <span class="n">periphery</span><span class="p">,</span>
             <span class="s2">&quot;The number of peripheral nodes in the graph&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
         <span class="p">)</span>
@@ -91,7 +127,7 @@
         <span class="c1"># eccentricity</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;eccentricity&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">eccentricity</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+            <span class="n">eccentricity</span><span class="p">,</span>
             <span class="s2">&quot;The distribution of node eccentricity across the network&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
             <span class="n">statistics</span><span class="o">=</span><span class="s2">&quot;centrality&quot;</span><span class="p">,</span>

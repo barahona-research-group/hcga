@@ -34,13 +34,30 @@
 <span></span><span class="sd">&quot;&quot;&quot;Distance Measures class.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
-<span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+<span class="kn">from</span> <span class="nn">hcga.feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
 
 <span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;Efficiency&quot;</span>
 
 
 <div class="viewcode-block" id="Efficiency"><a class="viewcode-back" href="../../../Features/efficiency.html#hcga.features.efficiency.Efficiency">[docs]</a><span class="k">class</span> <span class="nc">Efficiency</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Distance Measures class.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;EFficiency Measures class.</span>
+
+<span class="sd">    Features based on the efficiency of a gaph.</span>
+<span class="sd">    The *efficiency* of a pair of nodes is the multiplicative inverse of the</span>
+<span class="sd">    shortest path distance between the nodes [1]_. Returns 0 if no path</span>
+<span class="sd">    between nodes.</span>
+
+<span class="sd">    Uses networkx: `Efficiency Measures &lt;https://networkx.org/documentation/stable/reference/\</span>
+<span class="sd">        algorithms/efficiency_measures.html&gt;`_</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Latora, Vito, and Massimo Marchiori.</span>
+<span class="sd">           &quot;Efficient behavior of small-world networks.&quot;</span>
+<span class="sd">           *Physical Review Letters* 87.19 (2001): 198701.</span>
+<span class="sd">           &lt;https://doi.org/10.1103/PhysRevLett.87.198701&gt;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fast&quot;</span><span class="p">,</span> <span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;slow&quot;</span><span class="p">]</span>
     <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;EF&quot;</span>
@@ -52,7 +69,7 @@
         <span class="c1"># local effiency</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;local_efficiency&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">local_efficiency</span><span class="p">(</span><span class="n">graph</span><span class="p">),</span>
+            <span class="n">nx</span><span class="o">.</span><span class="n">local_efficiency</span><span class="p">,</span>
             <span class="s2">&quot;The local efficiency&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
         <span class="p">)</span>
@@ -60,7 +77,7 @@
         <span class="c1"># global effiency</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;global_efficiency&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">global_efficiency</span><span class="p">(</span><span class="n">graph</span><span class="p">),</span>
+            <span class="n">nx</span><span class="o">.</span><span class="n">global_efficiency</span><span class="p">,</span>
             <span class="s2">&quot;The global efficiency&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
         <span class="p">)</span></div></div>

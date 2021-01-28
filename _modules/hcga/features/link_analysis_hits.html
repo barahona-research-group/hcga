@@ -34,19 +34,42 @@
 <span></span><span class="sd">&quot;&quot;&quot;HITS hubs class.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
-<span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">ensure_connected</span>
+<span class="kn">from</span> <span class="nn">hcga.feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+<span class="kn">from</span> <span class="nn">hcga.features.utils</span> <span class="kn">import</span> <span class="n">ensure_connected</span>
 
 <span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;Hits&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">hits</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="n">h</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">hits_numpy</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
 
 <div class="viewcode-block" id="Hits"><a class="viewcode-back" href="../../../Features/link_analysis_hits.html#hcga.features.link_analysis_hits.Hits">[docs]</a><span class="k">class</span> <span class="nc">Hits</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;HITS hubs class.</span>
 
+<span class="sd">    Returns features based on the HITS hubs.</span>
+<span class="sd">    The HITS algorithm computes two numbers for a node.</span>
+<span class="sd">    Authorities estimates the node value based on the incoming links.</span>
+<span class="sd">    Hubs estimates the node value based on outgoing links.</span>
+
 <span class="sd">    Hits calculations using networkx:</span>
 <span class="sd">            `Networkx_hits &lt;https://networkx.github.io/documentation/stable/reference/\</span>
 <span class="sd">                algorithms/generated/networkx.algorithms.link_analysis.hits_alg.hits.html\</span>
 <span class="sd">                #networkx.algorithms.link_analysis.hits_alg.hits&gt;`_</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] A. Langville and C. Meyer,</span>
+<span class="sd">       &quot;A survey of eigenvector methods of web information retrieval.&quot;</span>
+<span class="sd">       http://citeseer.ist.psu.edu/713792.html</span>
+<span class="sd">    .. [2] Jon Kleinberg,</span>
+<span class="sd">       Authoritative sources in a hyperlinked environment</span>
+<span class="sd">       Journal of the ACM 46 (5): 604-32, 1999.</span>
+<span class="sd">       doi:10.1145/324133.324140.</span>
+<span class="sd">       http://www.cs.cornell.edu/home/kleinber/auth.pdf.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;slow&quot;</span><span class="p">]</span>
@@ -55,10 +78,6 @@
     <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;networkx&quot;</span>
 
 <div class="viewcode-block" id="Hits.compute_features"><a class="viewcode-back" href="../../../Features/link_analysis_hits.html#hcga.features.link_analysis_hits.Hits.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">hits</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
-            <span class="n">h</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">hits_numpy</span><span class="p">(</span><span class="n">ensure_connected</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
-            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;Hits&quot;</span><span class="p">,</span>
             <span class="n">hits</span><span class="p">,</span>

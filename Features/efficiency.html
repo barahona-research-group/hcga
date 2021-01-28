@@ -38,106 +38,21 @@
 <dl class="py class">
 <dt id="hcga.features.efficiency.Efficiency">
 <em class="property">class </em><code class="sig-prename descclassname">hcga.features.efficiency.</code><code class="sig-name descname">Efficiency</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcga/features/efficiency.html#Efficiency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcga.features.efficiency.Efficiency" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Distance Measures class.</dt><dd><p>This class produces the following features:</p>
+<dd><p>EFficiency Measures class.</p>
+<p>Features based on the efficiency of a gaph.
+The <em>efficiency</em> of a pair of nodes is the multiplicative inverse of the
+shortest path distance between the nodes <a class="footnote-reference brackets" href="#id2" id="id1">1</a>. Returns 0 if no path
+between nodes.</p>
+<p>Uses networkx: <a class="reference external" href="https://networkx.org/documentation/stable/reference/algorithms/efficiency_measures.html">Efficiency Measures</a></p>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Latora, Vito, and Massimo Marchiori.
+“Efficient behavior of small-world networks.”
+<em>Physical Review Letters</em> 87.19 (2001): 198701.
+&lt;<a class="reference external" href="https://doi.org/10.1103/PhysRevLett.87.198701">https://doi.org/10.1103/PhysRevLett.87.198701</a>&gt;</p>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt id="hcga.features.efficiency.Efficiency.local_efficiency">
-<code class="sig-name descname">local_efficiency</code><a class="headerlink" href="#hcga.features.efficiency.Efficiency.local_efficiency" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – local_efficiency</p></li>
-<li><p><strong>shortname</strong> – EF</p></li>
-<li><p><strong>fullname</strong> – EF_local_efficiency</p></li>
-<li><p><strong>description</strong> – The local efficiency</p></li>
-<li><p><strong>interpretability</strong> – 4</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.efficiency.Efficiency.global_efficiency">
-<code class="sig-name descname">global_efficiency</code><a class="headerlink" href="#hcga.features.efficiency.Efficiency.global_efficiency" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – global_efficiency</p></li>
-<li><p><strong>shortname</strong> – EF</p></li>
-<li><p><strong>fullname</strong> – EF_global_efficiency</p></li>
-<li><p><strong>description</strong> – The global efficiency</p></li>
-<li><p><strong>interpretability</strong> – 4</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.efficiency.Efficiency.local_efficiency_N">
-<code class="sig-name descname">local_efficiency_N</code><a class="headerlink" href="#hcga.features.efficiency.Efficiency.local_efficiency_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – local_efficiency_N</p></li>
-<li><p><strong>shortname</strong> – EF</p></li>
-<li><p><strong>fullname</strong> – EF_local_efficiency_N</p></li>
-<li><p><strong>description</strong> – The local efficiency, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.efficiency.Efficiency.local_efficiency_E">
-<code class="sig-name descname">local_efficiency_E</code><a class="headerlink" href="#hcga.features.efficiency.Efficiency.local_efficiency_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – local_efficiency_E</p></li>
-<li><p><strong>shortname</strong> – EF</p></li>
-<li><p><strong>fullname</strong> – EF_local_efficiency_E</p></li>
-<li><p><strong>description</strong> – The local efficiency, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.efficiency.Efficiency.global_efficiency_N">
-<code class="sig-name descname">global_efficiency_N</code><a class="headerlink" href="#hcga.features.efficiency.Efficiency.global_efficiency_N" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – global_efficiency_N</p></li>
-<li><p><strong>shortname</strong> – EF</p></li>
-<li><p><strong>fullname</strong> – EF_global_efficiency_N</p></li>
-<li><p><strong>description</strong> – The global efficiency, normalised by the number of nodes in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="hcga.features.efficiency.Efficiency.global_efficiency_E">
-<code class="sig-name descname">global_efficiency_E</code><a class="headerlink" href="#hcga.features.efficiency.Efficiency.global_efficiency_E" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – global_efficiency_E</p></li>
-<li><p><strong>shortname</strong> – EF</p></li>
-<li><p><strong>fullname</strong> – EF_global_efficiency_E</p></li>
-<li><p><strong>description</strong> – The global efficiency, normalised by the number of edges in the graph</p></li>
-<li><p><strong>interpretability</strong> – 3</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
 <p>Initialise a feature class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

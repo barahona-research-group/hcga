@@ -34,13 +34,29 @@
 <span></span><span class="sd">&quot;&quot;&quot;Independent sets class.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
-<span class="kn">from</span> <span class="nn">..feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
+<span class="kn">from</span> <span class="nn">hcga.feature_class</span> <span class="kn">import</span> <span class="n">FeatureClass</span><span class="p">,</span> <span class="n">InterpretabilityScore</span>
 
 <span class="n">featureclass_name</span> <span class="o">=</span> <span class="s2">&quot;IndependentSets&quot;</span>
 
 
+<div class="viewcode-block" id="size_max_indep_set"><a class="viewcode-back" href="../../../Features/independent_sets.html#hcga.features.independent_sets.size_max_indep_set">[docs]</a><span class="k">def</span> <span class="nf">size_max_indep_set</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;size_max_indep_set&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">maximal_independent_set</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span></div>
+
+
 <div class="viewcode-block" id="IndependentSets"><a class="viewcode-back" href="../../../Features/independent_sets.html#hcga.features.independent_sets.IndependentSets">[docs]</a><span class="k">class</span> <span class="nc">IndependentSets</span><span class="p">(</span><span class="n">FeatureClass</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Independent sets class.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Independent sets class.</span>
+
+<span class="sd">    Features based on independent sets.</span>
+
+<span class="sd">    An independent set is a set of nodes such that the subgraph</span>
+<span class="sd">    of G induced by these nodes contains no edges. A maximal</span>
+<span class="sd">    independent set is an independent set such that it is not possible</span>
+<span class="sd">    to add a new node and still get an independent set.</span>
+
+<span class="sd">    Uses networkx, see &#39;https://networkx.org/documentation/stable/reference/algorithms/mis.html`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fast&quot;</span><span class="p">,</span> <span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;slow&quot;</span><span class="p">]</span>
     <span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;IS&quot;</span>
@@ -51,7 +67,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="s2">&quot;size_max_indep_set&quot;</span><span class="p">,</span>
-            <span class="k">lambda</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">maximal_independent_set</span><span class="p">(</span><span class="n">graph</span><span class="p">)),</span>
+            <span class="n">size_max_indep_set</span><span class="p">,</span>
             <span class="s2">&quot;The number of nodes in the maximal independent set&quot;</span><span class="p">,</span>
             <span class="n">InterpretabilityScore</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
         <span class="p">)</span></div></div>
