@@ -1,9 +1,19 @@
 """Structural Holes class."""
 import networkx as nx
 
-from ..feature_class import FeatureClass, InterpretabilityScore
+from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "StructuralHoles"
+
+
+def constraint(graph):
+    """constraint"""
+    return list(nx.structuralholes.constraint(graph).values())
+
+
+def effective_size(graph):
+    """effective_size"""
+    return list(nx.structuralholes.effective_size(graph).values())
 
 
 class StructuralHoles(FeatureClass):
@@ -19,7 +29,7 @@ class StructuralHoles(FeatureClass):
         # distribution of structural holes constraint
         self.add_feature(
             "constraint",
-            lambda graph: list(nx.structuralholes.constraint(graph).values()),
+            constraint,
             "The constraint is a measure of the extent to which a node v is invested in \
             those nodes that are themselves invested in the neighbors of v",
             InterpretabilityScore(3),
@@ -28,7 +38,7 @@ class StructuralHoles(FeatureClass):
 
         self.add_feature(
             "effective_size",
-            lambda graph: list(nx.structuralholes.effective_size(graph).values()),
+            effective_size,
             "The effective size of a node’s ego network is based on the concept of redundancy. \
             A person’s ego network has redundancy to the extent that her contacts are connected \
             to each other as well. ",

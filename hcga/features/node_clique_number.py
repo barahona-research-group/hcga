@@ -1,10 +1,15 @@
 """Node clique number class."""
 from networkx.algorithms import clique
 
-from ..feature_class import FeatureClass, InterpretabilityScore
-from .utils import ensure_connected
+from hcga.feature_class import FeatureClass, InterpretabilityScore
+from hcga.features.utils import ensure_connected
 
 featureclass_name = "NodeCliqueNumber"
+
+
+def clique_sizes(graph):
+    """clique_sizes"""
+    return list(clique.node_clique_number(ensure_connected(graph)).values())
 
 
 class NodeCliqueNumber(FeatureClass):
@@ -23,8 +28,8 @@ class NodeCliqueNumber(FeatureClass):
     def compute_features(self):
 
         self.add_feature(
-            "clique sizes",
-            lambda graph: list(clique.node_clique_number(ensure_connected(graph)).values()),
+            "clique_sizes",
+            clique_sizes,
             "the distribution of clique sizes",
             InterpretabilityScore(3),
             statistics="centrality",

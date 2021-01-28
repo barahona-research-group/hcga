@@ -2,10 +2,15 @@
 import networkx as nx
 import numpy as np
 
-from ..feature_class import FeatureClass, InterpretabilityScore
-from .utils import remove_selfloops
+from hcga.feature_class import FeatureClass, InterpretabilityScore
+from hcga.features.utils import remove_selfloops
 
 featureclass_name = "CoreNumber"
+
+
+def core_number(graph):
+    """core_number"""
+    return list(np.asarray(list(nx.core_number(remove_selfloops(graph)).values())))
 
 
 class CoreNumber(FeatureClass):
@@ -18,9 +23,6 @@ class CoreNumber(FeatureClass):
 
     def compute_features(self):
 
-        core_number = lambda graph: list(
-            np.asarray(list(nx.core_number(remove_selfloops(graph)).values()))
-        )
         self.add_feature(
             "core number",
             core_number,

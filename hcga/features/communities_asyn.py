@@ -1,16 +1,47 @@
 """Communities Asyn class."""
 from collections import Counter
-from functools import lru_cache
+from functools import lru_cache, partial
 
 import numpy as np
 from networkx.algorithms.components import is_connected
 from networkx.exception import NetworkXError
 from networkx.utils import groups, py_random_state
 
-from ..feature_class import FeatureClass, InterpretabilityScore
-from . import utils
+from hcga.feature_class import FeatureClass, InterpretabilityScore
+from hcga.features.utils import ensure_connected
 
 featureclass_name = "CommunitiesAsyn"
+
+
+@lru_cache(maxsize=None)
+def eval_asyn(graph, num_comms):
+    """this evaluates the main function and cach it for speed up."""
+    return asyn_fluidc(ensure_connected(graph), int(num_comms))
+
+
+def sum_density(graph, num_comms):
+    """sum_density"""
+    return (sum(eval_asyn(graph, num_comms)[1]),)
+
+
+def ratio_density(graph, num_comms):
+    """"""
+    return np.min(eval_asyn(graph, num_comms)[1]) / np.max(eval_asyn(graph, num_comms)[1])
+
+
+def len_most_dense(graph, num_comms):
+    """len_most_dense"""
+    return len(eval_asyn(graph, num_comms)[0][np.argmax(eval_asyn(graph, num_comms)[1])])
+
+
+def len_least_dense(graph, num_comms):
+    """len_least_dense"""
+    return len(eval_asyn(graph, num_comms)[0][np.argmin(eval_asyn(graph, num_comms)[1])])
+
+
+def partitions(graph, num_comms):
+    """partitions"""
+    return eval_asyn(graph, num_comms)[0]
 
 
 class CommunitiesAsyn(FeatureClass):
@@ -22,16 +53,11 @@ class CommunitiesAsyn(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        @lru_cache(maxsize=None)
-        def eval_asyn(graph, num_comms):
-            """this evaluates the main function and cach it for speed up."""
-            return asyn_fluidc(utils.ensure_connected(graph), int(num_comms))
-
         num_communities = np.linspace(2, 10, 5)
         for num_comms in num_communities:
             self.add_feature(
                 "sum_density_c={}".format(num_comms),
-                lambda graph: sum(eval_asyn(graph, num_comms)[1]),
+                partial(sum_density, num_comms=num_comms),
                 "The total density of communities after fluid optimisations for c={}".format(
                     num_comms
                 ),
@@ -40,19 +66,15 @@ class CommunitiesAsyn(FeatureClass):
 
             self.add_feature(
                 "ratio_density_c={}".format(num_comms),
-                lambda graph: np.min(eval_asyn(graph, num_comms)[1])
-                / np.max(eval_asyn(graph, num_comms)[1]),
+                partial(ratio_density, num_comms=num_comms),
                 "The ratio density of communities after fluid optimisations for c={}".format(
                     num_comms
                 ),
                 InterpretabilityScore(3),
             )
-
             self.add_feature(
                 "len_most_dense_c={}".format(num_comms),
-                lambda graph: len(
-                    eval_asyn(graph, num_comms)[0][np.argmax(eval_asyn(graph, num_comms)[1])]
-                ),
+                partial(len_most_dense, num_comms),
                 "The length of the most dense community after fluid optimisations for c={}".format(
                     num_comms
                 ),
@@ -61,9 +83,7 @@ class CommunitiesAsyn(FeatureClass):
 
             self.add_feature(
                 "len_least_dense_c={}".format(num_comms),
-                lambda graph: len(
-                    eval_asyn(graph, num_comms)[0][np.argmin(eval_asyn(graph, num_comms)[1])]
-                ),
+                partial(len_least_dense, num_comms),
                 "The length of the least dense community after fluid optimisations for c={}".format(
                     num_comms
                 ),
@@ -73,7 +93,7 @@ class CommunitiesAsyn(FeatureClass):
             # computing clustering quality
             self.add_feature(
                 "partition_c={}".format(num_comms),
-                lambda graph: eval_asyn(graph, num_comms)[0],
+                partial(partitions, num_comms),
                 "The optimal partition after fluid optimisations for c={}".format(num_comms),
                 InterpretabilityScore(4),
                 statistics="clustering",
@@ -81,9 +101,8 @@ class CommunitiesAsyn(FeatureClass):
 
 
 @py_random_state(3)
-def asyn_fluidc(
-    G, k, max_iter=100, seed=None
-):  # noqa, pylint: disable=too-many-locals,too-many-branches,too-many-statements
+def asyn_fluidc(G, k, max_iter=100, seed=None):
+    # noqa, pylint: disable=too-many-locals,too-many-branches,too-many-statements
     """This function is adapted from networks directly."""
     # Initial checks
     if not isinstance(k, int):

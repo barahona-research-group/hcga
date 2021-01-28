@@ -1,5 +1,7 @@
 """Utils functions."""
 import logging
+import multiprocessing
+import multiprocessing.pool
 
 import pandas as pd
 
@@ -8,13 +10,34 @@ from hcga.graph import Graph
 L = logging.getLogger(__name__)
 
 
-class TimeoutError(Exception):
-    """Timeout exception."""
+class NoDaemonProcess(multiprocessing.Process):
+    """Class that represents a non-daemon process"""
+
+    def _get_daemon(self):  # pylint: disable=no-self-use
+        """Get daemon flag"""
+        return False
+
+    def _set_daemon(self, value):
+        """Set daemon flag"""
+
+    daemon = property(_get_daemon, _set_daemon)
 
 
-def timeout_handler(signum, frame):
-    """Function to raise timeout exception."""
-    raise TimeoutError
+class NestedPool(multiprocessing.pool.Pool):  # pylint: disable=abstract-method
+    """Class that represents a MultiProcessing nested pool"""
+
+    Process = NoDaemonProcess
+
+
+def timeout_eval(func, args, timeout=None, pool=None):
+    """Evaluate a function and kill it is it takes longer than timeout.
+
+    If timeout is Nonei or == 0, a simple evaluation will take place.
+    """
+    if timeout is None or timeout == 0:
+        return func(*args)
+
+    return pool.apply_async(func, args).get(timeout=timeout)
 
 
 def get_trivial_graph(n_node_features=0):

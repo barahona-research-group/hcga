@@ -6,9 +6,12 @@ The functions here are necessary to evaluate each individual feature found insid
 
 """
 import logging
-import signal
+import multiprocessing
 import sys
+import traceback
 import warnings
+from functools import partial
+from multiprocessing import TimeoutError
 
 import numpy as np
 import pandas as pd
@@ -17,10 +20,45 @@ from networkx import to_undirected
 from networkx.algorithms.community import quality
 from networkx.exception import NetworkXNotImplemented
 
-from hcga.utils import TimeoutError, get_trivial_graph, timeout_handler
+from hcga.utils import get_trivial_graph, timeout_eval
 
 L = logging.getLogger(__name__)
 warnings.simplefilter("ignore")
+
+
+def _mean_repeats(dist):
+    """"""
+    return np.mean(st.find_repeats(dist)[1])
+
+
+def _hmean(dist):
+    """"""
+    return st.hmean(np.abs(dist) + 1e-8)
+
+
+def _mode(dist):
+    """"""
+    return st.mode(dist)[0][0]
+
+
+def _get_index(args, i=0):
+    """"""
+    return args[i]
+
+
+def _trivial(graph):  # pylint: disable=unused-argument
+    """"""
+    return 0
+
+
+def _feat_N(graph, features):
+    """"""
+    return features / len(graph.nodes)
+
+
+def _feat_E(graph, features):
+    """"""
+    return features / len(graph.edges)
 
 
 class FeatureClass:
@@ -36,7 +74,7 @@ class FeatureClass:
     encoding = None
     normalize_features = True
     with_node_features = False
-    timeout = 10
+    timeout = None
 
     # Feature descriptions as class variable
     feature_descriptions = {}
@@ -60,7 +98,7 @@ class FeatureClass:
     def __init_subclass__(cls):
         """Initialise class variables to default for each child class."""
         cls.feature_descriptions = {}
-        cls.__doc__ += cls._get_doc()
+        # cls.__doc__ += cls._get_doc()
 
     def __init__(self, graph=None):
         """Initialise a feature class.
@@ -68,6 +106,7 @@ class FeatureClass:
         Args:
             graph (Graph): graph for initialisation, converted to given encoding
         """
+        self.pool = multiprocessing.Pool(processes=1)
         if graph is not None:
             self.graph = graph.get_graph(self.__class__.encoding)
             self.graph_id = graph.id
@@ -99,15 +138,17 @@ class FeatureClass:
         cls.normalize_features = normalize_features
         cls.statistics_level = statistics_level
         cls.n_node_features = n_node_features
-        cls.timeout = timeout
 
         inst = cls(get_trivial_graph(n_node_features=n_node_features))
         features = inst.get_features(all_features=True)
+
         feature_info = pd.DataFrame()
         for feature in features:
             feat_info = inst.get_feature_info(feature)
             feature_info[feature] = pd.Series(feat_info)
 
+        # we set the timeout only for real computation for setup speed up
+        cls.timeout = timeout
         return feature_info
 
     def get_info(self):
@@ -180,15 +221,20 @@ class FeatureClass:
             function_args = self.graph
 
         try:
-            signal.signal(signal.SIGALRM, timeout_handler)
-            signal.alarm(int(self.__class__.timeout))
             try:
-                feature = feature_function(function_args)
+                feature = timeout_eval(
+                    feature_function, (function_args,), timeout=self.timeout, pool=self.pool
+                )
             except NetworkXNotImplemented:
                 if self.graph_type == "directed":
-                    feature = feature_function(to_undirected(function_args))
-            signal.alarm(0)
-            return feature
+                    feature = timeout_eval(
+                        feature_function,
+                        (to_undirected(function_args),),
+                        timeout=self.timeout,
+                        pool=self.pool,
+                    )
+                else:
+                    return None
 
         except (KeyboardInterrupt, SystemExit):
             sys.exit(0)
@@ -201,15 +247,20 @@ class FeatureClass:
                 str(self.timeout),
             )
             return None
-        except Exception as exc:  # pylint: disable=broad-except
-            if self.graph_id != -1:
+        except Exception:  # pylint: disable=broad-except
+            exception = "".join(traceback.format_exception(*sys.exc_info()))
+            if self.graph_id != -10:
                 L.debug(
                     "Failed feature %s for graph %d with exception: %s",
                     feature_name,
                     self.graph_id,
-                    str(exc),
+                    str(exception),
                 )
             return None
+
+        if feature is None:
+            return None
+
         if statistics == "clustering":
             if not isinstance(feature, list):
                 raise Exception(
@@ -242,6 +293,7 @@ class FeatureClass:
                         feature,
                     )
                 )
+        return feature
 
     def add_feature(  # pylint: disable=inconsistent-return-statements
         self,
@@ -317,7 +369,7 @@ class FeatureClass:
 
         This function should be used by each specific feature class to add new features.
         """
-        self.add_feature("test", lambda graph: 0.0, "Test feature for the base feature class", 5)
+        self.add_feature("test", _trivial, "Test feature for the base feature class", 5)
 
     def get_features(self, all_features=False):
         """Compute all the possible features."""
@@ -339,13 +391,13 @@ class FeatureClass:
             feat_desc = self.get_feature_description(feature_name)
             self.add_feature(
                 feature_name + "_N",
-                lambda graph: self.features[feature_name] / len(graph.nodes),
+                partial(_feat_N, features=self.features[feature_name]),
                 feat_desc + ", normalised by the number of nodes in the graph",
                 feat_interpret - interpretability_downgrade,
             )
             self.add_feature(
                 feature_name + "_E",
-                lambda graph: self.features[feature_name] / len(graph.edges),
+                partial(_feat_E, features=self.features[feature_name]),
                 feat_desc + ", normalised by the number of edges in the graph",
                 feat_interpret - interpretability_downgrade,
             )
@@ -356,44 +408,27 @@ class FeatureClass:
 
         self.add_feature(
             feat_name + "_modularity",
-            lambda graph: quality.modularity(graph, community_partition),
+            partial(quality.modularity, communities=community_partition),
             "Modularity" + compl_desc,
             feat_interpret,
         )
 
         self.add_feature(
             feat_name + "_coverage",
-            lambda graph: quality.coverage(graph, community_partition),
+            partial(quality.coverage, partition=community_partition),
             "Coverage" + compl_desc,
             feat_interpret,
         )
         self.add_feature(
             feat_name + "_performance",
-            lambda graph: quality.performance(graph, community_partition),
+            partial(quality.performance, partition=community_partition),
             "Performance" + compl_desc,
-            feat_interpret,
-        )
-        self.add_feature(
-            feat_name + "_inter_community_edges",
-            lambda graph: quality.inter_community_edges(graph, community_partition),
-            "Inter community edges" + compl_desc,
-            feat_interpret,
-        )
-        self.add_feature(
-            feat_name + "_inter_community_non_edges",
-            lambda graph: quality.inter_community_non_edges(graph, community_partition),
-            "Inter community non edges" + compl_desc,
-            feat_interpret,
-        )
-        self.add_feature(
-            feat_name + "_intra_community_edges",
-            lambda graph: quality.intra_community_edges(graph, community_partition),
-            "Intra community edges" + compl_desc,
             feat_interpret,
         )
 
     def _node_feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes summary statistics of each feature distribution."""
+        feat_dist = np.array(feat_dist)
         for node_feats in range(feat_dist.shape[1]):
             self._feature_statistics_basic(
                 feat_dist[:, node_feats],
@@ -419,7 +454,7 @@ class FeatureClass:
             for i in range(len(feat_dist)):
                 self.add_feature(
                     feat_name[i],
-                    lambda args: args[i],
+                    partial(_get_index, i=i),
                     feat_desc,
                     feat_interpret,
                     function_args=feat_dist,
@@ -485,7 +520,7 @@ class FeatureClass:
         )
         self.add_feature(
             feat_name + "_hmean",
-            lambda dist: st.hmean(np.abs(dist) + 1e-8),
+            _hmean,
             "G. Mean" + compl_desc,
             feat_interpret - 1,
             function_args=feat_dist,
@@ -499,7 +534,7 @@ class FeatureClass:
         )
         self.add_feature(
             feat_name + "_mode",
-            lambda dist: st.mode(dist)[0][0],
+            _mode,
             "Mode" + compl_desc,
             feat_interpret - 1,
             function_args=feat_dist,
@@ -574,7 +609,7 @@ class FeatureClass:
         )
         self.add_feature(
             feat_name + "_mean_repeats",
-            lambda dist: np.mean(st.find_repeats(dist)[1]),
+            _mean_repeats,
             "Mean repeats" + compl_desc,
             feat_interpret - 1,
             function_args=feat_dist,

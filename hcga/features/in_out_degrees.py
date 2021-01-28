@@ -1,9 +1,56 @@
 """In Out degrees class."""
 import networkx as nx
 
-from ..feature_class import FeatureClass, InterpretabilityScore
+from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "InOutDegrees"
+
+
+def in_degree(graph):
+    """in_degree"""
+    return list(dict(graph.in_degree).values())
+
+
+def out_degree(graph):
+    """out_degree"""
+    return list(dict(graph.out_degree).values())
+
+
+def in_deg_n(graph):
+    """in_deg_n"""
+    return [
+        i / d
+        for i, d in zip(list(dict(graph.in_degree).values()), list(dict(graph.degree).values()))
+    ]
+
+
+def out_deg_n(graph):
+    """out_deg_n"""
+    return [
+        o / d
+        for o, d in zip(list(dict(graph.out_degree).values()), list(dict(graph.degree).values()))
+    ]
+
+
+def in_out_deg(graph):
+    """in_out_deg"""
+    return [
+        i / o
+        for i, o in zip(
+            list(dict(graph.in_degree).values()),
+            list(dict(graph.out_degree).values()),
+        )
+    ]
+
+
+def in_degree_centrality(graph):
+    """in_degree_centrality"""
+    return list(nx.in_degree_centrality(graph).values())
+
+
+def out_degree_centrality(graph):
+    """out_degree_centrality"""
+    return list(nx.out_degree_centrality(graph).values())
 
 
 class InOutDegrees(FeatureClass):
@@ -18,16 +65,11 @@ class InOutDegrees(FeatureClass):
 
         self.add_feature(
             "in_degree",
-            lambda graph: list(dict(graph.in_degree).values()),
+            in_degree,
             "The distribution of in degrees of each node",
             InterpretabilityScore(3),
             statistics="centrality",
         )
-
-        in_deg_n = lambda graph: [
-            i / d
-            for i, d in zip(list(dict(graph.in_degree).values()), list(dict(graph.degree).values()))
-        ]
 
         self.add_feature(
             "in_degree_normed",
@@ -39,18 +81,11 @@ class InOutDegrees(FeatureClass):
 
         self.add_feature(
             "out_degree",
-            lambda graph: list(dict(graph.out_degree).values()),
+            out_degree,
             "The distribution of out degrees of each node",
             InterpretabilityScore(3),
             statistics="centrality",
         )
-
-        out_deg_n = lambda graph: [
-            o / d
-            for o, d in zip(
-                list(dict(graph.out_degree).values()), list(dict(graph.degree).values())
-            )
-        ]
 
         self.add_feature(
             "out_degree_normed",
@@ -59,15 +94,6 @@ class InOutDegrees(FeatureClass):
             InterpretabilityScore(3),
             statistics="centrality",
         )
-
-        in_out_deg = lambda graph: [
-            i / o
-            for i, o in zip(
-                list(dict(graph.in_degree).values()),
-                list(dict(graph.out_degree).values()),
-            )
-        ]
-
         self.add_feature(
             "in_out_degree",
             in_out_deg,
@@ -78,7 +104,7 @@ class InOutDegrees(FeatureClass):
 
         self.add_feature(
             "in_degree_centrality",
-            lambda graph: list(nx.in_degree_centrality(graph).values()),
+            in_degree_centrality,
             "The distribution of in degree centralities",
             InterpretabilityScore(3),
             statistics="centrality",
@@ -86,7 +112,7 @@ class InOutDegrees(FeatureClass):
 
         self.add_feature(
             "out_degree_centrality",
-            lambda graph: list(nx.out_degree_centrality(graph).values()),
+            out_degree_centrality,
             "The distribution of out degree centralities",
             InterpretabilityScore(3),
             statistics="centrality",

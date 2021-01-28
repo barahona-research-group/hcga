@@ -1,7 +1,7 @@
 "Connectance class"
 import networkx as nx
 
-from ..feature_class import FeatureClass, InterpretabilityScore
+from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Connectance"
 
@@ -18,7 +18,7 @@ class Connectance(FeatureClass):
 
         self.add_feature(
             "connectance",
-            lambda graph: nx.density(graph),
+            nx.density,
             "ratio of number of edges to maximum possible number of edges",
             InterpretabilityScore(3),
         )

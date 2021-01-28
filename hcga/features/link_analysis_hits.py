@@ -1,10 +1,16 @@
 """HITS hubs class."""
 import networkx as nx
 
-from ..feature_class import FeatureClass, InterpretabilityScore
-from .utils import ensure_connected
+from hcga.feature_class import FeatureClass, InterpretabilityScore
+from hcga.features.utils import ensure_connected
 
 featureclass_name = "Hits"
+
+
+def hits(graph):
+    """"""
+    h, _ = nx.hits_numpy(ensure_connected(graph))
+    return list(h.values())
 
 
 class Hits(FeatureClass):
@@ -22,10 +28,6 @@ class Hits(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        def hits(graph):
-            h, _ = nx.hits_numpy(ensure_connected(graph))
-            return list(h.values())
-
         self.add_feature(
             "Hits",
             hits,
