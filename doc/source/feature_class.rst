@@ -1,4 +1,0 @@
-The feature class module
-=========================
-.. automodule:: hcga.feature_class
-   :members:
