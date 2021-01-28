@@ -1,9 +1,14 @@
 """Maximal matching class."""
 import networkx as nx
 
-from ..feature_class import FeatureClass, InterpretabilityScore
+from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "MaximalMatching"
+
+
+def maximal_matching(graph):
+    """maximal_matching"""
+    return len(nx.maximal_matching(graph))
 
 
 class MaximalMatching(FeatureClass):
@@ -26,7 +31,7 @@ class MaximalMatching(FeatureClass):
 
         self.add_feature(
             "maximal_matching",
-            lambda graph: len(nx.maximal_matching(graph)),
+            maximal_matching,
             "Maximal matching",
             InterpretabilityScore(4),
         )

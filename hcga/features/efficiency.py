@@ -1,7 +1,7 @@
 """Distance Measures class."""
 import networkx as nx
 
-from ..feature_class import FeatureClass, InterpretabilityScore
+from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Efficiency"
 
@@ -35,7 +35,7 @@ class Efficiency(FeatureClass):
         # local effiency
         self.add_feature(
             "local_efficiency",
-            lambda graph: nx.local_efficiency(graph),
+            nx.local_efficiency,
             "The local efficiency",
             InterpretabilityScore(4),
         )
@@ -43,7 +43,7 @@ class Efficiency(FeatureClass):
         # global effiency
         self.add_feature(
             "global_efficiency",
-            lambda graph: nx.global_efficiency(graph),
+            nx.global_efficiency,
             "The global efficiency",
             InterpretabilityScore(4),
         )

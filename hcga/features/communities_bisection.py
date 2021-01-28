@@ -3,9 +3,23 @@ from functools import lru_cache
 
 from networkx.algorithms.community import kernighan_lin_bisection
 
-from ..feature_class import FeatureClass, InterpretabilityScore
+from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "CommunitiesBisection"
+
+
+@lru_cache(maxsize=None)
+def eval_bisection(graph):
+    """this evaluates the main function and cach it for speed up."""
+    communities = list(kernighan_lin_bisection(graph))
+    communities.sort(key=len, reverse=True)
+
+    return communities
+
+
+def largest_commsize(graph):
+    """largest_commsize"""
+    return len(eval_bisection(graph)[0])
 
 
 class CommunitiesBisection(FeatureClass):
@@ -32,17 +46,9 @@ class CommunitiesBisection(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        @lru_cache(maxsize=None)
-        def eval_bisection(graph):
-            """this evaluates the main function and cach it for speed up."""
-            communities = list(kernighan_lin_bisection(graph))
-            communities.sort(key=len, reverse=True)
-
-            return communities
-
         self.add_feature(
             "largest_commsize",
-            lambda graph: len(eval_bisection(graph)[0]),
+            largest_commsize,
             "The ratio of the largest and second largest communities using bisection algorithm",
             InterpretabilityScore(4),
         )

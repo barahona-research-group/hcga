@@ -4,9 +4,37 @@ from functools import lru_cache
 import networkx as nx
 import numpy as np
 
-from ..feature_class import FeatureClass, InterpretabilityScore
+from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "CycleBasis"
+
+
+@lru_cache(maxsize=None)
+def eval_cycle_basis(graph):
+    """this evaluates the main function and cach it for speed up."""
+    return nx.cycle_basis(graph)
+
+
+def num_cycles(graph):
+    """num_cycles"""
+    return len(eval_cycle_basis(graph))
+
+
+def average_cycle_length(graph):
+    """average_cycle_length"""
+    return np.mean([len(cycle) for cycle in eval_cycle_basis(graph)])
+
+
+def minimum_cycle_length(graph):
+    """Minimum cycle length returns 0 if graph is a tree."""
+    if not eval_cycle_basis(graph):
+        return 0
+    return np.min([len(cycle) for cycle in eval_cycle_basis(graph)])
+
+
+def ratio_nodes_cycle(graph):
+    """ratio_nodes_cycle"""
+    return len(np.unique([_n for cycle in eval_cycle_basis(graph) for _n in cycle])) / len(graph)
 
 
 class CycleBasis(FeatureClass):
@@ -35,30 +63,19 @@ class CycleBasis(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-        @lru_cache(maxsize=None)
-        def eval_cycle_basis(graph):
-            """this evaluates the main function and cach it for speed up."""
-            return nx.cycle_basis(graph)
-
         self.add_feature(
             "num_cycles",
-            lambda graph: len(eval_cycle_basis(graph)),
+            num_cycles,
             "The total number of cycles in the graph",
             InterpretabilityScore(3),
         )
 
         self.add_feature(
             "average_cycle_length",
-            lambda graph: np.mean([len(cycle) for cycle in eval_cycle_basis(graph)]),
+            average_cycle_length,
             "The average length of cycles in the graph",
             InterpretabilityScore(3),
         )
-
-        def minimum_cycle_length(graph):
-            """Minimum cycle length returns 0 if graph is a tree."""
-            if not eval_cycle_basis(graph):
-                return 0
-            return np.min([len(cycle) for cycle in eval_cycle_basis(graph)])
 
         self.add_feature(
             "minimum_cycle_length",
@@ -67,9 +84,6 @@ class CycleBasis(FeatureClass):
             InterpretabilityScore(3),
         )
 
-        ratio_nodes_cycle = lambda graph: len(
-            np.unique([node for cycle in eval_cycle_basis(graph) for node in cycle])
-        ) / len(graph)
         self.add_feature(
             "ratio_nodes_cycle",
             ratio_nodes_cycle,

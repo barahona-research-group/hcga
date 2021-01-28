@@ -2,9 +2,24 @@
 import networkx as nx
 import numpy as np
 
-from ..feature_class import FeatureClass, InterpretabilityScore
+from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Clustering"
+
+
+def triang(graph):
+    """triang"""
+    return np.asarray(list(nx.triangles(graph).values())).mean()
+
+
+def clustering_dist(graph):
+    """clustering_dist"""
+    return list(nx.clustering(graph).values())
+
+
+def square_clustering_dist(graph):
+    """square_clustering_dist"""
+    return list(nx.square_clustering(graph).values())
 
 
 class Clustering(FeatureClass):
@@ -44,7 +59,6 @@ class Clustering(FeatureClass):
 
     def compute_features(self):
 
-        triang = lambda graph: np.asarray(list(nx.triangles(graph).values())).mean()
         self.add_feature(
             "num_triangles",
             triang,
@@ -52,16 +66,14 @@ class Clustering(FeatureClass):
             InterpretabilityScore("max"),
         )
 
-        transi = lambda graph: nx.transitivity(graph)
         self.add_feature(
             "transitivity",
-            transi,
+            nx.transitivity,
             "Transitivity of the graph",
             InterpretabilityScore("max"),
         )
 
         # Average clustering coefficient
-        clustering_dist = lambda graph: list(nx.clustering(graph).values())
         self.add_feature(
             "clustering",
             clustering_dist,
@@ -71,7 +83,6 @@ class Clustering(FeatureClass):
         )
 
         # generalised degree
-        square_clustering_dist = lambda graph: list(nx.square_clustering(graph).values())
         self.add_feature(
             "square_clustering",
             square_clustering_dist,

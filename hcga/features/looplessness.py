@@ -1,13 +1,16 @@
 """Looplessness class."""
+from functools import lru_cache, partial
+
 import networkx as nx
 import numpy as np
 import sympy as sp
 
-from ..feature_class import FeatureClass, InterpretabilityScore
+from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Looplessness"
 
 
+@lru_cache(maxsize=None)
 def looplessness(graph):  # pylint: disable=too-many-locals
     """ Looplessness measure class
 
@@ -123,6 +126,11 @@ def looplessness(graph):  # pylint: disable=too-many-locals
     )
 
 
+def _get(graph, i):
+    """get output"""
+    return looplessness(graph)[i]
+
+
 class Looplessness(FeatureClass):
     """Looplessness class."""
 
@@ -135,14 +143,14 @@ class Looplessness(FeatureClass):
 
         self.add_feature(
             "branching_factor",
-            lambda graph: looplessness(graph)[0],
+            partial(_get, i=0),
             "The branching factor of the graph",
             InterpretabilityScore(5),
         )
 
         self.add_feature(
             "trophic_levels",
-            lambda graph: looplessness(graph)[1],
+            partial(_get, i=1),
             "The distribution of trophic levels",
             InterpretabilityScore(5),
             statistics="centrality",
@@ -150,28 +158,28 @@ class Looplessness(FeatureClass):
 
         self.add_feature(
             "incoherence_parameter",
-            lambda graph: looplessness(graph)[2],
+            partial(_get, i=2),
             "The trophic incoherence parameter of the graph",
             InterpretabilityScore(5),
         )
 
         self.add_feature(
             "exp_trophic_coherence",
-            lambda graph: looplessness(graph)[3],
+            partial(_get, i=3),
             "The expected trophic incoherence parameter of the graph",
             InterpretabilityScore(5),
         )
 
         self.add_feature(
             "exp_branching_factor",
-            lambda graph: looplessness(graph)[4],
+            partial(_get, i=4),
             "The expected branching factor of the graph",
             InterpretabilityScore(5),
         )
 
         self.add_feature(
             "loop_exponent",
-            lambda graph: looplessness(graph)[5],
+            partial(_get, i=5),
             "The loop exponent of the graph",
             InterpretabilityScore(5),
         )

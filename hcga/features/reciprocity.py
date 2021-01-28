@@ -1,7 +1,7 @@
 """Reciprocity class."""
 import networkx as nx
 
-from ..feature_class import FeatureClass, InterpretabilityScore
+from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Reciprocity"
 
@@ -35,7 +35,7 @@ class Reciprocity(FeatureClass):
         # graph clique number
         self.add_feature(
             "reciprocity",
-            lambda graph: nx.overall_reciprocity(graph),
+            nx.overall_reciprocity,
             "fraction of edges pointing in both directions to total number of edges",
             InterpretabilityScore(3),
         )

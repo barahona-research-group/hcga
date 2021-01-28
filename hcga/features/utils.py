@@ -11,7 +11,6 @@ def ensure_connected(graph):
         else:
             if not nx.is_connected(graph):
                 return graph.subgraph(max(nx.connected_components(graph), key=len))
-        return graph
     raise Exception("ensure_connected is not implemented for this graph type")
 
 
