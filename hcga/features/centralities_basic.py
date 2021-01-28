@@ -93,9 +93,9 @@ class CentralitiesBasic(FeatureClass):
 
     Here we implement:
     Degree Centrality
-    Eigenvector Centrality [1]_[2]_
-    Closeness Centrality [3]_[4]_
-    Betweenness Centrality [5]_[6]_[7]_[8]_
+    Eigenvector Centrality [1]_ [2]_
+    Closeness Centrality [3]_ [4]_
+    Betweenness Centrality [5]_ [6]_ [7]_ [8]_
     Harmonic Centrality [9]_
 
     References

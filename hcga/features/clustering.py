@@ -33,7 +33,7 @@ class Clustering(FeatureClass):
     We compute:
     The number of triangles
     Transitivity [1]_
-    Clustering [2]_[3]_[4]_
+    Clustering [2]_ [3]_ [4]_
 
     References
     ----------
