@@ -14,6 +14,7 @@ def core_number(graph):
 
 
 class CoreNumber(FeatureClass):
+<<<<<<< HEAD
     """Core number class.
 
     Features based on a k-core analysis.
@@ -30,6 +31,9 @@ class CoreNumber(FeatureClass):
        https://arxiv.org/abs/cs.DS/0310049
 
     """
+=======
+    """Core number class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["fast", "medium", "slow"]
     shortname = "CoN"

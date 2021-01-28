@@ -72,6 +72,7 @@ def sum_node_feature_nodewise(graph):
 
 
 class NodeFeatures(FeatureClass):
+<<<<<<< HEAD
     """Node Features class.
 
     Features based on node features.
@@ -90,6 +91,9 @@ class NodeFeatures(FeatureClass):
            Foundations of Data Science,2,1,19,33,2020-2-11,
 
     """
+=======
+    """Node Features class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["fast", "medium", "slow"]
     shortname = "NF"

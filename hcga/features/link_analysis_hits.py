@@ -16,15 +16,19 @@ def hits(graph):
 class Hits(FeatureClass):
     """HITS hubs class.
 
+<<<<<<< HEAD
     Returns features based on the HITS hubs.
     The HITS algorithm computes two numbers for a node.
     Authorities estimates the node value based on the incoming links.
     Hubs estimates the node value based on outgoing links.
 
+=======
+>>>>>>> parent of 47d844a... rebuilt docs
     Hits calculations using networkx:
             `Networkx_hits <https://networkx.github.io/documentation/stable/reference/\
                 algorithms/generated/networkx.algorithms.link_analysis.hits_alg.hits.html\
                 #networkx.algorithms.link_analysis.hits_alg.hits>`_
+<<<<<<< HEAD
 
     References
     ----------
@@ -37,6 +41,8 @@ class Hits(FeatureClass):
        doi:10.1145/324133.324140.
        http://www.cs.cornell.edu/home/kleinber/auth.pdf.
 
+=======
+>>>>>>> parent of 47d844a... rebuilt docs
     """
 
     modes = ["medium", "slow"]

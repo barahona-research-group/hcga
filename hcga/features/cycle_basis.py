@@ -38,6 +38,7 @@ def ratio_nodes_cycle(graph):
 
 
 class CycleBasis(FeatureClass):
+<<<<<<< HEAD
     """Cycle Basis class.
 
     Computes features based on the cycles in the graph.
@@ -57,6 +58,9 @@ class CycleBasis(FeatureClass):
        cycles of a graph. Comm. ACM 12, 9 (Sept 1969), 514-518.
 
     """
+=======
+    """Cycle Basis class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["fast", "medium", "slow"]
     shortname = "CYB"

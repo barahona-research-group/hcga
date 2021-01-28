@@ -9,6 +9,7 @@ from hcga.features.utils import ensure_connected, remove_selfloops
 
 featureclass_name = "JaccardSimilarity"
 
+<<<<<<< HEAD
 
 @lru_cache(maxsize=None)
 def jaccard_similarity(graph):
@@ -29,6 +30,27 @@ def jaccard_similarity(graph):
     For further information see `https://en.wikipedia.org/wiki/Jaccard_index'
 
     """
+=======
+"""
+Create the Jaccard similarity matrix for nodes in the network,
+then convert this to a graph and extract some features
+This is defined as a/(a+b+c), where
+a = number of common neighbours
+b = number of neighbours of node 1 that are not neighbours of node 2
+c = number of neighbours of node 2 that are not neighbours of node 1
+Treating this matrix as an adjacency matrix, we can compute network some features
+ref: https://www.biorxiv.org/content/10.1101/112540v4.full
+
+For some features we remove selfloops, since the diagonal of the Jaccard
+similarity consists of ones, and therefore all nodes will have a selfloop with weight one
+"""
+
+
+@lru_cache(maxsize=None)
+def jaccard_similarity(graph):
+    """Construct a graph from Jaccard similarity matrix"""
+
+>>>>>>> parent of 47d844a... rebuilt docs
     n = nx.number_of_nodes(graph)
     jsm = np.eye(n)
 

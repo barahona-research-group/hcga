@@ -653,7 +653,10 @@ def classify_pairwise(  # pylint: disable=too-many-locals
 
     The top features for each pair with high enough accuracies are collected in a list,
     for later analysis.
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 47d844a... rebuilt docs
     Args:
         features (dataframe): extracted features
         features_info (dataframe): features information
@@ -661,10 +664,18 @@ def classify_pairwise(  # pylint: disable=too-many-locals
         graph_removal (float): remove samples with more than graph_removal % bad values
         n_top_features (int): number of top features to save
         reduce_set (bool): is True, the classification will be rerun
+<<<<<<< HEAD
             on a reduced set of top features (from shapely analysis)
         reduce_set_size (int): number of features to keep for reduces set
         reduced_set_max_correlation (float): to discared highly correlated top features
             in reduced set of features
+=======
+                           on a reduced set of top features (from shapely analysis)
+        reduce_set_size (int): number of features to keep for reduces set
+        reduced_set_max_correlation (float): to discared highly correlated top features
+                                             in reduced set of features
+
+>>>>>>> parent of 47d844a... rebuilt docs
         n_repeats (int): number of k-fold repeats
         n_splits (int): numbere of split for k-fold, None=automatic estimation
         analysis_type (str): 'classification' or 'regression'

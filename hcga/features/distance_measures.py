@@ -38,6 +38,7 @@ def extrema_bounding(graph):
 
 
 class DistanceMeasures(FeatureClass):
+<<<<<<< HEAD
     """Distance Measures class.
 
     Calculates features based on distance measures.
@@ -45,6 +46,9 @@ class DistanceMeasures(FeatureClass):
     Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/\
         distance_measures.html`
     """
+=======
+    """Distance Measures class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["fast", "medium", "slow"]
     shortname = "DM"

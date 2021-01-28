@@ -35,6 +35,7 @@ def size_2_component(graph):
 
 
 class KComponents(FeatureClass):
+<<<<<<< HEAD
     """K Components class.
 
     Returns features based on the k component structure of a graph.
@@ -65,6 +66,9 @@ class KComponents(FeatureClass):
             http://www2.asanet.org/journals/ASRFeb03MoodyWhite.pdf
 
     """
+=======
+    """K Components class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["slow"]
     shortname = "KC"

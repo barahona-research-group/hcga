@@ -32,6 +32,7 @@ def rich_club_maxminratio(graph):
 
 
 class RichClub(FeatureClass):
+<<<<<<< HEAD
     """Rich Club class.
 
     Features based on the Rich Club of a graph.
@@ -55,6 +56,9 @@ class RichClub(FeatureClass):
        sequences", 2006. https://arxiv.org/abs/cond-mat/0312028
 
     """
+=======
+    """Rich Club class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["fast", "medium", "slow"]
     shortname = "RC"

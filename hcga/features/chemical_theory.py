@@ -9,6 +9,7 @@ featureclass_name = "ChemicalTheory"
 
 
 class ChemicalTheory(FeatureClass):
+<<<<<<< HEAD
     """Chemical theory class.
 
     Here we implement the wiener and estrada indexes.
@@ -27,6 +28,9 @@ class ChemicalTheory(FeatureClass):
     .. [2] E. Estrada,  Characterization of 3D molecular structure,
            Chem. Phys. Lett. 319, 713 (2000).
     """
+=======
+    """Chemical theory class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["fast", "medium", "slow"]
     shortname = "CT"

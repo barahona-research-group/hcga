@@ -15,8 +15,11 @@ def clique_sizes(graph):
 class NodeCliqueNumber(FeatureClass):
     """Node clique number class.
 
+<<<<<<< HEAD
     Features based on the size of the largest maximal clique containing each node.
 
+=======
+>>>>>>> parent of 47d844a... rebuilt docs
     Clique number calculations using networkx:
         `Networkx_clique <https://networkx.github.io/documentation/stable/reference/algorithms/\
             clique.html>`_

@@ -45,6 +45,7 @@ def partitions(graph, num_comms):
 
 
 class CommunitiesAsyn(FeatureClass):
+<<<<<<< HEAD
     """Communities Asyn class.
 
     The asynchronous fluid communities algorithm is described in
@@ -59,6 +60,9 @@ class CommunitiesAsyn(FeatureClass):
        [https://arxiv.org/pdf/1703.09307.pdf].
 
     """
+=======
+    """Communities Asyn class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["slow"]
     shortname = "CA"

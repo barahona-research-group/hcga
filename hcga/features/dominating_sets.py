@@ -24,6 +24,7 @@ def size_min_edge_dominating_set(graph):
 class DominatingSets(FeatureClass):
     """Dominating sets class.
 
+<<<<<<< HEAD
     Features based on dominating sets. Where  *dominating set* for a graph
     with node set *V* is a subset *D* of
     *V* such that every node not in *D* is adjacent to at least one
@@ -39,6 +40,10 @@ class DominatingSets(FeatureClass):
     .. [2] Abdol-Hossein Esfahanian. Connectivity Algorithms.
         http://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf
 
+=======
+    Uses networkx: `Networkx_dominating_set <https://networkx.github.io/documentation/\
+        stable/reference/algorithms/dominating.html>`_
+>>>>>>> parent of 47d844a... rebuilt docs
     """
 
     modes = ["fast", "medium", "slow"]

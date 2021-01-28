@@ -90,6 +90,7 @@ class CentralitiesBasic(FeatureClass):
 
     Uses networkx, see 'https://networkx.github.io/documentation/stable/reference/\
         algorithms/centrality.html`
+<<<<<<< HEAD
 
     Here we implement:
     Degree Centrality
@@ -132,6 +133,8 @@ class CentralitiesBasic(FeatureClass):
        http://moreno.ss.uci.edu/23.pdf
     .. [9] Boldi, Paolo, and Sebastiano Vigna. "Axioms for centrality."
            Internet Mathematics 10.3-4 (2014): 222-262.
+=======
+>>>>>>> parent of 47d844a... rebuilt docs
     """
 
     modes = ["fast", "medium", "slow"]

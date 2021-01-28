@@ -17,6 +17,7 @@ def effective_size(graph):
 
 
 class StructuralHoles(FeatureClass):
+<<<<<<< HEAD
     """Structural Holes class.
 
 
@@ -48,6 +49,9 @@ class StructuralHoles(FeatureClass):
            http://www.analytictech.com/connections/v20(1)/holes.htm
 
     """
+=======
+    """Structural Holes class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["medium", "slow"]
     shortname = "SH"

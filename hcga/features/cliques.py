@@ -32,6 +32,7 @@ def maximal_clique_sizes(graph):
 
 
 class Cliques(FeatureClass):
+<<<<<<< HEAD
     """Cliques class.
 
     Here we construct features based on cliques
@@ -56,6 +57,9 @@ class Cliques(FeatureClass):
            Conference, pp. 12, 12--18 Nov. 2005.
            <https://doi.org/10.1109/SC.2005.29>.
     """
+=======
+    """Cliques class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["fast", "medium", "slow"]
     shortname = "Cli"

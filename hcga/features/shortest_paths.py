@@ -68,6 +68,7 @@ def radius_directed(graph):
 
 
 class ShortestPaths(FeatureClass):
+<<<<<<< HEAD
     """Shortest paths class.
 
     Features based on the shortest paths across the network.
@@ -77,6 +78,9 @@ class ShortestPaths(FeatureClass):
             shortest_paths.html>`_
 
     """
+=======
+    """Shortest paths class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["fast", "medium", "slow"]
     shortname = "SP"

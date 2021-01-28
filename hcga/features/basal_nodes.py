@@ -74,6 +74,7 @@ def exp_attracting_edge(graph):
 
 
 class BasalNodes(FeatureClass):
+<<<<<<< HEAD
     """Basal nodes class.
 
     Basal nodes are nodes which have in degree equal to zero. Attracting nodes are
@@ -85,6 +86,9 @@ class BasalNodes(FeatureClass):
         coherence.",
      Proceedings of the National Academy of Sciences 114.22 (2017): 5618-5623.
     """
+=======
+    """Basal nodes class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["fast", "medium", "slow"]
     shortname = "BN"

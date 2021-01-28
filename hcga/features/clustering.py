@@ -23,6 +23,7 @@ def square_clustering_dist(graph):
 
 
 class Clustering(FeatureClass):
+<<<<<<< HEAD
     """Clustering class.
 
     Here we construct features based on the number of triangles in a graph.
@@ -51,6 +52,9 @@ class Clustering(FeatureClass):
        Physical Review E, 76(2), 026107 (2007).
 
     """
+=======
+    """Clustering class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["medium", "slow"]
     shortname = "Clu"

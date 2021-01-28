@@ -33,6 +33,7 @@ def eval_spectrum_laplacian(graph):
 
 
 class Spectrum(FeatureClass):
+<<<<<<< HEAD
     """Spectrum class.
 
     Features based on the eigenvectors and eigenvalues of the graph.
@@ -45,6 +46,9 @@ class Spectrum(FeatureClass):
         1997.
 
     """
+=======
+    """Spectrum class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["medium", "slow"]
     shortname = "SPM"

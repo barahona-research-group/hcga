@@ -28,6 +28,7 @@ def ratio_commsize_maxmin(graph):
 
 
 class CommunitiesLabelPropagation(FeatureClass):
+<<<<<<< HEAD
     """Communities Label propagation class.
 
     Features based on the community detection using label propagation.
@@ -46,6 +47,9 @@ class CommunitiesLabelPropagation(FeatureClass):
        Applications of Social Network Analysis (BASNA), 2010 IEEE International
        Workshop on (pp. 1-8). IEEE.
     """
+=======
+    """Communities Label propagation class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["medium", "slow"]
     shortname = "CLP"

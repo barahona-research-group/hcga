@@ -9,6 +9,7 @@ featureclass_name = "SmallWorldness"
 class SmallWorldness(FeatureClass):
     """Small worldness class.
 
+<<<<<<< HEAD
     Fetures based on small-worldness, where the small-world coefficient of a graph G is:
 
     omega = Lr/L - C/Cl
@@ -29,6 +30,11 @@ class SmallWorldness(FeatureClass):
            Brain Connectivity. 1 (0038): 367-75.  PMC 3604768. PMID 22432451.
            doi:10.1089/brain.2011.0038.
 
+=======
+    Small world calculations using networkx:
+        `Networkx_omega <https://networkx.github.io/documentation/latest/\
+        _modules/networkx/algorithms/smallworld.html#omega>`_
+>>>>>>> parent of 47d844a... rebuilt docs
     """
 
     modes = ["slow"]

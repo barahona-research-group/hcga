@@ -12,6 +12,7 @@ def vitality(graph):
 
 
 class Vitality(FeatureClass):
+<<<<<<< HEAD
     """Vitality measures class.
 
     Features based on the closeness vitality.
@@ -26,6 +27,9 @@ class Vitality(FeatureClass):
            Springer, 2005.
            <http://books.google.com/books?id=TTNhSm7HYrIC>
     """
+=======
+    """Vitality class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["slow"]
     shortname = "V"

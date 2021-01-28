@@ -11,6 +11,7 @@ featureclass_name = "ScaleFree"
 class ScaleFree(FeatureClass):
     """Scale Free class.
 
+<<<<<<< HEAD
     Features based on the scalefreeness of a graph. It uses the s-metric.
     The s-metric is defined as the sum of the products deg(u)*deg(v)
     for every edge (u,v) in G. If norm is provided construct the
@@ -28,6 +29,11 @@ class ScaleFree(FeatureClass):
            Definition, Properties, and  Implications (Extended Version), 2005.
            https://arxiv.org/abs/cond-mat/0501169
 
+=======
+    Scale free calculations using networkx:
+        `Networkx_scale free <https://networkx.github.io/documentation/stable/\
+        _modules/networkx/algorithms/smetric.html#s_metric>`_
+>>>>>>> parent of 47d844a... rebuilt docs
     """
 
     modes = ["fast", "medium", "slow"]

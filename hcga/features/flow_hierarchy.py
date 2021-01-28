@@ -9,6 +9,7 @@ featureclass_name = "FlowHierarchy"
 
 
 class FlowHierarchy(FeatureClass):
+<<<<<<< HEAD
     """Flow hierarchy class.
 
     Features based on flow hierarchy. Flow hierarchy is defined as the fraction of edges not
@@ -27,6 +28,9 @@ class FlowHierarchy(FeatureClass):
        http://web.mit.edu/~cmagee/www/documents/28-DetectingEvolvingPatterns_FlowHierarchy.pdf
 
     """
+=======
+    """Flow hierarchy class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["fast", "medium", "slow"]
     shortname = "FH"

@@ -39,6 +39,7 @@ def radius(graph):
 
 
 class BasicStats(FeatureClass):
+<<<<<<< HEAD
     """Basic stats class.
 
     Here we compute basic measures statistics of the graphs, e.g. number of nodes.
@@ -50,6 +51,9 @@ class BasicStats(FeatureClass):
        Oxford University Press, USA, 2010, pp. 169.
 
     """
+=======
+    """Basic stats class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["fast", "medium", "slow"]
     shortname = "BS"

@@ -23,6 +23,7 @@ def largest_commsize(graph):
 
 
 class CommunitiesBisection(FeatureClass):
+<<<<<<< HEAD
     """Communities Bisection class.
 
     This algorithm partitions a network into two sets by iteratively
@@ -39,6 +40,9 @@ class CommunitiesBisection(FeatureClass):
        Oxford University Press 2011.
 
     """
+=======
+    """Communities Bisection class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["medium", "slow"]
     shortname = "CBI"

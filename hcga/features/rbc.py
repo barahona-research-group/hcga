@@ -10,6 +10,7 @@ from hcga.features.utils import ensure_connected, remove_selfloops
 
 featureclass_name = "RolesimilarityBasedComparison"
 
+<<<<<<< HEAD
 
 @lru_cache(maxsize=None)
 def rbc(graph):
@@ -31,6 +32,20 @@ def rbc(graph):
 
 
     """
+=======
+"""
+Create the role-similarity based comparison (rbc) matrix for nodes in the network,
+then convert this to a graph and extract some features
+ref: https://arxiv.org/abs/1103.5582
+For some features we remove selfloops, since the diagonal of the rbc matrix
+consists of ones, and therefore all nodes will have a selfloop with weight one
+"""
+
+
+@lru_cache(maxsize=None)
+def rbc(graph):
+    """Rbc computation."""
+>>>>>>> parent of 47d844a... rebuilt docs
     a = np.where(nx.adj_matrix(graph).toarray() > 0, 1, 0)
     g = nx.DiGraph(a)
 

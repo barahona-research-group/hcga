@@ -20,6 +20,7 @@ def min_edge_cut_size(graph):
 class MinimumCuts(FeatureClass):
     """Minimum cuts class.
 
+<<<<<<< HEAD
     Features derived from the minimum cuts of a graph.
 
     The minimum cuts explores the set of nodes or edges of minimum cardinality that,
@@ -34,6 +35,11 @@ class MinimumCuts(FeatureClass):
     .. [1] Abdol-Hossein Esfahanian. Connectivity Algorithms.
         http://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf
 
+=======
+    Calculations using networkx:
+        `Networkx_minimum_cuts <https://networkx.github.io/documentation/stable/\
+        reference/algorithms/connectivity.html>`_
+>>>>>>> parent of 47d844a... rebuilt docs
     """
 
     modes = ["medium", "slow"]

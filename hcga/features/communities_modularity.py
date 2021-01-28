@@ -49,6 +49,7 @@ def ratio_commsize_maxmin_weighted(graph):
 
 
 class CommunitiesModularity(FeatureClass):
+<<<<<<< HEAD
     """Communities Modularity propagation class.
 
     Features based on the community detection using modularity.
@@ -71,6 +72,9 @@ class CommunitiesModularity(FeatureClass):
        Physical Review E 70(6), 2004.
 
     """
+=======
+    """Communities Modularity propagation class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["fast", "medium", "slow"]
     shortname = "CM"

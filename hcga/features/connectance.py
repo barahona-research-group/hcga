@@ -7,6 +7,7 @@ featureclass_name = "Connectance"
 
 
 class Connectance(FeatureClass):
+<<<<<<< HEAD
     """Connectance class.
 
     Features based on the connectivity of the graph.
@@ -23,6 +24,9 @@ class Connectance(FeatureClass):
        d = \frac{m}{n(n-1)},
 
     """
+=======
+    """Connectance class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["fast", "medium", "slow"]
     shortname = "Cns"

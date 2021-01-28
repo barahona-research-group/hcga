@@ -7,6 +7,7 @@ featureclass_name = "Eulerian"
 
 
 class Eulerian(FeatureClass):
+<<<<<<< HEAD
     """Eulerian Measures class.
 
     Features based on Eulerian circuits. An *Eulerian circuit* is a closed walk
@@ -22,6 +23,9 @@ class Eulerian(FeatureClass):
     .. [2] https://en.wikipedia.org/wiki/Eulerian_path
 
     """
+=======
+    """Eulerian Measures class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["fast", "medium", "slow"]
     shortname = "EU"

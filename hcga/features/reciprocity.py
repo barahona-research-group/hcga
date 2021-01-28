@@ -7,6 +7,7 @@ featureclass_name = "Reciprocity"
 
 
 class Reciprocity(FeatureClass):
+<<<<<<< HEAD
     """Reciprocity class.
 
     Features based on the reciprocity in a directed graph.
@@ -25,6 +26,9 @@ class Reciprocity(FeatureClass):
                 reciprocity.html>`_
 
     """
+=======
+    """Reciprocity class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["fast", "medium", "slow"]
     shortname = "Rec"

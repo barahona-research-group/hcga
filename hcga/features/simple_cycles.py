@@ -25,6 +25,7 @@ def simple_cycles_sizes(graph):
 
 
 class SimpleCycles(FeatureClass):
+<<<<<<< HEAD
     """Simple cycles class.
 
     Computes features based on simple cycles (elementary circuits) of a directed graph.
@@ -50,6 +51,9 @@ class SimpleCycles(FeatureClass):
        v. 16, no. 2, 192-204, 1976.
 
     """
+=======
+    """Simple cycles class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["fast", "medium", "slow"]
     shortname = "SC"

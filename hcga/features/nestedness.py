@@ -9,6 +9,7 @@ featureclass_name = "Nestedness"
 
 
 def nestedness(graph):
+<<<<<<< HEAD
     """Nestedness measures class
 
     Features based on the nestedness of a graph.
@@ -21,6 +22,9 @@ def nestedness(graph):
     Springer, Cham, 2016.
 
     """
+=======
+    """Compute nestedness."""
+>>>>>>> parent of 47d844a... rebuilt docs
     n = nx.number_of_nodes(graph)
     nodes = list(graph.nodes())
     neighbors = [0 for i in range(n)]

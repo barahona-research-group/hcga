@@ -7,6 +7,7 @@ featureclass_name = "Efficiency"
 
 
 class Efficiency(FeatureClass):
+<<<<<<< HEAD
     """EFficiency Measures class.
 
     Features based on the efficiency of a gaph.
@@ -25,6 +26,9 @@ class Efficiency(FeatureClass):
            <https://doi.org/10.1103/PhysRevLett.87.198701>
 
     """
+=======
+    """Distance Measures class."""
+>>>>>>> parent of 47d844a... rebuilt docs
 
     modes = ["fast", "medium", "slow"]
     shortname = "EF"
