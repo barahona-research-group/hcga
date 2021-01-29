@@ -169,12 +169,12 @@ def _get_model(model, analysis_type):
                 from xgboost import XGBClassifier
 
                 L.info("... Using Xgboost classifier ...")
-                model = XGBClassifier(eval_metric='mlogloss')
+                model = XGBClassifier(eval_metric="mlogloss")
             if analysis_type == "regression":
                 from xgboost import XGBRegressor
 
                 L.info("... Using Xgboost regressor ...")
-                model = XGBRegressor(objective="reg:squarederror",eval_metric="mlogloss")
+                model = XGBRegressor(objective="reg:squarederror", eval_metric="mlogloss")
 
         else:
             raise Exception("Unknown model type: {}".format(model))
