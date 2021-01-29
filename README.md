@@ -12,7 +12,13 @@ Networks are widely used as mathematical models of complex systems across many s
 
 For users that are not familiar with python and would like to use this code, we apologise that it isn't available in other languages. However, to help set you up with have provided a description of the steps required to setup python and its necessary dependencies if you scroll down to the bottom.
 
-For experienced users please clone the repository, navigate to the main folder and install using:
+hcga can easily be installed via PyPi:
+
+```
+pip install hcga
+```
+
+Alternatively please clone the repository, navigate to the main folder and install using:
 
 ```
 pip install .
