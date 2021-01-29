@@ -13,6 +13,10 @@ L = logging.getLogger(__name__)
 class NoDaemonProcess(multiprocessing.Process):
     """Class that represents a non-daemon process"""
 
+    def __init__(self, group=None, target=None, name=None, args=(), kwargs={}):
+        """Ensures group=None, for macosx."""
+        super().__init__(group=None, target=target, name=name, args=args, kwargs=kwargs)
+
     def _get_daemon(self):  # pylint: disable=no-self-use
         """Get daemon flag"""
         return False
