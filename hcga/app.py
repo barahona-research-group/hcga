@@ -30,8 +30,12 @@ L.setLevel(logging.DEBUG)
 
 
 @click.group()
-def cli():
-    """init app."""
+@click.option("-v", "--verbose", count=True)
+def cli(verbose):
+    """Cli."""
+    loglevel = (logging.WARNING, logging.INFO, logging.DEBUG)[min(verbose, 2)]
+    logformat = "%(asctime)s %(levelname)s %(name)s: %(message)s"
+    logging.basicConfig(level=loglevel, format=logformat)
 
 
 @cli.command("extract_features")

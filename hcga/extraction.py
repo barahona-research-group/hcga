@@ -161,6 +161,7 @@ def get_list_feature_classes(
     feature_names = [
         _f.stem for _f in feature_path.glob("*.py") if _f.stem not in non_feature_files
     ]
+    L.info("Setting up feature classes...")
     for feature_name in tqdm(feature_names):
         feature_class = _load_feature_class(feature_name)
         if mode in feature_class.modes or mode == "all":
