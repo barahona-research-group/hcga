@@ -92,7 +92,7 @@ $ pip install .
 
 <span class="c1"># add new graph to the collection</span>
 <span class="n">graph_label</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># graph_label should be an integer</span>
-<span class="n">graphs</span><span class="o">.</span><span class="n">add_graph</span><span class="p">(</span><span class="n">Graph</span><span class="p">(</span><span class="n">nodes_df</span><span class="p">,</span> <span class="n">edges_df</span><span class="p">,</span> <span class="n">graph_label</span><span class="p">))</span>
+<span class="n">graphs</span><span class="o">.</span><span class="n">add_graph</span><span class="p">(</span><span class="n">Graph</span><span class="p">(</span><span class="n">nodes_df</span><span class="p">,</span> <span class="n">edges_df</span><span class="p">,</span> <span class="n">graph_label</span><span class="p">)</span>
 
 <span class="c1"># save dataset to file &#39;./dataset.pkl&#39;</span>
 <span class="n">save_dataset</span><span class="p">(</span><span class="n">graphs</span><span class="p">,</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
@@ -185,7 +185,15 @@ $ pip install .
 <p>Documentation of the API of <em>hcga</em>.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="app.html">The cli app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="app.html">The cli app</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="app.html#cli">cli</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="app.html#cli-extract-features">extract_features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="app.html#cli-feature-analysis">feature_analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="app.html#cli-get-data">get_data</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="hcga.html">The hcga class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="graph.html">The graph data structure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="feature_class.html">The feature class module</a></li>

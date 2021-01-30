@@ -46,6 +46,338 @@ directly from the command line:</p>
 <p><code class="docutils literal notranslate"><span class="pre">hcga</span> <span class="pre">feature_analysis</span> <span class="pre">ENZYMES`</span></code></p>
 <p>Alternatively these commands can be bundled together into a single bash file,
 see ‘run_example.sh’ in the examples folder.</p>
+<div class="section" id="cli">
+<h2>cli<a class="headerlink" href="#cli" title="Permalink to this headline">¶</a></h2>
+<p>Cli.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cli <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt id="cmdoption-cli-v">
+<span id="cmdoption-cli-verbose"></span><code class="sig-name descname">-v</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--verbose</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cli-v" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="section" id="cli-extract-features">
+<h3>extract_features<a class="headerlink" href="#cli-extract-features" title="Permalink to this headline">¶</a></h3>
+<p>Extract features from dataset of graphs and save the feature matrix, info and labels.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cli extract_features <span class="o">[</span>OPTIONS<span class="o">]</span> DATASET
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt id="cmdoption-cli-extract_features-rf">
+<span id="cmdoption-cli-extract-features-rf"></span><span id="cmdoption-cli-extract_features-results-folder"></span><span id="cmdoption-cli-extract-features-results-folder"></span><code class="sig-name descname">-rf</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--results-folder</code><code class="sig-prename descclassname"> &lt;results_folder&gt;</code><a class="headerlink" href="#cmdoption-cli-extract_features-rf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Location of results</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>results</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-extract_features-n">
+<span id="cmdoption-cli-extract-features-n"></span><span id="cmdoption-cli-extract_features-n-workers"></span><span id="cmdoption-cli-extract-features-n-workers"></span><code class="sig-name descname">-n</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--n-workers</code><code class="sig-prename descclassname"> &lt;n_workers&gt;</code><a class="headerlink" href="#cmdoption-cli-extract_features-n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of workers for multiprocessing</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>1</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-extract_features-m">
+<span id="cmdoption-cli-extract-features-m"></span><span id="cmdoption-cli-extract_features-mode"></span><span id="cmdoption-cli-extract-features-mode"></span><code class="sig-name descname">-m</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--mode</code><code class="sig-prename descclassname"> &lt;mode&gt;</code><a class="headerlink" href="#cmdoption-cli-extract_features-m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mode of features to extract (fast, medium, slow)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>fast</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-extract_features-norm">
+<span id="cmdoption-cli-extract-features-norm"></span><span id="cmdoption-cli-extract_features-no-norm"></span><span id="cmdoption-cli-extract-features-no-norm"></span><code class="sig-name descname">--norm</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--no-norm</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cli-extract_features-norm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalised features by number of edges/nodes (by default not)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>True</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-extract_features-node-feat">
+<span id="cmdoption-cli-extract-features-node-feat"></span><span id="cmdoption-cli-extract_features-no-node-feat"></span><span id="cmdoption-cli-extract-features-no-node-feat"></span><code class="sig-name descname">--node-feat</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--no-node-feat</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cli-extract_features-node-feat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use node features if any.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>True</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-extract_features-sl">
+<span id="cmdoption-cli-extract-features-sl"></span><span id="cmdoption-cli-extract_features-stats-level"></span><span id="cmdoption-cli-extract-features-stats-level"></span><code class="sig-name descname">-sl</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--stats-level</code><code class="sig-prename descclassname"> &lt;stats_level&gt;</code><a class="headerlink" href="#cmdoption-cli-extract_features-sl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Level of statistical features (basic, medium, advanced)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>advanced</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-extract_features-timeout">
+<span id="cmdoption-cli-extract-features-timeout"></span><code class="sig-name descname">--timeout</code><code class="sig-prename descclassname"> &lt;timeout&gt;</code><a class="headerlink" href="#cmdoption-cli-extract_features-timeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Timeout for feature evaluations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>10.0</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-extract_features-of">
+<span id="cmdoption-cli-extract-features-of"></span><span id="cmdoption-cli-extract_features-output-file"></span><span id="cmdoption-cli-extract-features-output-file"></span><code class="sig-name descname">-of</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--output-file</code><code class="sig-prename descclassname"> &lt;output_file&gt;</code><a class="headerlink" href="#cmdoption-cli-extract_features-of" title="Permalink to this definition">¶</a></dt>
+<dd><p>Location of results, by default same as initial dataset</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-extract_features-runtimes">
+<span id="cmdoption-cli-extract-features-runtimes"></span><span id="cmdoption-cli-extract_features-no-runtimes"></span><span id="cmdoption-cli-extract-features-no-runtimes"></span><code class="sig-name descname">--runtimes</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--no-runtimes</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cli-extract_features-runtimes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output runtimes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-extract_features-connected">
+<span id="cmdoption-cli-extract-features-connected"></span><span id="cmdoption-cli-extract_features-no-connected"></span><span id="cmdoption-cli-extract-features-no-connected"></span><code class="sig-name descname">--connected</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--no-connected</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cli-extract_features-connected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove disconnected components</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt id="cmdoption-cli-extract_features-arg-DATASET">
+<span id="cmdoption-cli-extract-features-arg-dataset"></span><code class="sig-name descname">DATASET</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cli-extract_features-arg-DATASET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</div>
+<div class="section" id="cli-feature-analysis">
+<h3>feature_analysis<a class="headerlink" href="#cli-feature-analysis" title="Permalink to this headline">¶</a></h3>
+<p>Analysis of the features extracted in feature_file.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cli feature_analysis <span class="o">[</span>OPTIONS<span class="o">]</span> DATASET
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt id="cmdoption-cli-feature_analysis-rf">
+<span id="cmdoption-cli-feature-analysis-rf"></span><span id="cmdoption-cli-feature_analysis-results-folder"></span><span id="cmdoption-cli-feature-analysis-results-folder"></span><code class="sig-name descname">-rf</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--results-folder</code><code class="sig-prename descclassname"> &lt;results_folder&gt;</code><a class="headerlink" href="#cmdoption-cli-feature_analysis-rf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Location of results</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>./results</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-feature_analysis-ff">
+<span id="cmdoption-cli-feature-analysis-ff"></span><span id="cmdoption-cli-feature_analysis-feature-file"></span><span id="cmdoption-cli-feature-analysis-feature-file"></span><code class="sig-name descname">-ff</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--feature-file</code><code class="sig-prename descclassname"> &lt;feature_file&gt;</code><a class="headerlink" href="#cmdoption-cli-feature_analysis-ff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Location of features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>all_features.pkl</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-feature_analysis-analysis-type">
+<span id="cmdoption-cli-feature-analysis-analysis-type"></span><code class="sig-name descname">--analysis-type</code><code class="sig-prename descclassname"> &lt;analysis_type&gt;</code><a class="headerlink" href="#cmdoption-cli-feature_analysis-analysis-type" title="Permalink to this definition">¶</a></dt>
+<dd><p>classification/regression/unsupervised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>classification</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-feature_analysis-graph-removal">
+<span id="cmdoption-cli-feature-analysis-graph-removal"></span><code class="sig-name descname">--graph-removal</code><code class="sig-prename descclassname"> &lt;graph_removal&gt;</code><a class="headerlink" href="#cmdoption-cli-feature_analysis-graph-removal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fraction of failed features to remove a graph from dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>0.3</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-feature_analysis-i">
+<span id="cmdoption-cli-feature-analysis-i"></span><span id="cmdoption-cli-feature_analysis-interpretability"></span><span id="cmdoption-cli-feature-analysis-interpretability"></span><code class="sig-name descname">-i</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--interpretability</code><code class="sig-prename descclassname"> &lt;interpretability&gt;</code><a class="headerlink" href="#cmdoption-cli-feature_analysis-i" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpretability of feature to consider</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>1</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-feature_analysis-m">
+<span id="cmdoption-cli-feature-analysis-m"></span><span id="cmdoption-cli-feature_analysis-model"></span><span id="cmdoption-cli-feature-analysis-model"></span><code class="sig-name descname">-m</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--model</code><code class="sig-prename descclassname"> &lt;model&gt;</code><a class="headerlink" href="#cmdoption-cli-feature_analysis-m" title="Permalink to this definition">¶</a></dt>
+<dd><p>model for feature analysis (RF, LGBM, XG)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>XG</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-feature_analysis-kfold">
+<span id="cmdoption-cli-feature-analysis-kfold"></span><span id="cmdoption-cli-feature_analysis-no-kfold"></span><span id="cmdoption-cli-feature-analysis-no-kfold"></span><code class="sig-name descname">--kfold</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--no-kfold</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cli-feature_analysis-kfold" title="Permalink to this definition">¶</a></dt>
+<dd><p>use K-fold</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>True</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-feature_analysis-reduce-set">
+<span id="cmdoption-cli-feature-analysis-reduce-set"></span><span id="cmdoption-cli-feature_analysis-no-reduce-set"></span><span id="cmdoption-cli-feature-analysis-no-reduce-set"></span><code class="sig-name descname">--reduce-set</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--no-reduce-set</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cli-feature_analysis-reduce-set" title="Permalink to this definition">¶</a></dt>
+<dd><p>True or False whether to recompute accuarcies with a reduced set of top features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>True</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-feature_analysis-reduced-set-size">
+<span id="cmdoption-cli-feature-analysis-reduced-set-size"></span><code class="sig-name descname">--reduced-set-size</code><code class="sig-prename descclassname"> &lt;reduced_set_size&gt;</code><a class="headerlink" href="#cmdoption-cli-feature_analysis-reduced-set-size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of uncorrelated top features to consider in top reduced feature classificaion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>100</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-feature_analysis-reduced-set-max-correlation">
+<span id="cmdoption-cli-feature-analysis-reduced-set-max-correlation"></span><code class="sig-name descname">--reduced-set-max-correlation</code><code class="sig-prename descclassname"> &lt;reduced_set_max_correlation&gt;</code><a class="headerlink" href="#cmdoption-cli-feature_analysis-reduced-set-max-correlation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum correlation to allow for selection of top features     for reduced feature classification.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>0.9</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-feature_analysis-p">
+<span id="cmdoption-cli-feature-analysis-p"></span><span id="cmdoption-cli-feature_analysis-plot"></span><span id="cmdoption-cli-feature-analysis-plot"></span><span id="cmdoption-cli-feature_analysis-np"></span><span id="cmdoption-cli-feature-analysis-np"></span><span id="cmdoption-cli-feature_analysis-no-plot"></span><span id="cmdoption-cli-feature-analysis-no-plot"></span><code class="sig-name descname">-p</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--plot</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">-np</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--no-plot</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cli-feature_analysis-p" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optionnaly plot analysis results</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>True</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-feature_analysis-max-feats-plot">
+<span id="cmdoption-cli-feature-analysis-max-feats-plot"></span><code class="sig-name descname">--max-feats-plot</code><code class="sig-prename descclassname"> &lt;max_feats_plot&gt;</code><a class="headerlink" href="#cmdoption-cli-feature_analysis-max-feats-plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of top features to plot with violins.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>20</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-feature_analysis-n-splits">
+<span id="cmdoption-cli-feature-analysis-n-splits"></span><code class="sig-name descname">--n-splits</code><code class="sig-prename descclassname"> &lt;n_splits&gt;</code><a class="headerlink" href="#cmdoption-cli-feature_analysis-n-splits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of splits for k-fold, None will use an automatic estimation.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-cli-feature_analysis-n-repeats">
+<span id="cmdoption-cli-feature-analysis-n-repeats"></span><code class="sig-name descname">--n-repeats</code><code class="sig-prename descclassname"> &lt;n_repeats&gt;</code><a class="headerlink" href="#cmdoption-cli-feature_analysis-n-repeats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of repeats of k-folds for better averaged accuracies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>1</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt id="cmdoption-cli-feature_analysis-arg-DATASET">
+<span id="cmdoption-cli-feature-analysis-arg-dataset"></span><code class="sig-name descname">DATASET</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cli-feature_analysis-arg-DATASET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</div>
+<div class="section" id="cli-get-data">
+<h3>get_data<a class="headerlink" href="#cli-get-data" title="Permalink to this headline">¶</a></h3>
+<p>Generate the benchmark or test data.</p>
+<dl>
+<dt>Dataset_name can be either:</dt><dd><ul class="simple">
+<li><p>TESTDATA: to generate synthetic dataset for testing</p></li>
+<li><p>DD, ENZYMES, REDDIT-MULTI-12K, PROTEINS, MUTAG,</p></li>
+</ul>
+<p>or any other dataset hosted on
+<a class="reference external" href="https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets">https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets</a></p>
+</dd>
+</dl>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cli get_data <span class="o">[</span>OPTIONS<span class="o">]</span> DATASET_NAME
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt id="cmdoption-cli-get_data-f">
+<span id="cmdoption-cli-get-data-f"></span><span id="cmdoption-cli-get_data-folder"></span><span id="cmdoption-cli-get-data-folder"></span><code class="sig-name descname">-f</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--folder</code><code class="sig-prename descclassname"> &lt;folder&gt;</code><a class="headerlink" href="#cmdoption-cli-get_data-f" title="Permalink to this definition">¶</a></dt>
+<dd><p>Location to save dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>./datasets</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt id="cmdoption-cli-get_data-arg-DATASET_NAME">
+<span id="cmdoption-cli-get-data-arg-dataset-name"></span><code class="sig-name descname">DATASET_NAME</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cli-get_data-arg-DATASET_NAME" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</div>
+</div>
 </div>
 
 
@@ -66,7 +398,15 @@ see ‘run_example.sh’ in the examples folder.</p>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">The cli app</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The cli app</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#cli">cli</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cli-extract-features">extract_features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cli-feature-analysis">feature_analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cli-get-data">get_data</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="hcga.html">The hcga class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="graph.html">The graph data structure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="feature_class.html">The feature class module</a></li>
