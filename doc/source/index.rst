@@ -20,7 +20,10 @@ To install the dev version from `GitHub <https://github.com/imperialcollegelondo
        $ cd hcga
        $ pip install .
 
-There is no PyPi release version yet, but stay tuned for more!
+Alternatively please install via PyPi::
+
+       $ pip install hcga
+
 
 Usage
 *****
