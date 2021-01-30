@@ -47,7 +47,7 @@ To create custom dataset, please follow one of the [examples](https://github.com
 
 Once a dataset is created, features can be extracted using for example::
 
-    $ hcga extract_features dataset.pkl --mode fast --timeout 10 --n-workers 4 
+    $ hcga -v extract_features dataset.pkl --mode fast --timeout 10 --n-workers 4 
 
 we refer to the hcga app documentation for more details, but the main options here include:
 
@@ -55,13 +55,14 @@ we refer to the hcga app documentation for more details, but the main options he
 - ``--timeout 10``: stop features computation after 10 seconds (this prevents some features to get stuck)
 - ``--n-workers 4``: set the number of workers in multiprocessing
 - ``--runtime``: this option runs a small set of graphs and ouput estimated times for each feature
+- ``-v``: verbose mode, to have more information on the state of the run
 
 3. Classifiy graphs
 --------------------
 
 Finally, to use the extracted features to classify graphs with respect to their labels, one use::
 
-    $ hcga feature_analysis dataset --interpretability 1
+    $ hcgafeature_analysis dataset --interpretability 1
 
 where ``dataset`` is the name of the dataset, and ``--interpretability 1`` selects the features with all interpretabilities. Choices range from ``1-5``, where ``5`` only uses most interpretable features.
 
