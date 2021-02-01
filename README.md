@@ -70,7 +70,6 @@ Head over to our [documentation](https://barahona-research-group.github.io/hcga/
 For a quick start, check out our [examples](https://github.com/barahona-research-group/hcga/tree/master/examples) in the `examples/` directory.
 
 ## Contributors
-*****************
 
 - Robert Peach, GitHub: `peach-lucien <https://github.com/peach-lucien>`_
 - Alexis Arnaudon, GitHub: `arnaudon <https://github.com/arnaudon>`_
