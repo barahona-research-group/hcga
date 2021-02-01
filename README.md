@@ -10,7 +10,7 @@ Networks are widely used as mathematical models of complex systems across many s
 
 ## Installation
 
-For users that are not familiar with python and would like to use this code, we apologise that it isn't available in other languages. However, to help set you up with have provided a description of the steps required to setup python and its necessary dependencies if you scroll down to the bottom.
+For users who are not familiar with python and would like to use this code, we apologise that it isn't available in other languages. However, to help set you up we have provided a description of the steps required to install python and its necessary dependencies if you scroll down to the bottom.
 
 hcga can easily be installed via PyPi:
 
@@ -26,10 +26,9 @@ pip install .
 
 ## Main Work Flow
 
-1. Create a dataset
---------------------
+### 1. Create a dataset
 
-Benchmarks datasets from `Graphkernel <https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets>`_ can be loaded directly with::
+Benchmarks datasets from `Graphkernel <https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets>`_ can be loaded directly with:
 
     $ hcga get_data DATASET
 
@@ -40,10 +39,9 @@ where for example, ``DATASET`` can be one of
     * PROTEINS
     * REDDIT-MULTI-12K
     
-To create custom dataset, please follow one of the [examples](https://github.com/barahona-research-group/hcga/tree/master/examples) in the `examples/` directory.
+To create a custom dataset, please follow one of the [examples](https://github.com/barahona-research-group/hcga/tree/master/examples) in the `examples/` directory.
     
-2. Extract features
---------------------
+### 2. Extract features
 
 Once a dataset is created, features can be extracted using for example::
 
@@ -52,19 +50,18 @@ Once a dataset is created, features can be extracted using for example::
 we refer to the hcga app documentation for more details, but the main options here include:
 
 - ``--mode fast``: only extract simple features (other options include ``medium/slow`` 
-- ``--timeout 10``: stop features computation after 10 seconds (this prevents some features to get stuck)
+- ``--timeout 10``: stop feature computation after 10 seconds (this prevents some features to get stuck)
 - ``--n-workers 4``: set the number of workers in multiprocessing
-- ``--runtime``: this option runs a small set of graphs and ouput estimated times for each feature
+- ``--runtime``: this option runs a small set of graphs and outputs estimated times for each feature
 - ``-v``: verbose mode, to have more information on the state of the run
 
-3. Classifiy graphs
---------------------
+### 3. Classify graphs
 
-Finally, to use the extracted features to classify graphs with respect to their labels, one use::
+Finally, to use the extracted features to classify graphs with respect to their labels, one uses:
 
     $ hcgafeature_analysis dataset --interpretability 1
 
-where ``dataset`` is the name of the dataset, and ``--interpretability 1`` selects the features with all interpretabilities. Choices range from ``1-5``, where ``5`` only uses most interpretable features.
+where ``dataset`` is the name of the dataset, and ``--interpretability 1`` selects the features with all interpretabilities. Choices range from ``1`` to ``5``, where ``5`` only uses most interpretable features.
 
 
 ## Documentation
@@ -79,7 +76,7 @@ For a quick start, check out our [examples](https://github.com/barahona-research
 - Alexis Arnaudon, GitHub: `arnaudon <https://github.com/arnaudon>`_
 - Henry Palasciano, GitHub: `henrypalasciano <https://github.com/henrypalasciano>`_
 - Nathan Bernier, GitHub: `nrbernier <https://github.com/nrbernier>`_
-- Julia Schmidt, Github: `misterblonde <https://github.com/misterblonde>`_
+- Julia Schmidt, GitHub: `misterblonde <https://github.com/misterblonde>`_
 
 We are always on the look out for individuals that are interested in contributing to this open-source project. Even if you are just using *hcga* and made some minor updates, we would be interested in your input. 
 
