@@ -16,7 +16,6 @@ setup(
         "scikit-learn>=0.23.1",
         "matplotlib>=1.4.3",
         "seaborn>=0.9.0",
-        "lightgbm>=2.3.1",
         "shap>=0.35.0",
         "pandas>=1.0.3",
         "wget>=3.2",
