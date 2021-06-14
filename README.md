@@ -115,7 +115,7 @@ bioRxiv 2020.09.25.312926; doi: https://doi.org/10.1101/2020.09.25.312926
 The bibtex reference:
 ```
 @article{PEACH2021,
-title = {HCGA: Highly comparative graph analysis for network phenotyping},
+title = {HCGA: Highly comparative graph analysis for network phenotyping}, 
 journal = {Patterns},
 volume = {2},
 number = {4},
@@ -124,9 +124,7 @@ year = {2021},
 issn = {2666-3899},
 doi = {https://doi.org/10.1016/j.patter.2021.100227},
 url = {https://www.sciencedirect.com/science/article/pii/S2666389921000416},
-author = {Robert L. Peach and Alexis Arnaudon and Julia A. Schmidt and Henry A. Palasciano and Nathan R. Bernier and Kim E. Jelfs and Sophia N. Yaliraki and Mauricio Barahona},
-keywords = {high-throughput phenotyping, networks, graph theory, machine learning, feature extraction, graph classification, graph regression},
-abstract = {Networks are widely used as mathematical models of complex systems across many scientific disciplines. Decades of work have produced a vast corpus of research characterizing the topological, combinatorial, statistical, and spectral properties of graphs. Each graph property can be thought of as a feature that captures important (and sometimes overlapping) characteristics of a network. In this paper, we introduce HCGA, a framework for highly comparative analysis of graph datasets that computes several thousands of graph features from any given network. HCGA also offers a suite of statistical learning and data analysis tools for automated identification and selection of important and interpretable features underpinning the characterization of graph datasets. We show that HCGA outperforms other methodologies on supervised classification tasks on benchmark datasets while retaining the interpretability of network features. We exemplify HCGA by predicting the charge transfer in organic semiconductors and clustering a dataset of neuronal morphology images.}
+author = {Robert L. Peach and Alexis Arnaudon and Julia A. Schmidt and Henry A. Palasciano and Nathan R. Bernier and Kim E. Jelfs and Sophia N. Yaliraki and Mauricio Barahona}
 }
 ```
 
