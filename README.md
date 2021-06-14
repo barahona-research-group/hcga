@@ -113,7 +113,7 @@ bioRxiv 2020.09.25.312926; doi: https://doi.org/10.1101/2020.09.25.312926
 ```
 
 The bibtex reference:
-```
+
 @article{PEACH2021,
 title = {HCGA: Highly comparative graph analysis for network phenotyping}, 
 journal = {Patterns},
