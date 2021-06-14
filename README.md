@@ -101,16 +101,14 @@ Thanks for anyone and everyone that chooses to contribute on this project.
 
 Please cite our paper if you use this code in your own work:
 
-```
-hcga: Highly Comparative Graph Analysis for network phenotyping
-Robert L Peach, Alexis Arnaudon, Julia A Schmidt, Henry Palasciano, Nathan R Bernier, Kim Jelfs, Sophia Yaliraki, Mauricio Barahona
-bioRxiv 2020.09.25.312926; doi: https://doi.org/10.1101/2020.09.25.312926 
-
 Robert L. Peach, Alexis Arnaudon, Julia A. Schmidt, Henry A. Palasciano, Nathan R. Bernier, Kim E. Jelfs, Sophia N. Yaliraki, Mauricio Barahona,
 HCGA: Highly comparative graph analysis for network phenotyping,
 Patterns 2 (4), 100227 (2021)
 ISSN 2666-3899,
 https://doi.org/10.1016/j.patter.2021.100227.
+
+Originally appeared as a Biorxiv preprint:
+bioRxiv 2020.09.25.312926; doi: https://doi.org/10.1101/2020.09.25.312926 
 
 ```
 
