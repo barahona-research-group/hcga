@@ -11,6 +11,7 @@ featureclass_name = "Looplessness"
 
 
 @lru_cache(maxsize=None)
+
 def looplessness(graph):  # pylint: disable=too-many-locals
     """Looplessness measure class
 
@@ -95,11 +96,16 @@ def looplessness(graph):  # pylint: disable=too-many-locals
     for i in non_basal:
         equations.append(sp.Eq(LHS[i], RHS[i]))
 
-    sols = list(sp.linsolve(equations, s))[0]
+    linear_solution = list(sp.linsolve(equations, s))
+    
+    sols = linear_solution[0]
+       
 
     # Replace symbols with their trophic level value
     for i, j in enumerate(non_basal):
         trophic[j] = sols[i]
+    
+    trophic = [float(t) for t in trophic]
 
     # Compute trophic difference matrix
     trophic_diff = np.zeros([n, n])
@@ -107,6 +113,7 @@ def looplessness(graph):  # pylint: disable=too-many-locals
         for j in range(n):
             trophic_diff[i, j] = trophic[i] - trophic[j]
     trophic_diff_sq = np.square(trophic_diff)
+    
     # Compute incoherence parameter
     incoherence_parameter = np.sqrt((np.sum(np.multiply(a, trophic_diff_sq)) - 1) / e)
 
