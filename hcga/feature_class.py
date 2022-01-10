@@ -106,7 +106,7 @@ class FeatureClass:
         Args:
             graph (Graph): graph for initialisation, converted to given encoding
         """
-        self.pool = multiprocessing.Pool(processes=1)
+        self.pool = multiprocessing.Pool(processes=1, maxtasksperchild=1)
         if graph is not None:
             self.graph = graph.get_graph(self.__class__.encoding)
             self.graph_id = graph.id

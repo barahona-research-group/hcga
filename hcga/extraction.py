@@ -205,7 +205,6 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
         features = pd.DataFrame(feat_class_inst.get_features(), index=[graph.id])
         columns = [(feat_class_inst.shortname, col) for col in features.columns]
         features_df[columns] = features
-        feat_class_inst.pool.close()
         del feat_class_inst
 
         if with_runtimes:
