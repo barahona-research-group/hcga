@@ -115,6 +115,11 @@ class FeatureClass:
             self.graph = None
         self.features = {}
 
+    def __del__(self):
+        self.pool.close()
+        self.pool.terminate()
+        del self.pool
+
     @classmethod
     def setup_class(
         cls,
