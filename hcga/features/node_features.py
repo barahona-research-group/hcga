@@ -91,7 +91,7 @@ class NodeFeatures(FeatureClass):
 
     """
 
-    modes = ["fast", "medium", "slow"]
+    modes = ["medium", "slow"]
     shortname = "NF"
     name = "node_features"
     encoding = "networkx"

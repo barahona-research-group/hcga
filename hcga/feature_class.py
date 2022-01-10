@@ -116,9 +116,10 @@ class FeatureClass:
         self.features = {}
 
     def __del__(self):
-        self.pool.close()
-        self.pool.terminate()
-        del self.pool
+        if hasattr(self, 'pool'):
+            self.pool.close()
+            self.pool.terminate()
+            del self.pool
 
     @classmethod
     def setup_class(
