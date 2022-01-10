@@ -191,7 +191,7 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
         levels=[[], []], codes=[[], []], names=["feature_class", "feature_name"]
     )
     features_df = pd.DataFrame(columns=column_indexes)
-    for feature_class in tqdm(list_feature_classes):
+    for feature_class in list_feature_classes:
         if with_runtimes:
             start_time = time.time()
 
