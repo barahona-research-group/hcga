@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="hcga",
-    version="1.0.1",
+    version="1.0.2",
     description="Highly comparative graph analysis",
     author="Robert Peach + Alexis Arnaudon + Henry Palasciano",
     author_email="r.peach13@imperial.ac.uk",
