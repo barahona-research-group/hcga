@@ -106,7 +106,7 @@ class FeatureClass:
         Args:
             graph (Graph): graph for initialisation, converted to given encoding
         """
-        self.pool = multiprocessing.Pool(processes=1)
+        self.pool = multiprocessing.Pool(processes=1, maxtasksperchild=1)
         if graph is not None:
             self.graph = graph.get_graph(self.__class__.encoding)
             self.graph_id = graph.id
@@ -114,6 +114,12 @@ class FeatureClass:
         else:
             self.graph = None
         self.features = {}
+
+    def __del__(self):
+        if hasattr(self, 'pool'):
+            self.pool.close()
+            self.pool.terminate()
+            del self.pool
 
     @classmethod
     def setup_class(

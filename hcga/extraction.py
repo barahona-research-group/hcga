@@ -1,7 +1,6 @@
 """Functions necessary for the extraction of graph features."""
 import logging
 import time
-from collections import defaultdict
 from functools import partial
 from importlib import import_module
 from pathlib import Path
@@ -101,18 +100,16 @@ def extract(
 
 def _print_runtimes(all_features_df):
     """Print sorted runtimes."""
-    runtimes = defaultdict(list)
-    for raw_feature in all_features_df.values():
-        for feat in raw_feature[1]:
-            runtimes[feat].append(raw_feature[1][feat])
-    feature_names, runtimes = list(runtimes.keys()), list(runtimes.values())
-    runtime_sortid = np.argsort(np.mean(runtimes, axis=1))[::-1]
-    for feat_id in runtime_sortid:
+    mean = all_features_df["runtimes"].mean(axis=0).to_list()
+    std = all_features_df["runtimes"].std(axis=0).to_list()
+    sortid = np.argsort(mean)[::-1]
+
+    for i in sortid:
         L.info(
             "Runtime of %s is %s ( std = %s ) seconds per graph.",
-            feature_names[feat_id],
-            np.round(np.mean(runtimes[feat_id]), 3),
-            np.round(np.std(runtimes[feat_id]), 3),
+            all_features_df["runtimes"].columns[i],
+            np.round(mean[i], 3),
+            np.round(std[i], 3),
         )
 
 
@@ -190,9 +187,6 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
     Returns:
         (DataFrame): dataframe of calculated features for a given graph.
     """
-    if with_runtimes:
-        runtimes = {}
-
     column_indexes = pd.MultiIndex(
         levels=[[], []], codes=[[], []], names=["feature_class", "feature_name"]
     )
@@ -205,14 +199,13 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
         features = pd.DataFrame(feat_class_inst.get_features(), index=[graph.id])
         columns = [(feat_class_inst.shortname, col) for col in features.columns]
         features_df[columns] = features
-        feat_class_inst.pool.close()
         del feat_class_inst
 
         if with_runtimes:
-            runtimes[feature_class.shortname] = time.time() - start_time
+            features_df[("runtimes", feature_class.name)] = time.time() - start_time
 
     if with_runtimes:
-        return graph.id, [features_df, runtimes]
+        return features_df
 
     return features_df
 
