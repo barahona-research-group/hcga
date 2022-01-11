@@ -135,7 +135,6 @@ class CentralitiesBasic(FeatureClass):
     """
 
     modes = ["fast", "medium", "slow"]
-
     shortname = "CB"
     name = "centralities_basic"
     encoding = "networkx"
