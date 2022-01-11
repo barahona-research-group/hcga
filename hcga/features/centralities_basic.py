@@ -134,7 +134,8 @@ class CentralitiesBasic(FeatureClass):
            Internet Mathematics 10.3-4 (2014): 222-262.
     """
 
-    modes = ["medium", "slow"]
+    modes = ["fast", "medium", "slow"]
+
     shortname = "CB"
     name = "centralities_basic"
     encoding = "networkx"

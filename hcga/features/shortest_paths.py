@@ -78,7 +78,8 @@ class ShortestPaths(FeatureClass):
 
     """
 
-    modes = ["medium", "slow"]
+    modes = ["fast", "medium", "slow"]
+
     shortname = "SP"
     name = "shortest_paths"
     encoding = "networkx"
