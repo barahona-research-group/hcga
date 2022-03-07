@@ -102,7 +102,7 @@ class GraphCollection:
         for graph in self.graphs:
             for node_id, node in enumerate(graph.nodes):
                 graph.nodes[node_id] = node[0]
-            graph.set_n_node_features()
+            graph.set_node_features()
 
     def remove_edge_weights(self):
         """Remove edge weights."""
