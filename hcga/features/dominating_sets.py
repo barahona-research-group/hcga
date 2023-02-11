@@ -47,7 +47,6 @@ class DominatingSets(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         self.add_feature(
             "size_dominating_set",
             size_dominating_set,

@@ -28,7 +28,6 @@ class NodeCliqueNumber(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         self.add_feature(
             "clique_sizes",
             clique_sizes,

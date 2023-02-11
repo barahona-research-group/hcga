@@ -34,7 +34,6 @@ class FlowHierarchy(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         # graph clique number
         self.add_feature(
             "flow_hierarchy",

@@ -169,7 +169,7 @@ def _dot_summary_plot(shap_values, data, folder, max_feats, ext=".png"):
         shap.summary_plot(shap_values[i], data, plot_type="dot", max_display=max_feats, show=False)
         plt.title("Sample Expanded Feature Summary for Class " + str(i))
         plt.savefig(
-            os.path.join(folder, "shap_class_{}_summary{}".format(i, ext)),
+            os.path.join(folder, f"shap_class_{i}_summary{ext}"),
             dpi=200,
             bbox_inches="tight",
         )
@@ -212,7 +212,7 @@ def _plot_dendrogram_shap(
     cor_sorted["id"] = np.arange(len(cor_sorted))
     reduced_pos = cor_sorted.loc[cor_sorted.index.intersection(reduced_features), ("id", "")] + 0.5
     ax2.scatter(reduced_pos, reduced_pos, c="g", s=100)
-    ax1.title.set_text("Top {} features heatmap and dendogram".format(max_feats))
+    ax1.title.set_text(f"Top {max_feats} features heatmap and dendogram")
     plt.savefig(os.path.join(folder, "shap_dendogram" + ext), dpi=200, bbox_inches="tight")
 
 
@@ -285,14 +285,14 @@ def _plot_feature_summary(data, labels, graphs, folder, shap_values, max_feats, 
                 node_color=[c[i] for n in range(len(graph))],
             )
             ax[i + 1].set_title(
-                "Graph ID: {}, y-label: {}".format(p_id, np.round(labels[p_id], 3)),
+                f"Graph ID: {p_id}, y-label: {np.round(labels[p_id], 3)}",
                 fontsize="small",
             )
 
         feature_name = feature_name[0] + "_" + feature_name[1]
-        figs[-1].suptitle("Feature: {}".format(feature_name))
+        figs[-1].suptitle(f"Feature: {feature_name}")
         plt.savefig(
-            os.path.join(folder, "feature_{}_summary{}".format(feature_name, ext)),
+            os.path.join(folder, f"feature_{feature_name}_summary{ext}"),
             dpi=200,
             bbox_inches="tight",
         )

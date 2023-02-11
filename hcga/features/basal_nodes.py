@@ -30,15 +30,13 @@ def basal_degrees(graph):
 
 def n_basal_edges(graph):
     """n_basal_edges"""
-    return sum([dict(graph.out_degree)[i] for i in basal_nodes_func(graph)])
+    return sum(dict(graph.out_degree)[i] for i in basal_nodes_func(graph))
 
 
 def exp_basal_edge(graph):
     """exp_basal_edge"""
     in_degs = list(dict(graph.in_degree).values())
-    r = sum([dict(graph.out_degree)[i] for i in basal_nodes_func(graph)]) / (
-        graph.number_of_edges()
-    )
+    r = sum(dict(graph.out_degree)[i] for i in basal_nodes_func(graph)) / (graph.number_of_edges())
     return [i * r for i in in_degs]
 
 
@@ -61,13 +59,13 @@ def attracting_degrees(graph):
 
 def n_attracting_edges(graph):
     """n_attracting_edges"""
-    return sum([dict(graph.in_degree)[i] for i in attracting_nodes_func(graph)])
+    return sum(dict(graph.in_degree)[i] for i in attracting_nodes_func(graph))
 
 
 def exp_attracting_edge(graph):
     """exp_attracting_edge"""
     out_degs = list(dict(graph.out_degree).values())
-    r = sum([dict(graph.in_degree)[i] for i in attracting_nodes_func(graph)]) / (
+    r = sum(dict(graph.in_degree)[i] for i in attracting_nodes_func(graph)) / (
         graph.number_of_edges()
     )
     return [i * r for i in out_degs]
@@ -92,7 +90,6 @@ class BasalNodes(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         self.add_feature(
             "n_basal_nodes",
             n_basal_nodes,

@@ -84,7 +84,7 @@ class GraphCollection:
         return self.graphs[self.current_graph]
 
     def __len__(self):
-        return sum([1 for graph in self.graphs if not graph.disabled])
+        return sum(1 for graph in self.graphs if not graph.disabled)
 
     def get_n_node_features(self):
         """Get the number of features of the nodes."""
@@ -95,7 +95,7 @@ class GraphCollection:
 
     def get_num_disabled_graphs(self):
         """Get the number of disabled graphs."""
-        return len(self.graphs) - self.__len__()
+        return len(self.graphs) - len(self)
 
     def remove_node_features(self):
         """Remove the node features."""

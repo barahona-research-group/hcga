@@ -84,7 +84,6 @@ class ShortestPaths(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         # the longest path for each node
         self.add_feature(
             "largest_shortest_path",

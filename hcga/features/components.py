@@ -86,7 +86,6 @@ class Components(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         self.add_feature(
             "is_connected",
             nx.is_connected,

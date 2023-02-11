@@ -25,6 +25,8 @@ from hcga.utils import get_trivial_graph, timeout_eval
 L = logging.getLogger(__name__)
 warnings.simplefilter("ignore")
 
+# pylint: disable=consider-using-with
+
 
 def _mean_repeats(dist):
     """"""
@@ -62,7 +64,7 @@ def _feat_E(graph, features):
 
 
 class FeatureClass:
-    """ Main functionality to be inherited by each feature class"""
+    """Main functionality to be inherited by each feature class"""
 
     # Class variables that describe the feature,
     # They should be defined for all child features
@@ -116,7 +118,7 @@ class FeatureClass:
         self.features = {}
 
     def __del__(self):
-        if hasattr(self, 'pool'):
+        if hasattr(self, "pool"):
             self.pool.close()
             self.pool.terminate()
             del self.pool
@@ -167,7 +169,7 @@ class FeatureClass:
     def _test_feature_exists(self, feature_name):
         """Test if feature feature_name exists in description list."""
         if feature_name not in self.__class__.feature_descriptions:
-            raise Exception("Feature {} does not exist in class {}".format(feature_name, self.name))
+            raise Exception(f"Feature {feature_name} does not exist in class {self.name}")
 
     def get_feature_info(self, feature_name):
         """Returns a dictionary of information about the feature feature_name."""
@@ -221,7 +223,7 @@ class FeatureClass:
             statistics (str): type of statistics to apply to high dimensional features.
         """
         if not callable(feature_function):
-            raise Exception("The feature function {} is not callable!".format(feature_name))
+            raise Exception(f"The feature function {feature_name} is not callable!")
 
         if function_args is None:
             function_args = self.graph
@@ -270,34 +272,25 @@ class FeatureClass:
         if statistics == "clustering":
             if not isinstance(feature, list):
                 raise Exception(
-                    "Feature {} with clustering statistics is not a list: {}".format(
-                        feature_name, feature
-                    )
+                    f"Feat {feature_name} with clustering statistics is not a list: {feature}"
                 )
             if not isinstance(feature[0], set):
                 raise Exception(
-                    "Feature {} with clustering statistics is not a list of sets: {}".format(
-                        feature_name, feature
-                    )
+                    f"Feat {feature_name} with clustering statistics is not list of sets: {feature}"
                 )
         elif statistics in ("centrality", "node_features"):
             expected_types = (list, np.ndarray)
             if not isinstance(feature, expected_types):
                 raise Exception(
-                    "Feature {} with statistics does not return expected type{}: {}".format(
-                        feature_name, expected_types, feature
-                    )
+                    f"""Feature {feature_name} with statistics does not return
+                    expected type {expected_types}: {feature}"""
                 )
         else:
             expected_types = (int, float, np.int32, np.int64, np.float32, np.float64)
             if not isinstance(feature, expected_types):
                 raise Exception(
-                    "Feature {} of type {} with no stat does not return expected type{}: {}".format(
-                        feature_name,
-                        type(feature),
-                        expected_types,
-                        feature,
-                    )
+                    f"""Feature {feature_name} of type {type(feature)} with no stat does not
+                    return expected type {expected_types}: {feature}"""
                 )
         return feature
 
@@ -380,9 +373,7 @@ class FeatureClass:
     def get_features(self, all_features=False):
         """Compute all the possible features."""
         if self.__class__.shortname == "TP" and self.__class__.__name__ != "FeatureClass":
-            raise Exception(
-                "Shortname not set for feature class {}".format(self.__class__.__name__)
-            )
+            raise Exception(f"Shortname not set for feature class {self.__class__.__name__}")
         self.all_features = all_features
         self.compute_features()
         if self.normalize_features:
@@ -687,4 +678,4 @@ class InterpretabilityScore:
         return str(self.score)
 
     def __repr__(self):
-        return self.__class__.__name__ + "({})".format(self.__str__())
+        return self.__class__.__name__ + f"({self.__str__()})"

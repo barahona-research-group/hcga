@@ -37,7 +37,6 @@ class CoreNumber(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         self.add_feature(
             "core number",
             core_number,

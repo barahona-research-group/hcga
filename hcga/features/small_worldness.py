@@ -37,7 +37,6 @@ class SmallWorldness(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         # omega metric
         self.add_feature(
             "omega",

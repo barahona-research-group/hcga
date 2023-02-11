@@ -26,7 +26,6 @@ class Covering(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         self.add_feature(
             "min_edge_cover",
             min_edge_cover,
