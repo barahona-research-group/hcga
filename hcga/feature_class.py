@@ -412,7 +412,7 @@ class FeatureClass:
 
         self.add_feature(
             feat_name + "_coverage",
-            partial(quality.coverage(), partition=community_partition),
+            partial(quality.coverage, partition=community_partition),
             "Coverage" + compl_desc,
             feat_interpret,
         )
