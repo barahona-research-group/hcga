@@ -42,7 +42,6 @@ class MinimumCuts(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         self.add_feature(
             "min_node_cut_size",
             min_node_cut_size,

@@ -33,7 +33,6 @@ class NodeConnectivity(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         self.add_feature(
             "node_conn",
             node_conn,

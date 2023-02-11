@@ -2,7 +2,7 @@
 # for some of the options that are available
 
 [MESSAGES CONTROL]
-disable=C0103,R0904,R0903,W0511,W0232,R0922,R0801,R0921,W0141,R0401,I0013,W0142,W0622,C0325,R0205,C0330,W0108,W0640,W0201,W1401,C0415,C0112
+disable=C0103,R0904,R0903,W0511,R0801,R0401,I0013,W0622,C0325,R0205,W0108,W0640,W0201,W1401,C0415,C0112,W1514,W0719
 
 [FORMAT]
 # Maximum number of characters on a single line.
@@ -19,7 +19,7 @@ max-locals=25
 # Maximum number of return / yield for function / method body
 max-returns=6
 # Maximum number of branch for function / method body
-max-branchs=15
+max-branches=15
 # Maximum number of statements in function / method body
 max-statements=50
 # Maximum number of parents for a class (see R0901).

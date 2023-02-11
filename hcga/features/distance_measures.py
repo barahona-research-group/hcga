@@ -52,7 +52,6 @@ class DistanceMeasures(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         # barycenter
         self.add_feature(
             "barycenter_size",

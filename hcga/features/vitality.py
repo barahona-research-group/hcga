@@ -33,7 +33,6 @@ class Vitality(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         # distribution of vitality
         self.add_feature(
             "vitality",

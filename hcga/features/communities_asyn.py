@@ -69,45 +69,37 @@ class CommunitiesAsyn(FeatureClass):
         num_communities = np.linspace(2, 10, 5)
         for num_comms in num_communities:
             self.add_feature(
-                "sum_density_c={}".format(num_comms),
+                f"sum_density_c={num_comms}",
                 partial(sum_density, num_comms=num_comms),
-                "The total density of communities after fluid optimisations for c={}".format(
-                    num_comms
-                ),
+                f"The total density of communities after fluid optimisations for c={num_comms}",
                 InterpretabilityScore(3),
             )
 
             self.add_feature(
-                "ratio_density_c={}".format(num_comms),
+                f"ratio_density_c={num_comms}",
                 partial(ratio_density, num_comms=num_comms),
-                "The ratio density of communities after fluid optimisations for c={}".format(
-                    num_comms
-                ),
+                f"The ratio density of communities after fluid optimisations for c={num_comms}",
                 InterpretabilityScore(3),
             )
             self.add_feature(
-                "len_most_dense_c={}".format(num_comms),
+                f"len_most_dense_c={num_comms}",
                 partial(len_most_dense, num_comms),
-                "The length of the most dense community after fluid optimisations for c={}".format(
-                    num_comms
-                ),
+                f"The length of the densest community after fluid optimisations for c={num_comms}",
                 InterpretabilityScore(4),
             )
 
             self.add_feature(
-                "len_least_dense_c={}".format(num_comms),
+                f"len_least_dense_c={num_comms}",
                 partial(len_least_dense, num_comms),
-                "The length of the least dense community after fluid optimisations for c={}".format(
-                    num_comms
-                ),
+                f"The length of the least dense community after fluid opt for c={num_comms}",
                 InterpretabilityScore(4),
             )
 
             # computing clustering quality
             self.add_feature(
-                "partition_c={}".format(num_comms),
+                f"partition_c={num_comms}",
                 partial(partitions, num_comms),
-                "The optimal partition after fluid optimisations for c={}".format(num_comms),
+                f"The optimal partition after fluid optimisations for c={num_comms}",
                 InterpretabilityScore(4),
                 statistics="clustering",
             )

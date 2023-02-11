@@ -32,7 +32,6 @@ class Efficiency(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         # local effiency
         self.add_feature(
             "local_efficiency",

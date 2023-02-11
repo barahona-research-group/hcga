@@ -58,7 +58,6 @@ class Clustering(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         self.add_feature(
             "num_triangles",
             triang,

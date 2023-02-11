@@ -31,7 +31,6 @@ class IndependentSets(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         self.add_feature(
             "size_max_indep_set",
             size_max_indep_set,

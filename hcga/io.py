@@ -60,29 +60,25 @@ def save_features(features, feature_info, graphs, filename="./features.pkl"):
     """Save the features in a pickle."""
     if not Path(filename).parent.is_dir():
         Path(filename).parent.mkdir()
-
-    pickle.dump(
-        [features, feature_info, graphs],
-        open(filename, "wb"),
-    )
+    with open(filename, "wb") as f:
+        pickle.dump([features, feature_info, graphs], f)
 
 
 def load_features(filename="features.pkl"):
     """Save the features in a pickle."""
-    return pickle.load(open(filename, "rb"))
+    with open(filename, "rb") as f:
+        return pickle.load(f)
 
 
 def save_fitted_model(fitted_model, scaler, feature_info, folder=".", filename="./model"):
     """Save the features in a pickle."""
     if not Path(filename).parent.is_dir():
         Path(filename).parent.mkdir()
-
-    pickle.dump(
-        [fitted_model, scaler, feature_info],
-        open(os.path.join(folder, filename + ".pkl"), "wb"),
-    )
+    with open(os.path.join(folder, filename + ".pkl"), "wb") as f:
+        pickle.dump([fitted_model, scaler, feature_info], f)
 
 
 def load_fitted_model(folder=".", filename="model"):
     """Save the features in a pickle."""
-    return pickle.load(open(os.path.join(folder, filename + ".pkl"), "rb"))
+    with open(os.path.join(folder, filename + ".pkl"), "rb") as f:
+        return pickle.load(f)

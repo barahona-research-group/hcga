@@ -177,7 +177,7 @@ def _get_model(model, analysis_type):
                 model = XGBRegressor(objective="reg:squarederror", eval_metric="mlogloss")
 
         else:
-            raise Exception("Unknown model type: {}".format(model))
+            raise Exception(f"Unknown model type: {model}")
     return model
 
 
@@ -613,7 +613,7 @@ def _save_to_csv(features_info_df, analysis_results, folder="results"):
     result_df.loc["shap_feature_importance"] = analysis_results["shap_feature_importance"]
     shap_values = analysis_results["shap_values"]
     for i, shap_class in enumerate(shap_values):
-        result_df.loc["shap_importance: class {}".format(i)] = np.vstack(shap_class).mean(axis=0)
+        result_df.loc[f"shap_importance: class {i}"] = np.vstack(shap_class).mean(axis=0)
 
     if analysis_results["reduced_features"] is not None:
         reduced_features = analysis_results["reduced_features"]
@@ -622,9 +622,9 @@ def _save_to_csv(features_info_df, analysis_results, folder="results"):
         ]
         shap_values = analysis_results["reduced_shap_values"]
         for i, shap_class in enumerate(shap_values):
-            result_df.loc[
-                "reduced shap_importance: class {}".format(i), reduced_features
-            ] = np.vstack(shap_class).mean(axis=0)
+            result_df.loc[f"reduced shap_importance: class {i}", reduced_features] = np.vstack(
+                shap_class
+            ).mean(axis=0)
 
         result_df = result_df.sort_values(
             "reduced_shap_feature_importance", axis=1, ascending=False

@@ -35,7 +35,6 @@ class ChemicalTheory(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         self.add_feature(
             "wiener index",
             nx.wiener_index,

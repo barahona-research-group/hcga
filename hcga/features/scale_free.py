@@ -36,7 +36,6 @@ class ScaleFree(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         # s metric
         self.add_feature(
             "s_metric",

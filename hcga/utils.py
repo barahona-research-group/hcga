@@ -19,7 +19,7 @@ class NoDaemonProcess(multiprocessing.Process):
         """Ensures group=None, for macosx."""
         super().__init__(group=None, target=target, name=name, args=args, kwargs=kwargs)
 
-    def _get_daemon(self):  # pylint: disable=no-self-use
+    def _get_daemon(self):
         """Get daemon flag"""
         return False
 

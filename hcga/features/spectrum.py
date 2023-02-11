@@ -52,7 +52,6 @@ class Spectrum(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         # distribution of eigenvalues
         self.add_feature(
             "eigenvalues_adjacency",
@@ -67,9 +66,9 @@ class Spectrum(FeatureClass):
         for i in range(n_eigs):
             for j in range(i):
                 self.add_feature(
-                    "eigenvalue_ratio_{}_{}".format(i, j),
+                    f"eigenvalue_ratio_{i}_{j}",
                     partial(eigenvalue_ratio, i=i, j=j),
-                    "The ratio of the {} and {} eigenvalues".format(i, j),
+                    f"The ratio of the {i} and {j} eigenvalues",
                     InterpretabilityScore(2),
                 )
         # distribution of eigenvalues

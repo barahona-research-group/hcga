@@ -16,7 +16,7 @@ def eval_kcomponents(graph):
 
 def max_num_components(graph):
     """max_num_components"""
-    return max([len(i) for i in eval_kcomponents(graph).values()])
+    return max(len(i) for i in eval_kcomponents(graph).values())
 
 
 def num_connectivity_levels_k(graph):

@@ -29,7 +29,6 @@ class Eulerian(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         # checking if eulerian
         self.add_feature(
             "eulerian",

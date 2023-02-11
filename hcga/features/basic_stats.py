@@ -57,7 +57,6 @@ class BasicStats(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         # Adding basic node and edge numbers
         self.add_feature(
             "num_nodes",

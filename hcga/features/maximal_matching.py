@@ -28,7 +28,6 @@ class MaximalMatching(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         self.add_feature(
             "maximal_matching",
             maximal_matching,

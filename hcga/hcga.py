@@ -47,9 +47,7 @@ class Hcga:
                 #  self.prediction_graphs = load_dataset(dataset)
                 raise Exception("Not implemented")
 
-    def generate_data(  # pylint: disable=no-self-use
-        self, dataset_name="ENZYMES", folder="./datasets"
-    ):
+    def generate_data(self, dataset_name="ENZYMES", folder="./datasets"):
         """generate benchmark data."""
 
         if dataset_name == "TESTDATA":
@@ -58,7 +56,7 @@ class Hcga:
 
             make_test_dataset(folder=folder)
         else:
-            print("---Downloading and creating pickle for {}---".format(dataset_name))
+            print(f"---Downloading and creating pickle for {dataset_name}---")
             from .dataset_creation import make_benchmark_dataset
 
             make_benchmark_dataset(dataset_name=dataset_name, folder=folder)

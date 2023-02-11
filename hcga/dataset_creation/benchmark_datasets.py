@@ -29,18 +29,16 @@ def make(dataset_name="ENZYMES", folder="./datasets"):
     """
 
     wget.download(
-        "https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets/{}.zip".format(
-            dataset_name
-        )
+        f"https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets/{dataset_name}.zip"
     )
     print("\n")
-    unzip("{}.zip".format(dataset_name))
+    unzip(f"{dataset_name}.zip")
 
     graphs = extract_benchmark_graphs(dataset_name, dataset_name)
     save_dataset(graphs, dataset_name, folder=folder)
 
     shutil.rmtree(dataset_name)
-    os.remove("{}.zip".format(dataset_name))
+    os.remove(f"{dataset_name}.zip")
 
 
 def extract_benchmark_graphs(datadir, dataname):  # pylint: disable=too-many-locals

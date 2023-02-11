@@ -11,7 +11,6 @@ featureclass_name = "Looplessness"
 
 
 @lru_cache(maxsize=None)
-
 def looplessness(graph):  # pylint: disable=too-many-locals
     """Looplessness measure class
 
@@ -65,7 +64,7 @@ def looplessness(graph):  # pylint: disable=too-many-locals
 
     # Find basal nodes
     basal = [i for i in in_degrees_dict if in_degrees_dict[i] == 0]
-    b_e = sum([out_degrees[i] for i in basal])
+    b_e = sum(out_degrees[i] for i in basal)
 
     # Compute expected trophic coherence and expected branching factor
     exp_trophic_coher = np.sqrt(e / b_e - 1)
@@ -80,7 +79,7 @@ def looplessness(graph):  # pylint: disable=too-many-locals
     for i in basal:
         trophic[i] = 1
 
-    s = sp.symbols("s0:%d" % len(non_basal))
+    s = sp.symbols(f"s0:{len(non_basal)}")
 
     for i, j in enumerate(non_basal):
         trophic[j] = s[i]
@@ -97,14 +96,13 @@ def looplessness(graph):  # pylint: disable=too-many-locals
         equations.append(sp.Eq(LHS[i], RHS[i]))
 
     linear_solution = list(sp.linsolve(equations, s))
-    
+
     sols = linear_solution[0]
-       
 
     # Replace symbols with their trophic level value
     for i, j in enumerate(non_basal):
         trophic[j] = sols[i]
-    
+
     trophic = [float(t) for t in trophic]
 
     # Compute trophic difference matrix
@@ -113,15 +111,15 @@ def looplessness(graph):  # pylint: disable=too-many-locals
         for j in range(n):
             trophic_diff[i, j] = trophic[i] - trophic[j]
     trophic_diff_sq = np.square(trophic_diff)
-    
+
     # Compute incoherence parameter
     incoherence_parameter = np.sqrt((np.sum(np.multiply(a, trophic_diff_sq)) - 1) / e)
 
     # Compute loop exponent
     loop_exponent = (
         np.log(branching_factor)
-        + 1 / (2 * (exp_trophic_coher ** 2))
-        - 1 / (2 * (incoherence_parameter ** 2))
+        + 1 / (2 * (exp_trophic_coher**2))
+        - 1 / (2 * (incoherence_parameter**2))
     )
 
     return (
@@ -148,7 +146,6 @@ class Looplessness(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         self.add_feature(
             "branching_factor",
             partial(_get, i=0),

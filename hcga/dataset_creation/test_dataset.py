@@ -21,7 +21,7 @@ def add_dummy_node_features(graph):
 
 
 def make(folder="./datasets", add_features=False, write_to_file=True, n_graphs=5):
-    """ Makes pickle with graphs that test robustness of hcga """
+    """Makes pickle with graphs that test robustness of hcga"""
 
     graphs = []
     # one, two and three node graphs

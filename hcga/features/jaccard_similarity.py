@@ -135,7 +135,6 @@ class JaccardSimilarity(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         # Basic stats
         self.add_feature(
             "number_of_edges",

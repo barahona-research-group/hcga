@@ -66,7 +66,6 @@ class InOutDegrees(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
-
         self.add_feature(
             "in_degree",
             in_degree,
