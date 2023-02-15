@@ -2,7 +2,6 @@
 import logging
 import multiprocessing
 import multiprocessing.pool
-from multiprocessing import TimeoutError
 
 import pandas as pd
 

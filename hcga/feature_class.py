@@ -6,7 +6,6 @@ The functions here are necessary to evaluate each individual feature found insid
 
 """
 import logging
-import multiprocessing
 import sys
 import traceback
 import warnings
