@@ -5,12 +5,18 @@ import numpy as np
 from pathlib import Path
 import pandas as pd
 
+
 from hcga.graph import Graph, GraphCollection
 from hcga.io import save_dataset
 from hcga.extraction import extract
 from hcga.io import load_dataset
 from hcga.io import save_features
 from hcga.io import load_features
+
+# import logging
+
+# L = logging.getLogger(__name__)
+# L.setLevel(logging.DEBUG)
 
 
 def make_graph(data, label):
@@ -35,7 +41,7 @@ def make_graph(data, label):
     return Graph(nodes_df, edges_df, label)
 
 
-if __name__ == "__main__":
+def main():
     if not Path("dataset").exists():
         Repo.clone_from("git@github.com:mjsmith037/Classifying_Bipartite_Networks.git", "dataset")
 
@@ -48,7 +54,11 @@ if __name__ == "__main__":
             for name in tqdm(df[df["type"] == tpe].name):
                 try:
                     data = pd.read_csv(f"dataset/Data/edgelists/{tpe}/{name}.csv", header=None)
-                    graphs.add_graph(make_graph(data, i))
+                    graph = make_graph(data, i)
+                    if len(graph.nodes) < 10000 and len(graph.edges) < 50000:
+                        graphs.add_graph(graph)
+                    else:
+                        print(len(graph.nodes), len(graph.edges))
                 except FileNotFoundError:
                     pass
         print(graphs)
@@ -59,14 +69,18 @@ if __name__ == "__main__":
     if not Path("features.pkl").exists():
         features, features_info = extract(
             graphs,
-            n_workers=8,
+            n_workers=80,
             mode="fast",
             statistics_level="basic",
             with_runtimes=False,
             with_node_features=False,
-            timeout=5,
+            timeout=5.0,
         )
 
         save_features(features, features_info, graphs, "features.pkl")
     else:
-        features, features_info, graphs = load_features(filename='features.pkl')
+        features, features_info, graphs = load_features(filename="features.pkl")
+
+
+if __name__ == "__main__":
+    main()

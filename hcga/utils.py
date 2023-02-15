@@ -2,6 +2,7 @@
 import logging
 import multiprocessing
 import multiprocessing.pool
+from multiprocessing import TimeoutError
 
 import pandas as pd
 
@@ -38,7 +39,7 @@ class NestedPool(multiprocessing.pool.Pool):  # pylint: disable=abstract-method
 def timeout_eval(func, args, timeout=None, pool=None):
     """Evaluate a function and kill it is it takes longer than timeout.
 
-    If timeout is Nonei or == 0, a simple evaluation will take place.
+    If timeout is None or == 0, a simple evaluation will take place.
     """
     if timeout is None or timeout == 0:
         return func(*args)

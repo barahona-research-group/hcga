@@ -1,6 +1,7 @@
 """Functions necessary for the extraction of graph features."""
 import logging
 import time
+import multiprocessing
 from functools import partial
 from importlib import import_module
 from pathlib import Path
@@ -190,19 +191,19 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
     column_indexes = pd.MultiIndex(
         levels=[[], []], codes=[[], []], names=["feature_class", "feature_name"]
     )
-    features_df = pd.DataFrame(columns=column_indexes)
-    for feature_class in list_feature_classes:
-        if with_runtimes:
-            start_time = time.time()
+    with multiprocessing.Pool(processes=1, maxtasksperchild=1) as pool:
+        features_df = pd.DataFrame(columns=column_indexes)
+        for feature_class in list_feature_classes:
+            if with_runtimes:
+                start_time = time.time()
 
-        feat_class_inst = feature_class(graph)
-        features = pd.DataFrame(feat_class_inst.get_features(), index=[graph.id])
-        columns = [(feat_class_inst.shortname, col) for col in features.columns]
-        features_df[columns] = features
-        del feat_class_inst
+            feat_class_inst = feature_class(graph)
+            features = pd.DataFrame(feat_class_inst.get_features(pool=pool), index=[graph.id])
+            columns = [(feat_class_inst.shortname, col) for col in features.columns]
+            features_df[columns] = features
 
-        if with_runtimes:
-            features_df[("runtimes", feature_class.name)] = time.time() - start_time
+            if with_runtimes:
+                features_df[("runtimes", feature_class.name)] = time.time() - start_time
 
     if with_runtimes:
         return features_df
@@ -210,12 +211,7 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
     return features_df
 
 
-def compute_all_features(
-    graphs,
-    list_feature_classes,
-    n_workers=1,
-    with_runtimes=False,
-):
+def compute_all_features(graphs, list_feature_classes, n_workers=1, with_runtimes=False):
     """Compute features for all graphs
 
     Args:

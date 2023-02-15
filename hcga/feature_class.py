@@ -55,11 +55,15 @@ def _trivial(graph):  # pylint: disable=unused-argument
 
 def _feat_N(graph, features):
     """"""
+    if features is None:
+        return None
     return features / len(graph.nodes)
 
 
 def _feat_E(graph, features):
     """"""
+    if features is None:
+        return None
     return features / len(graph.edges)
 
 
@@ -108,7 +112,6 @@ class FeatureClass:
         Args:
             graph (Graph): graph for initialisation, converted to given encoding
         """
-        self.pool = multiprocessing.Pool(processes=1, maxtasksperchild=1)
         if graph is not None:
             self.graph = graph.get_graph(self.__class__.encoding)
             self.graph_id = graph.id
@@ -116,12 +119,6 @@ class FeatureClass:
         else:
             self.graph = None
         self.features = {}
-
-    def __del__(self):
-        if hasattr(self, "pool"):
-            self.pool.close()
-            self.pool.terminate()
-            del self.pool
 
     @classmethod
     def setup_class(
@@ -370,11 +367,12 @@ class FeatureClass:
         """
         self.add_feature("test", _trivial, "Test feature for the base feature class", 5)
 
-    def get_features(self, all_features=False):
+    def get_features(self, all_features=False, pool=None):
         """Compute all the possible features."""
         if self.__class__.shortname == "TP" and self.__class__.__name__ != "FeatureClass":
             raise Exception(f"Shortname not set for feature class {self.__class__.__name__}")
         self.all_features = all_features
+        self.pool = pool
         self.compute_features()
         if self.normalize_features:
             self.compute_normalize_features()
