@@ -23,6 +23,7 @@ setup(
         "joblib>=0.14.1",
         "IPython>=7.19.0",
         "xgboost>=1.3.3",
+        "dask",
     ],
     entry_points={"console_scripts": ["hcga=hcga.app:cli"]},
 )

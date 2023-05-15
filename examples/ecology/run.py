@@ -13,11 +13,9 @@ from hcga.io import load_dataset
 from hcga.io import save_features
 from hcga.io import load_features
 
-# import logging
 
-# L = logging.getLogger(__name__)
-# L.setLevel(logging.DEBUG)
-
+import logging
+logging.basicConfig(filename='logs.log', encoding='utf-8', level=logging.DEBUG)
 
 def make_graph(data, label):
     edgelist = list(zip(data[0], data[1]))
@@ -65,22 +63,24 @@ def main():
         save_dataset(graphs, "graphs", folder=".")
     else:
         graphs = load_dataset("graphs.pkl")
-
     if not Path("features.pkl").exists():
         features, features_info = extract(
             graphs,
-            n_workers=80,
+            n_workers=50,
             mode="fast",
             statistics_level="basic",
             with_runtimes=False,
             with_node_features=False,
-            timeout=5.0,
+            timeout=100.0,
+            #use_dask=True
         )
-
         save_features(features, features_info, graphs, "features.pkl")
     else:
         features, features_info, graphs = load_features(filename="features.pkl")
 
-
+    print(features.loc[2800:2801])
 if __name__ == "__main__":
+
+    #import dask_mpi
+    #dask_mpi.initialize()
     main()

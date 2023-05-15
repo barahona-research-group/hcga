@@ -40,9 +40,8 @@ def timeout_eval(func, args, timeout=None, pool=None):
 
     If timeout is None or == 0, a simple evaluation will take place.
     """
-    if timeout is None or timeout == 0:
+    if timeout is None or timeout == 0 or pool is None:
         return func(*args)
-
     return pool.apply_async(func, args).get(timeout=timeout)
 
 

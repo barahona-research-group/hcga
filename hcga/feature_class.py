@@ -105,12 +105,13 @@ class FeatureClass:
         cls.feature_descriptions = {}
         # cls.__doc__ += cls._get_doc()
 
-    def __init__(self, graph=None):
+    def __init__(self, graph=None, pool=None):
         """Initialise a feature class.
 
         Args:
             graph (Graph): graph for initialisation, converted to given encoding
         """
+        self.pool = pool
         if graph is not None:
             self.graph = graph.get_graph(self.__class__.encoding)
             self.graph_id = graph.id
@@ -118,6 +119,10 @@ class FeatureClass:
         else:
             self.graph = None
         self.features = {}
+
+    def __del__(self):
+        del self.pool
+        del self.graph
 
     @classmethod
     def setup_class(
@@ -366,12 +371,11 @@ class FeatureClass:
         """
         self.add_feature("test", _trivial, "Test feature for the base feature class", 5)
 
-    def get_features(self, all_features=False, pool=None):
+    def get_features(self, all_features=False):
         """Compute all the possible features."""
         if self.__class__.shortname == "TP" and self.__class__.__name__ != "FeatureClass":
             raise Exception(f"Shortname not set for feature class {self.__class__.__name__}")
         self.all_features = all_features
-        self.pool = pool
         self.compute_features()
         if self.normalize_features:
             self.compute_normalize_features()
