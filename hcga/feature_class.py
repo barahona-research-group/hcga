@@ -412,13 +412,13 @@ class FeatureClass:
 
         self.add_feature(
             feat_name + "_coverage",
-            partial(quality.coverage, partition=community_partition),
+            lambda: list(partial(quality.partition_quality, partition=community_partition))[0],
             "Coverage" + compl_desc,
             feat_interpret,
         )
         self.add_feature(
             feat_name + "_performance",
-            partial(quality.performance, partition=community_partition),
+            lambda: list(partial(quality.partition_quality, partition=community_partition))[1],
             "Performance" + compl_desc,
             feat_interpret,
         )

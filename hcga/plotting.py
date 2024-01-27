@@ -6,6 +6,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
+import pandas as pd
 import seaborn as sns
 import shap
 from matplotlib.backends.backend_pdf import PdfPages
@@ -183,7 +184,8 @@ def _plot_dendrogram_shap(
     top_feat_idx = shap_feature_importance.argsort()[-max_feats:]
     X_red = X[X.columns[top_feat_idx]]
     # to make sure to have the reduced features
-    X_red = X_red.T.append(X[reduced_features].T).drop_duplicates().T
+    #X_red = X_red.T.append(X[reduced_features].T).drop_duplicates().T
+    X_red = pd.concat([X_red.T, X[reduced_features].T]).drop_duplicates().T
 
     plt.figure(figsize=(20, 1.2 * 20))
     gs = GridSpec(2, 1, height_ratios=[0.2, 1.0])
@@ -223,7 +225,8 @@ def _plot_feature_correlation(
     top_feat_idx = shap_feature_importance.argsort()[-max_feats:]
     X_red = X[X.columns[top_feat_idx]].sort_index(axis=0).sort_index(axis=1)
     # to make sure to have the reduced features
-    X_red = X_red.T.append(X[reduced_features].T).drop_duplicates().T
+    #X_red = X_red.T.append(X[reduced_features].T).drop_duplicates().T
+    X_red = pd.concat([X_red.T, X[reduced_features].T]).drop_duplicates().T
 
     cor_sorted = np.abs(X_red.corr())
 
