@@ -52,7 +52,7 @@ def extract_benchmark_graphs(datadir, dataname):  # pylint: disable=too-many-loc
     prefix = str(Path(datadir) / dataname)
 
     with open(prefix + "_graph_indicator.txt") as f:
-        nodes_df = pd.read_csv(f, dtype=np.int, header=None) - 1
+        nodes_df = pd.read_csv(f, dtype=int, header=None) - 1
     nodes_df.columns = ["graph_id"]
 
     with open(prefix + "_graph_labels.txt") as f:
@@ -61,9 +61,9 @@ def extract_benchmark_graphs(datadir, dataname):  # pylint: disable=too-many-loc
     edges_df = pd.DataFrame()
     with open(prefix + "_A.txt") as f:
         for edges_df_next in pd.read_csv(
-            f, sep=",", delimiter=None, dtype=np.int, header=None, chunksize=1e6
+            f, sep=",", delimiter=None, dtype=int, header=None, chunksize=1e6
         ):
-            edges_df = edges_df.append(edges_df_next - 1)
+            edges_df = pd.concat([edges_df, edges_df_next - 1])
     edges_df.columns = ["start_node", "end_node"]
     edges_df["graph_id"] = nodes_df["graph_id"][edges_df["start_node"].to_list()].to_list()
 
