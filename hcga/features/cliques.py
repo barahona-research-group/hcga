@@ -1,4 +1,5 @@
 """Cliques class."""
+
 from functools import lru_cache
 
 import numpy as np
@@ -66,7 +67,7 @@ class Cliques(FeatureClass):
         # graph clique number
         self.add_feature(
             "graph_clique_number",
-            clique.graph_clique_number,
+            lambda graph: max(len(c) for c in clique.find_cliques(graph)),
             "The clique number of a graph is the size of the largest clique in the graph",
             InterpretabilityScore(3),
         )
@@ -74,7 +75,7 @@ class Cliques(FeatureClass):
         # number of maximal cliques
         self.add_feature(
             "num_max_cliques",
-            clique.graph_number_of_cliques,
+            lambda graph: sum(1 for _ in clique.find_cliques(graph)),
             "The number of maximal cliques in the graph",
             InterpretabilityScore(3),
         )

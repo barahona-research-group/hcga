@@ -1,4 +1,5 @@
 """Utils functions for feature classes."""
+
 import networkx as nx
 
 

@@ -1,4 +1,5 @@
 """Object-oriented API to hcga."""
+
 import logging
 
 import pandas as pd

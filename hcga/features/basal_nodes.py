@@ -1,4 +1,5 @@
 """Basal nodes class."""
+
 from functools import lru_cache
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore

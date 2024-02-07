@@ -1,4 +1,5 @@
 """Covering class."""
+
 import networkx as nx
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore

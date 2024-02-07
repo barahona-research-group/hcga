@@ -1,4 +1,5 @@
 """Flow hierarchy class."""
+
 from functools import partial
 
 import networkx as nx

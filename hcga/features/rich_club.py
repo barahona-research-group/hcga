@@ -1,4 +1,5 @@
 """Rich Club class."""
+
 from functools import lru_cache
 
 import networkx as nx

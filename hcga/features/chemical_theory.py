@@ -1,4 +1,5 @@
 """Chemical theory class."""
+
 from functools import partial
 
 import networkx as nx
