@@ -47,8 +47,8 @@ def looplessness(graph):  # pylint: disable=too-many-locals
     n = graph.number_of_nodes()
 
     # Bipartite graphs
-    if nx.is_bipartite(graph):
-        trophic = [1] * n
+    if nx.is_bipartite(graph) or not nx.is_directed(graph):
+        trophic = [1.0] * n
         return 0, trophic, 0, 0, 0, 0
 
     # Non-bipartite graphs
@@ -86,7 +86,7 @@ def looplessness(graph):  # pylint: disable=too-many-locals
         trophic[j] = s[i]
 
     # Convert all weights to 1 in order to compute trophic levels
-    a = np.where(nx.adj_matrix(graph).toarray() > 0, 1, 0)
+    a = np.where(nx.adjacency_matrix(graph).toarray() > 0, 1, 0)
 
     LHS = [(tr - 1) * k for tr, k in zip(trophic, in_degrees)]
     RHS = list(np.dot(a, np.array(trophic)))

@@ -1,12 +1,20 @@
 """Flow hierarchy class."""
 
-from functools import partial
+from functools import lru_cache, partial
 
 import networkx as nx
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "FlowHierarchy"
+
+
+@lru_cache(maxsize=None)
+def flow_hierarchy(graph, weight=None):
+    """apply flow hierarchy only on digraph"""
+    if isinstance(graph, nx.DiGraph):
+        return nx.flow_hierarchy(graph, weight)
+    return 0.0
 
 
 class FlowHierarchy(FeatureClass):
@@ -38,14 +46,14 @@ class FlowHierarchy(FeatureClass):
         # graph clique number
         self.add_feature(
             "flow_hierarchy",
-            nx.flow_hierarchy,
+            flow_hierarchy,
             "fraction of edges not participating in cycles",
             InterpretabilityScore(3),
         )
 
         self.add_feature(
             "flow_hierarchy_weighted",
-            partial(nx.flow_hierarchy, weight="weight"),
+            partial(flow_hierarchy, weight="weight"),
             "fraction of edges not participating in cycles",
             InterpretabilityScore(3),
         )

@@ -35,7 +35,7 @@ def eccentricity(graph):
 
 def extrema_bounding(graph):
     """extrema_bounding"""
-    return nx.extrema_bounding(ensure_connected(graph))
+    return nx.diameter(ensure_connected(graph), usebounds=True)
 
 
 class DistanceMeasures(FeatureClass):

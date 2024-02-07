@@ -11,7 +11,10 @@ featureclass_name = "SimpleCycles"
 
 @lru_cache(maxsize=None)
 def simple_cycles_func(graph):
-    """simple_cycles_func"""
+    """simple_cycles_func
+
+    this is very slow for not so large graph, as hey can be many cycles
+    """
     return list(nx.simple_cycles(graph))
 
 
@@ -52,7 +55,7 @@ class SimpleCycles(FeatureClass):
 
     """
 
-    modes = ["fast", "medium", "slow"]
+    modes = ["slow"]
     shortname = "SC"
     name = "simple_cycles"
     encoding = "networkx"
@@ -64,7 +67,6 @@ class SimpleCycles(FeatureClass):
             "A simple closed path with no repeated nodes (except the first)",
             InterpretabilityScore(3),
         )
-
         self.add_feature(
             "simple_cycles_sizes",
             simple_cycles_sizes,

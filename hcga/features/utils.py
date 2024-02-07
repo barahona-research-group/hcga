@@ -9,9 +9,10 @@ def ensure_connected(graph):
         if nx.is_directed(graph):
             if not nx.is_weakly_connected(graph):
                 return graph.subgraph(max(nx.weakly_connected_components(graph), key=len))
-        else:
-            if not nx.is_connected(graph):
-                return graph.subgraph(max(nx.connected_components(graph), key=len))
+            return graph
+        if not nx.is_connected(graph):
+            return graph.subgraph(max(nx.connected_components(graph), key=len))
+        return graph
     raise Exception("ensure_connected is not implemented for this graph type")
 
 
@@ -22,4 +23,4 @@ def remove_selfloops(graph):
         selfloops = nx.selfloop_edges(graph)
         graph_noselfloop.remove_edges_from(selfloops)
         return graph_noselfloop
-    raise Exception("ensure_conneted is not implemented for this graph type")
+    raise Exception("remove_selfloops is not implemented for this graph type")

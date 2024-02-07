@@ -2,6 +2,8 @@
 
 from functools import lru_cache
 
+import networkx as nx
+
 from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "BasalNodes"
@@ -21,24 +23,34 @@ def basal_nodes_func(graph):
 
 def n_basal_nodes(graph):
     """n_basal_nodes."""
-    return len(basal_nodes_func(graph))
+    if nx.is_directed(graph):
+        return len(basal_nodes_func(graph))
+    return 0
 
 
 def basal_degrees(graph):
     """basal_degrees"""
-    return [dict(graph.out_degree)[i] for i in basal_nodes_func(graph)]
+    if nx.is_directed(graph):
+        return [dict(graph.out_degree)[i] for i in basal_nodes_func(graph)]
+    return [0]
 
 
 def n_basal_edges(graph):
     """n_basal_edges"""
-    return sum(dict(graph.out_degree)[i] for i in basal_nodes_func(graph))
+    if nx.is_directed(graph):
+        return sum(dict(graph.out_degree)[i] for i in basal_nodes_func(graph))
+    return 0
 
 
 def exp_basal_edge(graph):
     """exp_basal_edge"""
-    in_degs = list(dict(graph.in_degree).values())
-    r = sum(dict(graph.out_degree)[i] for i in basal_nodes_func(graph)) / (graph.number_of_edges())
-    return [i * r for i in in_degs]
+    if nx.is_directed(graph):
+        in_degs = list(dict(graph.in_degree).values())
+        r = sum(dict(graph.out_degree)[i] for i in basal_nodes_func(graph)) / (
+            graph.number_of_edges()
+        )
+        return [i * r for i in in_degs]
+    return [0]
 
 
 @lru_cache(maxsize=None)
@@ -50,26 +62,34 @@ def attracting_nodes_func(graph):
 
 def n_attracting_nodes(graph):
     """n_attracting_nodes"""
-    return len(attracting_nodes_func(graph))
+    if nx.is_directed(graph):
+        return len(attracting_nodes_func(graph))
+    return 0
 
 
 def attracting_degrees(graph):
     """attracting_degrees"""
-    return [dict(graph.in_degree)[i] for i in attracting_nodes_func(graph)]
+    if nx.is_directed(graph):
+        return [dict(graph.in_degree)[i] for i in attracting_nodes_func(graph)]
+    return [0]
 
 
 def n_attracting_edges(graph):
     """n_attracting_edges"""
-    return sum(dict(graph.in_degree)[i] for i in attracting_nodes_func(graph))
+    if nx.is_directed(graph):
+        return sum(dict(graph.in_degree)[i] for i in attracting_nodes_func(graph))
+    return 0
 
 
 def exp_attracting_edge(graph):
     """exp_attracting_edge"""
-    out_degs = list(dict(graph.out_degree).values())
-    r = sum(dict(graph.in_degree)[i] for i in attracting_nodes_func(graph)) / (
-        graph.number_of_edges()
-    )
-    return [i * r for i in out_degs]
+    if nx.is_directed(graph):
+        out_degs = list(dict(graph.out_degree).values())
+        r = sum(dict(graph.in_degree)[i] for i in attracting_nodes_func(graph)) / (
+            graph.number_of_edges()
+        )
+        return [i * r for i in out_degs]
+    return [0]
 
 
 class BasalNodes(FeatureClass):
