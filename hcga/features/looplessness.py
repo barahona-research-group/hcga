@@ -1,4 +1,5 @@
 """Looplessness class."""
+
 from functools import lru_cache, partial
 
 import networkx as nx

@@ -9,6 +9,7 @@ When loading graphs into hcga, the Graph classes will attempt to convert the inp
 graph type into a generic hcga Graph object.
 
 """
+
 import logging
 
 import networkx as nx

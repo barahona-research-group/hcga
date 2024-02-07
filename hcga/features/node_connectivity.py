@@ -1,4 +1,5 @@
 """Node connectivity class."""
+
 import networkx as nx
 import numpy as np
 

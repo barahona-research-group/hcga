@@ -1,4 +1,5 @@
 """Node clique number class."""
+
 from networkx.algorithms import clique
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore

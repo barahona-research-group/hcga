@@ -1,4 +1,5 @@
 """Communities Label propagation class."""
+
 from functools import lru_cache
 
 from networkx.algorithms.community import label_propagation_communities

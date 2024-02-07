@@ -1,4 +1,5 @@
 """make synthetic datasets: WIP!!"""
+
 import networkx as nx
 import numpy as np
 

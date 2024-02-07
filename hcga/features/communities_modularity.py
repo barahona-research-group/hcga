@@ -1,4 +1,5 @@
 """Communities Modularity propagation class."""
+
 from functools import lru_cache, partial
 
 from networkx.algorithms.community import greedy_modularity_communities

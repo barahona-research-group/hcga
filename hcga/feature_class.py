@@ -5,6 +5,7 @@ Each feature class in the ./features folder can inherit the main feature class f
 The functions here are necessary to evaluate each individual feature found inside a feature class.
 
 """
+
 import logging
 import multiprocessing
 import sys

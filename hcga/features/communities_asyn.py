@@ -1,4 +1,5 @@
 """Communities Asyn class."""
+
 from collections import Counter
 from functools import lru_cache, partial
 
