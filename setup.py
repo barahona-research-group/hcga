@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 reqs = [
     "click>=7.1.1",
     "numpy>=1.18.2",
-    "scipy>=1.4.1",
+    "scipy>=1.11",
     "tqdm>=4.45.0",
     "networkx>=3.0",
     "scikit-learn>=0.23.1",
