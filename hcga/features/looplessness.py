@@ -48,7 +48,7 @@ def looplessness(graph):  # pylint: disable=too-many-locals
 
     # Bipartite graphs
     if nx.is_bipartite(graph) or not nx.is_directed(graph):
-        trophic = [1] * n
+        trophic = [1.0] * n
         return 0, trophic, 0, 0, 0, 0
 
     # Non-bipartite graphs
