@@ -21,7 +21,7 @@ def eval_asyn(graph, num_comms):
 
 def sum_density(graph, num_comms):
     """sum_density"""
-    return (sum(eval_asyn(graph, num_comms)[1]),)
+    return sum(eval_asyn(graph, num_comms)[1])
 
 
 def ratio_density(graph, num_comms):

@@ -6,7 +6,6 @@ The functions here are necessary to evaluate each individual feature found insid
 
 """
 import logging
-import multiprocessing
 import sys
 import traceback
 import warnings
@@ -55,11 +54,15 @@ def _trivial(graph):  # pylint: disable=unused-argument
 
 def _feat_N(graph, features):
     """"""
+    if features is None:
+        return None
     return features / len(graph.nodes)
 
 
 def _feat_E(graph, features):
     """"""
+    if features is None:
+        return None
     return features / len(graph.edges)
 
 
@@ -102,13 +105,13 @@ class FeatureClass:
         cls.feature_descriptions = {}
         # cls.__doc__ += cls._get_doc()
 
-    def __init__(self, graph=None):
+    def __init__(self, graph=None, pool=None):
         """Initialise a feature class.
 
         Args:
             graph (Graph): graph for initialisation, converted to given encoding
         """
-        self.pool = multiprocessing.Pool(processes=1, maxtasksperchild=1)
+        self.pool = pool
         if graph is not None:
             self.graph = graph.get_graph(self.__class__.encoding)
             self.graph_id = graph.id
@@ -118,10 +121,8 @@ class FeatureClass:
         self.features = {}
 
     def __del__(self):
-        if hasattr(self, "pool"):
-            self.pool.close()
-            self.pool.terminate()
-            del self.pool
+        del self.pool
+        del self.graph
 
     @classmethod
     def setup_class(

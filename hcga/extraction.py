@@ -5,11 +5,10 @@ from functools import partial
 from importlib import import_module
 from pathlib import Path
 
+import multiprocessing
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
-
-from hcga.utils import NestedPool
 
 L = logging.getLogger(__name__)
 
@@ -25,6 +24,7 @@ def extract(
     timeout=10,
     connected=False,
     weighted=True,
+    use_dask=False,
 ):
     """Main function to extract graph features.
 
@@ -42,6 +42,7 @@ def extract(
         connected (bool): True will make sure that only the largest connected component of a graph
             is used for feature extraction.
         weighted (bool): calculations will consider edge weights where possible.
+        use_dask (bool): use dask or multiprocessing
 
     Returns:
         (DataFrame): dataframe of features
@@ -59,13 +60,14 @@ def extract(
     if not weighted:
         graphs.remove_edge_weights()
 
-    feat_classes, features_info_df = get_list_feature_classes(
-        mode,
+    feat_dict = dict(
         normalize_features=normalize_features,
         statistics_level=statistics_level,
         n_node_features=n_node_features,
         timeout=timeout,
     )
+    feat_classes, features_info_df = get_list_feature_classes(mode, **feat_dict)
+
     if with_runtimes:
         L.info(
             "Runtime option enable, we will only use 10 graphs and one worker to estimate \
@@ -81,11 +83,13 @@ def extract(
         len(graphs),
         graphs.get_num_disabled_graphs(),
     )
+
     all_features_df = compute_all_features(
         graphs,
         feat_classes,
         n_workers=n_workers,
-        with_runtimes=with_runtimes,
+        use_dask=use_dask,
+        feat_dict=feat_dict if use_dask else None,
     )
 
     if with_runtimes:
@@ -162,7 +166,6 @@ def get_list_feature_classes(
     for feature_name in tqdm(feature_names):
         feature_class = _load_feature_class(feature_name)
         if mode in feature_class.modes or mode == "all":
-            list_feature_classes.append(feature_class)
             # runs once update_feature with trivial graph to create class variables
             features_info = feature_class.setup_class(
                 normalize_features=normalize_features,
@@ -170,13 +173,14 @@ def get_list_feature_classes(
                 n_node_features=n_node_features,
                 timeout=timeout,
             )
+            list_feature_classes.append(feature_class)
             columns = [(feature_class.shortname, col) for col in features_info.columns]
             feature_info_df[columns] = features_info
 
     return list_feature_classes, feature_info_df
 
 
-def feature_extraction(graph, list_feature_classes, with_runtimes=False):
+def feature_extraction(graph, list_feature_classes, with_runtimes=False, feat_dict=None):
     """Extract features for a single graph
 
     Args:
@@ -187,22 +191,29 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
     Returns:
         (DataFrame): dataframe of calculated features for a given graph.
     """
+
     column_indexes = pd.MultiIndex(
         levels=[[], []], codes=[[], []], names=["feature_class", "feature_name"]
     )
     features_df = pd.DataFrame(columns=column_indexes)
-    for feature_class in list_feature_classes:
-        if with_runtimes:
-            start_time = time.time()
+    with multiprocessing.Pool(processes=1) as pool:
+        for feature_class in list_feature_classes:
+            if with_runtimes:
+                start_time = time.time()
 
-        feat_class_inst = feature_class(graph)
-        features = pd.DataFrame(feat_class_inst.get_features(), index=[graph.id])
-        columns = [(feat_class_inst.shortname, col) for col in features.columns]
-        features_df[columns] = features
-        del feat_class_inst
+            if feat_dict is not None:
+                for f, v in feat_dict.items():
+                    setattr(feature_class, f, v)
 
-        if with_runtimes:
-            features_df[("runtimes", feature_class.name)] = time.time() - start_time
+            feat_class_inst = feature_class(graph, pool)
+            features = pd.DataFrame(feat_class_inst.get_features(), index=[graph.id])
+            columns = [(feat_class_inst.shortname, col) for col in features.columns]
+            features_df[columns] = features
+
+            if with_runtimes:
+                features_df[("runtimes", feature_class.name)] = time.time() - start_time
+
+            del feature_class
 
     if with_runtimes:
         return features_df
@@ -211,10 +222,7 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
 
 
 def compute_all_features(
-    graphs,
-    list_feature_classes,
-    n_workers=1,
-    with_runtimes=False,
+    graphs, list_feature_classes, n_workers=1, with_runtimes=False, use_dask=False, feat_dict=None
 ):
     """Compute features for all graphs
 
@@ -223,26 +231,50 @@ def compute_all_features(
         list_feature_classes (list): list of feature classes found in ./features
         n_workers (int): number of workers for parallel processing
         with_runtimes (bool): compute the run time of each feature
+        use_dask (bool): use dask or multiprocessing
+        feat_dict (dict): to pass missing attributes to feature class with dask
 
     Returns:
         (DataDrame): dataframe of calculated features for the graph collection.
     """
-
     L.info("Computing features for %s graphs:", len(graphs))
-    if with_runtimes:
-        n_workers = 1
+    if not use_dask:
+        from hcga.utils import NestedPool
 
-    with NestedPool(n_workers) as pool:
-        return pd.concat(
-            tqdm(
-                pool.imap(
-                    partial(
-                        feature_extraction,
-                        list_feature_classes=list_feature_classes,
-                        with_runtimes=with_runtimes,
+        with NestedPool(n_workers) as pool:
+            results = list(
+                tqdm(
+                    pool.imap(
+                        partial(
+                            feature_extraction,
+                            list_feature_classes=list_feature_classes,
+                            with_runtimes=with_runtimes,
+                        ),
+                        graphs,
                     ),
-                    graphs,
-                ),
-                total=len(graphs),
+                    total=len(graphs),
+                )
             )
-        )
+    else:
+        import dask.distributed
+
+        dask.config.set({"distributed.worker.daemon": False})
+
+        client = dask.distributed.Client()
+
+        futures = [
+            client.submit(
+                feature_extraction,
+                graph,
+                list_feature_classes=list_feature_classes,
+                with_runtimes=with_runtimes,
+                feat_dict=feat_dict,
+            )
+            for graph in graphs.graphs
+        ]
+        results = []
+        for _future, result in tqdm(
+            dask.distributed.as_completed(futures, with_results=True), total=len(futures)
+        ):
+            results.append(result)
+    return pd.concat(results)
