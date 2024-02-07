@@ -78,12 +78,12 @@ def katz_centrality(graph):
 
 def pagerank(graph):
     """pagerank"""
-    return list(nx.pagerank_numpy(graph).values())
+    return list(nx.pagerank(graph).values())
 
 
 def weighted_pagerank(graph):
     """weighted_pagerank"""
-    return list(nx.pagerank_numpy(graph, weight="weight").values())
+    return list(nx.pagerank(graph, weight="weight").values())
 
 
 class CentralitiesBasic(FeatureClass):

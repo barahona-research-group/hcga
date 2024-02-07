@@ -9,39 +9,51 @@ featureclass_name = "InOutDegrees"
 
 def in_degree(graph):
     """in_degree"""
-    return list(dict(graph.in_degree).values())
+    if nx.is_directed(graph):
+        return list(dict(graph.in_degree).values())
+    return [0]
 
 
 def out_degree(graph):
     """out_degree"""
-    return list(dict(graph.out_degree).values())
+    if nx.is_directed(graph):
+        return list(dict(graph.out_degree).values())
+    return [0]
 
 
 def in_deg_n(graph):
     """in_deg_n"""
-    return [
-        i / d
-        for i, d in zip(list(dict(graph.in_degree).values()), list(dict(graph.degree).values()))
-    ]
+    if nx.is_directed(graph):
+        return [
+            i / d
+            for i, d in zip(list(dict(graph.in_degree).values()), list(dict(graph.degree).values()))
+        ]
+    return [0]
 
 
 def out_deg_n(graph):
     """out_deg_n"""
-    return [
-        o / d
-        for o, d in zip(list(dict(graph.out_degree).values()), list(dict(graph.degree).values()))
-    ]
+    if nx.is_directed(graph):
+        return [
+            o / d
+            for o, d in zip(
+                list(dict(graph.out_degree).values()), list(dict(graph.degree).values())
+            )
+        ]
+    return [0]
 
 
 def in_out_deg(graph):
     """in_out_deg"""
-    return [
-        i / o
-        for i, o in zip(
-            list(dict(graph.in_degree).values()),
-            list(dict(graph.out_degree).values()),
-        )
-    ]
+    if nx.is_directed(graph):
+        return [
+            i / o
+            for i, o in zip(
+                list(dict(graph.in_degree).values()),
+                list(dict(graph.out_degree).values()),
+            )
+        ]
+    return [0]
 
 
 def in_degree_centrality(graph):

@@ -26,7 +26,6 @@ from pathlib import Path
 import click
 
 L = logging.getLogger(__name__)
-L.setLevel(logging.DEBUG)
 # pylint: disable=too-many-arguments,too-many-locals
 
 

@@ -84,12 +84,12 @@ def degree_assortativity_coeff(graph):
 
 def graph_clique_number(graph):
     """graph_clique_number"""
-    return nx.graph_clique_number(jaccard_similarity(graph))
+    return max(len(c) for c in nx.clique.find_cliques(jaccard_similarity(graph)))
 
 
 def num_max_cliques(graph):
     """num_max_cliques"""
-    return nx.graph_number_of_cliques(jaccard_similarity(graph))
+    return sum(1 for _ in nx.clique.find_cliques(jaccard_similarity(graph)))
 
 
 def transitivity(graph):

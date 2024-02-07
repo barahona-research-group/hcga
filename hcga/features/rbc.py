@@ -32,7 +32,7 @@ def rbc(graph):
 
 
     """
-    a = np.where(nx.adj_matrix(graph).toarray() > 0, 1, 0)
+    a = np.where(nx.adjacency_matrix(graph).toarray() > 0, 1, 0)
     g = nx.DiGraph(a)
 
     if nx.is_directed_acyclic_graph(g):
@@ -90,16 +90,6 @@ def radius(graph):
 def degree_assortativity_coeff(graph):
     """"""
     return nx.degree_assortativity_coefficient(rbc(graph))
-
-
-def graph_clique_number(graph):
-    """"""
-    return nx.graph_clique_number(rbc(graph))
-
-
-def num_max_cliques(graph):
-    """"""
-    return nx.graph_number_of_cliques(rbc(graph))
 
 
 def transitivity(graph):
@@ -188,21 +178,6 @@ class RolesimilarityBasedComparison(FeatureClass):
             degree_assortativity_coeff,
             "Similarity of connections in Jaccard similarity graph with respect to the node degree",
             InterpretabilityScore(4),
-        )
-
-        # Cliques
-        self.add_feature(
-            "graph_clique_number",
-            graph_clique_number,
-            "The size of the largest clique in the Jaccard similarity graph",
-            InterpretabilityScore(3),
-        )
-
-        self.add_feature(
-            "num_max_cliques",
-            num_max_cliques,
-            "The number of maximal cliques in the Jaccard similarity graph",
-            InterpretabilityScore(3),
         )
 
         # Clustering

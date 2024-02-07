@@ -66,12 +66,16 @@ def attracting_component_sizes(graph):
 
 def number_basal_components(graph):
     """number_basal_components"""
-    return nx.number_attracting_components(nx.reverse(graph))
+    if nx.is_directed(graph):
+        return nx.number_attracting_components(nx.reverse(graph))
+    return 0
 
 
 def basal_component_sizes(graph):
     """basal_component_sizes"""
-    return [len(i) for i in nx.attracting_components(nx.reverse(graph))]
+    if nx.is_directed(graph):
+        return [len(i) for i in nx.attracting_components(nx.reverse(graph))]
+    return [0]
 
 
 class Components(FeatureClass):
