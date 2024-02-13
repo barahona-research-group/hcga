@@ -82,16 +82,6 @@ def degree_assortativity_coeff(graph):
     return nx.degree_assortativity_coefficient(jaccard_similarity(graph))
 
 
-def graph_clique_number(graph):
-    """graph_clique_number"""
-    return max(len(c) for c in nx.clique.find_cliques(jaccard_similarity(graph)))
-
-
-def num_max_cliques(graph):
-    """num_max_cliques"""
-    return sum(1 for _ in nx.clique.find_cliques(jaccard_similarity(graph)))
-
-
 def transitivity(graph):
     """transitivity"""
     return nx.transitivity(jaccard_similarity(graph))
@@ -115,16 +105,6 @@ def largest_connected_component(graph):
 def global_efficiency(graph):
     """global_efficiency"""
     return nx.global_efficiency(jaccard_similarity(graph))
-
-
-def node_connectivity(graph):
-    """node_connectivity"""
-    return nx.node_connectivity(jaccard_similarity(graph))
-
-
-def edge_connectivity(graph):
-    """edge_connectivity"""
-    return nx.edge_connectivity(jaccard_similarity(graph))
 
 
 class JaccardSimilarity(FeatureClass):
@@ -164,7 +144,6 @@ class JaccardSimilarity(FeatureClass):
             "Diameter of Jaccard similarity graph",
             InterpretabilityScore(5),
         )
-
         self.add_feature(
             "radius",
             radius,
@@ -178,21 +157,6 @@ class JaccardSimilarity(FeatureClass):
             degree_assortativity_coeff,
             "Similarity of connections in Jaccard similarity graph with respect to the node degree",
             InterpretabilityScore(4),
-        )
-
-        # Cliques
-        self.add_feature(
-            "graph_clique_number",
-            graph_clique_number,
-            "The size of the largest clique in the Jaccard similarity graph",
-            InterpretabilityScore(3),
-        )
-
-        self.add_feature(
-            "num_max_cliques",
-            num_max_cliques,
-            "The number of maximal cliques in the Jaccard similarity graph",
-            InterpretabilityScore(3),
         )
 
         # Clustering
@@ -230,20 +194,5 @@ class JaccardSimilarity(FeatureClass):
             "global_efficiency",
             global_efficiency,
             "The global efficiency",
-            InterpretabilityScore(4),
-        )
-
-        # Node connectivity
-        self.add_feature(
-            "node_connectivity",
-            node_connectivity,
-            "Node connectivity",
-            InterpretabilityScore(4),
-        )
-
-        self.add_feature(
-            "edge_connectivity",
-            edge_connectivity,
-            "Edge connectivity",
             InterpretabilityScore(4),
         )
