@@ -197,7 +197,7 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
         L.debug("computing: %s/ %s, %s", i, len(list_feature_classes), feature_class)
         if with_runtimes:
             start_time = time.time()
-        print(feature_class)
+        #print(feature_class)
         feat_class_inst = feature_class(graph)
         features = pd.DataFrame(feat_class_inst.get_features(), index=[graph.id])
         columns = [(feat_class_inst.shortname, col) for col in features.columns]
