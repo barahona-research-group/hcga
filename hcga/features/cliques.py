@@ -4,6 +4,7 @@ from functools import lru_cache
 
 import numpy as np
 from networkx.algorithms import clique
+from functools import partial
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
 
@@ -31,6 +32,12 @@ def maximal_clique_sizes(graph):
     """maximal_clique_sizes"""
     return eval_cliques(graph)[0] / eval_cliques(graph)[-1]
 
+
+def clique_number(graph):    
+    return max(len(c) for c in clique.find_cliques(graph))
+
+def n_max_cliques(graph):
+    return sum(1 for _ in clique.find_cliques(graph))
 
 class Cliques(FeatureClass):
     """Cliques class.
@@ -67,7 +74,8 @@ class Cliques(FeatureClass):
         # graph clique number
         self.add_feature(
             "graph_clique_number",
-            lambda graph: max(len(c) for c in clique.find_cliques(graph)),
+            clique_number,
+            #lambda graph: max(len(c) for c in clique.find_cliques(graph)),
             "The clique number of a graph is the size of the largest clique in the graph",
             InterpretabilityScore(3),
         )
@@ -75,7 +83,8 @@ class Cliques(FeatureClass):
         # number of maximal cliques
         self.add_feature(
             "num_max_cliques",
-            lambda graph: sum(1 for _ in clique.find_cliques(graph)),
+            n_max_cliques,
+            #lambda graph: sum(1 for _ in clique.find_cliques(graph)),
             "The number of maximal cliques in the graph",
             InterpretabilityScore(3),
         )
