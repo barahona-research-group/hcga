@@ -68,6 +68,11 @@ def _feat_E(graph, features):
         return features / len(graph.edges)
     return None
 
+def compute_partition_coverage(graph, partition):
+    return quality.partition_quality(graph, partition=partition)[0]
+
+def compute_partition_performance(graph, partition):
+    return quality.partition_quality(graph, partition=partition)[1]
 
 class FeatureClass:
     """Main functionality to be inherited by each feature class"""
@@ -421,9 +426,7 @@ class FeatureClass:
             feat_interpret,
         )
 
-        def compute_partition_coverage(graph, partition):
-            return quality.partition_quality(graph, partition=partition)[0]
-        
+
         self.add_feature(
             feat_name + "_coverage",
             partial(compute_partition_coverage, partition=community_partition),
@@ -432,9 +435,7 @@ class FeatureClass:
             feat_interpret,
         )
         
-        def compute_partition_performance(graph, partition):
-            return quality.partition_quality(graph, partition=partition)[1]
-        
+
         self.add_feature(
             feat_name + "_performance",
             partial(compute_partition_performance, partition=community_partition),
