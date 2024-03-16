@@ -237,7 +237,7 @@ class FeatureClass:
         if function_args is None:
             function_args = self.graph
             
-        print(feature_function)
+        #print(feature_function)
         
         try:
             try:
