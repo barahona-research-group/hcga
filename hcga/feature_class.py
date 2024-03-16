@@ -421,15 +421,24 @@ class FeatureClass:
             feat_interpret,
         )
 
+        def compute_partition_coverage(graph, partition):
+            return quality.partition_quality(graph, partition=partition)[0]
+        
         self.add_feature(
             feat_name + "_coverage",
-            lambda graph: quality.partition_quality(graph, partition=community_partition)[0],
+            partial(compute_partition_coverage, partition=community_partition),
+            #lambda graph: quality.partition_quality(graph, partition=community_partition)[0],
             "Coverage" + compl_desc,
             feat_interpret,
         )
+        
+        def compute_partition_performance(graph, partition):
+            return quality.partition_quality(graph, partition=partition)[1]
+        
         self.add_feature(
             feat_name + "_performance",
-            lambda graph: quality.partition_quality(graph, partition=community_partition)[1],
+            partial(compute_partition_performance, partition=community_partition),
+            #lambda graph: quality.partition_quality(graph, partition=community_partition)[1],
             "Performance" + compl_desc,
             feat_interpret,
         )
