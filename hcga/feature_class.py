@@ -129,7 +129,7 @@ class FeatureClass:
             #self.pool.close()
             #self.pool.terminate()
             self.pool.stop() # pebble
-            self.join(timeout=0) #pebble
+            self.pool.join(timeout=0) #pebble
             del self.pool
 
     @classmethod
