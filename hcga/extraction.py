@@ -197,7 +197,7 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
         L.debug("computing: %s/ %s, %s", i, len(list_feature_classes), feature_class)
         if with_runtimes:
             start_time = time.time()
-
+        print(feature_class)
         feat_class_inst = feature_class(graph)
         features = pd.DataFrame(feat_class_inst.get_features(), index=[graph.id])
         columns = [(feat_class_inst.shortname, col) for col in features.columns]
@@ -229,17 +229,35 @@ def compute_all_features(
         with_runtimes (bool): compute the run time of each feature
 
     Returns:
-        (DataDrame): dataframe of calculated features for the graph collection.
+        (DataFrame): dataframe of calculated features for the graph collection.
     """
-
     L.info("Computing features for %s graphs:", len(graphs))
+    
+    # Adjust the number of workers for runtime measurement
     if with_runtimes:
         n_workers = 1
-
-    with NestedPool(n_workers) as pool:
-        return pd.concat(
+    
+    # Conditionally execute in parallel or sequentially based on n_workers
+    if n_workers > 1:
+        with NestedPool(n_workers) as pool:
+            results = pd.concat(
+                tqdm(
+                    pool.imap(
+                        partial(
+                            feature_extraction,
+                            list_feature_classes=list_feature_classes,
+                            with_runtimes=with_runtimes,
+                        ),
+                        graphs,
+                    ),
+                    total=len(graphs),
+                )
+            )
+    else:
+        # Sequential processing
+        results = pd.concat(
             tqdm(
-                pool.imap(
+                map(
                     partial(
                         feature_extraction,
                         list_feature_classes=list_feature_classes,
@@ -250,3 +268,5 @@ def compute_all_features(
                 total=len(graphs),
             )
         )
+    
+    return results

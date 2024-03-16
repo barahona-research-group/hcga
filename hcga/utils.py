@@ -4,6 +4,7 @@ import logging
 import multiprocessing
 import multiprocessing.pool
 
+
 import pandas as pd
 
 from hcga.graph import Graph
@@ -37,6 +38,16 @@ class NestedPool(multiprocessing.pool.Pool):  # pylint: disable=abstract-method
 
 
 def timeout_eval(func, args, timeout=None, pool=None):
+    """Evaluate a function and kill it is it takes longer than timeout.
+
+    If timeout is Nonei or == 0, a simple evaluation will take place.
+    """
+    if timeout is None or timeout == 0:
+        return func(*args)
+
+    return pool.schedule(func, args=args, timeout=timeout).result()
+
+def timeout_eval_(func, args, timeout=None, pool=None):
     """Evaluate a function and kill it is it takes longer than timeout.
 
     If timeout is Nonei or == 0, a simple evaluation will take place.

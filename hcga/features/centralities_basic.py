@@ -243,7 +243,7 @@ class CentralitiesBasic(FeatureClass):
         # weighted eigenvector centrality
         self.add_feature(
             "eigenvector centrality weighted",
-            eigenvector_centrality,
+            weighted_eigenvector_centrality,
             "Eigenvector centrality computes the centrality for a node based \
             on the centrality of its neighbors",
             InterpretabilityScore(4),
