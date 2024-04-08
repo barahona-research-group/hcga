@@ -37,7 +37,7 @@ class NestedPool(multiprocessing.pool.Pool):  # pylint: disable=abstract-method
     Process = NoDaemonProcess
 
 
-def timeout_eval(func, args, timeout=None, pool=None):
+def timeout_eval_(func, args, timeout=None, pool=None):
     """Evaluate a function and kill it is it takes longer than timeout.
 
     If timeout is Nonei or == 0, a simple evaluation will take place.
@@ -47,7 +47,7 @@ def timeout_eval(func, args, timeout=None, pool=None):
 
     return pool.schedule(func, args=args, timeout=timeout).result()
 
-def timeout_eval_(func, args, timeout=None, pool=None):
+def timeout_eval(func, args, timeout=None, pool=None):
     """Evaluate a function and kill it is it takes longer than timeout.
 
     If timeout is Nonei or == 0, a simple evaluation will take place.
