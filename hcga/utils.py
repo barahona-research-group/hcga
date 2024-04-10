@@ -38,12 +38,12 @@ class NestedPool(multiprocessing.pool.Pool):  # pylint: disable=abstract-method
 
 def timeout_eval(func, args, timeout=None, pool=None):
     """Evaluate a function within a given timeout period.
-    
+
     Args:
         func: The function to call.
         args: Arguments to pass to the function.
         timeout: The timeout period in seconds.
-        
+
     Returns:
         The function's result, or None if a timeout or an error occurs.
     """
