@@ -235,16 +235,13 @@ class FeatureClass:
 
         try:
             try:
-                feature = timeout_eval(
-                    feature_function, (function_args,), timeout=self.timeout, pool=self.pool
-                )
+                feature = timeout_eval(feature_function, (function_args,), timeout=self.timeout)
             except NetworkXNotImplemented:
                 if self.graph_type == "directed":
                     feature = timeout_eval(
                         feature_function,
                         (to_undirected(function_args),),
                         timeout=self.timeout,
-                        pool=self.pool,
                     )
                 else:
                     return None

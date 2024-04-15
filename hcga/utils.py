@@ -36,15 +36,41 @@ class NestedPool(multiprocessing.pool.Pool):  # pylint: disable=abstract-method
     Process = NoDaemonProcess
 
 
-def timeout_eval(func, args, timeout=None, pool=None):
-    """Evaluate a function and kill it is it takes longer than timeout.
+def timeout_eval(func, args, timeout=None):
+    """Evaluate a function within a given timeout period.
 
-    If timeout is Nonei or == 0, a simple evaluation will take place.
+    Args:
+        func: The function to call.
+        args: Arguments to pass to the function.
+        timeout: The timeout period in seconds.
+
+    Returns:
+        The function's result, or None if a timeout or an error occurs.
     """
     if timeout is None or timeout == 0:
-        return func(*args)
+        try:
+            return func(*args)
+        except Exception:  # pylint: disable=broad-exception-caught
+            return None
 
-    return pool.apply_async(func, args).get(timeout=timeout)
+    def target(queue, args):
+        try:
+            result = func(*args)
+            queue.put(result)
+        except Exception:  # pylint: disable=broad-exception-caught
+            queue.put(None)
+
+    queue = multiprocessing.Queue()
+    process = multiprocessing.Process(target=target, args=(queue, args))
+    process.start()
+    process.join(timeout)
+
+    if process.is_alive():
+        process.terminate()
+        process.join()
+        return None
+
+    return queue.get_nowait()
 
 
 def get_trivial_graph(n_node_features=0):
