@@ -194,7 +194,7 @@ def _plot_dendrogram_shap(
     ax2 = plt.subplot(gs[1, 0])
 
     cor = np.abs(X_red.corr())
-    Z = linkage(cor.to_numpy(), "ward")
+    Z = linkage(np.nan_to_num(cor.to_numpy()), "ward")
     dn = dendrogram(Z, labels=X_red.columns, ax=ax1)
     ax1.xaxis.set_ticklabels([])
     ax1.set_ylabel("Euclidean Distance")
