@@ -14,7 +14,7 @@ import pandas as pd
 import shap
 from sklearn.metrics import accuracy_score, mean_absolute_error
 from sklearn.model_selection import RepeatedKFold, RepeatedStratifiedKFold, ShuffleSplit
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 from tqdm import tqdm
 
 from hcga.io import load_fitted_model, save_fitted_model
@@ -684,7 +684,10 @@ def classify_pairwise(  # pylint: disable=too-many-locals
 
     top_features = {}
     for pair in tqdm(class_pairs):
+        L.info("Pairwise classification between classes %s and %s", str(pair[0]), str(pair[1]))
         features_pair = features.loc[(features.label == pair[0]) | (features.label == pair[1])]
+        le = LabelEncoder()
+        features_pair.label = le.fit_transform(features_pair.label)
         analysis_results = fit_model_kfold(
             features_pair,
             classifier,
