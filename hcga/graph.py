@@ -283,6 +283,7 @@ def convert_graph(  # pylint: disable=too-many-branches
 
     if isinstance(graph, nx.Graph):
         A = nx.to_scipy_sparse_array(graph, weight="weight", format="coo")
+        A.sum_duplicates()
 
         if not node_features:
             try:
