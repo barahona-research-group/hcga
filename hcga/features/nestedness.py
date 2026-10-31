@@ -1,5 +1,6 @@
 "Nestness class"
 import networkx as nx
+import numpy as np
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
 
@@ -21,25 +22,25 @@ def nestedness(graph):
     Springer, Cham, 2016.
 
     """
-    n = nx.number_of_nodes(graph)
-    nodes = list(graph.nodes())
-    neighbors = [0 for i in range(n)]
+    # eta = sum_{i<j} |N(i) & N(j)| / sum_{i<j} min(k_i, k_j), with N(i) the neighbours
+    # (successors for directed graphs), computed with sparse matrix products.
+    if graph.number_of_nodes() == 0:
+        return 0
+    adjacency = nx.to_scipy_sparse_array(graph, weight=None, format="csr")
+    adjacency.data[:] = 1.0
+    degrees = np.asarray(adjacency.sum(axis=1)).ravel()
+    n = len(degrees)
 
-    for i, j in enumerate(nodes):
-        neighbors[i] = set(graph.neighbors(j))
+    # common neighbours of all pairs i < j: off-diagonal half of A A^T
+    common = adjacency @ adjacency.T
+    sum_n_ij = (common.sum() - common.diagonal().sum()) / 2
 
-    sum_n_ij = 0
-    sum_n_m = 0
-
-    for j in range(1, n):
-        for i in range(j):
-            n_ij = len(neighbors[i].intersection(neighbors[j]))
-            n_m = min(len(neighbors[i]), len(neighbors[j]))
-            sum_n_ij += n_ij
-            sum_n_m += n_m
+    # sum over pairs of the smaller degree: the i-th smallest degree is the minimum of n-1-i pairs
+    sorted_degrees = np.sort(degrees)
+    sum_n_m = np.sum(sorted_degrees * (n - 1 - np.arange(n)))
     if sum_n_m == 0:
         return 0
-    return sum_n_ij / sum_n_m
+    return float(sum_n_ij / sum_n_m)
 
 
 class Nestedness(FeatureClass):

@@ -7,6 +7,8 @@ import pandas as pd
 from hcga.graph import Graph, GraphCollection
 from hcga.io import save_dataset
 
+SEED = 0
+
 
 def _add_graph_desc(g, desc):
     """Add descrition desc to graph g as a graph attribute"""
@@ -14,15 +16,18 @@ def _add_graph_desc(g, desc):
     return g
 
 
-def add_dummy_node_features(graph):
+def add_dummy_node_features(graph, rng=None):
     """add random node features"""
+    if rng is None:
+        rng = np.random.default_rng(SEED)
     for u in graph.nodes():
-        graph.nodes[u]["feat"] = np.random.rand(10)
+        graph.nodes[u]["feat"] = rng.random(10)
     return graph
 
 
-def make(folder="./datasets", add_features=False, write_to_file=True, n_graphs=5):
+def make(folder="./datasets", add_features=False, write_to_file=True, n_graphs=5, seed=SEED):
     """Makes pickle with graphs that test robustness of hcga"""
+    rng = np.random.default_rng(seed)
 
     graphs = []
     # one, two and three node graphs
@@ -55,7 +60,7 @@ def make(folder="./datasets", add_features=False, write_to_file=True, n_graphs=5
 
     # adding features to all
     if add_features:
-        graphs = [add_dummy_node_features(graph) for graph in graphs]
+        graphs = [add_dummy_node_features(graph, rng) for graph in graphs]
 
     graphs_coll = GraphCollection()
     for graph in graphs:
@@ -64,7 +69,8 @@ def make(folder="./datasets", add_features=False, write_to_file=True, n_graphs=5
         for i, edge in enumerate(graph.edges):
             edges.loc[i, "start_node"] = edge[0]
             edges.loc[i, "end_node"] = edge[1]
-        graphs_coll.add_graph(Graph(nodes, edges, np.random.randint(0, 2)))
+        graph_type = "directed" if graph.is_directed() else None
+        graphs_coll.add_graph(Graph(nodes, edges, int(rng.integers(0, 2)), graph_type=graph_type))
 
     if write_to_file:
         save_dataset(graphs_coll, "TESTDATA", folder=folder)

@@ -4,32 +4,35 @@ from functools import lru_cache
 
 import networkx as nx
 import numpy as np
+import scipy as sp
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "NodeFeatures"
 
 
-@lru_cache(maxsize=None)
+@lru_cache(maxsize=1)
 def get_feature_matrix(graph):
     """Extracting feature matrix."""
     return np.vstack([graph.nodes[node]["feat"] for node in graph.nodes])
 
 
-@lru_cache(maxsize=None)
+@lru_cache(maxsize=1)
 def get_conv_matrix(graph):
-    """Extracting feature matrix."""
-    return nx.to_numpy_array(graph) + np.eye(len(graph))
+    """Sparse convolution matrix A + I."""
+    adjacency = nx.to_scipy_sparse_array(graph, format="csr")
+    return sp.sparse.csr_array(adjacency + sp.sparse.identity(len(graph), format="csr"))
 
 
 def conv_node_feature(graph):
     """"""
-    return get_conv_matrix(graph).dot(get_feature_matrix(graph))
+    return get_conv_matrix(graph) @ get_feature_matrix(graph)
 
 
 def conv2_node_feature(graph):
     """"""
-    return np.linalg.matrix_power(get_conv_matrix(graph), 2).dot(get_feature_matrix(graph))
+    conv = get_conv_matrix(graph)
+    return conv @ (conv @ get_feature_matrix(graph))
 
 
 def mean_node_features_featurewise(graph):
@@ -98,6 +101,10 @@ class NodeFeatures(FeatureClass):
     encoding = "networkx"
 
     def compute_features(self):
+        if self.n_node_features == 0:
+            # without node features every feature would be a constant 0, so none are computed
+            return
+
         self.add_feature(
             "node_feature",
             get_feature_matrix,

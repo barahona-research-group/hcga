@@ -1,75 +1,82 @@
 """In Out degrees class."""
 
 import networkx as nx
+import numpy as np
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "InOutDegrees"
 
 
+def _ratio(numerators, denominators):
+    """Per-node ratios, over the nodes where the denominator is non-zero.
+
+    Nodes where the ratio is undefined (zero denominator) are left out of the distribution,
+    and None is returned if it is undefined for every node.
+    """
+    numerators = np.array(list(numerators), dtype=float)
+    denominators = np.array(list(denominators), dtype=float)
+    defined = denominators > 0
+    if not defined.any():
+        return None
+    return list(numerators[defined] / denominators[defined])
+
+
 def in_degree(graph):
-    """in_degree"""
+    """in_degree (None for undirected graphs)"""
     if nx.is_directed(graph):
         return list(dict(graph.in_degree).values())
-    return [0]
+    return None
 
 
 def out_degree(graph):
-    """out_degree"""
+    """out_degree (None for undirected graphs)"""
     if nx.is_directed(graph):
         return list(dict(graph.out_degree).values())
-    return [0]
+    return None
 
 
 def in_deg_n(graph):
-    """in_deg_n"""
+    """in_deg_n: in/total degree, over non-isolated nodes (None for undirected graphs)"""
     if nx.is_directed(graph):
-        return [
-            i / d
-            for i, d in zip(list(dict(graph.in_degree).values()), list(dict(graph.degree).values()))
-        ]
-    return [0]
+        return _ratio(dict(graph.in_degree).values(), dict(graph.degree).values())
+    return None
 
 
 def out_deg_n(graph):
-    """out_deg_n"""
+    """out_deg_n: out/total degree, over non-isolated nodes (None for undirected graphs)"""
     if nx.is_directed(graph):
-        return [
-            o / d
-            for o, d in zip(
-                list(dict(graph.out_degree).values()), list(dict(graph.degree).values())
-            )
-        ]
-    return [0]
+        return _ratio(dict(graph.out_degree).values(), dict(graph.degree).values())
+    return None
 
 
 def in_out_deg(graph):
-    """in_out_deg"""
+    """in_out_deg: in/out degree, over nodes with out-degree > 0 (None for undirected graphs)"""
     if nx.is_directed(graph):
-        return [
-            i / o
-            for i, o in zip(
-                list(dict(graph.in_degree).values()),
-                list(dict(graph.out_degree).values()),
-            )
-        ]
-    return [0]
+        return _ratio(dict(graph.in_degree).values(), dict(graph.out_degree).values())
+    return None
 
 
 def in_degree_centrality(graph):
-    """in_degree_centrality"""
-    return list(nx.in_degree_centrality(graph).values())
+    """in_degree_centrality (None for undirected graphs)"""
+    if nx.is_directed(graph):
+        return list(nx.in_degree_centrality(graph).values())
+    return None
 
 
 def out_degree_centrality(graph):
-    """out_degree_centrality"""
-    return list(nx.out_degree_centrality(graph).values())
+    """out_degree_centrality (None for undirected graphs)"""
+    if nx.is_directed(graph):
+        return list(nx.out_degree_centrality(graph).values())
+    return None
 
 
 class InOutDegrees(FeatureClass):
     """In Out degrees class.
 
     Features based on the in and out degrees of directed networks.
+    No features are computed for undirected graphs. The degree ratios are taken over the nodes
+    where they are defined (non-zero denominator).
 
     """
 

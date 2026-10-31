@@ -1,7 +1,5 @@
 """Scale Free class."""
 
-from functools import partial
-
 import networkx as nx
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
@@ -40,7 +38,7 @@ class ScaleFree(FeatureClass):
         # s metric
         self.add_feature(
             "s_metric",
-            partial(nx.s_metric, normalized=False),
+            nx.s_metric,
             "Sum of the products deg(u)*deg(v) for every edge (u,v) in G",
             InterpretabilityScore(4),
         )

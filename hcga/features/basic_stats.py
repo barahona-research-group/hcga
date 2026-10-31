@@ -1,7 +1,8 @@
 """Basic stats class."""
 
+from functools import lru_cache
+
 import networkx as nx
-import numpy as np
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
 from hcga.features.utils import ensure_connected
@@ -21,7 +22,7 @@ def n_edges(graph):
 
 def density(graph):
     """density"""
-    return np.float64(2 * n_edges(graph)) / np.float64(n_nodes(graph) * (n_edges(graph) - 1))
+    return nx.density(graph)
 
 
 def edge_weights(graph):
@@ -29,14 +30,22 @@ def edge_weights(graph):
     return list(nx.get_edge_attributes(graph, "weight").values())
 
 
+@lru_cache(maxsize=1)
+def _eccentricity(graph):
+    """Eccentricities in the largest connected component (of the undirected graph if directed)."""
+    if graph.is_directed():
+        graph = graph.to_undirected(as_view=True)
+    return nx.eccentricity(ensure_connected(graph))
+
+
 def diameter(graph):
-    """diameter"""
-    return nx.diameter(ensure_connected(graph))
+    """Diameter of the largest connected component (undirected view of a directed graph)."""
+    return max(_eccentricity(graph).values())
 
 
 def radius(graph):
-    """radius"""
-    return nx.radius(ensure_connected(graph))
+    """Radius of the largest connected component (undirected view of a directed graph)."""
+    return min(_eccentricity(graph).values())
 
 
 class BasicStats(FeatureClass):

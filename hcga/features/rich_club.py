@@ -11,9 +11,11 @@ from hcga.features.utils import remove_selfloops
 featureclass_name = "RichClub"
 
 
-@lru_cache(maxsize=None)
+@lru_cache(maxsize=1)
 def eval_rich_club(graph):
-    """eval_rich_club"""
+    """Unnormalised rich-club coefficients (of the undirected graph if directed)."""
+    if graph.is_directed():
+        graph = graph.to_undirected(as_view=True)
     return list(nx.rich_club_coefficient(remove_selfloops(graph), normalized=False).values())
 
 
