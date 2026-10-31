@@ -11,7 +11,6 @@ from pathlib import Path
 
 import networkx as nx
 import pytest
-from networkx.algorithms.approximation import min_weighted_dominating_set
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -28,6 +27,7 @@ from hcga.features import (  # noqa: E402
     looplessness,
     maximal_matching,
 )
+from hcga.features.dominating_sets import min_weighted_dominating_set  # noqa: E402
 from hcga.graph import GraphCollection  # noqa: E402
 
 approx = pytest.approx
@@ -146,10 +146,15 @@ def test_components_sorted_by_size(classes):
 # --- DominatingSets -----------------------------------------------------------------------------
 
 
-def test_min_dominating_set_uses_networkx(classes):
+def test_min_dominating_set_is_dominating_and_small(classes):
     graph = fixture_graph("er40")
+    nx_graph = _nx_of(graph)
+    dom_set = min_weighted_dominating_set(nx_graph)
+    assert all(node in dom_set or dom_set & set(nx_graph[node]) for node in nx_graph)
+    # the greedy of networkx < 3.7 returned 25 nodes here (networkx PR #8531)
+    assert len(dom_set) == 11
     feats = _features(classes, "DominatingSets", graph)
-    assert feats["size_min_dominating_set"] == len(min_weighted_dominating_set(_nx_of(graph)))
+    assert feats["size_min_dominating_set"] == 11
 
 
 # --- seeds -------------------------------------------------------------------------------------

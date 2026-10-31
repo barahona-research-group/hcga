@@ -66,6 +66,20 @@ def feature_stem(column):
     return stem
 
 
+def statistic_suffix(column):
+    """The summary-statistic suffix of a column ("_mode", ...), ignoring any _N/_E suffix,
+    or "" for a scalar feature."""
+    stem = column
+    for suffix in NORMALISATION_SUFFIXES:
+        if stem.endswith(suffix):
+            stem = stem[: -len(suffix)]
+            break
+    for suffix in STATISTIC_SUFFIXES:
+        if stem.endswith(suffix):
+            return suffix
+    return ""
+
+
 def nondeterministic_mask(columns, stems):
     """Boolean array marking columns whose stem is in the nondeterministic set."""
     return np.array([feature_stem(col) in stems for col in columns])

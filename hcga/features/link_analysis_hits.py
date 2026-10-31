@@ -3,6 +3,7 @@
 from functools import lru_cache
 
 import networkx as nx
+import numpy as np
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
 from hcga.features.utils import ensure_connected
@@ -10,10 +11,43 @@ from hcga.features.utils import ensure_connected
 featureclass_name = "Hits"
 
 
+def hits_power_iteration(graph, max_iter=1000, tol=1.0e-8):
+    """HITS hubs and authorities by power iteration from a uniform start.
+
+    This is networkx 3.7's default ``nx.hits`` (networkx PR #8620, BSD-3 licensed). Earlier
+    networkx 3.x versions used ``scipy.sparse.linalg.eigs`` instead, which on graphs with a
+    degenerate leading eigenvalue (every bipartite graph) returns an arbitrary vector from the
+    eigenspace, including negative "hub" scores; power iteration from the uniform vector
+    gives the usual nonnegative solution. Vendored so the value does not depend on the
+    installed networkx version.
+    """
+    nodelist = list(graph)
+    n_nodes = len(nodelist)
+    if n_nodes == 0:
+        return {}, {}
+    adjacency = nx.adjacency_matrix(graph, nodelist=nodelist, dtype=float)
+    hubs = np.full(n_nodes, 1.0 / n_nodes)
+    for _ in range(max_iter):
+        previous = hubs
+        authorities = hubs @ adjacency
+        hubs = adjacency @ authorities
+        hubs = hubs / hubs.max()
+        if np.abs(hubs - previous).sum() < tol:
+            break
+    else:
+        raise nx.PowerIterationFailedConvergence(max_iter)
+    hubs = hubs / hubs.sum()
+    authorities = authorities / authorities.sum()
+    return (
+        dict(zip(nodelist, map(float, hubs))),
+        dict(zip(nodelist, map(float, authorities))),
+    )
+
+
 @lru_cache(maxsize=1)
 def eval_hits(graph):
     """Hubs and authorities (nx.hits_numpy was removed in networkx 3.0)."""
-    return nx.hits(ensure_connected(graph), max_iter=1000)
+    return hits_power_iteration(ensure_connected(graph), max_iter=1000)
 
 
 def hits(graph):
