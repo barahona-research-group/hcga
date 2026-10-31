@@ -26,8 +26,17 @@ def eval_spectrum_adj(graph):
 
 
 def eigenvalue_ratio(graph, i, j):
-    """Ratio of the i-th to the j-th largest adjacency eigenvalue."""
-    return eval_spectrum_adj(graph)[i] / eval_spectrum_adj(graph)[j]
+    """Ratio of the i-th to the j-th largest adjacency eigenvalue.
+
+    NaN when the j-th eigenvalue is zero up to rounding (e.g. cycles of length 4k and paths
+    of odd length have exact zero eigenvalues), since the ratio is then rounding noise.
+    """
+    eigenvalues = eval_spectrum_adj(graph)
+    numerator, denominator = eigenvalues[i], eigenvalues[j]  # IndexError on small graphs
+    scale = np.max(np.abs(eigenvalues))
+    if scale == 0 or abs(denominator) <= 1e-10 * scale:
+        return np.nan
+    return numerator / denominator
 
 
 @lru_cache(maxsize=1)

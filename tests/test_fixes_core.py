@@ -475,3 +475,32 @@ def test_import_does_not_silence_warnings():
         [sys.executable, "-c", code], capture_output=True, text=True, check=True
     ).stdout
     assert out.strip() == "False"
+
+
+# --- numerically stable summary statistics ------------------------------------------------------
+
+
+def test_kstatistics_exact_on_constant_and_match_scipy_otherwise():
+    import scipy.stats as st
+
+    from hcga.feature_class import _kstat, _kstatvar
+
+    constant = np.full(8, 137.29)
+    assert _kstat(constant) == 0.0
+    assert _kstatvar(constant) == 0.0
+    assert st.kstatvar(constant, 2) != 0.0  # scipy's power-sum formula cancels catastrophically
+    values = np.random.default_rng(0).normal(3.0, 1.0, 50)
+    assert _kstat(values) == pytest.approx(st.kstat(values, 2), rel=1e-9)
+    assert _kstatvar(values) == pytest.approx(st.kstatvar(values, 2), rel=1e-9)
+
+
+def test_snap_constant_removes_rounding_noise_only():
+    from hcga.feature_class import FeatureClass
+
+    noisy = 137.29 + np.array([0.0, 1e-13, -2e-13, 3e-13])
+    snapped = FeatureClass._snap_constant(noisy)
+    assert np.ptp(snapped) == 0.0 and snapped[0] == pytest.approx(137.29)
+    distinct = np.array([1.0, 1.0, 1.0 + 1e-6])
+    assert FeatureClass._snap_constant(distinct) is distinct
+    with_nan = np.array([1.0, np.nan])
+    assert FeatureClass._snap_constant(with_nan) is with_nan

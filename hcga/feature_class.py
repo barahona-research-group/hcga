@@ -88,6 +88,24 @@ def _feat_E(graph, features):
     return None
 
 
+
+def _kstat(dist):
+    """Second k-statistic (unbiased variance), computed on centred data.
+
+    scipy evaluates k-statistics from power sums, which cancel catastrophically for data
+    with a large mean: on an exactly constant vector ``st.kstatvar`` returns ~1e-7 that
+    differs between BLAS builds. Cumulants of order >= 2 are shift invariant, so centring
+    changes nothing mathematically.
+    """
+    dist = np.asarray(dist, dtype=float)
+    return st.kstat(dist - dist.mean(), 2)
+
+
+def _kstatvar(dist):
+    """Variance of the second k-statistic, computed on centred data (see _kstat)."""
+    dist = np.asarray(dist, dtype=float)
+    return st.kstatvar(dist - dist.mean(), 2)
+
 class FeatureClass:
     """Main functionality to be inherited by each feature class"""
 
@@ -461,8 +479,26 @@ class FeatureClass:
                 feat_interpret,
             )
 
+    @staticmethod
+    def _snap_constant(feat_dist, rtol=1e-10):
+        """Replace a distribution that is constant up to rounding by its exact mean.
+
+        Node quantities of symmetric graphs (e.g. every centrality of a complete graph) are
+        equal in exact arithmetic but differ at the 1e-15 level depending on the BLAS build;
+        statistics such as kurtosis, k-statistics or repeat counts would otherwise be
+        rounding noise.
+        """
+        values = np.asarray(feat_dist, dtype=float)
+        if values.size < 2 or not np.all(np.isfinite(values)):
+            return feat_dist
+        scale = max(1.0, np.max(np.abs(values)))
+        if np.ptp(values) <= rtol * scale:
+            return np.full(values.shape, values.mean())
+        return feat_dist
+
     def _feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes summary statistics of distributions."""
+        feat_dist = self._snap_constant(feat_dist)
         self._feature_statistics_basic(feat_dist, feat_name, feat_desc, feat_interpret)
 
         if self.statistics_level == "medium":
@@ -570,14 +606,14 @@ class FeatureClass:
 
         self.add_feature(
             feat_name + "_kstat",
-            st.kstat,
+            _kstat,
             "Kstat" + compl_desc,
             feat_interpret - 1,
             function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_kstatvar",
-            st.kstatvar,
+            _kstatvar,
             "Kstat variance" + compl_desc,
             feat_interpret - 1,
             function_args=feat_dist,

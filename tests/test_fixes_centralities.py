@@ -406,3 +406,22 @@ def test_rbc_similarity_graph_has_no_self_loops():
 def test_rbc_descriptions_do_not_say_jaccard():
     descriptions = str(RolesimilarityBasedComparison.feature_descriptions)
     assert "Jaccard" not in descriptions
+
+
+def test_spectrum_ratio_nan_for_zero_eigenvalue():
+    # C12 has adjacency eigenvalues 2cos(2*pi*k/12); the 6th and 7th largest are exactly 0,
+    # so ratios with those denominators are rounding noise and are reported as NaN
+    feats = _features(Spectrum, fixture_graph("ring12"))
+    assert np.isnan(feats["eigenvalue_ratio_6_5"])
+    assert np.isnan(feats["eigenvalue_ratio_7_6"])
+    assert feats["eigenvalue_ratio_1_0"] == approx(np.sqrt(3) / 2)
+    # a 7-node graph has no 8th eigenvalue, so that ratio is not emitted at all
+    assert "eigenvalue_ratio_7_3" not in _features(Spectrum, fixture_graph("path7"))
+
+
+def test_constant_distribution_statistics_are_exact():
+    # every node of K8 has the same subgraph centrality; the summary statistics must not
+    # carry BLAS rounding noise (kstatvar of a constant vector came out as ~1e-7)
+    feats = _features(CentralitiesBasic, fixture_graph("complete8"))
+    assert feats["subgraph centrality_std"] == 0.0
+    assert feats["subgraph centrality_min"] == feats["subgraph centrality_max"]
