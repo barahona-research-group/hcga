@@ -19,6 +19,24 @@ matplotlib.use("Agg")
 L = logging.getLogger(__name__)
 
 
+def shap_class_names(n_outputs, class_names):
+    """Names of the classes explained by each SHAP output.
+
+    A binary xgboost classifier has a single SHAP output, which explains the second class.
+    """
+    class_names = [str(name) for name in class_names]
+    if n_outputs == len(class_names):
+        return class_names
+    if n_outputs == 1 and len(class_names) == 2:
+        return class_names[1:]
+    return [str(i) for i in range(n_outputs)]
+
+
+def _id_column(df):
+    """Name of an 'id' column matching the column index type of df."""
+    return ("id", "") if isinstance(df.columns, pd.MultiIndex) else "id"
+
+
 def _save_to_pdf(pdf, figs=None):
     """Save a list of figures to a pdf."""
     if figs is not None:
@@ -103,14 +121,23 @@ def plot_analysis(
 
     X = analysis_results["X"][reduced_features]
     y = analysis_results["y"]
+    label_encoder = analysis_results.get("label_encoder")
+    if label_encoder is not None:
+        class_names = shap_class_names(len(shap_values), label_encoder.classes_)
+        label_names = [str(name) for name in label_encoder.classes_]
+    else:
+        class_names = None
+        label_names = None
 
     with PdfPages(os.path.join(folder, "analysis_report.pdf")) as pdf:
         L.info("Plot bar ranking")
-        _bar_ranking_plot(shap_values, X, folder, max_feats, ext=ext)
+        _bar_ranking_plot(shap_values, X, folder, max_feats, ext=ext, class_names=class_names)
         _save_to_pdf(pdf)
 
         L.info("Plot dot summary")
-        figs = _dot_summary_plot(shap_values, X, folder, max_feats, ext=ext)
+        figs = _dot_summary_plot(
+            shap_values, X, folder, max_feats, ext=ext, class_names=class_names
+        )
         _save_to_pdf(pdf, figs)
 
         L.info("Plot feature correlations")
@@ -137,7 +164,9 @@ def plot_analysis(
 
         if analysis_type == "classification":
             L.info("Plot shap violin")
-            _plot_shap_violin(feature_importance, X, y, folder, max_feats, ext=ext)
+            _plot_shap_violin(
+                feature_importance, X, y, folder, max_feats, ext=ext, label_names=label_names
+            )
         elif analysis_type == "regression":
             L.info("Plot trend")
             _plot_trend(feature_importance, X, y, folder, max_feats, ext=ext)
@@ -151,25 +180,30 @@ def plot_analysis(
             _save_to_pdf(pdf, figs)
 
 
-def _bar_ranking_plot(mean_shap_values, X, folder, max_feats, ext=".png"):
+def _bar_ranking_plot(mean_shap_values, X, folder, max_feats, ext=".png", class_names=None):
     """Function for customizing and saving SHAP summary bar plot."""
-    shap.summary_plot(mean_shap_values, X, plot_type="bar", max_display=max_feats, show=False)
+    shap.summary_plot(
+        mean_shap_values,
+        X,
+        plot_type="bar",
+        max_display=max_feats,
+        show=False,
+        class_names=class_names,
+    )
     plt.title("Feature Rankings-All Classes")
     plt.savefig(os.path.join(folder, "shap_bar_rank" + ext), dpi=200, bbox_inches="tight")
 
 
-def _dot_summary_plot(shap_values, data, folder, max_feats, ext=".png"):
-    """Function for customizing and saving SHAP summary dot plot."""
-    num_classes = len(shap_values)
-    if len(np.shape(shap_values)) == 2:
-        shap_values = [shap_values]
-        num_classes = 1
+def _dot_summary_plot(shap_values, data, folder, max_feats, ext=".png", class_names=None):
+    """Function for customizing and saving SHAP summary dot plot (one per class)."""
+    if class_names is None:
+        class_names = [str(i) for i in range(len(shap_values))]
 
     figs = []
-    for i in range(num_classes):
+    for i, shap_class in enumerate(shap_values):
         figs.append(plt.figure())
-        shap.summary_plot(shap_values[i], data, plot_type="dot", max_display=max_feats, show=False)
-        plt.title("Sample Expanded Feature Summary for Class " + str(i))
+        shap.summary_plot(shap_class, data, plot_type="dot", max_display=max_feats, show=False)
+        plt.title("Sample Expanded Feature Summary for Class " + class_names[i])
         plt.savefig(
             os.path.join(folder, f"shap_class_{i}_summary{ext}"),
             dpi=200,
@@ -211,8 +245,9 @@ def _plot_dendrogram_shap(
         cbar_ax=cb_axis,
         cbar_kws={"label": "|pearson|"},
     )
-    cor_sorted["id"] = np.arange(len(cor_sorted))
-    reduced_pos = cor_sorted.loc[cor_sorted.index.intersection(reduced_features), ("id", "")] + 0.5
+    id_col = _id_column(cor_sorted)
+    cor_sorted[id_col] = np.arange(len(cor_sorted))
+    reduced_pos = cor_sorted.loc[cor_sorted.index.intersection(reduced_features), id_col] + 0.5
     ax2.scatter(reduced_pos, reduced_pos, c="g", s=100)
     ax1.title.set_text(f"Top {max_feats} features heatmap and dendogram")
     plt.savefig(os.path.join(folder, "shap_dendogram" + ext), dpi=200, bbox_inches="tight")
@@ -240,8 +275,9 @@ def _plot_feature_correlation(
         cbar_ax=cb_axis,
         cbar_kws={"label": "|pearson|"},
     )
-    cor_sorted["id"] = np.arange(len(cor_sorted))
-    reduced_pos = cor_sorted.loc[cor_sorted.index.intersection(reduced_features), ("id", "")] + 0.5
+    id_col = _id_column(cor_sorted)
+    cor_sorted[id_col] = np.arange(len(cor_sorted))
+    reduced_pos = cor_sorted.loc[cor_sorted.index.intersection(reduced_features), id_col] + 0.5
     ax.scatter(reduced_pos, reduced_pos, c="g", s=100)
     plt.savefig(os.path.join(folder, "correlation_matrix" + ext), dpi=200, bbox_inches="tight")
 
@@ -270,7 +306,7 @@ def _plot_feature_summary(data, labels, graphs, folder, shap_values, max_feats, 
         ax.append(plt.subplot(grid[1, 2]))
         ax.append(plt.subplot(grid[0, 2]))
 
-        g = sns.violinplot(data=data[feature_name], ax=ax[0], palette="muted", bw=0.1)
+        g = sns.violinplot(y=data[feature_name].to_numpy(), ax=ax[0], bw_method=0.1)
 
         c = sns.color_palette("hls", 5)
         for i, p_id in enumerate(p_ids):
@@ -301,7 +337,9 @@ def _plot_feature_summary(data, labels, graphs, folder, shap_values, max_feats, 
     return figs
 
 
-def _plot_shap_violin(shap_feature_importance, data, labels, folder, max_feats, ext=".png"):
+def _plot_shap_violin(
+    shap_feature_importance, data, labels, folder, max_feats, ext=".png", label_names=None
+):
     """Plot the violins of a feature."""
     top_feat_idx = shap_feature_importance.argsort()[-max_feats:]
 
@@ -312,13 +350,14 @@ def _plot_shap_violin(shap_feature_importance, data, labels, folder, max_feats, 
     for ax, top_feat in zip(axes.flatten(), top_feat_idx):
         feature_data = data[data.columns[top_feat]].values
 
-        data_split = []
-        for k in np.unique(labels):
-            indices = np.argwhere(labels.values == k)
-            data_split.append(feature_data[indices])
+        classes = np.unique(labels)
+        data_split = [feature_data[np.asarray(labels) == k] for k in classes]
 
-        sns.violinplot(data=data_split, ax=ax, palette="muted", width=1)
+        sns.violinplot(data=data_split, ax=ax, width=1)
         ax.set(xlabel="Class label", ylabel=data.columns[top_feat])
+        if label_names is not None:
+            ax.set_xticks(range(len(classes)))
+            ax.set_xticklabels([label_names[int(k)] for k in classes])
 
         ax.tick_params(axis="both", which="major", labelsize=5)
 
@@ -344,7 +383,7 @@ def _plot_trend(shap_feature_importance, data, labels, folder, max_feats, ext=".
     for ax, top_feat in zip(axes.flatten(), top_feat_idx):
         feature_data = data[data.columns[top_feat]].values
 
-        sns.scatterplot(x=feature_data, y=labels, ax=ax, palette="muted")
+        sns.scatterplot(x=feature_data, y=labels, ax=ax)
         ax.set(xlabel=data.columns[top_feat], ylabel="y-label")
 
         ax.tick_params(axis="both", which="major", labelsize=5)
