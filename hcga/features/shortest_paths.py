@@ -12,35 +12,39 @@ featureclass_name = "ShortestPaths"
 # pylint: disable=no-value-for-parameter
 
 
-@lru_cache(maxsize=None)
+@lru_cache(maxsize=1)
 def eval_shortest_paths(graph):
-    """eval_shortest_paths"""
-    return nx.shortest_path(graph)
+    """All-pairs shortest path lengths, computed once per graph.
+
+    Edge attribute 'weight' is used as the distance (hcga sets weight=1 on unweighted graphs,
+    so lengths are then hop counts). Unreachable pairs are absent.
+    """
+    return dict(nx.all_pairs_dijkstra_path_length(graph, weight="weight"))
 
 
 def largest_shortest_path(graph):
-    """"""
+    """Longest shortest path from each node to the other nodes it can reach."""
     return [
-        len(list(eval_shortest_paths(graph)[u].values())[-1]) for u in eval_shortest_paths(graph)
+        max(d for v, d in dists.items() if v != u)
+        for u, dists in eval_shortest_paths(graph).items()
+        if len(dists) > 1
     ]
 
 
 def mean_shortest_path(graph):
-    """"""
+    """Mean shortest path from each node to the other nodes it can reach."""
     return [
-        np.mean([len(k) for k in list(eval_shortest_paths(graph)[u].values())])
-        for u in eval_shortest_paths(graph)
+        np.mean([d for v, d in dists.items() if v != u])
+        for u, dists in eval_shortest_paths(graph).items()
+        if len(dists) > 1
     ]
 
 
-@lru_cache(maxsize=None)
 def shortest_paths(graph):
-    """"""
-    ss = list(nx.all_pairs_dijkstra_path_length(graph))
-    p = []
-    for s in ss:
-        p += list(s[1].values())
-    return [j for j in p if j > 0]
+    """Shortest path lengths between all ordered pairs of distinct, connected nodes."""
+    return [
+        d for u, dists in eval_shortest_paths(graph).items() for v, d in dists.items() if v != u
+    ]
 
 
 def number_shortest_paths_directed(graph):
@@ -48,14 +52,11 @@ def number_shortest_paths_directed(graph):
     return len(shortest_paths(graph))
 
 
-@lru_cache(maxsize=None)
 def eccentricity(graph):
-    """"""
-    ss = list(nx.all_pairs_dijkstra_path_length(graph))
-    p = []
-    for s in ss:
-        p.append(max(list(s[1].values())))
-    return p
+    """Eccentricity of each node that reaches at least one other node."""
+    return [
+        max(dists.values()) for dists in eval_shortest_paths(graph).values() if len(dists) > 1
+    ]
 
 
 def diameter_directed(graph):
@@ -65,13 +66,16 @@ def diameter_directed(graph):
 
 def radius_directed(graph):
     """"""
-    min(eccentricity(graph))
+    return min(eccentricity(graph))
 
 
 class ShortestPaths(FeatureClass):
     """Shortest paths class.
 
     Features based on the shortest paths across the network.
+
+    All features use the edge attribute 'weight' as the path length (hop counts on unweighted
+    graphs) and ignore unreachable pairs.
 
     Shortest paths calculations using networkx:
         `Networkx_scale free <https://networkx.org/documentation/stable/reference/algorithms/\

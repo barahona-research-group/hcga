@@ -8,14 +8,21 @@ from hcga.features.utils import ensure_connected
 featureclass_name = "MinimumCuts"
 
 
+def _connected_undirected(graph):
+    """Largest connected component (of the undirected graph, for digraphs)."""
+    if graph.is_directed():
+        graph = graph.to_undirected()
+    return ensure_connected(graph)
+
+
 def min_node_cut_size(graph):
     """min_node_cut_size"""
-    return len(nx.minimum_node_cut(ensure_connected(graph)))
+    return len(nx.minimum_node_cut(_connected_undirected(graph)))
 
 
 def min_edge_cut_size(graph):
-    """min_node_cut_size"""
-    return len(nx.minimum_edge_cut(ensure_connected(graph)))
+    """min_edge_cut_size"""
+    return len(nx.minimum_edge_cut(_connected_undirected(graph)))
 
 
 class MinimumCuts(FeatureClass):

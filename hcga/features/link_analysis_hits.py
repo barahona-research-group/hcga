@@ -1,5 +1,7 @@
 """HITS hubs class."""
 
+from functools import lru_cache
+
 import networkx as nx
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
@@ -8,16 +10,26 @@ from hcga.features.utils import ensure_connected
 featureclass_name = "Hits"
 
 
+@lru_cache(maxsize=1)
+def eval_hits(graph):
+    """Hubs and authorities (nx.hits_numpy was removed in networkx 3.0)."""
+    return nx.hits(ensure_connected(graph), max_iter=1000)
+
+
 def hits(graph):
-    """"""
-    h, _ = nx.hits_numpy(ensure_connected(graph))
-    return list(h.values())
+    """hits hubs"""
+    return list(eval_hits(graph)[0].values())
+
+
+def hits_authorities(graph):
+    """hits authorities"""
+    return list(eval_hits(graph)[1].values())
 
 
 class Hits(FeatureClass):
     """HITS hubs class.
 
-    Returns features based on the HITS hubs.
+    Returns features based on the HITS hubs and authorities.
     The HITS algorithm computes two numbers for a node.
     Authorities estimates the node value based on the incoming links.
     Hubs estimates the node value based on outgoing links.
@@ -50,6 +62,14 @@ class Hits(FeatureClass):
             "Hits",
             hits,
             "Hits algorithm",
+            InterpretabilityScore(3),
+            statistics="centrality",
+        )
+
+        self.add_feature(
+            "hits_authorities",
+            hits_authorities,
+            "Hits algorithm authorities",
             InterpretabilityScore(3),
             statistics="centrality",
         )

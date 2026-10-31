@@ -9,9 +9,14 @@ from hcga.feature_class import FeatureClass, InterpretabilityScore
 featureclass_name = "KComponents"
 
 
-@lru_cache(maxsize=None)
+@lru_cache(maxsize=1)
 def eval_kcomponents(graph):
-    """this evaluates the main function and cach it for speed up."""
+    """this evaluates the main function and cach it for speed up.
+
+    k-components are defined for undirected graphs, so digraphs are made undirected.
+    """
+    if graph.is_directed():
+        graph = graph.to_undirected()
     return nx.k_components(graph)
 
 
@@ -26,13 +31,14 @@ def num_connectivity_levels_k(graph):
 
 
 def size_max_k_component(graph):
-    """size_max_k_component"""
-    return len(eval_kcomponents(graph)[len(eval_kcomponents(graph).keys())][0])
+    """size of the largest component at the largest k"""
+    k_components = eval_kcomponents(graph)
+    return max(len(component) for component in k_components[max(k_components)])
 
 
 def size_2_component(graph):
-    """size_2_component"""
-    return len(eval_kcomponents(graph)[2][0])
+    """size of the largest 2-component (0 if there is none, e.g. on trees)"""
+    return max((len(component) for component in eval_kcomponents(graph).get(2, [])), default=0)
 
 
 class KComponents(FeatureClass):

@@ -49,36 +49,60 @@ def harmonic_centrality(graph):
     return list(centrality.harmonic_centrality(graph).values())
 
 
+def _undirected(graph):
+    """Undirected version of a digraph, for centralities only defined on undirected graphs."""
+    if graph.is_directed():
+        return graph.to_undirected()
+    return graph
+
+
 def subgraph_centrality(graph):
-    """subgraph_centrality"""
-    return list(centrality.subgraph_centrality(graph).values())
+    """subgraph_centrality (on the undirected graph for digraphs)"""
+    return list(centrality.subgraph_centrality(_undirected(graph)).values())
 
 
 def second_order_centrality(graph):
-    """second_order_centrality"""
-    return list(centrality.second_order_centrality(ensure_connected(graph)).values())
+    """second_order_centrality (on the undirected graph for digraphs)"""
+    return list(centrality.second_order_centrality(_undirected(ensure_connected(graph))).values())
+
+
+def _eigenvector_component(graph):
+    """Largest connected component, or largest strongly connected component for digraphs.
+
+    The leading eigenvector is only unique on a strongly connected graph.
+    """
+    if graph.is_directed():
+        return graph.subgraph(max(nx.strongly_connected_components(graph), key=len))
+    return ensure_connected(graph)
 
 
 def eigenvector_centrality(graph):
     """eigenvector_centrality"""
-    return list(centrality.eigenvector_centrality_numpy(ensure_connected(graph)).values())
+    component = _eigenvector_component(graph)
+    if component.number_of_nodes() < 2:
+        return None
+    return list(centrality.eigenvector_centrality_numpy(component).values())
 
 
 def weighted_eigenvector_centrality(graph):
     """weighted_eigenvector_centrality"""
-    return list(
-        centrality.eigenvector_centrality_numpy(ensure_connected(graph), weight="weight").values()
-    )
+    component = _eigenvector_component(graph)
+    if component.number_of_nodes() < 2:
+        return None
+    return list(centrality.eigenvector_centrality_numpy(component, weight="weight").values())
 
 
 def katz_centrality(graph):
-    """katz_centrality"""
-    return list(centrality.katz_centrality_numpy(ensure_connected(graph)).values())
+    """katz_centrality, with alpha = 0.5 / lambda_max so that the Katz series converges"""
+    graph = ensure_connected(graph)
+    lambda_max = np.max(np.abs(np.linalg.eigvals(nx.to_numpy_array(graph, weight=None))))
+    alpha = 0.5 / lambda_max if lambda_max > 0 else 0.1
+    return list(centrality.katz_centrality_numpy(graph, alpha=alpha).values())
 
 
 def pagerank(graph):
-    """pagerank"""
-    return list(nx.pagerank(graph).values())
+    """pagerank (unweighted)"""
+    return list(nx.pagerank(graph, weight=None).values())
 
 
 def weighted_pagerank(graph):
@@ -243,7 +267,7 @@ class CentralitiesBasic(FeatureClass):
         # weighted eigenvector centrality
         self.add_feature(
             "eigenvector centrality weighted",
-            eigenvector_centrality,
+            weighted_eigenvector_centrality,
             "Eigenvector centrality computes the centrality for a node based \
             on the centrality of its neighbors",
             InterpretabilityScore(4),

@@ -21,8 +21,8 @@ def rbc(graph):
     Create the role-similarity based comparison (rbc) matrix for nodes in the network,
     then convert this to a graph and extract some features
     ref: https://arxiv.org/abs/1103.5582
-    For some features we remove selfloops, since the diagonal of the rbc matrix
-    consists of ones, and therefore all nodes will have a selfloop with weight one
+    The diagonal of the rbc matrix consists of ones, so it is set to zero to keep
+    selfloops out of the similarity graph
 
     References
     ----------
@@ -40,7 +40,7 @@ def rbc(graph):
         beta = 0.95
 
     else:
-        lamb = max(np.linalg.eig(a)[0])
+        lamb = np.max(np.abs(np.linalg.eigvals(a)))
         if lamb != 0:
             beta = 0.95 / lamb
         else:
@@ -58,6 +58,7 @@ def rbc(graph):
         x[:, i + k - 1] = np.dot(np.linalg.matrix_power(ba_t, i), ones)
     x_norm = normalize(x, axis=1)
     y = np.matmul(x_norm, np.transpose(x_norm))
+    np.fill_diagonal(y, 0)  # no self-loops: every node is trivially similar to itself
 
     return nx.Graph(y)
 
@@ -140,35 +141,35 @@ class RolesimilarityBasedComparison(FeatureClass):
         self.add_feature(
             "number_of_edges",
             number_of_edges,
-            "Number of edges in Jaccard similarity graph",
+            "Number of edges in role-similarity graph",
             InterpretabilityScore(5),
         )
 
         self.add_feature(
             "number_of_edges_no_selfloops",
             number_of_edges_no_selfloops,
-            "Number of edges, not including selfloops, in Jaccard similarity graph",
+            "Number of edges, not including selfloops, in role-similarity graph",
             InterpretabilityScore(5),
         )
 
         self.add_feature(
             "connectance",
             connectance,
-            "Connectance of Jaccard similarity graph",
+            "Connectance of role-similarity graph",
             InterpretabilityScore(5),
         )
 
         self.add_feature(
             "diameter",
             diameter,
-            "Diameter of Jaccard similarity graph",
+            "Diameter of role-similarity graph",
             InterpretabilityScore(5),
         )
 
         self.add_feature(
             "radius",
             radius,
-            "Radius of Jaccard similarity graph",
+            "Radius of role-similarity graph",
             InterpretabilityScore(5),
         )
 
@@ -176,7 +177,7 @@ class RolesimilarityBasedComparison(FeatureClass):
         self.add_feature(
             "degree_assortativity_coeff",
             degree_assortativity_coeff,
-            "Similarity of connections in Jaccard similarity graph with respect to the node degree",
+            "Similarity of connections in role-similarity graph with respect to the node degree",
             InterpretabilityScore(4),
         )
 
@@ -192,7 +193,7 @@ class RolesimilarityBasedComparison(FeatureClass):
         self.add_feature(
             "is_connected",
             is_connected,
-            "Whether the Jaccard similarity graph is connected or not",
+            "Whether the role-similarity graph is connected or not",
             InterpretabilityScore(5),
         )
 
