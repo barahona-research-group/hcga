@@ -1,0 +1,16 @@
+CA|ratio_density_c=10.0
+CA|ratio_density_c=2.0
+CA|ratio_density_c=4.0
+CA|ratio_density_c=6.0
+CA|ratio_density_c=8.0
+CA|sum_density_c=10.0
+CA|sum_density_c=2.0
+CA|sum_density_c=4.0
+CA|sum_density_c=6.0
+CA|sum_density_c=8.0
+CBI|partition_coverage
+CBI|partition_modularity
+CBI|partition_performance
+CB|eigenvector centrality
+CB|eigenvector centrality weighted
+IS|size_max_indep_set
