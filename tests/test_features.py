@@ -18,11 +18,20 @@ test_feature_classes, _ = get_list_feature_classes(
     mode="all", statistics_level="advanced", timeout=0
 )
 
-# Classes that currently return no features at all under networkx >= 3.0.
-KNOWN_DEAD = {"Hits", "ScaleFree"}
+# Classes whose features are only defined for directed graphs (they return nothing on an
+# undirected graph by design), mapped to a fixture on which they are defined. Trophic
+# levels (Looplessness) need basal nodes from which every node is reachable, i.e. a DAG-like
+# graph rather than a random digraph.
+DIRECTED_ONLY = {
+    "InOutDegrees": "dir_er30",
+    "Reciprocity": "dir_er30",
+    "FlowHierarchy": "dir_er30",
+    "BasalNodes": "dir_er30",
+    "Looplessness": "dir_gn20",
+}
 
-# Classes that do not terminate in-process on a 34-node graph.
-UNBOUNDED = {"SimpleCycles"}
+# Classes whose features need node features.
+NEEDS_NODE_FEATURES = {"NodeFeatures"}
 
 
 def test_shortname_definition():
@@ -46,15 +55,13 @@ def test_trivial_graph():
         feature_class(graph).get_features()
 
 
-@pytest.mark.parametrize(
-    "feature_class",
-    [cls for cls in test_feature_classes if cls.__name__ not in UNBOUNDED],
-    ids=lambda cls: cls.__name__,
-)
+@pytest.mark.parametrize("feature_class", test_feature_classes, ids=lambda cls: cls.__name__)
 def test_class_computes_features(feature_class):
-    """Each class returns at least one non-None feature on the karate club graph."""
-    if feature_class.__name__ in KNOWN_DEAD:
-        pytest.xfail(f"{feature_class.__name__} is broken under current networkx (see audit)")
-    features = feature_class(fixture_graph("karate")).get_features()
+    """Each class returns at least one non-None feature on a suitable fixture graph."""
+    name = feature_class.__name__
+    if name in NEEDS_NODE_FEATURES:
+        pytest.skip("fixture graphs have no node features")
+    graph = fixture_graph(DIRECTED_ONLY.get(name, "karate"))
+    features = feature_class(graph).get_features()
     computed = {k: v for k, v in features.items() if v is not None}
-    assert computed, f"{feature_class.__name__} computed no features"
+    assert computed, f"{name} computed no features"

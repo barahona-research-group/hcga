@@ -25,8 +25,6 @@ dependencies = [
     "seaborn>=0.12",
     "shap>=0.44",
     "pandas>=2.0",
-    "wget>=3.2",
-    "sympy>=1.4",
     "xgboost>=2.0",
 ]
 

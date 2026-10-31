@@ -47,7 +47,7 @@ NORMALISATION_SUFFIXES = ("_N", "_E")
 STATISTIC_SUFFIXES = (
     "_mean", "_min", "_sum", "_max", "_median", "_std",
     "_gmean", "_hmean", "_kurtosis", "_mode",
-    "_kstat", "_kstatvar", "_tmean", "_tmin", "_tmax", "_tstd", "_tsem",
+    "_kstat", "_kstatvar", "_tmean", "_tvar", "_tmin", "_tmax", "_tstd", "_tsem",
     "_variation", "_mean_repeats", "_entropy", "_sem",
 )
 

@@ -36,6 +36,7 @@ def fixture_specs():
         ("er40_weighted", _weighted_er(40, 0.15, seed=2), None),
         ("ba40", nx.barabasi_albert_graph(40, 2, seed=3), None),
         ("dir_er30", nx.gnp_random_graph(30, 0.12, seed=4, directed=True), "directed"),
+        ("dir_gn20", nx.gn_graph(20, seed=6), "directed"),
         ("disconnected", _disconnected(seed=5), None),
     ]
 

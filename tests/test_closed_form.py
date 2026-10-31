@@ -1,7 +1,6 @@
 """Value-level tests against closed-form results on small named graphs.
 
-Tests marked xfail(strict=True) document bugs found in the 2026-10 audit. When a bug is fixed
-the test will XPASS and fail the run, which is the reminder to delete the marker.
+Several of these started life as xfail(strict=True) markers for bugs found in the 2026-10 audit.
 """
 
 import sys
@@ -59,7 +58,6 @@ def test_complete_connectance(classes):
     assert feats["connectance"] == approx(1.0)
 
 
-@pytest.mark.xfail(strict=True, reason="BasicStats.density divides by N(E-1) instead of N(N-1)")
 def test_complete_density(classes):
     feats = _features(classes, "BasicStats", fixture_graph("complete8"))
     assert feats["density"] == approx(1.0)
@@ -72,7 +70,6 @@ def test_complete_clustering(classes):
     assert feats["clustering_std"] == approx(0.0)
 
 
-@pytest.mark.xfail(strict=True, reason="num_triangles is the mean triangles per node, not the count")
 def test_complete_num_triangles(classes):
     feats = _features(classes, "Clustering", fixture_graph("complete8"))
     assert feats["num_triangles"] == comb(8, 3)
@@ -217,7 +214,6 @@ def test_disconnected_component_count(classes):
     assert bool(feats["is_connected"]) is False
 
 
-@pytest.mark.xfail(strict=True, reason="largest_connected_component takes the first component, not the largest")
 def test_largest_component_is_largest(classes):
     nx_graph = nx.Graph([(0, 1)])
     nx_graph.add_edges_from(nx.complete_graph(range(2, 12)).edges)
