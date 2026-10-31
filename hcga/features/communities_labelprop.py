@@ -11,7 +11,12 @@ featureclass_name = "CommunitiesLabelPropagation"
 
 @lru_cache(maxsize=None)
 def eval_labelprop(graph):
-    """this evaluates the main function and cach it for speed up."""
+    """this evaluates the main function and cach it for speed up.
+
+    Directed graphs are treated as undirected.
+    """
+    if graph.is_directed():
+        graph = graph.to_undirected(as_view=True)
     communities = list(label_propagation_communities(graph))
     communities.sort(key=len, reverse=True)
 

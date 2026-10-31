@@ -14,6 +14,8 @@ from hcga.utils import NestedPool
 
 L = logging.getLogger(__name__)
 
+COLUMN_NAMES = ["feature_class", "feature_name"]
+
 
 def extract(
     graphs,
@@ -94,6 +96,7 @@ def extract(
         return 0.0, 0.0
 
     _set_graph_labels(all_features_df, graphs)
+    _check_features_info(all_features_df, features_info_df)
 
     L.info("%s feature extracted.", len(all_features_df.columns))
     return all_features_df, features_info_df
@@ -116,8 +119,20 @@ def _print_runtimes(all_features_df):
 
 def _set_graph_labels(features, graphs):
     """Set graph labels to features dataframe."""
-    for graph in graphs:
-        features.loc[graph.id, "label"] = graph.label
+    features[("label", "")] = pd.Series({graph.id: graph.label for graph in graphs})
+
+
+def _check_features_info(features, features_info):
+    """Warn about feature columns that have no entry in features_info."""
+    missing = [
+        col for col in features.columns if col[0] != "label" and col not in features_info.columns
+    ]
+    if missing:
+        L.warning(
+            "%s feature columns are missing from features_info, for example %s",
+            len(missing),
+            missing[:5],
+        )
 
 
 def _load_feature_class(feature_name):
@@ -152,10 +167,7 @@ def get_list_feature_classes(
     non_feature_files = ["__init__", "utils"]
 
     list_feature_classes = []
-    column_indexes = pd.MultiIndex(
-        levels=[[], []], codes=[[], []], names=["feature_class", "feature_name"]
-    )
-    feature_info_df = pd.DataFrame(columns=column_indexes)
+    feature_info = {}
     feature_names = [
         _f.stem for _f in feature_path.glob("*.py") if _f.stem not in non_feature_files
     ]
@@ -171,9 +183,12 @@ def get_list_feature_classes(
                 n_node_features=n_node_features,
                 timeout=timeout,
             )
-            columns = [(feature_class.shortname, col) for col in features_info.columns]
-            feature_info_df[columns] = features_info
+            for col in features_info.columns:
+                feature_info[(feature_class.shortname, col)] = features_info[col]
 
+    feature_info_df = pd.DataFrame(
+        feature_info, columns=pd.MultiIndex.from_tuples(list(feature_info), names=COLUMN_NAMES)
+    )
     return list_feature_classes, feature_info_df
 
 
@@ -189,29 +204,50 @@ def feature_extraction(graph, list_feature_classes, with_runtimes=False):
         (DataFrame): dataframe of calculated features for a given graph.
     """
     L.debug("computing %s", graph)
-    column_indexes = pd.MultiIndex(
-        levels=[[], []], codes=[[], []], names=["feature_class", "feature_name"]
-    )
-    features_df = pd.DataFrame(columns=column_indexes)
+    row = {}
     for i, feature_class in enumerate(list_feature_classes):
         L.debug("computing: %s/ %s, %s", i, len(list_feature_classes), feature_class)
         if with_runtimes:
             start_time = time.time()
 
         feat_class_inst = feature_class(graph)
-        features = pd.DataFrame(feat_class_inst.get_features(), index=[graph.id])
-        columns = [(feat_class_inst.shortname, col) for col in features.columns]
-        features_df[columns] = features
+        for feature_name, value in feat_class_inst.get_features().items():
+            row[(feat_class_inst.shortname, feature_name)] = value
         del feat_class_inst
         L.debug("done with: %s/ %s, %s", i, len(list_feature_classes), feature_class)
 
         if with_runtimes:
-            features_df[("runtimes", feature_class.name)] = time.time() - start_time
+            row[("runtimes", feature_class.name)] = time.time() - start_time
 
-    if with_runtimes:
-        return features_df
+    columns = pd.MultiIndex.from_tuples(list(row), names=COLUMN_NAMES)
+    return pd.DataFrame([list(row.values())], index=[graph.id], columns=columns)
 
-    return features_df
+
+def _class_settings(list_feature_classes):
+    """Settings that setup_class stored as class attributes, to be passed to pool workers."""
+    return [
+        (
+            feature_class,
+            {
+                "normalize_features": feature_class.normalize_features,
+                "statistics_level": feature_class.statistics_level,
+                "n_node_features": getattr(feature_class, "n_node_features", 0),
+                "timeout": feature_class.timeout,
+            },
+        )
+        for feature_class in list_feature_classes
+    ]
+
+
+def _init_worker(class_settings):
+    """Pool initializer: restore the class settings in a worker.
+
+    Under the spawn and forkserver start methods, workers import the feature classes afresh
+    and would otherwise see the class defaults instead of the values set by setup_class.
+    """
+    for feature_class, settings in class_settings:
+        for key, value in settings.items():
+            setattr(feature_class, key, value)
 
 
 def compute_all_features(
@@ -225,7 +261,7 @@ def compute_all_features(
     Args:
         graphs (GraphCollection object): GraphCollection object with loaded graphs (see graph.py)
         list_feature_classes (list): list of feature classes found in ./features
-        n_workers (int): number of workers for parallel processing
+        n_workers (int): number of workers for parallel processing, 1 to compute in-process
         with_runtimes (bool): compute the run time of each feature
 
     Returns:
@@ -236,17 +272,17 @@ def compute_all_features(
     if with_runtimes:
         n_workers = 1
 
-    with NestedPool(n_workers) as pool:
-        return pd.concat(
-            tqdm(
-                pool.imap(
-                    partial(
-                        feature_extraction,
-                        list_feature_classes=list_feature_classes,
-                        with_runtimes=with_runtimes,
-                    ),
-                    graphs,
-                ),
-                total=len(graphs),
-            )
-        )
+    extract_one = partial(
+        feature_extraction,
+        list_feature_classes=list_feature_classes,
+        with_runtimes=with_runtimes,
+    )
+    if n_workers == 1:
+        return pd.concat(tqdm(map(extract_one, graphs), total=len(graphs)))
+
+    with NestedPool(
+        n_workers,
+        initializer=_init_worker,
+        initargs=(_class_settings(list_feature_classes),),
+    ) as pool:
+        return pd.concat(tqdm(pool.imap(extract_one, graphs), total=len(graphs)))

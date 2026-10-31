@@ -3,8 +3,29 @@
 import networkx as nx
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
+from hcga.features.utils import ensure_connected
 
 featureclass_name = "SmallWorldness"
+
+SEED = 0
+
+
+def omega(graph):
+    """Small-world coefficient omega of the largest connected component (undirected).
+
+    Returns None where the reference graphs cannot be built by edge rewiring: fewer than 4
+    nodes, complete graphs (no swap is possible), and stars (every pair of edges shares the
+    centre, so nx.omega would loop forever).
+    """
+    graph = nx.Graph(graph)
+    graph.remove_edges_from(nx.selfloop_edges(graph))
+    graph = ensure_connected(graph)
+    n_nodes, n_edges = graph.number_of_nodes(), graph.number_of_edges()
+    if n_nodes < 4 or n_edges == n_nodes * (n_nodes - 1) // 2:
+        return None
+    if n_edges == n_nodes - 1 and max(d for _, d in graph.degree()) == n_nodes - 1:
+        return None
+    return nx.omega(graph, seed=SEED)
 
 
 class SmallWorldness(FeatureClass):
@@ -41,7 +62,7 @@ class SmallWorldness(FeatureClass):
         # omega metric
         self.add_feature(
             "omega",
-            nx.omega,
+            omega,
             "The small world coefficient omega",
             InterpretabilityScore(4),
         )

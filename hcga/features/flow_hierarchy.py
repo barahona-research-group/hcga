@@ -11,10 +11,10 @@ featureclass_name = "FlowHierarchy"
 
 @lru_cache(maxsize=None)
 def flow_hierarchy(graph, weight=None):
-    """apply flow hierarchy only on digraph"""
+    """apply flow hierarchy only on digraph (None on undirected graphs, where it is undefined)"""
     if isinstance(graph, nx.DiGraph):
         return nx.flow_hierarchy(graph, weight)
-    return 0.0
+    return None
 
 
 class FlowHierarchy(FeatureClass):

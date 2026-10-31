@@ -12,7 +12,12 @@ featureclass_name = "CycleBasis"
 
 @lru_cache(maxsize=None)
 def eval_cycle_basis(graph):
-    """this evaluates the main function and cach it for speed up."""
+    """this evaluates the main function and cach it for speed up.
+
+    Directed graphs are treated as undirected.
+    """
+    if graph.is_directed():
+        graph = graph.to_undirected(as_view=True)
     return nx.cycle_basis(graph)
 
 
@@ -27,10 +32,17 @@ def average_cycle_length(graph):
 
 
 def minimum_cycle_length(graph):
-    """Minimum cycle length returns 0 if graph is a tree."""
-    if not eval_cycle_basis(graph):
+    """Minimum cycle length (the girth), returns 0 if graph is a forest.
+
+    The shortest cycle of a fundamental cycle basis is not always the shortest cycle,
+    so we use the girth directly. Directed graphs are treated as undirected.
+    """
+    if graph.is_directed():
+        graph = graph.to_undirected(as_view=True)
+    girth = nx.girth(graph)
+    if girth == float("inf"):
         return 0
-    return np.min([len(cycle) for cycle in eval_cycle_basis(graph)])
+    return girth
 
 
 def ratio_nodes_cycle(graph):

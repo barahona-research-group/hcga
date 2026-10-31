@@ -1,3 +1,0 @@
-include hcga/Operations/operations.yaml
-recursive-include hcga *
-exclude /hcga/TestData/

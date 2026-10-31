@@ -8,11 +8,18 @@ from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "CommunitiesBisection"
 
+SEED = 0
+
 
 @lru_cache(maxsize=None)
 def eval_bisection(graph):
-    """this evaluates the main function and cach it for speed up."""
-    communities = list(kernighan_lin_bisection(graph))
+    """this evaluates the main function and cach it for speed up.
+
+    Directed graphs are treated as undirected.
+    """
+    if graph.is_directed():
+        graph = graph.to_undirected(as_view=True)
+    communities = list(kernighan_lin_bisection(graph, seed=SEED))
     communities.sort(key=len, reverse=True)
 
     return communities

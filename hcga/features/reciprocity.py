@@ -7,8 +7,15 @@ from hcga.feature_class import FeatureClass, InterpretabilityScore
 featureclass_name = "Reciprocity"
 
 
+def reciprocity(graph):
+    """Overall reciprocity of a directed graph (None for undirected graphs)."""
+    if not graph.is_directed():
+        return None
+    return nx.overall_reciprocity(graph)
+
+
 class Reciprocity(FeatureClass):
-    """Reciprocity class.
+    r"""Reciprocity class.
 
     Features based on the reciprocity in a directed graph.
 
@@ -36,7 +43,7 @@ class Reciprocity(FeatureClass):
         # graph clique number
         self.add_feature(
             "reciprocity",
-            nx.overall_reciprocity,
+            reciprocity,
             "fraction of edges pointing in both directions to total number of edges",
             InterpretabilityScore(3),
         )

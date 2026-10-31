@@ -1,5 +1,8 @@
 """Node connectivity class."""
 
+import itertools
+from functools import lru_cache
+
 import networkx as nx
 import numpy as np
 
@@ -8,16 +11,30 @@ from hcga.feature_class import FeatureClass, InterpretabilityScore
 featureclass_name = "NodeConnectivity"
 
 
+@lru_cache(maxsize=1)
+def eval_node_conn(graph):
+    """Local node connectivity of every pair of distinct nodes (ordered pairs for digraphs)."""
+    node_connectivity = nx.all_pairs_node_connectivity(graph)
+    if graph.is_directed():
+        pairs = itertools.permutations(graph, 2)
+    else:
+        pairs = itertools.combinations(graph, 2)
+    return np.array([node_connectivity[u][v] for u, v in pairs], dtype=float)
+
+
 def node_conn(graph):
     """calculating node connectivity"""
-    node_connectivity = nx.all_pairs_node_connectivity(graph)
-    N = graph.number_of_nodes()
+    return list(eval_node_conn(graph))
 
-    _node_conn = np.zeros([N, N])
-    for key1, value1 in node_connectivity.items():
-        for key2, value2 in value1.items():
-            _node_conn[key1, key2] = value2
-    return list(np.triu(_node_conn).flatten())
+
+def node_connectivity(graph):
+    """Node connectivity: the minimum local node connectivity over all pairs (Menger)."""
+    return int(np.min(eval_node_conn(graph)))
+
+
+def avg_node_connectivity(graph):
+    """Average local node connectivity over all pairs."""
+    return float(np.mean(eval_node_conn(graph)))
 
 
 class NodeConnectivity(FeatureClass):
@@ -45,13 +62,13 @@ class NodeConnectivity(FeatureClass):
         # Calculate connectivity
         self.add_feature(
             "node_connectivity",
-            nx.node_connectivity,
+            node_connectivity,
             "Node connectivity",
             InterpretabilityScore("max") - 1,
         )
         self.add_feature(
             "avg_node_connectivity",
-            nx.average_node_connectivity,
+            avg_node_connectivity,
             "Average node connectivity",
             InterpretabilityScore("max") - 1,
         )

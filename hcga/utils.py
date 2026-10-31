@@ -3,6 +3,9 @@
 import logging
 import multiprocessing
 import multiprocessing.pool
+import signal
+import threading
+from contextlib import contextmanager
 
 import pandas as pd
 
@@ -36,41 +39,56 @@ class NestedPool(multiprocessing.pool.Pool):  # pylint: disable=abstract-method
     Process = NoDaemonProcess
 
 
+class FeatureTimeout(multiprocessing.TimeoutError, TimeoutError):
+    """Raised when a feature evaluation exceeds its time limit.
+
+    Subclasses both multiprocessing.TimeoutError and the builtin TimeoutError.
+    """
+
+
+def _can_use_alarm():
+    """SIGALRM-based time limits need setitimer (POSIX) and the main thread."""
+    return hasattr(signal, "setitimer") and threading.current_thread() is threading.main_thread()
+
+
+@contextmanager
+def time_limit(seconds):
+    """Raise FeatureTimeout in the enclosed block after the given number of seconds.
+
+    Uses SIGALRM in the current process, so it costs a few microseconds per call. Without
+    setitimer (Windows) or outside the main thread no limit is applied. A single long call
+    into C code is only interrupted once it returns to the Python interpreter.
+    """
+    if not seconds or not _can_use_alarm():
+        yield
+        return
+
+    def _handler(signum, frame):  # pylint: disable=unused-argument
+        raise FeatureTimeout(f"timed out after {seconds} seconds")
+
+    previous_handler = signal.signal(signal.SIGALRM, _handler)
+    signal.setitimer(signal.ITIMER_REAL, seconds)
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, previous_handler)
+
+
 def timeout_eval(func, args, timeout=None):
     """Evaluate a function within a given timeout period.
 
     Args:
         func: The function to call.
         args: Arguments to pass to the function.
-        timeout: The timeout period in seconds.
+        timeout: The timeout period in seconds (None or 0 for no limit).
 
     Returns:
-        The function's result, or None if a timeout or an error occurs.
+        The function's result. Exceptions raised by the function propagate, and a timeout
+        raises FeatureTimeout (a subclass of multiprocessing.TimeoutError).
     """
-    if timeout is None or timeout == 0:
-        try:
-            return func(*args)
-        except Exception:  # pylint: disable=broad-exception-caught
-            return None
-
-    def target(queue, args):
-        try:
-            result = func(*args)
-            queue.put(result)
-        except Exception:  # pylint: disable=broad-exception-caught
-            queue.put(None)
-
-    queue = multiprocessing.Queue()
-    process = multiprocessing.Process(target=target, args=(queue, args))
-    process.start()
-    process.join(timeout)
-
-    if process.is_alive():
-        process.terminate()
-        process.join()
-        return None
-
-    return queue.get_nowait()
+    with time_limit(timeout):
+        return func(*args)
 
 
 def get_trivial_graph(n_node_features=0):

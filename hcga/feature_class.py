@@ -7,10 +7,9 @@ The functions here are necessary to evaluate each individual feature found insid
 """
 
 import logging
-import multiprocessing
-import sys
-import traceback
+import numbers
 import warnings
+from contextlib import contextmanager
 from functools import partial
 from multiprocessing import TimeoutError
 
@@ -24,19 +23,40 @@ from networkx.exception import NetworkXNotImplemented
 from hcga.utils import get_trivial_graph, timeout_eval
 
 L = logging.getLogger(__name__)
-warnings.simplefilter("ignore")
 
-# pylint: disable=consider-using-with
+
+@contextmanager
+def _quiet_numerics():
+    """Silence floating-point RuntimeWarnings (division by zero, empty slices, ...) in a block.
+
+    Degenerate inputs are expected here and give NaN or inf values.
+    """
+    with np.errstate(all="ignore"), warnings.catch_warnings():
+        warnings.simplefilter("ignore", RuntimeWarning)
+        yield
 
 
 def _mean_repeats(dist):
-    """"""
-    return np.mean(st.find_repeats(dist)[1])
+    """Mean number of occurrences of the values that occur more than once."""
+    _, counts = np.unique(np.asarray(dist), return_counts=True)
+    counts = counts[counts > 1]
+    return counts.mean() if counts.size else np.nan
+
+
+def _gmean(dist):
+    """Geometric mean: 0 if any value is 0, NaN if any value is negative."""
+    dist = np.asarray(dist, dtype=float)
+    if dist.size == 0 or np.any(dist < 0):
+        return np.nan
+    return st.gmean(dist)
 
 
 def _hmean(dist):
-    """"""
-    return st.hmean(np.abs(dist) + 1e-8)
+    """Harmonic mean: 0 if any value is 0, NaN if any value is negative."""
+    dist = np.asarray(dist, dtype=float)
+    if dist.size == 0 or np.any(dist < 0):
+        return np.nan
+    return st.hmean(dist)
 
 
 def _mode(dist):
@@ -68,6 +88,24 @@ def _feat_E(graph, features):
     return None
 
 
+
+def _kstat(dist):
+    """Second k-statistic (unbiased variance), computed on centred data.
+
+    scipy evaluates k-statistics from power sums, which cancel catastrophically for data
+    with a large mean: on an exactly constant vector ``st.kstatvar`` returns ~1e-7 that
+    differs between BLAS builds. Cumulants of order >= 2 are shift invariant, so centring
+    changes nothing mathematically.
+    """
+    dist = np.asarray(dist, dtype=float)
+    return st.kstat(dist - dist.mean(), 2)
+
+
+def _kstatvar(dist):
+    """Variance of the second k-statistic, computed on centred data (see _kstat)."""
+    dist = np.asarray(dist, dtype=float)
+    return st.kstatvar(dist - dist.mean(), 2)
+
 class FeatureClass:
     """Main functionality to be inherited by each feature class"""
 
@@ -78,6 +116,7 @@ class FeatureClass:
     name = "template"
 
     statistics_level = "basic"
+    n_node_features = 0
     encoding = None
     normalize_features = True
     with_node_features = False
@@ -113,20 +152,17 @@ class FeatureClass:
         Args:
             graph (Graph): graph for initialisation, converted to given encoding
         """
-        self.pool = multiprocessing.Pool(processes=1, maxtasksperchild=1)
         if graph is not None:
             self.graph = graph.get_graph(self.__class__.encoding)
             self.graph_id = graph.id
             self.graph_type = graph.graph_type
         else:
             self.graph = None
+            self.graph_id = None
+            self.graph_type = None
         self.features = {}
-
-    def __del__(self):
-        if hasattr(self, "pool"):
-            self.pool.close()
-            self.pool.terminate()
-            del self.pool
+        # feature name -> repr of the exception for features that failed or timed out
+        self.failures = {}
 
     @classmethod
     def setup_class(
@@ -151,14 +187,15 @@ class FeatureClass:
         cls.normalize_features = normalize_features
         cls.statistics_level = statistics_level
         cls.n_node_features = n_node_features
+        # no timeout during setup (a timeout from an earlier setup would otherwise apply)
+        cls.timeout = None
 
         inst = cls(get_trivial_graph(n_node_features=n_node_features))
         features = inst.get_features(all_features=True)
 
-        feature_info = pd.DataFrame()
-        for feature in features:
-            feat_info = inst.get_feature_info(feature)
-            feature_info[feature] = pd.Series(feat_info)
+        feature_info = pd.DataFrame(
+            {feature: pd.Series(inst.get_feature_info(feature)) for feature in features}
+        )
 
         # we set the timeout only for real computation for setup speed up
         cls.timeout = timeout
@@ -218,8 +255,10 @@ class FeatureClass:
     ):
         """Evaluating a feature function.
 
-        We catch any error during a computation, which may result in Nan feature value.
-        In addition, the evaluation has to be done before timoeut, or it will return Nan.
+        Any error during the computation, a timeout, or a result of unexpected type gives None
+        (a NaN feature value); the reason is logged at debug level and stored in self.failures.
+        Functions that are not implemented for directed graphs are evaluated on the undirected
+        version of the graph.
 
         Args:
             feature_function (function): function to evaluate to compute a feature
@@ -234,66 +273,70 @@ class FeatureClass:
             function_args = self.graph
 
         try:
-            try:
-                feature = timeout_eval(feature_function, (function_args,), timeout=self.timeout)
-            except NetworkXNotImplemented:
-                if self.graph_type == "directed":
+            with _quiet_numerics():
+                try:
+                    feature = timeout_eval(feature_function, (function_args,), timeout=self.timeout)
+                except NetworkXNotImplemented:
+                    if self.graph_type != "directed":
+                        raise
                     feature = timeout_eval(
                         feature_function,
                         (to_undirected(function_args),),
                         timeout=self.timeout,
                     )
-                else:
-                    return None
-
-        except (KeyboardInterrupt, SystemExit):
-            sys.exit(0)
-
-        except TimeoutError:
-            L.debug(
-                "Feature %s for graph %d took longer than %s seconds",
-                feature_name,
-                self.graph_id,
-                str(self.timeout),
-            )
+        except TimeoutError as exc:
+            # KeyboardInterrupt and SystemExit are not Exceptions, so they propagate.
+            self._record_failure(feature_name, exc, f"took longer than {self.timeout} seconds")
             return None
-        except Exception:  # pylint: disable=broad-except
-            exception = "".join(traceback.format_exception(*sys.exc_info()))
-            if self.graph_id != -10:
-                L.debug(
-                    "Failed feature %s for graph %d with exception: %s",
-                    feature_name,
-                    self.graph_id,
-                    str(exception),
-                )
+        except Exception as exc:  # pylint: disable=broad-except
+            self._record_failure(feature_name, exc, "failed")
             return None
 
         if feature is None:
             return None
 
+        return self._check_feature_type(feature, feature_name, statistics)
+
+    def _record_failure(self, feature_name, exc, reason):
+        """Log a failed feature evaluation and record it in self.failures."""
+        self.failures[feature_name] = repr(exc)
+        L.debug(
+            "Feature %s for graph %s %s: %r",
+            feature_name,
+            self.graph_id,
+            reason,
+            exc,
+            exc_info=exc,
+        )
+
+    def _check_feature_type(self, feature, feature_name, statistics):
+        """Return the feature if it has the type expected for statistics, else None.
+
+        Scalars without statistics are converted to float.
+        """
         if statistics == "clustering":
-            if not isinstance(feature, list):
-                raise Exception(
-                    f"Feat {feature_name} with clustering statistics is not a list: {feature}"
-                )
-            if not isinstance(feature[0], set):
-                raise Exception(
-                    f"Feat {feature_name} with clustering statistics is not list of sets: {feature}"
-                )
-        elif statistics in ("centrality", "node_features"):
-            expected_types = (list, np.ndarray)
-            if not isinstance(feature, expected_types):
-                raise Exception(
-                    f"""Feature {feature_name} with statistics does not return
-                    expected type {expected_types}: {feature}"""
-                )
+            valid = isinstance(feature, list) and len(feature) > 0 and isinstance(feature[0], set)
+            expected = "a non-empty list of sets"
+        elif statistics in ("centrality", "node_features", "list"):
+            valid = isinstance(feature, (list, tuple, np.ndarray))
+            expected = "a list or array"
         else:
-            expected_types = (int, float, np.int32, np.int64, np.float32, np.float64)
-            if not isinstance(feature, expected_types):
-                raise Exception(
-                    f"""Feature {feature_name} of type {type(feature)} with no stat does not
-                    return expected type {expected_types}: {feature}"""
-                )
+            valid = isinstance(feature, (numbers.Real, np.number, np.bool_)) and not isinstance(
+                feature, np.complexfloating
+            )
+            expected = "a real scalar"
+            if valid:
+                try:
+                    feature = float(feature)
+                except (TypeError, ValueError):
+                    valid = False
+
+        if not valid:
+            exc = TypeError(
+                f"feature {feature_name} returned {type(feature).__name__}, expected {expected}"
+            )
+            self._record_failure(feature_name, exc, "has an unexpected type")
+            return None
         return feature
 
     def add_feature(  # pylint: disable=inconsistent-return-statements
@@ -436,8 +479,26 @@ class FeatureClass:
                 feat_interpret,
             )
 
+    @staticmethod
+    def _snap_constant(feat_dist, rtol=1e-10):
+        """Replace a distribution that is constant up to rounding by its exact mean.
+
+        Node quantities of symmetric graphs (e.g. every centrality of a complete graph) are
+        equal in exact arithmetic but differ at the 1e-15 level depending on the BLAS build;
+        statistics such as kurtosis, k-statistics or repeat counts would otherwise be
+        rounding noise.
+        """
+        values = np.asarray(feat_dist, dtype=float)
+        if values.size < 2 or not np.all(np.isfinite(values)):
+            return feat_dist
+        scale = max(1.0, np.max(np.abs(values)))
+        if np.ptp(values) <= rtol * scale:
+            return np.full(values.shape, values.mean())
+        return feat_dist
+
     def _feature_statistics(self, feat_dist, feat_name, feat_desc, feat_interpret):
         """Computes summary statistics of distributions."""
+        feat_dist = self._snap_constant(feat_dist)
         self._feature_statistics_basic(feat_dist, feat_name, feat_desc, feat_interpret)
 
         if self.statistics_level == "medium":
@@ -512,7 +573,7 @@ class FeatureClass:
 
         self.add_feature(
             feat_name + "_gmean",
-            st.gmean,
+            _gmean,
             "G. Mean" + compl_desc,
             feat_interpret - 1,
             function_args=feat_dist,
@@ -520,7 +581,7 @@ class FeatureClass:
         self.add_feature(
             feat_name + "_hmean",
             _hmean,
-            "G. Mean" + compl_desc,
+            "H. Mean" + compl_desc,
             feat_interpret - 1,
             function_args=feat_dist,
         )
@@ -545,14 +606,14 @@ class FeatureClass:
 
         self.add_feature(
             feat_name + "_kstat",
-            st.kstat,
+            _kstat,
             "Kstat" + compl_desc,
             feat_interpret - 1,
             function_args=feat_dist,
         )
         self.add_feature(
             feat_name + "_kstatvar",
-            st.kstatvar,
+            _kstatvar,
             "Kstat variance" + compl_desc,
             feat_interpret - 1,
             function_args=feat_dist,
@@ -565,7 +626,7 @@ class FeatureClass:
             function_args=feat_dist,
         )
         self.add_feature(
-            feat_name + "_tmean",
+            feat_name + "_tvar",
             st.tvar,
             "Tvariance" + compl_desc,
             feat_interpret - 1,

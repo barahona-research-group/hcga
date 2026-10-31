@@ -8,7 +8,9 @@ featureclass_name = "MaximalMatching"
 
 
 def maximal_matching(graph):
-    """maximal_matching"""
+    """Size of a (greedy) maximal matching (directed graphs treated as undirected)."""
+    if graph.is_directed():
+        graph = graph.to_undirected(as_view=True)
     return len(nx.maximal_matching(graph))
 
 

@@ -49,7 +49,7 @@ class Eulerian(FeatureClass):
 
         # checking if eulerian path exists
         self.add_feature(
-            "semi_eulerian",
+            "has_eulerian_path",
             nx.has_eulerian_path,
             "Whether a eulerian path exists in the network",
             InterpretabilityScore(3),

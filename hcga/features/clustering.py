@@ -1,16 +1,27 @@
 """Clustering class."""
 
 import networkx as nx
-import numpy as np
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Clustering"
 
 
+def _undirected(graph):
+    """Undirected view of a directed graph (triangles and squares are undirected notions)."""
+    if graph.is_directed():
+        return graph.to_undirected(as_view=True)
+    return graph
+
+
 def triang(graph):
-    """triang"""
-    return np.asarray(list(nx.triangles(graph).values())).mean()
+    """Total number of triangles (each triangle is counted at its three nodes, hence // 3)."""
+    return sum(nx.triangles(_undirected(graph)).values()) // 3
+
+
+def transitivity(graph):
+    """transitivity"""
+    return nx.transitivity(_undirected(graph))
 
 
 def clustering_dist(graph):
@@ -20,7 +31,7 @@ def clustering_dist(graph):
 
 def square_clustering_dist(graph):
     """square_clustering_dist"""
-    return list(nx.square_clustering(graph).values())
+    return list(nx.square_clustering(_undirected(graph)).values())
 
 
 class Clustering(FeatureClass):
@@ -62,13 +73,13 @@ class Clustering(FeatureClass):
         self.add_feature(
             "num_triangles",
             triang,
-            "Number of triangles in the graph",
+            "Total number of triangles in the graph (undirected for directed graphs)",
             InterpretabilityScore("max"),
         )
 
         self.add_feature(
             "transitivity",
-            nx.transitivity,
+            transitivity,
             "Transitivity of the graph",
             InterpretabilityScore("max"),
         )

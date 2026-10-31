@@ -5,24 +5,26 @@ Functions for the analysis of extracted feature matrix.
 import itertools
 import logging
 import os
-import warnings
-from copy import deepcopy
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import shap
+from sklearn.base import clone
 from sklearn.metrics import accuracy_score, mean_absolute_error
-from sklearn.model_selection import RepeatedKFold, RepeatedStratifiedKFold, ShuffleSplit
+from sklearn.model_selection import (
+    RepeatedKFold,
+    RepeatedStratifiedKFold,
+    ShuffleSplit,
+    StratifiedShuffleSplit,
+)
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from tqdm import tqdm
 
 from hcga.io import load_fitted_model, save_fitted_model
-from hcga.plotting import plot_analysis, plot_prediction
+from hcga.plotting import plot_analysis, plot_prediction, shap_class_names
 
 L = logging.getLogger(__name__)
-logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
-warnings.simplefilter("ignore")
 
 
 def features_to_Xy(features):
@@ -33,25 +35,33 @@ def features_to_Xy(features):
     return features, None
 
 
-def _normalise_feature_data(features, scaler=None, fit_scaler=True):
-    """Normalise the feature matrix to remove the mean and scale to unit variance."""
-    if "label" in features:
-        label = features["label"]
+def _add_label(X, y):
+    """Append the label column to a feature matrix (as ("label", "") for MultiIndex columns)."""
+    X = X.copy()
+    label_col = ("label", "") if isinstance(X.columns, pd.MultiIndex) else "label"
+    X[label_col] = y.loc[X.index].values
+    return X
 
+
+def _encode_labels(y):
+    """Encode class labels to 0..n_classes-1, as required by xgboost."""
+    label_encoder = LabelEncoder()
+    y_encoded = pd.Series(label_encoder.fit_transform(y), index=y.index, name=y.name)
+    return y_encoded, label_encoder
+
+
+def _normalise_feature_data(features, scaler=None, fit_scaler=True):
+    """Normalise the feature matrix (without label) to zero mean and unit variance."""
     if scaler is None:
         scaler = StandardScaler()
-        normed_features = pd.DataFrame(scaler.fit_transform(features), columns=features.columns)
+        fit_scaler = True
+
+    if fit_scaler:
+        normed_features = scaler.fit_transform(features)
     else:
-        if fit_scaler:
-            normed_features = pd.DataFrame(scaler.fit_transform(features), columns=features.columns)
-        else:
-            normed_features = pd.DataFrame(scaler.transform(features), columns=features.columns)
+        normed_features = scaler.transform(features)
 
-    normed_features.index = features.index
-
-    if "label" in features:
-        normed_features["label"] = label
-
+    normed_features = pd.DataFrame(normed_features, columns=features.columns, index=features.index)
     return normed_features, scaler
 
 
@@ -68,7 +78,8 @@ def _get_reduced_feature_set(X, shap_top_features, n_top_features=100, alpha=0.9
     rank_feat_ids = np.argsort(shap_top_features)[::-1]
 
     selected_features = [rank_feat_ids[0]]
-    corr_matrix = np.abs(np.corrcoef(X.T))
+    with np.errstate(invalid="ignore", divide="ignore"):
+        corr_matrix = np.abs(np.corrcoef(X.T))
     for rank_feat_id in rank_feat_ids[1:]:
         if not (corr_matrix[selected_features, rank_feat_id] > alpha).any():
             selected_features.append(rank_feat_id)
@@ -120,13 +131,9 @@ def _print_accuracy(acc_scores, analysis_type, reduced=False):
 def _filter_interpretable(features, features_info, interpretability):
     """Get only features with certain interpretability."""
     interpretability = min(5, interpretability)
-    for feat in list(features_info.keys()):
-        score = features_info[feat]["interpretability"].score
-        if score < interpretability:
-            if feat in features.columns:
-                features = features.drop(columns=[feat])
-                features_info = features_info.drop(columns=[feat])
-    return features, features_info
+    scores = features_info.loc["interpretability"].map(lambda score: score.score)
+    to_drop = scores.index[scores < interpretability].intersection(features.columns)
+    return features.drop(columns=to_drop), features_info.drop(columns=to_drop)
 
 
 def _filter_graphs(features, graph_removal=0.05):
@@ -150,7 +157,7 @@ def _filter_features(features):
     ).columns
 
 
-def _get_model(model, analysis_type):
+def _get_model(model, analysis_type, random_state=42):
     """Get a model."""
     if isinstance(model, str):
         if model == "RF":
@@ -158,12 +165,16 @@ def _get_model(model, analysis_type):
                 from sklearn.ensemble import RandomForestClassifier
 
                 L.info("... Using RandomForest classifier ...")
-                model = RandomForestClassifier(n_estimators=1000, max_depth=30)
+                model = RandomForestClassifier(
+                    n_estimators=1000, max_depth=30, random_state=random_state, n_jobs=-1
+                )
             if analysis_type == "regression":
                 from sklearn.ensemble import RandomForestRegressor
 
                 L.info("... Using RandomForest regressor ...")
-                model = RandomForestRegressor(n_estimators=1000, max_depth=30)
+                model = RandomForestRegressor(
+                    n_estimators=1000, max_depth=30, random_state=random_state, n_jobs=-1
+                )
 
         elif model == "XG":
             if analysis_type == "classification":
@@ -182,19 +193,36 @@ def _get_model(model, analysis_type):
     return model
 
 
-def _get_shap_feature_importance(shap_values):
-    """From a list of shap values per folds, compute the global shap feature importance."""
-    # average across folds
-    mean_shap_values = np.mean(shap_values, axis=0)
-    # average accros labels
-    if len(np.shape(mean_shap_values)) > 2:
-        global_mean_shap_values = np.mean(mean_shap_values, axis=0)
-        mean_shap_values = list(mean_shap_values)
-    else:
-        global_mean_shap_values = mean_shap_values
+def _to_class_list(shap_values):
+    """Normalise a SHAP output to a list of per-class (n_samples, n_features) arrays.
 
-    # average accros graphs
-    shap_feature_importance = np.mean(abs(global_mean_shap_values), axis=0)
+    Depending on the model and the shap version, shap returns a list of per-class arrays,
+    a (n_samples, n_features) array (regression, binary xgboost) or a
+    (n_samples, n_features, n_classes) array (multiclass, binary random forest).
+    """
+    if isinstance(shap_values, list):
+        return [np.asarray(shap_class) for shap_class in shap_values]
+    shap_values = np.asarray(shap_values)
+    if shap_values.ndim == 2:
+        return [shap_values]
+    return [shap_values[:, :, i] for i in range(shap_values.shape[2])]
+
+
+def _get_shap_feature_importance(shap_values):
+    """From a list of shap values per folds, compute the global shap feature importance.
+
+    Returns:
+        mean_shap_values (list): per-class (n_samples, n_features) arrays averaged across folds
+        shap_feature_importance (array): (n_features,) mean |SHAP| over samples and classes
+    """
+    # average across folds, per class
+    per_fold = [np.stack(_to_class_list(shap_value)) for shap_value in shap_values]
+    mean_shap_values = list(np.mean(per_fold, axis=0))
+
+    # mean |SHAP| across graphs, then across classes
+    shap_feature_importance = np.mean(
+        [np.mean(np.abs(shap_class), axis=0) for shap_class in mean_shap_values], axis=0
+    )
     return mean_shap_values, shap_feature_importance
 
 
@@ -209,6 +237,35 @@ def _evaluate_kfold(X, y, model, folds, analysis_type, compute_shap):
     return acc_scores, shap_values
 
 
+def _evaluate_kfold_nested(
+    X, y, model, folds, analysis_type, reduced_set_size, reduced_set_max_correlation
+):
+    """Evaluate the reduced feature set with the selection nested inside each training fold.
+
+    In each fold the model is fitted on the training rows, the reduced set is selected from SHAP
+    values on the training rows only, and the refitted reduced model is scored on the held-out
+    rows, so the score is not biased by selecting features on the test labels.
+    """
+    acc_scores = []
+    for train_index, val_index in folds.split(X, y=y):
+        X_train, y_train = X.iloc[train_index], y.iloc[train_index]
+        model.fit(X_train, y_train)
+        _, shap_feature_importance = _get_shap_feature_importance(
+            [_compute_shap(model, X_train, X_train)]
+        )
+        reduced_features = _get_reduced_feature_set(
+            X_train,
+            shap_feature_importance,
+            n_top_features=reduced_set_size,
+            alpha=reduced_set_max_correlation,
+        )
+        acc_score, _ = _compute_fold(
+            X[reduced_features], y, model, (train_index, val_index), analysis_type, False
+        )
+        acc_scores.append(acc_score)
+    return acc_scores
+
+
 def fit_model_kfold(
     features,
     model,
@@ -220,6 +277,7 @@ def fit_model_kfold(
     random_state=42,
     n_splits=None,
     compute_shap=True,
+    nested_selection=True,
 ):
     """Classify graphs from extracted features with kfold.
 
@@ -235,7 +293,12 @@ def fit_model_kfold(
         n_repeats (int): number of k-fold repeats
         random_state (int): rng seed
         n_splits (int): numbere of split for k-fold, None=automatic estimation
+            (from the class counts for classification, 5 for regression)
         compute_shap (bool): compute SHAP values or not
+        nested_selection (bool): if True, the reduced-set scores come from selecting the reduced
+            set inside each training fold (unbiased). The reduced set selected on all data is only
+            reported as the descriptive list of top features. If False, the reduced set selected
+            on all data is re-scored on the same folds (optimistically biased).
 
     Returns:
         (dict): dictionary with results
@@ -245,7 +308,9 @@ def fit_model_kfold(
 
     X, y = features_to_Xy(features)
 
+    label_encoder = None
     if analysis_type == "classification":
+        y, label_encoder = _encode_labels(y)
         if n_splits is None:
             n_splits = _number_folds(y)
         L.info("Using %s splits", str(n_splits))
@@ -254,7 +319,7 @@ def fit_model_kfold(
         )
     elif analysis_type == "regression":
         if n_splits is None:
-            n_splits = _number_folds(y)
+            n_splits = 5
         L.info("Using %s splits", str(n_splits))
         folds = RepeatedKFold(n_splits=n_splits, n_repeats=n_repeats, random_state=random_state)
 
@@ -275,6 +340,7 @@ def fit_model_kfold(
         "shap_values": shap_values,
         "shap_feature_importance": shap_feature_importance,
         "reduced_features": None,
+        "label_encoder": label_encoder,
     }
     if not reduce_set:
         return analysis_results
@@ -282,6 +348,7 @@ def fit_model_kfold(
     if not compute_shap:
         return analysis_results
 
+    # descriptive reduced set of top features, selected on all data
     reduced_features = _get_reduced_feature_set(
         X,
         shap_feature_importance,
@@ -291,6 +358,11 @@ def fit_model_kfold(
     reduced_acc_scores, reduced_shap_values = _evaluate_kfold(
         X[reduced_features], y, model, folds, analysis_type, compute_shap
     )
+    if nested_selection:
+        L.info("Scoring the reduced set with the selection nested in each training fold")
+        reduced_acc_scores = _evaluate_kfold_nested(
+            X, y, model, folds, analysis_type, reduced_set_size, reduced_set_max_correlation
+        )
     _print_accuracy(reduced_acc_scores, analysis_type, reduced=True)
     (
         reduced_mean_shap_values,
@@ -344,10 +416,23 @@ def fit_model(
 
     X, y = features_to_Xy(features)
 
-    indices = next(ShuffleSplit(test_size=test_size, random_state=random_state).split(X, y))
+    label_encoder = None
+    if analysis_type == "classification":
+        y, label_encoder = _encode_labels(y)
+        splitter = StratifiedShuffleSplit(
+            n_splits=1, test_size=test_size, random_state=random_state
+        )
+    else:
+        splitter = ShuffleSplit(n_splits=1, test_size=test_size, random_state=random_state)
+    indices = next(splitter.split(X, y))
     acc_score, shap_values = _compute_fold(X, y, model, indices, analysis_type, compute_shap)
 
-    mean_shap_values, shap_feature_importance = _get_shap_feature_importance([shap_values])
+    if compute_shap:
+        mean_shap_values, shap_feature_importance = _get_shap_feature_importance([shap_values])
+    else:
+        mean_shap_values = None
+        shap_feature_importance = None
+
     analysis_results = {
         "X": X,
         "y": y,
@@ -357,8 +442,9 @@ def fit_model(
         "model": model,
         "indices": indices,
         "reduced_features": None,
+        "label_encoder": label_encoder,
     }
-    if not reduce_set:
+    if not reduce_set or not compute_shap:
         return analysis_results
 
     reduced_features = _get_reduced_feature_set(
@@ -367,14 +453,14 @@ def fit_model(
         n_top_features=reduced_set_size,
         alpha=reduced_set_max_correlation,
     )
-    reduced_model = deepcopy(model)
+    reduced_model = clone(model)
     reduced_acc_score, reduced_shap_values = _compute_fold(
         X[reduced_features], y, reduced_model, indices, analysis_type, compute_shap
     )
     (
         reduced_mean_shap_values,
         reduced_shap_feature_importance,
-    ) = _get_shap_feature_importance(reduced_shap_values)
+    ) = _get_shap_feature_importance([reduced_shap_values])
 
     analysis_results.update(
         {
@@ -402,61 +488,77 @@ def _compute_fold(X, y, model, indices, analysis_type, compute_shap):
         L.info("Mean Absolute Error: --- %s ---", str(np.round(acc_score, 3)))
 
     if compute_shap:
-        try:
-            explainer = shap.TreeExplainer(model)
-        except Exception:  # pylint: disable=broad-except
-            explainer = shap.KernelExplainer(model.predict_proba, X.iloc[train_index])
-        shap_values = explainer.shap_values(X)
+        shap_values = _compute_shap(model, X, X.iloc[train_index])
     else:
         shap_values = None
 
     return acc_score, shap_values
 
 
+def _compute_shap(model, X, X_background):
+    """Compute the SHAP values of a fitted model on X."""
+    try:
+        explainer = shap.TreeExplainer(model)
+    except Exception:  # pylint: disable=broad-except
+        explainer = shap.KernelExplainer(getattr(model, "predict_proba", model.predict), X_background)
+    return explainer.shap_values(X)
+
+
 def _preprocess_features(
     features, features_info, graph_removal, interpretability, trained_model=None
 ):
-    """Collect all feature filters."""
+    """Collect all feature filters.
+
+    The label column is split off first, so that it is not filtered, cast to float or scaled.
+    With a trained model, the features are aligned to the model's features and scaled with the
+    stored scaler (not refitted on the new data).
+    """
     L.info("%s total features", str(len(features.columns)))
 
-    features = _filter_graphs(features, graph_removal=graph_removal)
+    X, y = features_to_Xy(features)
+    X = _filter_graphs(X, graph_removal=graph_removal)
 
-    good_features = _filter_features(features)
-    features = features[good_features]
-
-    scaler = None
     if trained_model is not None:
-        _, scaler, model_features = trained_model
-        missing_cols = model_features.columns[~model_features.columns.isin(features.columns)]
-        for _col in missing_cols:
-            features[_col] = np.nan
-        features = features[model_features.columns]
+        _, scaler, model_features = trained_model[:3]
+        X = X.replace([np.inf, -np.inf], np.nan).reindex(columns=model_features.columns)
+        features_info = model_features
+        X, scaler = _normalise_feature_data(X, scaler=scaler, fit_scaler=False)
+    else:
+        good_features = _filter_features(X)
+        X = X[good_features]
+        features_info = features_info[good_features]
+        L.info("%s valid features", str(len(X.columns)))
 
-    if "label" in good_features:
-        features_info = features_info[good_features.drop("label")]
+        X, features_info = _filter_interpretable(X, features_info, interpretability)
+        L.info("%s with interpretability %s", str(len(X.columns)), str(interpretability))
 
-    L.info("%s valid features", str(len(features.columns)))
+        X, scaler = _normalise_feature_data(X)
 
-    features, features_info = _filter_interpretable(features, features_info, interpretability)
-    L.info("%s with interpretability %s", str(len(features.columns)), str(interpretability))
+    if y is not None:
+        X = _add_label(X, y)
 
-    features, scaler = _normalise_feature_data(features, scaler=scaler)
-
-    return features, features_info, scaler
+    return X, features_info, scaler
 
 
-def train_all(features, model):
+def train_all(features, model, label_encoder=None):
     """Train on all available data."""
     X, y = features_to_Xy(features)
+    if label_encoder is not None:
+        y = label_encoder.transform(y)
     model.fit(X, y)
     L.info("Fitting model to all data")
     return model
 
 
-def predict_unlabelled(model, features):
-    """Predict unlabelled data."""
+def predict_unlabelled(model, features, label_encoder=None):
+    """Predict unlabelled data, with predictions in the original label values."""
     X, _ = features_to_Xy(features)
-    return model.predict(X)
+    predictions = model.predict(X)
+    if label_encoder is None:
+        label_encoder = getattr(model, "label_encoder_", None)
+    if label_encoder is not None:
+        predictions = label_encoder.inverse_transform(np.asarray(predictions).astype(int))
+    return predictions
 
 
 def analysis(  # pylint: disable=too-many-arguments,too-many-locals,too-many-branches
@@ -482,6 +584,7 @@ def analysis(  # pylint: disable=too-many-arguments,too-many-locals,too-many-bra
     test_size=0.2,
     trained_model=None,
     save_model=False,
+    nested_selection=True,
 ):
     """Main function to classify graphs and plot results.
 
@@ -509,15 +612,17 @@ def analysis(  # pylint: disable=too-many-arguments,too-many-locals,too-many-bra
         test_size (float): size of test dataset (see sklearn.model_selection.ShuffleSplit)
         trained_model (str): provide path to pretrained model to apply to new data
         save_modeel (bool): save the obtained model to reuse later
+        nested_selection (bool): with kfold, score the reduced set by selecting it inside each
+            training fold (see fit_model_kfold)
 
     Returns:
         (dict): dictionary with results
     """
 
     if trained_model is None:
-        model = _get_model(model, analysis_type)
+        model = _get_model(model, analysis_type, random_state=random_state)
     else:
-        if isinstance(trained_model, tuple):
+        if isinstance(trained_model, (tuple, list)):
             model = trained_model[0]
         elif isinstance(trained_model, str):
             trained_model = load_fitted_model(trained_model)
@@ -547,6 +652,7 @@ def analysis(  # pylint: disable=too-many-arguments,too-many-locals,too-many-bra
             random_state=random_state,
             n_splits=n_splits,
             compute_shap=compute_shap,
+            nested_selection=nested_selection,
         )
     else:
         analysis_results = fit_model(
@@ -561,15 +667,11 @@ def analysis(  # pylint: disable=too-many-arguments,too-many-locals,too-many-bra
             compute_shap=compute_shap,
         )
 
+    label_encoder = analysis_results["label_encoder"]
     if save_model:
-        fitted_model = train_all(features, model)
-
-    if analysis_type == "regression":
-        analysis_results["mean_shap_values"] = [analysis_results["mean_shap_values"]]
-        if "reduced_mean_shap_values" in analysis_results:
-            analysis_results["reduced_mean_shap_values"] = [
-                analysis_results["reduced_mean_shap_values"]
-            ]
+        fitted_model = train_all(features, clone(model), label_encoder=label_encoder)
+        # stored with the model, to return predictions in the original labels
+        fitted_model.label_encoder_ = label_encoder
 
     results_folder = Path(folder) / ("results_interpretability_" + str(interpretability))
     if not Path(results_folder).exists():
@@ -611,21 +713,34 @@ def _save_to_csv(features_info_df, analysis_results, folder="results"):
     """Save csv file with analysis data."""
 
     result_df = features_info_df.copy()
-    result_df.loc["shap_feature_importance"] = analysis_results["shap_feature_importance"]
-    shap_values = analysis_results["shap_values"]
-    for i, shap_class in enumerate(shap_values):
-        result_df.loc[f"shap_importance: class {i}"] = np.vstack(shap_class).mean(axis=0)
+    columns = analysis_results["X"].columns
+    result_df.loc["shap_feature_importance"] = pd.Series(
+        analysis_results["shap_feature_importance"], index=columns
+    )
+    label_encoder = analysis_results.get("label_encoder")
+    class_names = None if label_encoder is None else label_encoder.classes_
+
+    # per-class mean |SHAP| (one row per SHAP output of the model)
+    mean_shap_values = analysis_results["mean_shap_values"]
+    if class_names is not None:
+        names = shap_class_names(len(mean_shap_values), class_names)
+        for name, shap_class in zip(names, mean_shap_values):
+            result_df.loc[f"shap_importance: class {name}"] = pd.Series(
+                np.abs(shap_class).mean(axis=0), index=columns
+            )
 
     if analysis_results["reduced_features"] is not None:
         reduced_features = analysis_results["reduced_features"]
         result_df.loc["reduced_shap_feature_importance", reduced_features] = analysis_results[
             "reduced_shap_feature_importance"
         ]
-        shap_values = analysis_results["reduced_shap_values"]
-        for i, shap_class in enumerate(shap_values):
-            result_df.loc[f"reduced shap_importance: class {i}", reduced_features] = np.vstack(
-                shap_class
-            ).mean(axis=0)
+        mean_shap_values = analysis_results["reduced_mean_shap_values"]
+        if class_names is not None:
+            names = shap_class_names(len(mean_shap_values), class_names)
+            for name, shap_class in zip(names, mean_shap_values):
+                result_df.loc[f"reduced shap_importance: class {name}", reduced_features] = (
+                    np.abs(shap_class).mean(axis=0)
+                )
 
         result_df = result_df.sort_values(
             "reduced_shap_feature_importance", axis=1, ascending=False

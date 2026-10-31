@@ -2,7 +2,7 @@
 
 from functools import lru_cache, partial
 
-from networkx.algorithms.community import greedy_modularity_communities
+from networkx.algorithms.community import greedy_modularity_communities, quality
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
 
@@ -49,6 +49,11 @@ def ratio_commsize_maxmin_weighted(graph):
     )
 
 
+def _modularity_unweighted(graph, communities):
+    """Modularity of a partition, ignoring edge weights."""
+    return quality.modularity(graph, communities, weight=None)
+
+
 class CommunitiesModularity(FeatureClass):
     """Communities Modularity propagation class.
 
@@ -57,8 +62,10 @@ class CommunitiesModularity(FeatureClass):
     Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/\
         community.html`
 
-    Find communities in graph using Clauset-Newman-Moore greedy modularity maximization.
-    This method currently supports the Graph class and does not consider edge weights.
+    Find communities in graph using Clauset-Newman-Moore greedy modularity maximization,
+    once ignoring edge weights and once using them (the ``_weighted`` features).
+    The modularity of each partition is computed in the same way (unweighted or weighted);
+    coverage and performance ignore edge weights.
 
     Greedy modularity maximization begins with each node in its own community and joins
     the pair of communities that most increases modularity until no such pair exists.
@@ -90,51 +97,66 @@ class CommunitiesModularity(FeatureClass):
         self.add_feature(
             "largest_commsize",
             largest_commsize,
-            "The ratio of the largest and second largest communities using greedy modularity",
+            "The size of the largest community using greedy modularity",
             InterpretabilityScore(4),
         )
 
         self.add_feature(
             "ratio_commsize_maxmin",
             ratio_commsize_maxmin,
-            "The ratio of the largest and second largest communities using greedy modularity",
+            "The size ratio of the largest and smallest communities using greedy modularity",
             InterpretabilityScore(3),
         )
 
+        # Partition quality of the unweighted partition. Done here rather than with
+        # statistics="clustering" so that its modularity also ignores edge weights.
+        partition = self.evaluate_feature(eval_modularity, "communities", statistics="clustering")
+        compl_desc = " of the partition of the optimal partition using greedy modularity algorithm"
         self.add_feature(
-            "communities",
-            eval_modularity,
-            "The optimal partition using greedy modularity algorithm",
+            "communities_modularity",
+            partial(_modularity_unweighted, communities=partition),
+            "Modularity" + compl_desc,
             InterpretabilityScore(3),
-            statistics="clustering",
+        )
+        self.add_feature(
+            "communities_coverage",
+            lambda graph: quality.partition_quality(graph, partition=partition)[0],
+            "Coverage" + compl_desc,
+            InterpretabilityScore(3),
+        )
+        self.add_feature(
+            "communities_performance",
+            lambda graph: quality.partition_quality(graph, partition=partition)[1],
+            "Performance" + compl_desc,
+            InterpretabilityScore(3),
         )
 
         # add weighted features
         self.add_feature(
             "num_communities_weighted",
             num_communities_weighted,
-            "Number of communities",
+            "Number of communities using weighted greedy modularity",
             InterpretabilityScore(4),
         )
 
         self.add_feature(
             "largest_commsize_weighted",
             largest_commsize_weighted,
-            "The ratio of the largest and second largest communities using greedy modularity",
+            "The size of the largest community using weighted greedy modularity",
             InterpretabilityScore(4),
         )
 
         self.add_feature(
             "ratio_commsize_maxmin_weighted",
             ratio_commsize_maxmin_weighted,
-            "The ratio of the largest and second largest communities using greedy modularity",
+            "The size ratio of the largest and smallest communities using weighted greedy modularity",
             InterpretabilityScore(3),
         )
 
         self.add_feature(
             "communities_weighted",
             partial(eval_modularity, weight="weight"),
-            "The optimal partition using greedy modularity algorithm",
+            "The optimal partition using weighted greedy modularity algorithm",
             InterpretabilityScore(3),
             statistics="clustering",
         )

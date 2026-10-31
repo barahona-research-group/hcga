@@ -6,12 +6,12 @@ import networkx as nx
 import numpy as np
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
-from hcga.features.utils import ensure_connected, remove_selfloops
+from hcga.features.utils import ensure_connected
 
 featureclass_name = "JaccardSimilarity"
 
 
-@lru_cache(maxsize=None)
+@lru_cache(maxsize=1)
 def jaccard_similarity(graph):
     """Construct a graph from Jaccard similarity matrix
 
@@ -24,31 +24,19 @@ def jaccard_similarity(graph):
     Treating this matrix as an adjacency matrix, we can compute network some features
     ref: https://www.biorxiv.org/content/10.1101/112540v4.full
 
-    For some features we remove selfloops, since the diagonal of the Jaccard
-    similarity consists of ones, and therefore all nodes will have a selfloop with weight one
+    The diagonal of the Jaccard similarity (the similarity of a node with itself) is dropped,
+    so the Jaccard similarity graph has no selfloops. For directed graphs, neighbours are
+    successors.
 
     For further information see `https://en.wikipedia.org/wiki/Jaccard_index'
 
     """
-    n = nx.number_of_nodes(graph)
-    jsm = np.eye(n)
-
-    neighbors = [0 for i in range(n)]
-
-    for i, j in enumerate(graph.nodes()):
-        neighbors[i] = set(graph.neighbors(j))
-
-    for i in range(n):
-        for j in range(i + 1, n):
-            a = len(neighbors[i].intersection(neighbors[j]))
-            if a == 0:
-                jsm[i, j] = 0
-            else:
-                b = len(neighbors[i].difference(neighbors[j]))
-                c = len(neighbors[j].difference(neighbors[i]))
-
-                jsm[i, j] = a / (a + b + c)
-
+    adjacency = nx.to_scipy_sparse_array(graph, weight=None, format="csr").astype(float)
+    intersection = (adjacency @ adjacency.T).toarray()
+    degrees = np.asarray(adjacency.sum(axis=1)).ravel()
+    union = degrees[:, None] + degrees[None, :] - intersection
+    jsm = np.divide(intersection, union, out=np.zeros_like(intersection), where=union > 0)
+    np.fill_diagonal(jsm, 0.0)
     return nx.Graph(jsm)
 
 
@@ -58,8 +46,8 @@ def number_of_edges(graph):
 
 
 def number_of_edges_no_selfloops(graph):
-    """number_of_edges_no_selfloops"""
-    return remove_selfloops(jaccard_similarity(graph)).number_of_edges()
+    """number_of_edges_no_selfloops (the Jaccard similarity graph has no selfloops)"""
+    return jaccard_similarity(graph).number_of_edges()
 
 
 def connectance(graph):
@@ -68,13 +56,13 @@ def connectance(graph):
 
 
 def diameter(graph):
-    """diameter"""
-    return nx.diameter(jaccard_similarity(ensure_connected(graph)))
+    """diameter of the largest connected component of the Jaccard similarity graph"""
+    return nx.diameter(ensure_connected(jaccard_similarity(graph)))
 
 
 def radius(graph):
-    """radius"""
-    return nx.radius(jaccard_similarity(ensure_connected(graph)))
+    """radius of the largest connected component of the Jaccard similarity graph"""
+    return nx.radius(ensure_connected(jaccard_similarity(graph)))
 
 
 def degree_assortativity_coeff(graph):
@@ -99,7 +87,7 @@ def num_connected_components(graph):
 
 def largest_connected_component(graph):
     """largest_connected_component"""
-    return jaccard_similarity(ensure_connected(graph)).number_of_nodes()
+    return len(max(nx.connected_components(jaccard_similarity(graph)), key=len))
 
 
 def global_efficiency(graph):
@@ -141,13 +129,13 @@ class JaccardSimilarity(FeatureClass):
         self.add_feature(
             "diameter",
             diameter,
-            "Diameter of Jaccard similarity graph",
+            "Diameter of the largest connected component of Jaccard similarity graph",
             InterpretabilityScore(5),
         )
         self.add_feature(
             "radius",
             radius,
-            "Radius of Jaccard similarity graph",
+            "Radius of the largest connected component of Jaccard similarity graph",
             InterpretabilityScore(5),
         )
 
@@ -178,14 +166,14 @@ class JaccardSimilarity(FeatureClass):
         self.add_feature(
             "num_connected_components",
             num_connected_components,
-            "The number of connected components",
+            "The number of connected components of Jaccard similarity graph",
             InterpretabilityScore(5),
         )
 
         self.add_feature(
             "largest_connected_component",
             largest_connected_component,
-            "The size of the largest connected component",
+            "The size of the largest connected component of Jaccard similarity graph",
             InterpretabilityScore(4),
         )
 

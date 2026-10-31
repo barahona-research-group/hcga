@@ -13,6 +13,8 @@ directly from the command line:
 
 ``hcga extract_features datasets/ENZYMES.pkl -m fast -n -1 --timeout 10``
 
+(``-n -1`` uses all available CPUs.)
+
 ``hcga feature_analysis ENZYMES```
 
 Alternatively these commands can be bundled together into a single bash file,
@@ -51,8 +53,9 @@ def cli(verbose):
     "-n",
     "--n-workers",
     default=1,
+    type=int,
     show_default=True,
-    help="Number of workers for multiprocessing",
+    help="Number of workers for multiprocessing (-1 for all CPUs)",
 )
 @click.option(
     "-m",
@@ -113,9 +116,12 @@ def extract_features(
 
     graphs = load_dataset(dataset)
 
+    if n_workers == -1:
+        n_workers = os.cpu_count()
+
     features, features_info = extract(
         graphs,
-        n_workers=int(n_workers),
+        n_workers=n_workers,
         mode=mode,
         normalize_features=norm,
         statistics_level=stats_level,
@@ -216,6 +222,7 @@ def extract_features(
 @click.option(
     "--n-splits",
     default=None,
+    type=int,
     show_default=True,
     help="Number of splits for k-fold, None will use an automatic estimation.",
 )
@@ -249,7 +256,6 @@ def feature_analysis(
     results_folder = Path(results_folder) / dataset
     feature_filename = results_folder / feature_file
     features, features_info, graphs = load_features(filename=feature_filename)
-    print(n_repeats)
     analysis(
         features,
         features_info,

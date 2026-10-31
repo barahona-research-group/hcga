@@ -11,8 +11,13 @@ featureclass_name = "Components"
 
 @lru_cache(maxsize=None)
 def eval_connected_components(graph):
-    """this evaluates the main function and cach it for speed up."""
-    return list(nx.connected_components(graph))
+    """Connected components, sorted by size (largest first).
+
+    Directed graphs are treated as undirected (weakly connected components).
+    """
+    if graph.is_directed():
+        graph = graph.to_undirected(as_view=True)
+    return sorted(nx.connected_components(graph), key=len, reverse=True)
 
 
 def num_connected_components(graph):
@@ -26,14 +31,14 @@ def largest_connected_component(graph):
 
 
 def ratio_largest(graph):
-    """ratio_largest"""
+    """Size of the second largest connected component over the largest (0 if connected)."""
     if len(eval_connected_components(graph)) == 1:
         return 0
-    return len(eval_connected_components(graph)[0]) / len(eval_connected_components(graph)[1])
+    return len(eval_connected_components(graph)[1]) / len(eval_connected_components(graph)[0])
 
 
 def ratio_min_max(graph):
-    """ratio_min_max"""
+    """Size of the largest connected component over the smallest (0 if connected)."""
     if len(eval_connected_components(graph)) == 1:
         return 0
     return len(eval_connected_components(graph)[0]) / len(eval_connected_components(graph)[-1])
@@ -93,7 +98,7 @@ class Components(FeatureClass):
     def compute_features(self):
         self.add_feature(
             "is_connected",
-            nx.is_connected,
+            lambda graph: num_connected_components(graph) == 1,
             "Whether the graph is connected or not",
             InterpretabilityScore(5),
         )
@@ -114,14 +119,14 @@ class Components(FeatureClass):
         self.add_feature(
             "ratio_largest_connected_components",
             ratio_largest,
-            "The size ratio of the two largest connected components",
+            "The size ratio of the second largest to the largest connected component",
             InterpretabilityScore(4),
         )
 
         self.add_feature(
             "ratio_maxmin_connected_components",
             ratio_min_max,
-            "The size ratio of the max and min largest connected components",
+            "The size ratio of the largest to the smallest connected component",
             InterpretabilityScore(4),
         )
 

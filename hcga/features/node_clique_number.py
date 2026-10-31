@@ -9,7 +9,9 @@ featureclass_name = "NodeCliqueNumber"
 
 
 def clique_sizes(graph):
-    """clique_sizes"""
+    """clique_sizes (directed graphs are treated as undirected)"""
+    if graph.is_directed():
+        graph = graph.to_undirected(as_view=True)
     return list(clique.node_clique_number(ensure_connected(graph)).values())
 
 

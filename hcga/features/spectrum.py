@@ -4,33 +4,56 @@ from functools import lru_cache, partial
 
 import networkx as nx
 import numpy as np
+import scipy.linalg
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Spectrum"
 
 
-@lru_cache(maxsize=None)
+def _sorted_eigenvalues(matrix, directed):
+    """Eigenvalues in descending order (of real part, for non-symmetric matrices)."""
+    if directed:
+        eigenvalues = np.linalg.eigvals(matrix)
+        return eigenvalues[np.argsort(-eigenvalues.real, kind="stable")].real
+    return scipy.linalg.eigvalsh(matrix)[::-1]
+
+
+@lru_cache(maxsize=1)
 def eval_spectrum_adj(graph):
-    """"""
-    return np.real(nx.linalg.spectrum.adjacency_spectrum(graph))
+    """Eigenvalues of the weighted adjacency matrix, in descending order."""
+    return _sorted_eigenvalues(nx.to_numpy_array(graph, weight="weight"), graph.is_directed())
 
 
 def eigenvalue_ratio(graph, i, j):
-    """"""
-    return eval_spectrum_adj(graph)[j] / eval_spectrum_adj(graph)[i]
+    """Ratio of the i-th to the j-th largest adjacency eigenvalue.
+
+    NaN when the j-th eigenvalue is zero up to rounding (e.g. cycles of length 4k and paths
+    of odd length have exact zero eigenvalues), since the ratio is then rounding noise.
+    """
+    eigenvalues = eval_spectrum_adj(graph)
+    numerator, denominator = eigenvalues[i], eigenvalues[j]  # IndexError on small graphs
+    scale = np.max(np.abs(eigenvalues))
+    if scale == 0 or abs(denominator) <= 1e-10 * scale:
+        return np.nan
+    return numerator / denominator
 
 
-@lru_cache(maxsize=None)
+@lru_cache(maxsize=1)
 def eval_spectrum_modularity(graph):
     """"""
     return np.real(nx.linalg.spectrum.modularity_spectrum(graph))
 
 
-@lru_cache(maxsize=None)
+@lru_cache(maxsize=1)
 def eval_spectrum_laplacian(graph):
-    """"""
-    return np.real(nx.linalg.spectrum.laplacian_spectrum(graph))
+    """Eigenvalues of the weighted Laplacian (out-degree Laplacian for digraphs).
+
+    The directed Laplacian is not symmetric, so eigvalsh (used by nx.laplacian_spectrum)
+    does not apply; we take the real parts of its eigenvalues.
+    """
+    laplacian = nx.laplacian_matrix(graph, weight="weight").toarray()
+    return _sorted_eigenvalues(laplacian, graph.is_directed())
 
 
 class Spectrum(FeatureClass):

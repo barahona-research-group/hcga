@@ -2,14 +2,17 @@
 
 import os
 import shutil
+import urllib.request
 import zipfile
 from pathlib import Path
 
 import pandas as pd
-import wget
 
 from hcga.graph import Graph, GraphCollection
 from hcga.io import save_dataset
+
+
+TU_URL = "https://www.chrsmrrs.com/graphkerneldatasets/"
 
 
 def unzip(zip_filename):
@@ -28,10 +31,7 @@ def make(dataset_name="ENZYMES", folder="./datasets"):
         MUTAG
     """
 
-    wget.download(
-        f"https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets/{dataset_name}.zip"
-    )
-    print("\n")
+    urllib.request.urlretrieve(f"{TU_URL}{dataset_name}.zip", f"{dataset_name}.zip")
     unzip(f"{dataset_name}.zip")
 
     graphs = extract_benchmark_graphs(dataset_name, dataset_name)
@@ -42,7 +42,7 @@ def make(dataset_name="ENZYMES", folder="./datasets"):
 
 
 def extract_benchmark_graphs(datadir, dataname):  # pylint: disable=too-many-locals
-    """Read data from https://ls11-www.cs.tu-dortmund.de/staff/morris/graphkerneldatasets
+    """Read data from https://www.chrsmrrs.com/graphkerneldatasets/ (TU Dortmund format)
         graph index starts with 1 in file
 
     Returns:
@@ -59,9 +59,7 @@ def extract_benchmark_graphs(datadir, dataname):  # pylint: disable=too-many-loc
 
     edges_df = pd.DataFrame()
     with open(prefix + "_A.txt") as f:
-        for edges_df_next in pd.read_csv(
-            f, sep=",", delimiter=None, dtype=int, header=None, chunksize=1e6
-        ):
+        for edges_df_next in pd.read_csv(f, sep=",", dtype=int, header=None, chunksize=10**6):
             edges_df = pd.concat([edges_df, edges_df_next - 1])
     edges_df.columns = ["start_node", "end_node"]
     edges_df["graph_id"] = nodes_df["graph_id"][edges_df["start_node"].to_list()].to_list()

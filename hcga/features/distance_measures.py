@@ -1,5 +1,7 @@
 """Distance Measures class."""
 
+from functools import lru_cache
+
 import networkx as nx
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
@@ -8,40 +10,61 @@ from hcga.features.utils import ensure_connected
 featureclass_name = "DistanceMeasures"
 
 
+@lru_cache(maxsize=1)
+def _connected_undirected(graph):
+    """Largest connected component of the graph (made undirected for digraphs)."""
+    if graph.is_directed():
+        graph = graph.to_undirected()
+    return ensure_connected(graph)
+
+
+@lru_cache(maxsize=1)
+def _shortest_path_lengths(graph):
+    """Unweighted all-pairs shortest path lengths on the largest connected component."""
+    return dict(nx.shortest_path_length(_connected_undirected(graph)))
+
+
+@lru_cache(maxsize=1)
+def _eccentricity(graph):
+    """Eccentricity of each node of the largest connected component."""
+    return nx.eccentricity(_connected_undirected(graph), sp=_shortest_path_lengths(graph))
+
+
 def barycenter_size(graph):
     """barycenter_size"""
-    return len(nx.barycenter(ensure_connected(graph)))
+    return len(nx.barycenter(_connected_undirected(graph), sp=_shortest_path_lengths(graph)))
 
 
 def barycenter_size_weighted(graph):
     """barycenter_size_weighted"""
-    return len(nx.barycenter(ensure_connected(graph), weight="weight"))
+    return len(nx.barycenter(_connected_undirected(graph), weight="weight"))
 
 
 def center_size(graph):
     """center_size"""
-    return len(nx.center(ensure_connected(graph)))
+    return len(nx.center(_connected_undirected(graph), e=_eccentricity(graph)))
 
 
 def periphery(graph):
     """periphery"""
-    return len(nx.periphery(ensure_connected(graph)))
+    return len(nx.periphery(_connected_undirected(graph), e=_eccentricity(graph)))
 
 
 def eccentricity(graph):
     """eccentricity"""
-    return list(nx.eccentricity(ensure_connected(graph)).values())
+    return list(_eccentricity(graph).values())
 
 
 def extrema_bounding(graph):
-    """extrema_bounding"""
-    return nx.diameter(ensure_connected(graph), usebounds=True)
+    """extrema_bounding (the diameter, here from the shared eccentricities)"""
+    return nx.diameter(_connected_undirected(graph), e=_eccentricity(graph))
 
 
 class DistanceMeasures(FeatureClass):
     """Distance Measures class.
 
-    Calculates features based on distance measures.
+    Calculates features based on distance measures, on the largest connected component
+    (of the undirected graph, for digraphs).
 
     Uses networkx, see 'https://networkx.org/documentation/stable/reference/algorithms/\
         distance_measures.html`

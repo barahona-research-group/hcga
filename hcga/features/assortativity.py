@@ -1,13 +1,36 @@
 """Assortativity class."""
 
+import warnings
 from functools import partial
 
 import networkx as nx
+import numpy as np
 from networkx.algorithms import assortativity
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Assortativity"
+
+
+def _quiet(func, graph, **kwargs):
+    """Evaluate func, silencing the warnings raised when the coefficient is undefined.
+
+    Assortativity coefficients are 0/0 = NaN for regular graphs (all degrees equal); the NaN is
+    kept, but the numpy/scipy warnings are silenced so they cannot be raised as errors.
+    """
+    with warnings.catch_warnings(), np.errstate(divide="ignore", invalid="ignore"):
+        warnings.simplefilter("ignore")
+        return func(graph, **kwargs)
+
+
+def degree_assortativity_coefficient(graph, weight=None):
+    """Degree assortativity coefficient (NaN for regular graphs)."""
+    return _quiet(nx.degree_assortativity_coefficient, graph, weight=weight)
+
+
+def degree_pearson_correlation_coefficient(graph, weight=None):
+    """Degree Pearson correlation coefficient (NaN for regular graphs)."""
+    return _quiet(nx.degree_pearson_correlation_coefficient, graph, weight=weight)
 
 
 def average_neighbor_degree(graph):
@@ -47,26 +70,26 @@ class Assortativity(FeatureClass):
         # Adding basic node and edge numbers
         self.add_feature(
             "degree_assortativity_coeff",
-            nx.degree_assortativity_coefficient,
+            degree_assortativity_coefficient,
             "Similarity of connections in the graph with respect to the node degree",
             InterpretabilityScore(4),
         )
         self.add_feature(
             "degree_assortativity_coeff_weighted",
-            partial(nx.degree_assortativity_coefficient, weight="weight"),
+            partial(degree_assortativity_coefficient, weight="weight"),
             "Similarity of connections in the graph with respect to the node degree",
             InterpretabilityScore(4),
         )
 
         self.add_feature(
             "degree_assortativity_coeff_pearson",
-            nx.degree_pearson_correlation_coefficient,
+            degree_pearson_correlation_coefficient,
             "Similarity of connections in the graph with respect to the node degree",
             InterpretabilityScore(4),
         )
         self.add_feature(
             "degree_assortativity_coeff_pearson_weighted",
-            partial(nx.degree_pearson_correlation_coefficient, weight="weight"),
+            partial(degree_pearson_correlation_coefficient, weight="weight"),
             "Similarity of connections in the graph with respect to the node degree",
             InterpretabilityScore(4),
         )
@@ -74,14 +97,14 @@ class Assortativity(FeatureClass):
         self.add_feature(
             "degree assortativity",
             average_neighbor_degree,
-            "average neighbor degree",
+            "Average neighbor degree of each node",
             InterpretabilityScore(4),
             statistics="centrality",
         )
         self.add_feature(
             "degree assortativity_weighted",
             weigted_average_neighbor_degree,
-            "average neighbor degree",
+            "Weighted average neighbor degree of each node",
             InterpretabilityScore(4),
             statistics="centrality",
         )

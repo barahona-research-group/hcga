@@ -1,10 +1,27 @@
-"""Distance Measures class."""
+"""Efficiency class."""
 
 import networkx as nx
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "Efficiency"
+
+
+def _undirected(graph):
+    """Efficiencies are defined for undirected graphs, so digraphs are made undirected."""
+    if graph.is_directed():
+        return graph.to_undirected()
+    return graph
+
+
+def local_efficiency(graph):
+    """local_efficiency"""
+    return nx.local_efficiency(_undirected(graph))
+
+
+def global_efficiency(graph):
+    """global_efficiency"""
+    return nx.global_efficiency(_undirected(graph))
 
 
 class Efficiency(FeatureClass):
@@ -36,7 +53,7 @@ class Efficiency(FeatureClass):
         # local effiency
         self.add_feature(
             "local_efficiency",
-            nx.local_efficiency,
+            local_efficiency,
             "The local efficiency",
             InterpretabilityScore(4),
         )
@@ -44,7 +61,7 @@ class Efficiency(FeatureClass):
         # global effiency
         self.add_feature(
             "global_efficiency",
-            nx.global_efficiency,
+            global_efficiency,
             "The global efficiency",
             InterpretabilityScore(4),
         )
