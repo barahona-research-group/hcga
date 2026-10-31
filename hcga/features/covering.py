@@ -8,8 +8,15 @@ featureclass_name = "Covering"
 
 
 def min_edge_cover(graph):
-    """min_edge_cover"""
-    return len(list(nx.min_edge_cover(graph)))
+    """Size of a minimum edge cover (directed graphs treated as undirected).
+
+    Returns None if the graph has an isolated node, since no edge cover exists then.
+    """
+    if graph.is_directed():
+        graph = graph.to_undirected(as_view=True)
+    if nx.number_of_isolates(graph) > 0:
+        return None
+    return len(nx.min_edge_cover(graph))
 
 
 class Covering(FeatureClass):

@@ -6,10 +6,14 @@ from hcga.feature_class import FeatureClass, InterpretabilityScore
 
 featureclass_name = "IndependentSets"
 
+SEED = 0
+
 
 def size_max_indep_set(graph):
-    """size_max_indep_set"""
-    return len(nx.maximal_independent_set(graph))
+    """Size of a random maximal independent set (seeded; directed graphs treated as undirected)."""
+    if graph.is_directed():
+        graph = graph.to_undirected(as_view=True)
+    return len(nx.maximal_independent_set(graph, seed=SEED))
 
 
 class IndependentSets(FeatureClass):

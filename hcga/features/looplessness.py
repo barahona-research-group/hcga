@@ -4,7 +4,6 @@ from functools import lru_cache, partial
 
 import networkx as nx
 import numpy as np
-import sympy as sp
 
 from hcga.feature_class import FeatureClass, InterpretabilityScore
 
@@ -13,28 +12,17 @@ featureclass_name = "Looplessness"
 
 @lru_cache(maxsize=None)
 def looplessness(graph):  # pylint: disable=too-many-locals
-    """Looplessness measure class
+    """Looplessness measures of a directed graph [1]_.
 
-    Implements features based on graph looplessness [1]_.
+    Trophic levels s solve s_i = 1 + (1/k_i^in) sum_j a_ji s_j, with s = 1 for basal nodes
+    (in-degree 0), where a_ji = 1 for an edge j -> i (edge weights are ignored). The trophic
+    incoherence parameter q is the standard deviation of the trophic differences s_i - s_j
+    over the edges j -> i. Both come from networkx (``trophic_levels`` and
+    ``trophic_incoherence_parameter``).
 
-    If a graph is bipartite, the trophic levels of all nodes is 1:
-        Proof:
-            Let A be the adjacency matrix of g, a bipartite graph
-            Basal nodes have trophic level = 1 by definition
-            If node i in not a basal node, it will have out degree = 0
-            Therefore row i of A will consist of zeros
-            Trophic level formula:
-                s_i = 1 + (1/k_i) * sum_j(A_ij*s_j)
-                where:
-                    s_i = trophic level of node i
-                    k_i = in degree of node i
-            For non basal node i, sum_j(A_ij*s_j) = 0, so s_i = 1
-            Therefore the trophic level of all nodes is 1
-
-    For a bipartite graph the branching factor, incoherence parameter, expected
-    trophic coherence, expected branching factor and loop exponent are all 0:
-        Proof:
-            Nodes will either have 0 in degree or out degree. Results follows from this
+    Returns None for undirected graphs (trophic levels need edge directions), and for directed
+    graphs without basal nodes or with nodes not reachable from a basal node (the trophic levels
+    are then undefined).
 
     References
     ----------
@@ -43,78 +31,33 @@ def looplessness(graph):  # pylint: disable=too-many-locals
      Proceedings of the National Academy of Sciences 114.22 (2017): 5618-5623.
 
     """
+    if not graph.is_directed():
+        return None
 
     n = graph.number_of_nodes()
+    e = graph.number_of_edges()
+    in_degrees = np.array([d for _, d in graph.in_degree])
+    out_degrees = np.array([d for _, d in graph.out_degree])
+    basal = in_degrees == 0
+    b_e = out_degrees[basal].sum()
+    if e == 0 or b_e == 0:
+        return None
 
-    # Bipartite graphs
-    if nx.is_bipartite(graph) or not nx.is_directed(graph):
-        trophic = [1.0] * n
-        return 0, trophic, 0, 0, 0, 0
-
-    # Non-bipartite graphs
+    try:
+        trophic_levels = nx.trophic_levels(graph, weight=None)
+    except (nx.NetworkXError, np.linalg.LinAlgError):  # a node unreachable from basal nodes
+        return None
+    trophic = [float(trophic_levels[node]) for node in graph]
 
     # Branching Factor
-    in_degrees_dict = dict(graph.in_degree)  # Needed for trophic
-    in_degrees = list(in_degrees_dict.values())
-    out_degrees = list(dict(graph.out_degree).values())
-    i_o = [j * k for j, k in zip(in_degrees, out_degrees)]
-    mean_degree = graph.number_of_edges() / graph.number_of_nodes()
-    branching_factor = np.mean(i_o) / mean_degree
-
-    e = graph.number_of_edges()
-
-    # Find basal nodes
-    basal = [i for i in in_degrees_dict if in_degrees_dict[i] == 0]
-    b_e = sum(out_degrees[i] for i in basal)
+    branching_factor = np.mean(in_degrees * out_degrees) / (e / n)
 
     # Compute expected trophic coherence and expected branching factor
     exp_trophic_coher = np.sqrt(e / b_e - 1)
-    exp_branching_factor = (e - b_e) / (n - len(basal))
+    exp_branching_factor = (e - b_e) / (n - basal.sum())
 
-    # Compute trophic levels by solving system of equations
-    # Basal nodes have trophic level 1 by definition
-    t = list(range(n))
-    non_basal = list(set(t).difference(set(basal)))
-
-    trophic = [0] * n
-    for i in basal:
-        trophic[i] = 1
-
-    s = sp.symbols(f"s0:{len(non_basal)}")
-
-    for i, j in enumerate(non_basal):
-        trophic[j] = s[i]
-
-    # Convert all weights to 1 in order to compute trophic levels
-    a = np.where(nx.adjacency_matrix(graph).toarray() > 0, 1, 0)
-
-    LHS = [(tr - 1) * k for tr, k in zip(trophic, in_degrees)]
-    RHS = list(np.dot(a, np.array(trophic)))
-
-    # System of equations for non basal nodes
-    equations = []
-    for i in non_basal:
-        equations.append(sp.Eq(LHS[i], RHS[i]))
-
-    linear_solution = list(sp.linsolve(equations, s))
-
-    sols = linear_solution[0]
-
-    # Replace symbols with their trophic level value
-    for i, j in enumerate(non_basal):
-        trophic[j] = sols[i]
-
-    trophic = [float(t) for t in trophic]
-
-    # Compute trophic difference matrix
-    trophic_diff = np.zeros([n, n])
-    for i in range(n):
-        for j in range(n):
-            trophic_diff[i, j] = trophic[i] - trophic[j]
-    trophic_diff_sq = np.square(trophic_diff)
-
-    # Compute incoherence parameter
-    incoherence_parameter = np.sqrt((np.sum(np.multiply(a, trophic_diff_sq)) - 1) / e)
+    # Incoherence parameter
+    incoherence_parameter = np.float64(nx.trophic_incoherence_parameter(graph, weight=None))
 
     # Compute loop exponent
     loop_exponent = (
@@ -135,7 +78,10 @@ def looplessness(graph):  # pylint: disable=too-many-locals
 
 def _get(graph, i):
     """get output"""
-    return looplessness(graph)[i]
+    result = looplessness(graph)
+    if result is None:
+        return None
+    return result[i]
 
 
 class Looplessness(FeatureClass):
