@@ -71,18 +71,8 @@ class GraphCollection:
             self.graphs.append(graph)
 
     def __iter__(self):
-        self.current_graph = -1
-        return self
-
-    def __next__(self):
-        self.current_graph += 1
-        if self.current_graph >= len(self.graphs):
-            raise StopIteration
-        while self.graphs[self.current_graph].disabled:
-            self.current_graph += 1
-            if self.current_graph >= len(self.graphs):
-                raise StopIteration
-        return self.graphs[self.current_graph]
+        """Iterate over the enabled graphs."""
+        return (graph for graph in self.graphs if not graph.disabled)
 
     def __len__(self):
         return sum(1 for graph in self.graphs if not graph.disabled)
@@ -101,9 +91,11 @@ class GraphCollection:
     def remove_node_features(self):
         """Remove the node features."""
         for graph in self.graphs:
-            for node_id, node in enumerate(graph.nodes):
-                graph.nodes[node_id] = node[0]
+            graph.nodes = graph.nodes.drop(
+                columns=["features", "labels", "attributes"], errors="ignore"
+            )
             graph.set_node_features()
+            graph.reset_encodings()
 
     def remove_edge_weights(self):
         """Remove edge weights."""
@@ -185,6 +177,11 @@ class Graph:
     def remove_weights(self):
         """Set edge weights to one."""
         self.edges["weight"] = 1.0
+        self.reset_encodings()
+
+    def reset_encodings(self):
+        """Discard cached encodings (e.g. networkx), so they are rebuilt after a change."""
+        self.__dict__.pop("_graph_networkx", None)
 
     def _check_length(self):
         """Verify if the graph is large enough to be considered."""
@@ -253,12 +250,10 @@ class Graph:
         drop_nodes = np.where(labels != largest_cc_label)[0]
         self.nodes = self.nodes.drop(drop_nodes)
 
-        drop_edges = [
-            edge_id
-            for edge_id, edge in self.edges.iterrows()
-            if edge.start_node in drop_nodes and edge.end_node in drop_nodes
-        ]
-        self.edges = self.edges.drop(drop_edges)
+        drop_edges = self.edges.start_node.isin(drop_nodes) & self.edges.end_node.isin(drop_nodes)
+        self.edges = self.edges[~drop_edges]
+        self.reset_encodings()
+        self._check_length()
 
 
 def convert_graph(  # pylint: disable=too-many-branches
@@ -269,7 +264,8 @@ def convert_graph(  # pylint: disable=too-many-branches
     Args:
         graph (graph like object): valid graph data (NetowrkX or np.ndarray)
         label (int): label of the graph
-        graph_type (str): set to 'directed' for directed graphs
+        graph_type (str): set to 'directed' for directed graphs; for a networkx graph it is
+            inferred from graph.is_directed() when not given
 
     Returns:
         (Graph): converted Graph object
@@ -278,11 +274,10 @@ def convert_graph(  # pylint: disable=too-many-branches
         if isinstance(node_features, np.ndarray):
             node_features = node_features.tolist()
 
-    if label is not None:
-        label = [label]
-
     if isinstance(graph, nx.Graph):
-        A = nx.to_scipy_sparse_array(graph, weight="weight", format="coo")
+        if graph_type is None and graph.is_directed():
+            graph_type = "directed"
+        edges_df = _networkx_edges(graph, directed=graph_type == "directed")
 
         if not node_features:
             try:
@@ -292,18 +287,7 @@ def convert_graph(  # pylint: disable=too-many-branches
             except Exception:  # pylint: disable=broad-except
                 node_features = None
 
-        if not label:
-            try:
-                graph_label = list(nx.get_node_attributes(graph, "label").values())
-                if not isinstance(graph_label, list):
-                    graph_label = [graph_label]
-            except Exception:  # pylint: disable=broad-except
-                label = None
-
-        edges = np.array([A.row, A.col, A.data]).T
-        edges_df = pd.DataFrame(edges, columns=["start_node", "end_node", "weight"])
-
-        nodes = np.arange(0, A.shape[0])
+        nodes = np.arange(0, graph.number_of_nodes())
         nodes_df = pd.DataFrame(index=nodes)
 
         if node_features is not None:
@@ -312,6 +296,12 @@ def convert_graph(  # pylint: disable=too-many-branches
         graph = Graph(nodes_df, edges_df, label, graph_type)
 
     if isinstance(graph, np.ndarray):
+        if graph_type is None and graph.ndim == 2:
+            if np.array_equal(graph, graph.T):
+                # undirected: store each edge once
+                graph = np.triu(graph)
+            else:
+                graph_type = "directed"
         graph = sc.sparse.coo_matrix(graph)
         edges = np.array([graph.row, graph.col, graph.data]).T
         edges_df = pd.DataFrame(edges, columns=["start_node", "end_node", "weight"])
@@ -325,3 +315,25 @@ def convert_graph(  # pylint: disable=too-many-branches
         graph = Graph(nodes_df, edges_df, label, graph_type)
 
     return graph
+
+
+def _networkx_edges(graph, directed):
+    """Edge dataframe of a networkx graph, with nodes numbered in graph.nodes order.
+
+    Each undirected edge (including self-loops) is stored once. Weights of parallel edges
+    in multigraphs are summed, and edges without a weight get weight 1.
+    """
+    node_index = {node: i for i, node in enumerate(graph.nodes)}
+    edges = pd.DataFrame(
+        [
+            (node_index[u], node_index[v], data.get("weight", 1))
+            for u, v, data in graph.edges(data=True)
+        ],
+        columns=["start_node", "end_node", "weight"],
+    )
+    if not directed:
+        start, end = edges.start_node.to_numpy(), edges.end_node.to_numpy()
+        edges["start_node"], edges["end_node"] = np.minimum(start, end), np.maximum(start, end)
+    if graph.is_multigraph():
+        edges = edges.groupby(["start_node", "end_node"], as_index=False, sort=False)["weight"].sum()
+    return edges

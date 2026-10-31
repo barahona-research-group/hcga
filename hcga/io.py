@@ -36,8 +36,8 @@ def save_analysis(X, explainer, shap_values, folder=".", filename="analysis_resu
         pickle.dump([X, explainer, shap_values], f)
 
 
-def load_analysis(folder="/", filename="analysis_results"):
-    """Save results of analysis."""
+def load_analysis(folder=".", filename="analysis_results"):
+    """Load results of analysis."""
     with open(os.path.join(folder, filename + ".pkl"), "rb") as f:
         return pickle.load(f)
 
@@ -66,20 +66,28 @@ def save_features(features, feature_info, graphs, filename="./features.pkl"):
 
 
 def load_features(filename="features.pkl"):
-    """Save the features in a pickle."""
+    """Load the features from a pickle."""
     with open(filename, "rb") as f:
         return pickle.load(f)
 
 
+def _model_path(folder, filename):
+    """Path of a model pickle, adding the .pkl extension unless filename already has it."""
+    path = Path(folder) / filename
+    if path.suffix != ".pkl":
+        path = path.with_name(path.name + ".pkl")
+    return path
+
+
 def save_fitted_model(fitted_model, scaler, feature_info, folder=".", filename="./model"):
-    """Save the features in a pickle."""
-    if not Path(filename).parent.is_dir():
-        Path(filename).parent.mkdir()
-    with open(os.path.join(folder, filename + ".pkl"), "wb") as f:
+    """Save a fitted model in a pickle."""
+    path = _model_path(folder, filename)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "wb") as f:
         pickle.dump([fitted_model, scaler, feature_info], f)
 
 
 def load_fitted_model(folder=".", filename="model"):
-    """Save the features in a pickle."""
-    with open(os.path.join(folder, filename + ".pkl"), "rb") as f:
+    """Load a fitted model from a pickle."""
+    with open(_model_path(folder, filename), "rb") as f:
         return pickle.load(f)
