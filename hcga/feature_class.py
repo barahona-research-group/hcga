@@ -7,7 +7,6 @@ The functions here are necessary to evaluate each individual feature found insid
 """
 
 import logging
-import multiprocessing
 import sys
 import traceback
 import warnings
@@ -25,8 +24,6 @@ from hcga.utils import get_trivial_graph, timeout_eval
 
 L = logging.getLogger(__name__)
 warnings.simplefilter("ignore")
-
-# pylint: disable=consider-using-with
 
 
 def _mean_repeats(dist):
@@ -113,7 +110,6 @@ class FeatureClass:
         Args:
             graph (Graph): graph for initialisation, converted to given encoding
         """
-        self.pool = multiprocessing.Pool(processes=1, maxtasksperchild=1)
         if graph is not None:
             self.graph = graph.get_graph(self.__class__.encoding)
             self.graph_id = graph.id
@@ -121,12 +117,6 @@ class FeatureClass:
         else:
             self.graph = None
         self.features = {}
-
-    def __del__(self):
-        if hasattr(self, "pool"):
-            self.pool.close()
-            self.pool.terminate()
-            del self.pool
 
     @classmethod
     def setup_class(
